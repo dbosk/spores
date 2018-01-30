@@ -24,7 +24,7 @@ This work is best cited as
   author = {Adrien Luxey and
     Daniel Bosk and
     David Bromberg},
-  URL = {https://github.com/dbosk/p2p-private-fileshare},
+  URL = {https://github.com/dbosk/p2p-private-cloud},
 }
 ```
 
