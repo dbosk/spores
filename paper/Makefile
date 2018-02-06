@@ -1,8 +1,8 @@
 .PHONY: all
 all: p2p-private-cloud.pdf
 
-SRC+=		preamble.tex
-SRC+=		abstract.tex contents.tex
+SRC+=		p2p-private-cloud.tex contents.txt preamble.tex revision_macros.tex
+SRC+=		abstract.tex intro.tex related.tex
 
 p2p-private-cloud.pdf: p2p-private-cloud.tex
 p2p-private-cloud.pdf: ${SRC}
