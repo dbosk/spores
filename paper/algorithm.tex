@@ -25,11 +25,11 @@ More specifically, the devices use this protocol to keep the swarm state up to
 date.
 The swarm state contains:
 \begin{itemize}
-  \item A knowledge vector, \(K_i\), encoding a Markov chain to predict online 
+  \item A knowledge vector, \(A_i\), encoding a Markov chain to predict online 
     and offline patterns for the various devices to predict when and for how 
     long each device might be available before disappearing again.
-  \item A table, \(F_i\times \powerset(D_i)\), mapping a user's files (\(F_i\)) 
-    to its devices (\(D_i\)) that store a copy of it.
+  \item A table, \(F_i = N_i\times \powerset(D_i)\), mapping a user's file names 
+    (\(N_i\)) to its devices (\(D_i\)) that store a copy of that file.
 \end{itemize}
 
 \commentDaniel{What should we reuse from the session-handoff paper?}
@@ -41,11 +41,17 @@ All swarms participates in the Inter-Swarm Protocol to coordinate the global
 knowledge needed by the swarms to interact.
 More specifically, the global knowledge contains:
 \begin{itemize}
-  \item A table, \(A\), of available devices.
+  \item A table, \(R\), of devices available for routing.
   \item A key--value store, \(S = \{0, 1\}^\lambda\times \{0, 1\}^*\), mapping 
     fixed-length strings of length \(\lambda\) to arbitrary-length strings.
 \end{itemize}
 
 \subsection{File-sharing protocol}
 
-\dots
+When Alice wants to transfer a file to Bob, she will find which devices have the 
+file (from \(F_i\)), then predict when any of those devices will be available 
+(from \(A_i\)).
+Then she will construct a probabilistic onion route with her devices as the 
+destinations.
+She will encrypt this route for Bob and transfer it to him, who now can use the 
+onion route to fetch the file.
