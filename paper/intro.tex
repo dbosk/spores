@@ -1,57 +1,36 @@
 \section{Introduction}
 
-\dots
+% What's the problem?
 
-\subsection{What's the problem?}
+It's common nowadays to use a third party, i.e.\ someone else's computer (better 
+known as the Cloud), as an intermediate to share files.
+For instance, it's common for Alice to upload the file to e.g.\ Box, Dropbox or 
+OneDrive and share the link with Bob who can then download it.
+The goal of this work is to design a decentralized, distributed system where 
+Alice can share files \emph{efforlessly} between her own devices, e.g.\ laptop, 
+smartphone and tablet.
+But Alice should also be able to use her smartphone to share a file on her home 
+computer with Bob.
+Since these are Alice's private devices, privacy is essential.
+E.g.\ it would be devastating for Alice's privacy if Bob could stalk her by 
+tracking her devices or discern usage patterns.
 
-\dots
-
-\mode<presentation>{%
-  \begin{frame}
-    \begin{itemize}
-      \item \dots
-    \end{itemize}
-  \end{frame}
-}
-
-\subsection{Why is it a problem?}
-% Why is it a problem? Research gap left by other approaches?
+% XXX Why is it a problem? Research gap left by other approaches?
 % Why is it important, why care?
 
-\dots
+\commentDaniel{Summarize here why related work is not enough.}
 
-\mode<presentation>{%
-  \begin{frame}
-    \begin{itemize}
-      \item \dots
-    \end{itemize}
-  \end{frame}
-}
+% XXX What's the approach? How to solve the problem?
 
-\subsection{What's the approach?}
-% What's the approach? How to solve the problem?
+We use a purely \ac{P2P} design.
+We first provide \iac{P2P} design connecting Alice's own devices.
+This decreases the risk of third-party behaviour tracking.
+Then we also use \iac{P2P} design to connect Alice's and Bob's devices.
+This requires some more care, in this case Bob can track Alice since his devices 
+are interacting directly with hers.
 
-\dots
+% XXX What's the findings?
+% How was it evaluated, what are the results, limitations, what remains to be 
+% done?
 
-\mode<presentation>{%
-  \begin{frame}
-    \begin{itemize}
-      \item \dots
-    \end{itemize}
-  \end{frame}
-}
-
-\subsection{What are the findings?}
-% What's the findings? How was it evaluated, what are the results, limitations, 
-% what remains to be done?
-
-\dots
-
-\mode<presentation>{%
-  \begin{frame}
-    \begin{itemize}
-      \item \dots
-    \end{itemize}
-  \end{frame}
-}
-
+\commentDaniel{Summarize our results.}
