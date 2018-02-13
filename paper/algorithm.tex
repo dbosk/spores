@@ -1,0 +1,57 @@
+\section{Algorithm}%
+\label{Algorithm}
+
+\NewCryptoEntity{\Alice}{A}
+\NewCryptoEntity{\Bob}{B}
+\NewCryptoEntity{\Carol}{C}
+\NewCryptoEntity{\David}{D}
+
+We have several participants: Alice, Bob, Carol and David.
+Each of them has a set of devices, \(D_i\) (where \(i\in \{\Alice, \Bob, \Carol, 
+  \David\}\)).
+We have two protocols to track knowledge: one protocol which is run between the 
+devices in \(D_i\) (the Device Swarm Protocol) to gain knowledge on the 
+swarm, and another run between different swarms (the Inter-Swarm Protocol) to 
+keep global knowledge.
+Finally, we have a file-sharing protocol which uses the local and global 
+knowledges to coordinate file sharing between devices in different swarms.
+
+\subsection{The Device Swarm Protocol}%
+\label{DeviceSwarmProtocol}
+
+A user's devices, \(D_i\), use the Device Swarm Protocol to coordinate 
+themselves.
+More specifically, the devices use this protocol to keep the swarm state up to 
+date.
+The swarm state contains:
+\begin{itemize}
+  \item A knowledge vector, \(A_i\), encoding a Markov chain to predict online 
+    and offline patterns for the various devices to predict when and for how 
+    long each device might be available before disappearing again;
+  \item A table, \(F_i = N_i\times \powerset(D_i)\), mapping a user's file names 
+    (\(N_i\)) to its devices (\(D_i\)) that store a copy of that file.
+\end{itemize}
+
+\commentDaniel{What should we reuse from the session-handoff paper?}
+
+\subsection{The Inter-Swarm Protocol}%
+\label{InterSwarmProtocol}
+
+All swarms participate in the Inter-Swarm Protocol to coordinate the global 
+knowledge needed by the swarms to interact.
+More specifically, the global knowledge contains:
+\begin{itemize}
+  \item A table, \(R\), of devices available for routing;
+  \item A key--value store, \(S = \{0, 1\}^\lambda\times \{0, 1\}^*\), mapping 
+    fixed-length strings of length \(\lambda\) to arbitrary-length strings.
+\end{itemize}
+
+\subsection{File-sharing protocol}
+
+When Alice wants to transfer a file to Bob, she will find which devices have the 
+file (from \(F_i\)), then predict when any of those devices will be available 
+(from \(A_i\)).
+Then she will construct a probabilistic onion route with her devices as the 
+destinations.
+She will encrypt this route for Bob and transfer it to him, who now can use the 
+onion route to fetch the file.
