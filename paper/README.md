@@ -6,5 +6,6 @@
    for the various sections.
     - `intro.tex` contains the intro section.
     - `related.tex` contains the Related Work section.
+    - `algorithm.tex` contains a description of the algorithm.
  - `preamble.tex` contains the LaTeX document preamble.
  - `p2p-private-cloud.tex` simply puts the files together.
