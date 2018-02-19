@@ -1,0 +1,12 @@
+Alice wants to send her file f (that resides on her laptop L_A) to B.
+
+1/ 	Alice and Bob exchange their encryption keys and the file ID f_{ID} out-of-band
+	Alice sets f_{ID} to an invalid reference in the DHT ("not ready yet")
+
+2/ 	Alice queries the DHT for nodes that will most likely be up when L_A is
+	The DHT answers with the IDs of middle-men M_1..M_k
+
+3/	When L_A comes online, it cuts f into some chunks, and sends them to M_1..M_k
+	Alice updates the DHT entry for F_{ID} with the IDs of middle-men that did receive chunks of f
+
+4/	With the device he wants, Bob queries the DHT for the middle-men's IDs, fetches the chunks of f, and reconstitutes it.
