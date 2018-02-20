@@ -1,13 +1,13 @@
 \section{Algorithm}%
 \label{Algorithm}
 
-\NewCryptoEntity{\Alice}{A}
-\NewCryptoEntity{\Bob}{B}
-\NewCryptoEntity{\Carol}{C}
+\NewCryptoEntity{\Alfred}{A}
+\NewCryptoEntity{\Beth}{B}
+\NewCryptoEntity{\Cathy}{C}
 \NewCryptoEntity{\David}{D}
 
-We have several participants: Alice, Bob, Carol and David.
-Each of them has a set of devices, \(D_i\) (where \(i\in \{\Alice, \Bob, \Carol, 
+We have several participants: Alfred, Beth, Cathy and David.
+Each of them has a set of devices, \(D_i\) (where \(i\in \{\Alfred, \Beth, \Cathy, 
   \David\}\)).
 We have two protocols to track knowledge: one protocol which is run between the 
 devices in \(D_i\) (the Device Swarm Protocol) to gain knowledge on the 
@@ -48,10 +48,10 @@ More specifically, the global knowledge contains:
 
 \subsection{File-sharing protocol}
 
-When Alice wants to transfer a file to Bob, she will find which devices have the 
+When Alfred wants to transfer a file to Beth, she will find which devices have the 
 file (from \(F_i\)), then predict when any of those devices will be available 
 (from \(A_i\)).
 Then she will construct a probabilistic onion route with her devices as the 
 destinations.
-She will encrypt this route for Bob and transfer it to him, who now can use the 
+She will encrypt this route for Beth and transfer it to him, who now can use the 
 onion route to fetch the file.
