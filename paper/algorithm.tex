@@ -6,14 +6,14 @@
 \NewCryptoEntity{\Cathy}{C}
 \NewCryptoEntity{\David}{D}
 
-We have several participants: Alfred, Beth, Cathy and David.
+We consider several participants: Alfred, Beth, Cathy and David.
 Each of them has a set of devices, \(D_i\) (where \(i\in \{\Alfred, \Beth, \Cathy, 
-  \David\}\)).
-We have two protocols to track knowledge: one protocol which is run between the 
+  \David\}\)), hereafter called their device swarm.
+Our system is composted of two network overlays: one protocol is run between the 
 devices in \(D_i\) (the Device Swarm Protocol) to gain knowledge on the 
 swarm, and another run between different swarms (the Inter-Swarm Protocol) to 
 keep global knowledge.
-Finally, we have a file-sharing protocol which uses the local and global 
+Finally, our file-sharing protocol uses the local and global 
 knowledges to coordinate file sharing between devices in different swarms.
 
 \subsection{The Device Swarm Protocol}%
@@ -47,6 +47,13 @@ More specifically, the global knowledge contains:
 \end{itemize}
 
 \subsection{File-sharing protocol}
+\label{FileSharingProtocol}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.8\columnwidth]{figures/schema.pdf}
+\caption{\label{fig:pipeline}Pipeline of the steps undergone by Alfred when he shares a file from his laptop L with Beth.}
+\end{figure}
 
 When Alfred wants to transfer a file to Beth, she will find which devices have the 
 file (from \(F_i\)), then predict when any of those devices will be available 
