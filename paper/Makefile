@@ -3,7 +3,7 @@ all: p2p-private-cloud.pdf
 
 SRC+=		p2p-private-cloud.tex preamble.tex revision_macros.tex
 SRC+=		contents.tex abstract.tex intro.tex related.tex
-SRC+= 		algorithm.tex
+SRC+= 		user-model.tex algorithm.tex
 
 DEPENDS+= 	bibsp.sty
 

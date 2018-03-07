@@ -1,0 +1,30 @@
+\section{User model} 
+\label{sec:user_model}
+
+We consider many users owning several devices, that they freely turn on and off depending on their location and will.
+The participants' devices are the only nodes constituting our system; the unreliability of their connectivity has to be taken for granted.
+
+We will first present a model of each user's behavior, that will drive the connection intervals of our system's nodes.
+
+\subsection{A model of the user's behavior}
+\label{sub:a_model_of_the_user_s_behavior}
+
+In \name, we take interest in users that own several devices, and wish to privately exchange files with each other.
+To the best of our knowledge, no real-world traces of multi-devices usage over several days exist, as would be needed for the experimental evaluation of our system.
+For that reason, we propose a user behavioral model having the following features:
+
+\begin{itemize}
+	\item Each user owns a variable amount of devices, that can be either mobile or immobile;
+	\item The user travels between three ``locations'' according to a simple probabilistic model: her home, her workplace, and outside;
+	\item She can act her devices only when she is close to them. For instance, a user cannot shut down her workstation while being home or outside.
+\end{itemize}
+
+To this end, we use a Hidden Markov Model (HMM). 
+The \emph{hidden} Markovian process dictates the user's progression among the three proposed locations.
+The \emph{observable} process emits ``toggle'' actions on the user's devices, based on probabilities associated with each location.
+For instance, the probability that the user switches her home computer on or off (i.e. \emph{toggles}) is null while she is at work or outside.
+
+Such a statistical model is overly simplistic (e.g. it does not encapsulate the time or the weekday), but it is on purpose: simplicity is bliss.
+Given the lack of real-world data for our testbed, building a more complex and realistic user model would add no value to our proposal: 
+our goal is to see devices exhibiting frequent disconnections and reconnections (or \emph{churn}).
+Our simple model being able to put extravagant stress on our system, it is sufficient to access \name's resilience.
