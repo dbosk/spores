@@ -4,6 +4,7 @@ all: p2p-private-cloud.pdf
 SRC+=		p2p-private-cloud.tex preamble.tex revision_macros.tex
 SRC+=		contents.tex abstract.tex intro.tex related.tex
 SRC+= 		user-model.tex algorithm.tex
+SRC+=		figures/*.pdf
 
 DEPENDS+= 	bibsp.sty
 

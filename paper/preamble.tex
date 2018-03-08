@@ -1,41 +1,27 @@
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
+\usepackage[binary-units]{siunitx}
 \usepackage[british]{babel}
 \usepackage[capitalize]{cleveref}
+\usepackage[hidelinks]{hyperref}
+\usepackage[natbib,style=ieee]{biblatex}
+\usepackage[noend]{algpseudocode}
+\usepackage[single]{acro}
+\usepackage[T1]{fontenc}
+\usepackage[unq]{unique}
+\usepackage[utf8]{inputenc}
+\usepackage{amsthm}
+\usepackage{bibsp}
 \usepackage{booktabs}
-
+\usepackage{kbordermatrix}% .sty in paper dir
+\usepackage{listings}
+\usepackage{mathtools}
 \usepackage{newclude}
-\usepackage{import}
+\usepackage{subcaption}
+\usepackage{thmtools}
+\usepackage{xfrac}
+\usepackage{xparse}
+\usepackage{xspace}
 
 \usepackage[strict]{csquotes}
-\usepackage[single]{acro}
-
-%\usepackage[natbib,style=alphabetic,maxbibnames=99]{biblatex}
-\usepackage[natbib,style=ieee]{biblatex}
-\addbibresource{p2p-private-cloud.bib}
-
-\usepackage{subcaption}
-
-\usepackage[noend]{algpseudocode}
-\usepackage{xparse}
-
-\let\email\texttt
-
-\usepackage{listings}
-\lstset{%
-  basicstyle=\footnotesize,
-  numbers=left
-}
-
-% \usepackage{amsmath}
-% \usepackage{amssymb}
-\usepackage{mathtools}
-\usepackage{amsthm}
-\usepackage{thmtools}
-\usepackage[unq]{unique}
-\DeclareMathOperator{\powerset}{\mathcal{P}}
-
-\usepackage[binary-units]{siunitx}
 
 %% From IEEE template
 %\usepackage{cite}
@@ -46,9 +32,34 @@
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 
-\input{revision_macros.tex}
 
-\usepackage{bibsp}
-
-\usepackage{xspace}
+\DeclareMathOperator{\powerset}{\mathcal{P}}
 \newcommand{\name}{\textsc{Lebowski}\xspace}
+\lstset{%
+  basicstyle=\footnotesize,
+  numbers=left
+}
+\let\email\texttt
+
+
+% Adrien: What is the following for?
+\usepackage[noamsthm,notheorems]{beamerarticle}
+\declaretheorem[numbered=unless unique,style=theorem]{theorem}
+\declaretheorem[numbered=unless unique,style=definition]{definition}
+\declaretheorem[numbered=unless unique,style=definition]{assumption}
+\declaretheorem[numbered=unless unique,style=definition]{protocol}
+\declaretheorem[numbered=unless unique,style=example]{example}
+%\declaretheorem[style=definition,numbered=unless unique,
+%  name=Example,refname={example,examples}]{example}
+\declaretheorem[numbered=unless unique,style=remark]{remark}
+\declaretheorem[numbered=unless unique,style=remark]{idea}
+\declaretheorem[numbered=unless unique,style=exercise]{exercise}
+\declaretheorem[numbered=unless unique,style=exercise]{question}
+\declaretheorem[numbered=unless unique,style=solution]{solution}
+
+\addbibresource{p2p-private-cloud.bib}
+
+
+
+
+\input{revision_macros.tex}
