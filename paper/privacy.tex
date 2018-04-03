@@ -1,5 +1,42 @@
 \section{Privacy}%
 \label{Privacy}
 
-We care about
-\dots
+The solution we consider is strictly \ac{P2P}.
+From a privacy point-of-view, this is, at a first glance, good for privacy: 
+there will be no central provider who can monitor everyone.
+Unfortunately, with \iac{P2P} system, everything that was done in the Cloud 
+before, must now be done in the public.
+This means less privacy for Alice and Bob unless we carefully design the system 
+from a privacy perspective, which is not easy~\cite{DevilInMetadata}.
+Particular to our case, Alice and Bob will rely only on their own devices (\eg 
+smartphones, laptops, tables \etc).
+The online--offline patterns of the devices, which devices has certain files 
+\etc will reveal information about Alice and Bob's behaviour.
+We would like to limit how much of Alice's or Bob's behaviour can be learned by 
+another party.
+
+The first adversary model that we consider is friendly 
+surveillance~\cite{FriendlySurveillance}.
+Since Alice relies only on her own devices, whenever any of those devices must 
+communicate with Bob (\eg to transfer a file), this will reveal information 
+about Alice's behaviour to Bob.
+(In the same way, this will also reveal information about Bob's behaviour to 
+Alice.)
+Alice's goal is to reveal as little of her behaviour to Bob as possible.
+\commentDaniel{%
+  What do we mean by behaviour and what is \enquote{little}? See issue \#15.%
+}
+
+We would also consider what Carol can learn about Alice's and Bob's behaviour.
+Since this is \iac{P2P} system, Carol can participate and maybe Alice and Bob 
+must use Carol in their communication.
+\commentDaniel{%
+  This should be the same problem as for Bob above, it's just that Carol doesn't 
+  communicate with Alice directly.
+  So still issue \#15.%
+}
+
+%The final adversary is a network-wide adversary.
+%We know from \textcite{SystemsForAnonymousCommunication} that it is difficult to 
+%protect oneself from an adversary who can monitor the entire network 
+%(specifically the edges).

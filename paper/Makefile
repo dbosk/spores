@@ -1,14 +1,18 @@
 .PHONY: all
 all: p2p-private-cloud.pdf
 
-SRC+=		p2p-private-cloud.tex preamble.tex revision_macros.tex
-SRC+=		contents.tex abstract.tex intro.tex related.tex
-SRC+= 		user-model.tex algorithm.tex
-SRC+=		figures/*.pdf
+SRC+=		contents.tex abstract.tex
+SRC+= 		intro.tex
+SRC+= 		privacy.tex
+SRC+= 		user-model.tex
+SRC+= 		algorithm.tex
+SRC+= 		related.tex
 
-DEPENDS+= 	bibsp.sty
+DEPENDS+= 	bibsp.sty meta.bib osn.bib anon.bib
+DEPENDS+=	figures/*.pdf
 
-p2p-private-cloud.pdf: ${SRC}
+p2p-private-cloud.pdf: p2p-private-cloud.tex preamble.tex revision_macros.tex
+p2p-private-cloud.pdf: ${SRC} ${DEPENDS}
 
 
 .PHONY: clean
