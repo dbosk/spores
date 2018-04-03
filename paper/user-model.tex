@@ -22,9 +22,9 @@ For that reason, we propose a user behavioral model having the following feature
 To this end, we use a Hidden Markov Model (HMM). 
 The \emph{hidden} Markovian process $S=S_1,\dots,S_T$ dictates the user's progression among the three proposed locations.
 The \emph{observable} process $O=O_1,\dots,O_T$ emits ``toggle'' actions on the user's devices, based on probabilities associated with each location.
-For instance, the probability that the user switches her home computer on or off (i.e. \emph{toggles}) is null while she is at work or outside.
+For instance, the probability that the user switches her home computer on or off (\ie \emph{toggles}) is null while she is at work or outside.
 
-Such a statistical model is overly simplistic (e.g. it does not encapsulate the time or the weekday), but it is on purpose: simplicity is bliss.
+Such a statistical model is overly simplistic (\eg it does not encapsulate the time or the weekday), but it is on purpose: simplicity is bliss.
 Given the lack of real-world data for our testbed, building a more complex and realistic user model would add no value to our proposal: 
 our goal is to see devices exhibiting frequent disconnections and reconnections (also called \emph{churn}).
 Our simple model being able to put extravagant stress on our system, it is sufficient to access \name's resilience.
