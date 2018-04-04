@@ -41,9 +41,10 @@ All swarms participate in the Inter-Swarm Protocol to coordinate the global
 knowledge needed by the swarms to interact.
 More specifically, the global knowledge contains:
 \begin{itemize}
-  \item A table, \(R\), of devices available for routing;
-  \item A key--value store, \(S = \{0, 1\}^\lambda\times \{0, 1\}^*\), mapping 
+  \item A table, \(R\), of devices available for routing.
+  \item A key--value store, \(S\colon \{0, 1\}^\lambda\to \{0, 1\}^*\), mapping 
     fixed-length strings of length \(\lambda\) to arbitrary-length strings.
+    We will use the notation \(x\mapsto S[x]\).
 \end{itemize}
 
 \subsection{File-sharing protocol}%
