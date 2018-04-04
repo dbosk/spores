@@ -32,7 +32,9 @@ The swarm state contains:
     (\(N_i\)) to its devices (\(D_i\)) that store a copy of that file.
 \end{itemize}
 
-\commentDaniel{What should we reuse from the session-handoff paper?}
+\commentDaniel{%
+  We must provide a way for Alice to access any of her files, see issue \#19.%
+}
 
 \subsection{The Inter-Swarm Protocol}%
 \label{InterSwarmProtocol}
@@ -46,6 +48,10 @@ More specifically, the global knowledge contains:
     fixed-length strings of length \(\lambda\) to arbitrary-length strings.
     We will use the notation \(x\mapsto S[x]\).
 \end{itemize}
+
+\commentDaniel{%
+  We must provide an \enquote{API} for the oracle, see issue \#20.%
+}
 
 \subsection{File-sharing protocol}%
 \label{FileSharingProtocol}
