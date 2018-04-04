@@ -11,13 +11,24 @@ SRC+= 		related.tex
 DEPENDS+= 	bibsp.sty meta.bib osn.bib anon.bib
 DEPENDS+=	figures/*.pdf
 
+FIGURES+= 	figures/probabilistic-routes-cropped.png
+FIGURES+= 	figures/incremental-onion-routing-cropped.png
+
 p2p-private-cloud.pdf: p2p-private-cloud.tex preamble.tex revision_macros.tex
-p2p-private-cloud.pdf: ${SRC} ${DEPENDS}
+p2p-private-cloud.pdf: ${SRC} ${DEPENDS} ${FIGURES}
+
+probabilistic-routes-cropped.png: figures/probabilistic-routes.png
+incremental-onion-routing-cropped.png: figures/incremental-onion-routing.png
+
+%-cropped.png: %.png
+	convert -trim $< $@
+
 
 
 .PHONY: clean
 clean:
 	${RM} p2p-private-cloud.pdf
+	${RM} figures/*-cropped.png
 
 
 .PHONY: print todo

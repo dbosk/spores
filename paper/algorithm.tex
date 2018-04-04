@@ -50,11 +50,32 @@ More specifically, the global knowledge contains:
 \subsection{File-sharing protocol}%
 \label{FileSharingProtocol}
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=0.8\columnwidth]{figures/schema.pdf}
-\caption{\label{fig:pipeline}Pipeline of the steps undergone by Alice when he shares a file from his laptop L with Bob.}
-\end{figure}
+Alice has a file \(f\) stored on one of her devices and wants to transfer \(f\) 
+to Bob.
+Neither Alice nor Bob care about where \(f\) will be stored, as long as they can 
+access it from any device (\ie the device they are using at the moment).
+Here we will focus on how to get \(f\) from any of Alice's devices to any of 
+Bob's devices.
+When \(f\) is available on any of Bob's devices, Bob can rely on the Device 
+Swarm Protocol (\cref{DeviceSwarmProtocol}) to access it on the device choice.
+
+\begin{figure*}
+  \centering
+  % XXX Replace ProbabilisticRoutes figure
+  \includegraphics{figures/probabilistic-routes-cropped.png}
+  \caption{\label{ProbabilisticRoutes}%
+    Probabilistic routes from Alice to Bob.
+  }
+\end{figure*}
+
+\begin{figure*}
+  \centering
+  % XXX Replace IncrementalOnionRouting figure
+  \includegraphics[height=\textheight]{figures/incremental-onion-routing-cropped.png}
+  \caption{\label{IncrementalOnionRouting}%
+    Overview of incremental onion routing.
+  }
+\end{figure*}
 
 \Cref{fig:pipeline} depicts the process of a file exchange from Alice to Bob.
 The file $f$ is initially located on Alice's laptop $L$, which is potentially offline for now.
