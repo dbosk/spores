@@ -5,6 +5,7 @@ We consider many users owning several devices, that they freely turn on and off 
 The participants' devices are the only nodes constituting our system; the unreliability of their connectivity has to be taken for granted.
 
 We will first present a model of each user's behavior, that will drive the connection intervals of our system's nodes.
+Then, we will show how devices can predict the future user's behavior given the model.
 
 \subsection{A model of the user's behavior}
 \label{sub:a_model_of_the_user_s_behavior}
@@ -16,15 +17,15 @@ For that reason, we propose a user behavioral model having the following feature
 \begin{itemize}
 	\item Each user owns a variable amount of devices, that can be either mobile or immobile;
 	\item The user travels between three ``locations'' according to a simple probabilistic model: her home, her workplace, and outside;
-	\item She can act her devices only when she is close to them. For instance, a user cannot shut down her workstation while being home or outside.
+	\item She can act on her devices only when she is close to them. For instance, a user cannot shut down her workstation while being home or outside.
 \end{itemize}
 
 To this end, we use a Hidden Markov Model (HMM). 
-The \emph{hidden} Markovian process $S=S_1,\dots,S_T$ dictates the user's progression among the three proposed locations.
-The \emph{observable} process $O=O_1,\dots,O_T$ emits ``toggle'' actions on the user's devices, based on probabilities associated with each location.
-For instance, the probability that the user switches her home computer on or off (i.e. \emph{toggles}) is null while she is at work or outside.
+The \emph{hidden} Markovian process $S=S_1,\dots,S_T$ represents the user's progression among the three proposed locations.
+The \emph{observable} process $O=O_1,\dots,O_T$ reads ``toggle'' actions performed by the user on her devices. The probability of observable events depends on the current location.
+For instance, the probability that the user switches her home computer on or off is null while she is at work or outside.
 
-Such a statistical model is overly simplistic (e.g. it does not encapsulate the time or the weekday), but it is on purpose: simplicity is bliss.
+Such a statistical model is simplistic (e.g. it does not encapsulate date \& time nor location), but it is on purpose: simplicity is bliss.
 Given the lack of real-world data for our testbed, building a more complex and realistic user model would add no value to our proposal: 
 our goal is to see devices exhibiting frequent disconnections and reconnections (also called \emph{churn}).
 Our simple model being able to put extravagant stress on our system, it is sufficient to access \name's resilience.
@@ -47,13 +48,13 @@ $$A =
 B = 
 \kbordermatrix{
       & W    & O    & H    \cr
-    n & 0.1  & 0.45 & 0.1  \cr
-    p & 0.45 & 0.55 & 0.45 \cr
-    w & 0.45 & 0    & 0    \cr
-    h & 0    & 0    & 0.45 \\[0.3em]
+    t_n & 0.1  & 0.45 & 0.1  \cr
+    t_p & 0.45 & 0.55 & 0.45 \cr
+    t_w & 0.45 & 0    & 0    \cr
+    t_h & 0    & 0    & 0.45 \\[0.3em]
 }$$
 
-\includegraphics[width=0.85\columnwidth]{figures/hmm.pdf}
+\includegraphics[width=0.9\columnwidth]{figures/hmm.pdf}
 \caption{ \label{fig:hmm} Example Hidden Markov Model (HMM) of a user's behavior.}
 \end{figure}
 
@@ -80,9 +81,10 @@ where
 
 In our case, the states are the different locations where the user is susceptible to go.
 We considered the three following locations: $\mathcal{S}=\left\{ \mathit{work}, \mathit{outside}, \mathit{home} \right\}$. 
-There is one action per device $d$ owned by the user, plus a $\mathit{none}$ action when the user does not do anything: 
-$\mathcal{O} = \left\{ \mathit{toggle}_d \right\}_{d\in \mathcal{D}}$.
-$\mathit{toggle}_d$ means that the user turned her device $d$ on or off, depending on the device's previous state.
+There is one action per device $d\in\mathcal{D}$, plus a ``none'' action when the user does not do anything: 
+$\mathcal{O} = \left\{ t_d \right\}_{d\in \mathcal{D}} \bigcup \left\{ t_\text{none} \right\}$.
+$t_d$ means that the user turned her device $d$ on or off (i.e. \emph{toggled} it), depending on the device's previous state.
+\commentAL{TODO Rephrase:} We also note $o^{(d)}_t=1$ (resp. 0) when the user toggled (resp. did not toggle) device $d$ at time $t$.
 
 In figure~\ref{fig:hmm}, we show an example HMM of a user's behavioral HMM, along with its graphical representation (the initial state distribution $\Pi$ was left out for simplicity). 
 The represented user possesses a phone, that she carries around with her, a home computer, that is only accessible from her home, and a workstation, located at her workplace.
@@ -94,17 +96,88 @@ The represented user possesses a phone, that she carries around with her, a home
 \caption{\label{fig:sample_usage}Sample device usage using the previous HMM specifications. 
 %The bottom line reads the HMM's states: \textbf{W}ork, \textbf{O}utside, and \textbf{H}ome, while the dark lines read when the devices (\textbf{h}ome computer, \textbf{p}hone, and \textbf{w}orkstation) are online.
 }
+
 \end{figure}
 
-\commentAL{Stupid of me to use same abbreviations for toggle and usage events...}
+Using the toggle events, we compute the device's \emph{connection} events, represented by the multivariate Bernoulli process $C=\left\{ c^{(d)} \right\}_{d\in\mathcal{D}}$. 
+$c^{(d)}_t=1$ (resp. 0) means that the device $d$ was online (resp. offline) at time step $t$.
 
-Figure~\ref{fig:sample_usage} plots a sample device usage timeline using the previous model. 
-Each device starts offline; the user can toggle one device per round (or do nothing).
-In this figure, we show the device \emph{usage}, that is a consequence of the $\mathit{toggle}$ events defined by the HMM.
-As a consequence, several devices can be online at the same time, as happens in the figure.
+We state that every device starts offline, and compute $c^{(d)}_t$ as follows:
 
+$$ \forall d \in \mathcal{D},
+\begin{cases}
+c^{(d)}_t=0 &\text{when } t=0; \\
+c^{(d)}_t=c^{(d)}_{t-1} \oplus o^{(d)}_t &\text{when } t>0.
+\end{cases}$$
 
+Figure~\ref{fig:sample_usage}, shows a possible trace of the user's behavior, using the parameters depicted in figure~\ref{fig:hmm}. It read the timeline of $c^{(d)}$ for each device $d$. On the bottom of the graph, the first letter of the user's location is shown at each time step. We see that any number of devices can be connected at the same time.
 
-
+% Each device starts offline; then, the user either toggles one device per round or does nothing.
+% In this figure, we show the device \emph{usage}, that is a consequence of the $\mathit{toggle}$ events defined by the HMM.
+% As a consequence, several devices can be online at the same time, as happens in the figure.
 
 % subsubsection formal_definition (end)
+
+\commentAL{Need to explain how devices go from sequence to the HMM at some point. 
+We first define the prediction of behavior from the HMM directly.}
+
+\subsubsection{Predicting future behavior} % (fold)
+\label{ssub:predicting_future_behavior}
+\commentAL{Why we need to make these predictions is not explained yet.}
+Devices want to predict whether they are likely to be connected in the near future.
+This information will be publicly available, and allow routes prediction for the upcoming files exchange.
+
+Given the model $\lambda_N$, the current user's location $S_t$ and the current connection state of the devices $C_t$, we can predict the devices connections in $k$ round $C_{t+k}$.
+
+If the device $d$ is connected at time $t$ (resp. disconnected), the probability that $d$ is connected at time $t+k$ is equal to the probability that the user toggles $d$ an even (resp. odd) number of times between round $t+1$ and $t+k$:
+
+$$
+P\left[c^{(d)}_{t+k}=1 \mid c^{(d)}_{t}=1 ,S_t \right]= P\left[ \sum\limits_{i\in[\![ 1,k]\!]}o^{(d)}_{t+i} \text{ is even} \mid S_t\right] 
+$$
+
+To compute this probability, one thus need to predict the probability that the user toggles $d$ at each round until $t+k$. This is done recursively:
+
+\begin{multline*}
+P\left[o^{(d)}_{t+i}=1 \mid S_{t} \right] = \\
+\sum\limits_{s \in \mathcal{S}} P\left[ S_{t+1}=s \mid S_t\right] * P\left[o^{(d)}_{t+i}=1 \mid S_{t+1}=s \right]
+\end{multline*}
+
+
+Knowing that the probability of toggling $d$ during the next round is computed as follows:
+
+\begin{multline*}
+P\left[o^{(d)}_{t+1}= 1 \mid S_{t} \right]=\\
+\sum\limits_{s \in \mathcal{S}} P\left[ S_{t+1}=s \mid S_{t}\right] * P\left[ o^{(d)}_{t+1}=1 \mid S_{t+1}=s\right] 
+\end{multline*}
+
+Finally, we enumerate the set $\mathcal{B}^{(k)}_\text{even}$ (resp. $\mathcal{B}^{(k)}_\text{even}$) of sequences of $k$ booleans having an even (resp. odd) number of true values, and compute the probability that device $d$ will be connected in $k$ turns, knowing that it is connected (resp. disconnected) at time $t$:
+
+\begin{multline*}
+P\left[c^{(d)}_{t+k}=1 \mid c^{(d)}_{t}=1 ,S_t \right]=\\
+\sum\limits_{B \in \mathcal{B}_\text{even}}\sum\limits_{i\in[\![ 1,k]\!]} P\left[o^{(d)}_{t+i}= B\left[i\right] \mid S_{t} \right]
+\end{multline*}
+
+\begin{multline*}
+P\left[c^{(d)}_{t+k}=1 \mid c^{(d)}_{t}=0 ,S_t \right]=\\
+\sum\limits_{B \in \mathcal{B}_\text{odd}}\sum\limits_{i\in[\![ 1,k]\!]} P\left[o^{(d)}_{t+i}= B\left[i\right] \mid S_{t} \right]
+\end{multline*}
+
+% \begin{multline}
+% P\left[o^{(d)}_{t+1}= 1 \mid S_{t} \right]= P\left[o^{(d)}_{t+i+1}= 1 \mid S_{t+i} \right] = \\
+% \sum\limits_{s \in \mathcal{S}} P\left[ S_{t+1}=s \mid S_{t}\right] * P\left[ o^{(d)}_{t+1}=1 \mid S_{t+1}=s\right] \\
+
+% P\left[o^{(d)}_{t+i}=1 \mid S_{t} \right] = \sum\limits_{s \in \mathcal{S}} P\left[ S_{t+1}=s \mid S_t\right] * P\left[o^{(d)}_{t+i}=1 \mid S_{t+1}=s \right]
+% \end{multline}
+
+
+% Using the matrices notations:
+
+% $$
+% \begin{cases}
+% P\left[o^{(d)}_{t+i+1}=1 \mid S_{t+i} = i\right] = \sum\limits_{j \in \mathcal{S}} a_{ij} * b_{jk}\\
+
+% P\left[o^{(d)}_{t+i}=1 \mid S_{t} = i \right] = \sum\limits_{j \in \mathcal{S}} a_{ij} * P\left[o^{(d)}_{t+i}=1 \mid S_{t+1}=s \right]
+% \end{cases}
+% $$
+
+% subsubsection predicting_future_behavior (end)
