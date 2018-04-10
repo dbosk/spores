@@ -5,25 +5,27 @@ We consider many users owning several devices, that they freely turn on and off 
 The participants' devices are the only nodes constituting our system; the unreliability of their connectivity has to be taken for granted.
 
 We will first present a model of each user's behavior, that will drive the connection intervals of our system's nodes.
-Then, we will show how devices can predict the future user's behavior given the model.
+%Then, we will show how devices can predict the future user's behavior given the model.
 
 \subsection{A model of the user's behavior}
 \label{sub:a_model_of_the_user_s_behavior}
 
-In \name, we take interest in users that own several devices, and wish to privately exchange files with each other.
+In \name, we take interest in users that own several devices, and wish to privately exchange files with each other without revealing .
 To the best of our knowledge, no real-world traces of multi-devices usage over several days exist, as would be needed for the experimental evaluation of our system.
 For that reason, we propose a user behavioral model having the following features:
 
 \begin{itemize}
-	\item Each user owns a variable amount of devices, that can be either mobile or immobile;
+	\item Each user owns a variable amount of devices. We consider the following device types: mobile, portable, fixed, and server;
 	\item The user travels between three ``locations'' according to a simple probabilistic model: her home, her workplace, and outside;
-	\item She can act on her devices only when she is close to them. For instance, a user cannot shut down her workstation while being home or outside.
+	\item She makes a different use of her devices depending on her location: at home, she will her laptop that at work; she cannot use her workstation at home.
 \end{itemize}
 
-To this end, we use a Hidden Markov Model (HMM). 
-The \emph{hidden} Markovian process $S=S_1,\dots,S_T$ represents the user's progression among the three proposed locations.
-The \emph{observable} process $O=O_1,\dots,O_T$ reads ``toggle'' actions performed by the user on her devices. The probability of observable events depends on the current location.
-For instance, the probability that the user switches her home computer on or off is null while she is at work or outside.
+To this end, we use a Hidden Markov Model (HMM) of order one, with multiple discrete observation processes. 
+The \emph{hidden} Markovian process $S=S_1,\dots,S_T$ represents the user's progression among the three proposed locations up to time step $T$.
+For every device $d$ owned by the user, the \emph{observable} process $O_d=O_{d,1},\dots,O_{d,T}$ reads $d$'s state: it is either online ($o_d$) or offline ($\overline{o_d}$) at each point in time. 
+The probability of observable events depends only on the current location.
+%The \emph{observable} process $O=O_1,\dots,O_T$ reads ``toggle'' actions performed by the user on her devices. The probability of observable events depends on the current location.
+For example, the probability that the user's home computer is on while she is at work is null (in our model, users never forget to turn off their fixed devices before leaving).
 
 Such a statistical model is simplistic (e.g. it does not encapsulate date \& time nor location), but it is on purpose: simplicity is bliss.
 Given the lack of real-world data for our testbed, building a more complex and realistic user model would add no value to our proposal: 
