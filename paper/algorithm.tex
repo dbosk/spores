@@ -4,11 +4,15 @@
 \NewCryptoEntity{\Alice}{A}
 \NewCryptoEntity{\Bob}{B}
 \NewCryptoEntity{\Carol}{C}
+% Arg, already used \mathcal{D} for the devices set
 \NewCryptoEntity{\David}{D}
 
-We consider several participants: Alice, Bob, Carol and David.
-Each of them has a set of devices, \(D_i\) (where \(i\in \{\Alice, \Bob, \Carol, 
-  \David\}\)), hereafter called their device swarm.
+% We consider several participants: Alice, Bob, Carol and David.
+% Each of them has a set of devices, \(D_i\) (where \(i\in \{\Alice, \Bob, \Carol,\David\}\)), hereafter called their device swarm.
+Alice (\Alice) and Bob (\Bob) want to exchange a file secretly: no participant should learn who sends and receives it, nor its content.
+They participate, along with Carol (\Carol) and David (\David) in the \name network. 
+
+
 Our system is composted of two network overlays: one protocol is run between the 
 devices in \(D_i\) (the Device Swarm Protocol) to gain knowledge on the 
 swarm, and another run between different swarms (the Inter-Swarm Protocol) to 
