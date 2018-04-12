@@ -62,7 +62,7 @@ B =
 \end{figure}
 
 We consider a single user, owning a set of $\mathcal{D}$ devices.
-Time is discretized, and the devices' observations are independent: Alice can have her laptop and phone connected at the same time.
+Time is discretized \commentAL{Discretized/synchronous time needs more explanation}. Needs, and the devices' observations are independent: Alice can have her laptop and phone connected at the same time.
 The hidden process $S=S_1,\dots,S_T$ is built from an alphabet of states $\mathcal{S}$, while the observable process $O=O_1, \dots, \O_T$ contains events from the alphabet $\mathcal{O}$. We define a multivariate HMM $\lambda_N$ as follows:
 
 $$\text{HMM}:\;\lambda_N=(\Pi, A, B)$$
@@ -123,7 +123,6 @@ We see that devices connections depend on the user's location, and that any numb
 
 \subsubsection{Predicting future behavior} % (fold)
 \label{ssub:predicting_future_behavior}
-\commentAL{Why we need to make these predictions is not explained yet.}
 Devices want to predict whether they are likely to be connected in the near future.
 This information will be publicly available, and will allow routes selection for the  files exchange between users.
 
@@ -136,6 +135,7 @@ a_{s\,s'} * b_{s'\,o_d}.
 $$
 
 It is the sum of the probabilities, for each state $s$, that the user switches to $s$ and uses her device.
+\commentAL{Following maybe not needed if we only use $t+1$:}
 Recursively, predicting $i$ turns in advance follows the same logic:
 
 \begin{multline*}
@@ -146,3 +146,6 @@ P\left[ o_d \in O_{t+i} \mid S_{t+1} = s'\right].
 \end{multline*}
 
 
+\commentAL{In conclusion: we want more unicorns at the Olympic Games.}
+
+\commentAL{I don't mention prediction yet since I am not sure we get good enough results.}
