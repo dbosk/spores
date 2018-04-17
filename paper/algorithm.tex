@@ -19,10 +19,14 @@ Each user $u \in \mathcal{U}$ has a set $\mathcal{D}_u$ of devices that contribu
 Alice and Bob use \name to exchange a file secretly: no participant will learn who sends and receives it, nor its content.
 
 On one hand, a user's devices must exchange information among themselves to learn the user's behavior \commentAL{Can we skip files mapping, pretty please?} and map files to devices.
-We call this part of the protocol the \localoverlay, and present it in section~\ref{local overlay}. 
-On the other hand, user's collectively upload the list of their connected devices and associated future predictions to a Distributed Hash Table (DHT): it serves as a registry of online peers (including connection probabilities for the next turn), and for the routing of files.
-We describe this \globaloverlay in section~\ref{global overlay}. 
-File exchange between two users is enabled by the two previous protocols, and is covered in section~\ref{file exchange}
+We call this part of the protocol the \localoverlay, and present it in 
+\cref{local overlay}. On the other hand, user's collectively upload the list of 
+their connected devices and associated future predictions to a Distributed Hash 
+Table (DHT): it serves as a registry of online peers (including connection 
+probabilities for the next turn), and for the routing of files.
+We describe this \globaloverlay in \cref{global overlay}. File exchange between 
+two users is enabled by the two previous protocols, and is covered in \cref{file 
+  exchange}
 
 \subsection{The \localoverlay}%
 \label{local overlay}
@@ -31,24 +35,25 @@ A user's devices, \(D_i\), use the \localoverlay to:
 \begin{enumerate}
 	\item Share information about the user's behavior.
 	Devices use it to build a behavioral model and infer their future connection probability;
-	\item Share files location \commentAL{Maybe...}
+  \item Share files location \commentAL{Maybe \dots}
 \end{enumerate}
 
-\subsubsection{Sharing the user's behavior} % (fold)
+\subsubsection{Sharing the user's behavior}% (fold)
 \label{ssub:sharing_the_user_s_behavior}
 
 Each device initially only knows when it is connected. 
 To make a model of the user's behavior, they need to know the whole observation sequence $O$: which device is online at each time step.
-To do so, they employ a probabilistic dissemination protocol, based on previous work from our team \cite{luxey:hal-01704172}.
+To do so, they employ a probabilistic dissemination protocol, based on previous work from our team~\cite{luxey:hal-01704172}.
 This algorithm, called \textsc{Sprinkler}, allows devices to gossip any new connection information to random peers, ensuring that all devices know the full observation sequence with a very high probability.
-\textsc{Sprinkler} has shown resilient to devices churn \cite{luxey:cascade}, and is thus perfectly suited for our purpose, where a user's devices often disconnect and reconnect. 
+\textsc{Sprinkler} has shown resilient to devices churn~\cite{luxey:cascade}, and is thus perfectly suited for our purpose, where a user's devices often disconnect and reconnect. 
 
-\commentAL{Then we \textbf{maybe} do predictions as \textbf{maybe} shown in section~\ref{sec:user_model}.}
+\commentAL{Then we \textbf{maybe} do predictions as \textbf{maybe} shown in 
+  \cref{sec:user_model}.}
 
 
 % subsubsection sharing_the_user_s_behavior (end)
 
-\subsubsection{Sharing files location} % (fold)
+\subsubsection{Sharing files location}% (fold)
 \label{ssub:sharing_files_location}
 
 We do stuff and things work.
@@ -69,7 +74,8 @@ We do stuff and things work.
 
 Every device in the system participates in a Distributed Hash Table (DHT) that is used for two purposes:
 \begin{enumerate}
-	\item Providing routing information to nodes during file exchange. This is discussed in-depth in section~\ref{file exchange};
+  \item Providing routing information to nodes during file exchange. This is 
+    discussed in-depth in \cref{file exchange};
 	\item Listing online devices and their probability of being online next time step.
 \end{enumerate}
 
@@ -91,9 +97,9 @@ They want to keep the file content secret to anybody but them; \name's users sho
 
 In other words, \name must guarantee \emph{sender-receiver anonymity}.
 To achieve this, communications go through onion routes, using rendez-vous points.
-Our approach is tightly based on the Tor seminal paper \cite{Tor}.
+Our approach is tightly based on the Tor seminal paper~\cite{Tor}.
 
-\subsubsection{File exchange process} % (fold)
+\subsubsection{File exchange process}% (fold)
 \label{ssub:file_exchange_process}
 
 Firstly, Alice and Bob must exchange information out-of-band: an encryption key $ek$ to cipher the file, and an ID $k$ in the DHT pointing to information on how to reach Alice.
@@ -111,7 +117,7 @@ Once the file is received, everybody is happy and all routes are killed.
 
 % subsubsection file_exchange_process (end)
 
-\subsubsection{Onion routes in face of churn} % (fold)
+\subsubsection{Onion routes in face of churn}% (fold)
 \label{ssub:onion_routes_in_face_of_churn}
 
 An onion route between A and B consists of several servers (usually three) that serve as relays, say $r_1, r_2$ and $r_3$. 
