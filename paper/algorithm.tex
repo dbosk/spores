@@ -13,6 +13,114 @@
 \newcommand{\localoverlay}{Squad Overlay\xspace}
 \newcommand{\globaloverlay}{Global Overlay\xspace}
 
+\NewScheme{\SPOR}{SPOR}
+\NewAlgorithm{\Send}{Send}
+\NewAlgorithm{\Recv}{Receive}
+
+\NewVariable{\rdv}{rdv}
+\NewAlgorithm{\Enc}{Enc}
+\NewVariable{\pk}{pk}
+\NewAlgorithm{\Fwd}{Forward}
+\NewAlgorithm{\Dec}{Dec}
+\NewVariable{\sk}{sk}
+
+We have the Secure Probabilistic Onion Routing scheme, \SPOR, which provides 
+onion-routed message passing.
+\(\SPOR\) provides two algorithms: \(\SPOR[\Send]\) (\cref{SPORSend}), 
+\(\SPOR[\Fwd]\) (\cref{SPORFwd}) and \(\SPOR[\Recv]\) (\cref{SPORRecv}).
+
+\NewAlgorithm{\ExtendRoute}{ExtendRoute}
+\NewAlgorithm{\GetRouteNode}{GetRouteNode}
+\NewAlgorithm{\GetRandomPeer}{GetRandomPeer}
+
+\begin{figure}
+  \begin{algorithmic}
+    \Require{%
+      $D$ is the set of alternative destination devices,
+      $L$ is the length of the route,
+      $\theta$ is the threshold of probability of failure.%
+    }
+    \Function{\ExtendRoute}{$H, L, \theta$}
+      \If{$L\leq 0$}
+        \State \Return $H$
+      \EndIf
+      \State $D\gets \GetRouteNode[\theta]$
+      \State $H\gets D\concat \Enc[_{\pk_{D}}][H]$
+      \State \Return $\ExtendRoute[H, L-1, \theta]$
+    \EndFunction
+
+    \Function{\GetRouteNode}{$\theta$}
+      \State $D\gets \GetRandomPeer$
+      \While{$\prod_{d\in D} \Pr[d \text{ offline}] > \theta$}
+        \State $D\gets D\cup \GetRandomPeer$
+      \EndWhile
+      \State \Return $D$
+    \EndFunction
+  \end{algorithmic}
+  \caption{%
+    The function \(\ExtendRoute\) extends a route with \(L\) hops and failure 
+    threshold of \(\theta\) for each hop in the route.
+    Thus the probability of failure for the whole route is \(1 - (1 - 
+      \theta)^L\).
+    The function \(\GetRandomPeer\) is any random peer-sampling algorithm.
+  }
+\end{figure}
+
+\begin{figure}
+  \begin{algorithmic}
+    \Require{%
+      $D$ is the set of alternative recipient devices.
+    }
+    \Function{\SPOR[\Recv]}{$D$}
+      \State $H_\rdv\gets \ExtendRoute[D\concat \bot, L, \theta]$
+      \State Give $H_\rdv$ to sender out-of-bound.
+      \State Wait to receive message.
+    \EndFunction
+  \end{algorithmic}
+  \caption{\label{SPORRecv}%
+    The recipient function.%
+  }
+\end{figure}
+
+\begin{figure}
+  \begin{algorithmic}
+    \Require{%
+      $m$ is the message to be sent,
+      $H_\rdv$ is the onion-route given by the recipient (its first node is the 
+      rendez-vous point).
+    }
+    \Function{\SPOR[\Send]}{$m, H_\rdv$}
+    \EndFunction
+  \end{algorithmic}
+  \caption{\label{SPORSend}%
+    The algorithm for creating a probabilistic onion route.
+    \(d\) is the destination address, \(m\) is the message, \(H_\rdv\) is the 
+    header for the rendez-vous point selected by \(d\).%
+  }
+\end{figure}
+
+\begin{figure}
+  \begin{algorithmic}
+    \Require{$\pk, \sk$ is the public--private key-pair of the node.}
+    \Function{\SPOR[\Fwd]}{$C_H$}
+      \State $H\gets \Dec[_\sk][C_H]$
+      \If{$H = \bot$}
+        \State \Return $\bot$
+      \EndIf
+      \State $\{d_i\}\concat H'\gets H$
+      \For{$d\in \{d_i\}$}
+        \Comment{Uniformly randomly chosen}
+        \If{$d\method \Fwd[H'] \neq \bot$}
+          \State \Return $\top$
+        \EndIf
+      \EndFor
+      \State \Return $\bot$
+    \EndFunction
+  \end{algorithmic}
+  \caption{\label{SPORFwd}%
+    The forwarding function for a node in a probabilistic onion route.%
+  }
+\end{figure}
 
 A set of users $\mathcal{U}$ participate in the \name network.
 Each user $u \in \mathcal{U}$ has a set $\mathcal{D}_u$ of devices that contribute to the system when online.
