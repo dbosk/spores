@@ -1,0 +1,24 @@
+\section{Primitives}%
+\label{Primitives}
+
+The algorithm (\cref{Algorithm}) makes use of several primitives, which we 
+describe here.
+There is a local prediction oracle (described in \cref{LocalPrediction}) which 
+is used by a device to predict its own online behaviour.
+
+\subsection{Local prediction oracle}%
+\label{LocalPrediction}
+
+\NewScheme{\LP}{P_L}
+\NewAlgorithm{\LNext}{Next}
+\NewAlgorithm{\LProb}{Prob}
+
+We have a local prediction oracle, \(\LP\), which provides the following two 
+algorithms:
+\begin{description}
+  \item[\(\LNext\)] Test \dots
+  \item[\(\LProb\)] \dots
+\end{description}
+We will denote these as \(\LP[\LNext]\) and \(\LP[\LProb]\).
+
+\subsection{Global prediction oracle}

@@ -5,6 +5,7 @@ SRC+=		contents.tex abstract.tex
 SRC+= 		intro.tex
 SRC+= 		privacy.tex
 SRC+= 		user-model.tex
+SRC+= 		primitives.tex
 SRC+= 		algorithm.tex
 SRC+= 		related.tex
 
