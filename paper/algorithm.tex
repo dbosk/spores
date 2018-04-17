@@ -10,8 +10,8 @@
 \newcommand{\Alice}{\ensuremath{\mathscr{A}}}
 \newcommand{\Bob}{\ensuremath{\mathscr{B}}}
 
-\newcommand{\localoverlay}{Squad Overlay}
-\newcommand{\globaloverlay}{Global Overlay}
+\newcommand{\localoverlay}{Squad Overlay\xspace}
+\newcommand{\globaloverlay}{Global Overlay\xspace}
 
 
 A set of users $\mathcal{U}$ participate in the \name network.
@@ -20,16 +20,16 @@ Alice and Bob use \name to exchange a file secretly: no participant will learn w
 
 On one hand, a user's devices must exchange information among themselves to learn the user's behavior \commentAL{Can we skip files mapping, pretty please?} and map files to devices.
 We call this part of the protocol the \localoverlay, and present it in 
-\cref{local overlay}. On the other hand, user's collectively upload the list of 
+\cref{local-overlay}. On the other hand, user's collectively upload the list of 
 their connected devices and associated future predictions to a Distributed Hash 
 Table (DHT): it serves as a registry of online peers (including connection 
 probabilities for the next turn), and for the routing of files.
-We describe this \globaloverlay in \cref{global overlay}. File exchange between 
+We describe this \globaloverlay in \cref{global-overlay}. File exchange between 
 two users is enabled by the two previous protocols, and is covered in \cref{file 
   exchange}
 
 \subsection{The \localoverlay}%
-\label{local overlay}
+\label{local-overlay}
 
 A user's devices, \(D_i\), use the \localoverlay to:
 \begin{enumerate}
@@ -61,7 +61,7 @@ We do stuff and things work.
 % subsubsection sharing_files_location (end)
 
 \subsection{The \globaloverlay}%
-\label{global overlay}
+\label{global-overlay}
 
 % All swarms participate in the Inter-Swarm Protocol to coordinate the global 
 % knowledge needed by the swarms to interact.
@@ -75,7 +75,7 @@ We do stuff and things work.
 Every device in the system participates in a Distributed Hash Table (DHT) that is used for two purposes:
 \begin{enumerate}
   \item Providing routing information to nodes during file exchange. This is 
-    discussed in-depth in \cref{file exchange};
+    discussed in-depth in \cref{file-exchange};
 	\item Listing online devices and their probability of being online next time step.
 \end{enumerate}
 
@@ -90,7 +90,7 @@ Every time a device is online, it sends the following information to the DHT:
 \commentAL{Cite DHT articles and emphasize their security guarantees.}
 
 \subsection{The file exchange}%
-\label{file exchange}
+\label{file-exchange}
 
 We consider two users, Alice and Bob, such that Alice wants to send a file to Bob secretly.
 They want to keep the file content secret to anybody but them; \name's users should not know who sent a file to whom; and Alice and Bob want to hide their address from one another.
@@ -107,7 +107,7 @@ Firstly, Alice and Bob must exchange information out-of-band: an encryption key 
 The device that contains Alice's file \commentAL{I don't like that dependence on the file's location} creates routes to several Introductory Points (IP), chosen at random among connected peers.
 Alice uploads the addresses of her IP to the DHT at the position $k$.
 One of Bob's devices creates routes to several Rendez-Vous points (RV), randomly picked among peers that will be connected in the next time step.
-Bob fetches the addresses of Alice's IP from the DHT.
+Bob fetches the addresses of Alice's IP from the \ac{DHT}.
 Then, he sends a packet containing the addresses of its chosen RV to Alice's IPs.
 The IP nodes forward the packet to Alice's device. 
 Alice chunks her file into pieces of a predefined size, encrypted using $ek$.
@@ -138,8 +138,10 @@ The header indeed contains a version of $sk$ for each device $r_{i,j}$, encrypte
 
 In the following equation, $S(sk,\texttt{message})$ means that $\texttt{message}$ is encrypted with the symmetric key $sk$, while $P(pk, \texttt{message})$ means that $\texttt{message}$ is encrypted using the public key $pk$.
 Follows the content of the header in our version of the onion routing, considering that $R_i=\{r_{i,1}, r_{i,2}, r_{i,3}\}$, that $pk_{r_{i,j}}$ is $r_{i,j}$'s public key, and that $||$ means concatenation:
-
-$$ P(pk_{r_{i,1}}, sk) || P(pk_{r_{i,2}}, sk) || P(pk_{r_{i,3}}, sk) || S(sk, R_{i+1}) $$
+\[
+  P(pk_{r_{i,1}}, sk) || P(pk_{r_{i,2}}, sk) || P(pk_{r_{i,3}}, sk) || S(sk, 
+  R_{i+1})
+\]
 
 (I read that this is how PGP handles multiple recipients.)
 
