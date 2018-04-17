@@ -89,7 +89,17 @@ onion-routed message passing.
       $H_\rdv$ is the onion-route given by the recipient (its first node is the 
       rendez-vous point).
     }
-    \Function{\SPOR[\Send]}{$m, H_\rdv$}
+    \Function{\SPOR[\Send]}{$m, \pk_D, H_\rdv$}
+      \State $H\gets \ExtendRoute[H_\rdv, L, \theta]$
+      \State $c_m\gets \Enc[_{\pk_D}][m]$
+      \State $D\concat C_H\gets H_\rdv$
+      \For{$d\in D$}
+        \Comment{Uniformly randomly chosen}
+        \If{$d\method \Fwd[c_m, C_H] \neq \bot$}
+          \State \Return $\top$
+        \EndIf
+      \EndFor
+      \State \Return $\bot$
     \EndFunction
   \end{algorithmic}
   \caption{\label{SPORSend}%
@@ -102,15 +112,15 @@ onion-routed message passing.
 \begin{figure}
   \begin{algorithmic}
     \Require{$\pk, \sk$ is the public--private key-pair of the node.}
-    \Function{\SPOR[\Fwd]}{$C_H$}
+    \Function{\SPOR[\Fwd]}{$c_m, C_H$}
       \State $H\gets \Dec[_\sk][C_H]$
       \If{$H = \bot$}
         \State \Return $\bot$
       \EndIf
-      \State $\{d_i\}\concat H'\gets H$
+      \State $\{d_i\}\concat C_H'\gets H$
       \For{$d\in \{d_i\}$}
         \Comment{Uniformly randomly chosen}
-        \If{$d\method \Fwd[H'] \neq \bot$}
+        \If{$d\method \Fwd[c_m, C_H'] \neq \bot$}
           \State \Return $\top$
         \EndIf
       \EndFor
