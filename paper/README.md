@@ -9,3 +9,15 @@
     - `algorithm.tex` contains a description of the algorithm.
  - `preamble.tex` contains the LaTeX document preamble.
  - `p2p-private-cloud.tex` simply puts the files together.
+
+
+# Compilation
+
+Ensure that you've cloned all the needed submodules:
+```
+git submodule update --init --recursive
+```
+Then you can compile the paper using the make utility:
+```
+make
+```
