@@ -46,7 +46,8 @@ choosing, then lets the probabilistic nodes of the route forward the message
 \begin{figure}
   \begin{algorithmic}
     \Require{%
-      $D$ is the set of alternative destination devices,
+      $H$ is a header of the form \(D\concat H'\) or \(D\concat \top\), where 
+      \(D\) is a set of device addresses.
       $L$ is the length of the route,
       $\theta$ is the threshold of probability of failure.%
     }
@@ -67,14 +68,15 @@ choosing, then lets the probabilistic nodes of the route forward the message
       \State \Return $D$
     \EndFunction
   \end{algorithmic}
-  \caption{%
-    The function \(\ExtendRoute\) extends a route with \(L\) hops and failure 
-    threshold of \(\theta\) for each hop in the route.
-    Thus the probability of failure for the whole route is \(1 - (1 - 
-      \theta)^L\).
+  \caption{\label{ExtendRoute}%
+    The \(\ExtendRoute\) algorithm extends a route \(H\) with \(L\) hops and 
+    failure threshold of \(\theta\) for each hop in the route.
+    Thus the probability of failure for the extension is \(1 - (1 - \theta)^L\).
     The function \(\GetRandomPeer\) is any random peer-sampling algorithm.
   }
 \end{figure}
+
+\NewAlgorithm{\Store}{Store}
 
 \begin{figure}
   \begin{algorithmic}
@@ -82,13 +84,26 @@ choosing, then lets the probabilistic nodes of the route forward the message
       $D$ is the set of alternative recipient devices.
     }
     \Function{\SPOR[\Recv]}{$D$}
-      \State $H_\rdv\gets \ExtendRoute[D\concat \bot, L, \theta]$
-      \State Give $H_\rdv$ to sender out-of-bound.
-      \State Wait to receive message.
+      \State $H_\rdv\gets \ExtendRoute[D\concat \top, L, \theta]$
+      \State \Return $H_\rdv$
+        \Comment{Give to sender out-of-bound.}
+    \EndFunction
+
+    \Function{\Store}{$c_m$}
+      \State $m\gets \Dec[_{\sk_D}][c_m]$
+      \If{$m = \bot$}
+        \State \Return $\bot$
+      \EndIf
+      \State Store $m$ to disk.
+      \State \Return $\top$
     \EndFunction
   \end{algorithmic}
   \caption{\label{SPORRecv}%
-    The recipient function.%
+    The \(\SPOR[\Recv]\) algorithm prepares the recipient for receiving a file.
+    It creates a probabilistic onion-route from a rendez-vous point to its own 
+    devices and returns the route to the sender.
+    The \(\Store\) algorithm is used by the local \(\SPOR[\Fwd]\) algorithm to 
+    store messages intended for itself.
   }
 \end{figure}
 
@@ -96,8 +111,8 @@ choosing, then lets the probabilistic nodes of the route forward the message
   \begin{algorithmic}
     \Require{%
       $m$ is the message to be sent,
-      $H_\rdv$ is the onion-route given by the recipient (its first node is the 
-      rendez-vous point).
+      $\pk_D$ is the public-key of the recipient,
+      $H_\rdv$ is the onion-route given by the recipient.
     }
     \Function{\SPOR[\Send]}{$m, \pk_D, H_\rdv$}
       \State $H\gets \ExtendRoute[H_\rdv, L, \theta]$
@@ -105,7 +120,7 @@ choosing, then lets the probabilistic nodes of the route forward the message
       \State $D\concat C_H\gets H_\rdv$
       \For{$d\in D$}
         \Comment{Uniformly randomly chosen}
-        \If{$d\method \Fwd[c_m, C_H] \neq \bot$}
+        \If{$d\method \Fwd[C_H, c_m] \neq \bot$}
           \State \Return $\top$
         \EndIf
       \EndFor
@@ -113,24 +128,30 @@ choosing, then lets the probabilistic nodes of the route forward the message
     \EndFunction
   \end{algorithmic}
   \caption{\label{SPORSend}%
-    The algorithm for creating a probabilistic onion route.
-    \(d\) is the destination address, \(m\) is the message, \(H_\rdv\) is the 
-    header for the rendez-vous point selected by \(d\).%
+    The \(\SPOR[\Send]\) algorithm extends the route \(H_\rdv\) (using 
+    \(\ExtendRoute\), \cref{ExtendRoute}) and sends the message \(m\) down the 
+    extended route using the \(\SPOR[\Fwd]\) algorithm (\cref{SPORFwd}).
+    The first node of \(H_\rdv\) is the rendez-vous point selected by the 
+    recipient.
+    \(\pk_D\) is the public key of the recipient.
   }
 \end{figure}
 
 \begin{figure}
   \begin{algorithmic}
     \Require{$\pk, \sk$ is the public--private key-pair of the node.}
-    \Function{\SPOR[\Fwd]}{$c_m, C_H$}
+    \Function{\SPOR[\Fwd]}{$C_H, c_m$}
       \State $H\gets \Dec[_\sk][C_H]$
       \If{$H = \bot$}
         \State \Return $\bot$
       \EndIf
       \State $\{d_i\}\concat C_H'\gets H$
+      \If{$C_H' = \top$}
+        \State \Return $\Store[c_m]$
+      \EndIf
       \For{$d\in \{d_i\}$}
         \Comment{Uniformly randomly chosen}
-        \If{$d\method \Fwd[c_m, C_H'] \neq \bot$}
+        \If{$d\method \Fwd[C_H', c_m] \neq \bot$}
           \State \Return $\top$
         \EndIf
       \EndFor
@@ -138,7 +159,11 @@ choosing, then lets the probabilistic nodes of the route forward the message
     \EndFunction
   \end{algorithmic}
   \caption{\label{SPORFwd}%
-    The forwarding function for a node in a probabilistic onion route.%
+    The \(\SPOR[\Fwd]\) algorithm forwards \(c_m\) down the route \(H\), 
+    obtained by decrypting \(C_H\) with the node's associated private key.%
+    The special value \(H = \top\) indicated the end of the route, thus \(c_m\) 
+    is intended for the local node and \(c_m\) is instead sent to disk using 
+    \(\Store\) (\cref{SPORRecv}).%
   }
 \end{figure}
 
