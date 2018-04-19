@@ -61,7 +61,7 @@ choosing, then lets the probabilistic nodes of the route forward the message
 
     \Function{\GetRouteNode}{$\theta$}
       \State $D\gets \GetRandomPeer$
-      \While{$\prod_{d\in D} \Pr[d \text{ offline}] > \theta$}
+      \While{$\prod_{d\in D} \Pr[d \text{ offline at time } t] > \theta$}
         \State $D\gets D\cup \GetRandomPeer$
       \EndWhile
       \State \Return $D$
