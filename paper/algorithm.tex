@@ -186,12 +186,24 @@ This process is illustrated in \cref{fig:file-exchange}.
 
 \subsection{Predictions and scheduling}
 
-\dots
+\commentDaniel{%
+  We must cover how to do \(\Pr[d \text{ offline at time } t]\) as used above 
+  (\cref{ExtendRoute}).%
+}
 
-\commentDaniel{Anything below this line should be updated.}
+\commentDaniel{%
+  We must do the scheduling: \ie divide the file \(f\) into \(f_1, \dotsc, f_n\) 
+  and how the size of \(f_i\) relates to transmission time and size of the 
+  timeslot (for the validity of predictions).
+  After that we just do \(\SPOR[\Send]\) on each \(f_i\).%
+}
+
 
 \subsection{Adrien's old stuff}
 
+\commentDaniel{%
+  Anything below this line should be updated, integrated or removed.%
+}
 A set of users $\mathcal{U}$ participate in the \name network.
 Each user $u \in \mathcal{U}$ has a set $\mathcal{D}_u$ of devices that contribute to the system when online.
 Alice and Bob use \name to exchange a file secretly: no participant will learn who sends and receives it, nor its content.
