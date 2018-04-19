@@ -3,7 +3,7 @@
 import pandas as pd
 from datetime import timedelta, datetime
 
-COLUMNS = ["t", "addr", "p"]
+COLUMNS = ["t", "addr", "type", "p"]
 
 
 class PeersView:
@@ -12,13 +12,14 @@ class PeersView:
 
         self.expiration_period = expiration_period
 
-    def put(self, t, addr, p, prune=True):
+    def put(self, t, addr, typ, p, prune=True):
         self.view = self.view[self.view['addr'] != addr]
 
         self.view = self.view.append(
             pd.DataFrame({
                 't': t,
                 'addr': addr,
+                'type': typ,
                 'p': p
             }, index=[t])
         )
@@ -35,7 +36,8 @@ class PeersView:
         # print(items)
 
         for _, item in items.iterrows():
-            self.put(item['t'], item['addr'], item['p'], prune=False)
+            self.put(item['t'], item['addr'],
+                     item['type'], item['p'], prune=False)
 
         self._prune_view()
 
@@ -48,6 +50,19 @@ class PeersView:
             return []
 
         return view.sample(n=n)
+
+    def snapshot(self, additional_columns=None):
+        if additional_columns is None:
+            return self.view
+        elif type(additional_columns) is dict:
+            ret = self.view.copy()
+            for k, v in additional_columns.items():
+                ret[k] = v
+            return ret
+        else:
+            raise ValueError(
+                "additional_columns must be a dict of 'colname' -> 'value' "
+                "to add the to the view")
 
     def _prune_view(self):
         # Time-bound

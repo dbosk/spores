@@ -245,7 +245,7 @@ def get_random():
             device_type_id = np.random.choice(
                 range(len(devices_type)), p=devices_type_weights)
         device_type = devices_type[device_type_id]
-        picked_devices_type[obs_id] = devices_type
+        picked_devices_type[obs_id] = devices_type[device_type_id]
 
         # Bake probabilities of connection depending on device type
         if device_type == 'mobile':
