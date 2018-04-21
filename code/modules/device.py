@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from .peers_view import PeersView
+from . import config, peers_view
 from datetime import timedelta, datetime
 import numpy as np
 import pandas as pd
@@ -17,22 +17,20 @@ MINIMUM_LAYER_PROBA = 1
 class Device:
     def __init__(
             self, owner, global_view, net, device_id, device_type,
-            gossip_size=DEFAULT_GOSSIP_SIZE,
-            expiration_period=DEFAULT_EXPIRATION_PERIOD):
+            conf=config.default):
 
         self.addr = random_string(ADDR_SIZE)
+        self.conf = conf
         self.device_id = device_id
         self.global_view = global_view
-        self.gossip_size = gossip_size
+        self.gossip_size = conf['gossip_size']
         self.is_online = False
         self.net = net
         self.owner = owner
-        self.peers_view = PeersView(expiration_period)
+        self.peers_view = peers_view.PeersView(conf)
         self.type = device_type
 
         net.add_device(self)
-
-        self.files = []  # ?
 
     def act(self, is_online):
         self.is_online = is_online
@@ -51,31 +49,56 @@ class Device:
                 n=self.gossip_size,
                 exclude_addr=self.addr))
 
-    def plan_route(self, role):
+    def build_route(self, role):
         if role == "receiver":
             # 2 layers planned in advance
-            route = []
-            route.append(self.pick_devices())
-            route.append(self.pick_devices())
-
+            n_layers = self.conf['n_layers'] // 2 + 1
         elif role == "sender":
-
+            n_layers = self.conf['n_layers'] // 2
         else:
             raise ValueError("role should be either 'sender' or 'receiver'")
 
-    def pick_devices(self):
+        route = []
         view = self.peers_view.view.copy()
+        for _ in range(n_layers):
+            layer, view = self.build_layer(view)
+            route.append(layer)
+
+        return route
+
+    def build_layer(self, view=None):
+        if view is None:
+            view = self.peers_view.view.copy()
+
+        print("[build_layer] Starting with view of size {} "
+              "and layer_threshold of {}.".format(
+                  view.shape[0], self.conf['layer_threshold']))
 
         layer = pd.DataFrame()
-        p = 0
-        while p < MINIMUM_LAYER_PROBA:
+        p = 1
+        i = 0
+        while p > self.conf['layer_threshold']:
+            if len(view) == 0:
+                print("[build_layer it. {}] "
+                      "No more devices in view: early abort.".format(i))
+                break
             # Pick a device from view without replacement
             d = view.iloc[np.random.choice(len(view))]
             layer = layer.append(d)
             view.drop(d.name, inplace=True)
-            p += d['p']
+            p *= (1 - d['p'])
 
-        return layer
+            print("[build_layer it. {}] "
+                  "Selected device having proba of {:.2f}. "
+                  "Now view has size {} and p={:.4f}".format(
+                      i, d['p'], view.shape[0], p))
+            i += 1
+        print()
+
+        return layer, view
+
+    def receive_message(self, message):
+        return
 
 
 def random_string(n):

@@ -2,17 +2,17 @@
 
 import pandas as pd
 from datetime import timedelta, datetime
+from . import config
 
 COLUMNS = ["t", "addr", "type", "p"]
 
 
 class PeersView:
-    def __init__(self, expiration_period=timedelta(seconds=1)):
+    def __init__(self, conf=config.default):
         self.view = pd.DataFrame(columns=COLUMNS)
+        self.conf = conf
 
-        self.expiration_period = expiration_period
-
-    def put(self, t, addr, typ, p, prune=True):
+    def put(self, t, addr, typ, p):
         self.view = self.view[self.view['addr'] != addr]
 
         self.view = self.view.append(
@@ -24,21 +24,14 @@ class PeersView:
             }, index=[t])
         )
 
-        if prune:
-            self._prune_view()
+        self._prune_view()
 
     # Items is a dataframe
     def insert(self, items):
-        if len(items) == 0:
+        if items is None:
             return
-        # print("insert:")
-        # print(type(items))
-        # print(items)
 
-        for _, item in items.iterrows():
-            self.put(item['t'], item['addr'],
-                     item['type'], item['p'], prune=False)
-
+        self.view = self.view.append(items)
         self._prune_view()
 
     def get_sample(self, n=3, exclude_addr=None):
@@ -47,7 +40,7 @@ class PeersView:
         if n > view.shape[0]:
             n = view.shape[0]
         if n == 0:
-            return []
+            return None
 
         return view.sample(n=n)
 
@@ -66,7 +59,7 @@ class PeersView:
 
     def _prune_view(self):
         # Time-bound
-        expiration_limit = datetime.now() - self.expiration_period
+        expiration_limit = datetime.now() - self.conf['period']
 
         # print(self.view.index)
         self.view = self.view[self.view.index >= expiration_limit]

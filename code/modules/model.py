@@ -93,8 +93,9 @@ class Model:
             # Each device has an independant probability of being online
             for obs in range(self.n_obs):
                 p_obs_in_state = self.B[state, obs]
-                sample_obs[t, obs] = np.random.choice([False, True],
-                                                      p=[1 - p_obs_in_state, p_obs_in_state])
+                sample_obs[t, obs] = \
+                    np.random.choice([False, True],
+                                     p=[1 - p_obs_in_state, p_obs_in_state])
 
         return sample_states, sample_obs
 
@@ -196,7 +197,8 @@ class Model:
             # Emission probabilities for each state
             print("B:")
             for s_id in range(self.n_states):
-                self.B[s_id, obs_id] = m.states[s_id].distribution.parameters[0][obs]
+                self.B[s_id, obs_id] = \
+                    m.states[s_id].distribution.parameters[0][obs]
                 print(self.B[s_id, obs_id])
             print()
         return
@@ -250,15 +252,15 @@ def get_random():
         # Bake probabilities of connection depending on device type
         if device_type == 'mobile':
             # Mobile is highly available with varying probability
-            p = 0.7 + 0.3 * np.random.sample(n_states)
+            p = 0.6 + 0.4 * np.random.sample(n_states)
         elif device_type == 'portable':
             # Portable is more or less available with varying probability
-            p = 0.2 + 0.6 * np.random.sample(n_states)
+            p = 0.1 + 0.7 * np.random.sample(n_states)
         elif device_type == 'fixed':
             # Fixed is only available in one place ...
             p = np.zeros(n_states, dtype=np.float64)
             # ... with 0.4 to 1 probability
-            p[random.choice([0, 2])] = 0.4 + 0.6 * np.random.sample()
+            p[random.choice([0, 2])] = 0.2 + 0.8 * np.random.sample()
         elif device_type == 'server':
             # Server has high availability regardless of the user's location
             p = [0.9 + 0.1 * np.random.sample()] * n_states

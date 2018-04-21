@@ -10,6 +10,6 @@ class Network:
 
     def get_device(self, addr):
         d = self.devices.get(addr)
-        if d is None or not d.is_online:
-            return None
+        if d is None:
+            raise ValueError("{} is not in the nlist of devices.".format(addr))
         return d
