@@ -34,13 +34,16 @@ class Device:
 
     def act(self, is_online):
         self.is_online = is_online
-        if is_online:
+        if self.is_online:
             self.global_view.put(
                 datetime.now(),
                 self.addr,
                 self.type,
                 self.owner.get_prediction(self.device_id)
             )
+
+    def rps(self):
+        if self.is_online:
             self.random_peer_sampling()
 
     def random_peer_sampling(self):
@@ -48,6 +51,12 @@ class Device:
             self.global_view.get_sample(
                 n=self.gossip_size,
                 exclude_addr=self.addr))
+        # if len(self.peers_view.view) == 0:
+        #     print("Device's RPS returned 0 devices! Global peers view has {}.".format(
+        #         len(self.global_view.view)))
+        #     expiration_limit = datetime.now() - self.conf['period']
+        #     print("Expiration time:", expiration_limit)
+        #     print(self.global_view.view)
 
     def build_route(self, role):
         if role == "receiver":
@@ -58,44 +67,63 @@ class Device:
         else:
             raise ValueError("role should be either 'sender' or 'receiver'")
 
-        route = []
+        # print("[build route] Creating '{}' route with {} layers".format(
+        #     role, n_layers))
+
+        route = [pd.DataFrame() for _ in range(n_layers)]
         view = self.peers_view.view.copy()
-        for _ in range(n_layers):
-            layer, view = self.build_layer(view)
-            route.append(layer)
+
+        converged = False
+        while not converged:
+            converged_layers = [False for _ in range(n_layers)]
+            # Iteratively add one device per layer until converged
+            for l_id in range(n_layers):
+                if len(route[l_id]) > 0:
+                    # Probability that all devices of layer will be offline
+                    p_failure = (1 - route[l_id]['p']).prod()
+                    # layer is converged when p_failure is below threshold
+                    converged_layers[l_id] = \
+                        p_failure < self.conf['layer_threshold']
+
+                    # print("[build route] Layer {} has p_fail={} => {}".format(
+                    #     l_id, p_failure,
+                    #     "converged" if converged_layers[l_id]
+                    #     else "not converged"))
+
+                    # Skip this layer if converged
+                    if converged_layers[l_id]:
+                        continue
+
+                # Else add a node to layer
+
+                # If view is empty, break
+                if len(view) == 0:
+                    print("[build route] No more available nodes: "
+                          "early abort.")
+                    converged = True
+                    break
+
+                # Pick a device from view without replacement
+                d = view.iloc[np.random.choice(len(view))]
+                route[l_id] = route[l_id].append(d)
+                view.drop(d.name, inplace=True)
+                # print("[build route] Added device with p={:.2f} to layer {}. "
+                #       "View has size {}. p_failure={:.5f}".format(
+                #           d['p'], l_id, len(view),
+                #           (1 - route[l_id]['p']).prod()))
+
+            # Converged when all layers are converged
+            if not converged:
+                converged = all(converged_layers)
+
+        # if len(view) == 0:
+        #     print("[build_route] view size={} gossip_size={}".format(
+        #         len(self.peers_view.view), self.gossip_size))
+        #     print("[build_route] number of online devices={}".format(
+        #         sum([d.is_online for d in self.net.devices.values()])))
+        #     print(route)
 
         return route
-
-    def build_layer(self, view=None):
-        if view is None:
-            view = self.peers_view.view.copy()
-
-        print("[build_layer] Starting with view of size {} "
-              "and layer_threshold of {}.".format(
-                  view.shape[0], self.conf['layer_threshold']))
-
-        layer = pd.DataFrame()
-        p = 1
-        i = 0
-        while p > self.conf['layer_threshold']:
-            if len(view) == 0:
-                print("[build_layer it. {}] "
-                      "No more devices in view: early abort.".format(i))
-                break
-            # Pick a device from view without replacement
-            d = view.iloc[np.random.choice(len(view))]
-            layer = layer.append(d)
-            view.drop(d.name, inplace=True)
-            p *= (1 - d['p'])
-
-            print("[build_layer it. {}] "
-                  "Selected device having proba of {:.2f}. "
-                  "Now view has size {} and p={:.4f}".format(
-                      i, d['p'], view.shape[0], p))
-            i += 1
-        print()
-
-        return layer, view
 
     def receive_message(self, message):
         return

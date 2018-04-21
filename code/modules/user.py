@@ -34,6 +34,10 @@ class User:
                 enumerate(self.devices_history[self.current_round]):
             self.devices[d_id].act(is_online)
 
+    def rps(self):
+        for d in self.devices:
+            d.rps()
+
     def has_online_devices(self):
         return self.devices_history[self.current_round].sum() != 0
 
