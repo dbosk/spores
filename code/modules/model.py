@@ -61,10 +61,15 @@ class Model:
 
         self.defined = True
 
-    def sample(self, length=20, s0=None):
+    def sample(self, length=20, previous_state=None):
         if not self.defined:
             print("Model is not defined.")
             return None, None
+        if previous_state is not None and \
+                (previous_state < 0 or previous_state >= self.n_states):
+            raise ValueError(
+                "Out of bounds initial state s0: \
+                 should be in [[0, {}]]".format(self.n_states-1))
 
         initial_state = True
         state = 0
@@ -73,15 +78,12 @@ class Model:
 
         for t in range(length):
             if initial_state:
-                if s0 is None:
+                if previous_state is None:
                     # Random initial state
                     state = random.randint(0, self.n_states-1)
                 else:
-                    if s0 < 0 or s0 >= self.n_states:
-                        raise ValueError(
-                            "Out of bounds initial state s0: \
-                             should be in [[0, {}]]".format(self.n_states-1))
-                    state = s0
+                    state = np.random.choice(
+                        range(self.n_states), p=self.A[previous_state, :])
                 initial_state = False
             else:
                 state = np.random.choice(
@@ -91,9 +93,8 @@ class Model:
             # Each device has an independant probability of being online
             for obs in range(self.n_obs):
                 p_obs_in_state = self.B[state, obs]
-                sample_obs[t, obs] = \
-                    np.random.choice([False, True],
-                                     p=[1 - p_obs_in_state, p_obs_in_state])
+                sample_obs[t, obs] = np.random.choice([False, True],
+                                                      p=[1 - p_obs_in_state, p_obs_in_state])
 
         return sample_states, sample_obs
 
@@ -104,6 +105,7 @@ class Model:
 
         up_to -- turns to predict (int >= 1)
         obs -- currently studied observation (int >= 0 & < self.n_obs)
+        s_t -- current state. Return a <t> matrix of proba for given state if not None
         """
         if s_t is not None and (s_t < 0 or s_t >= self.n_states):
             raise ValueError(
@@ -121,17 +123,6 @@ class Model:
                     # P[S_(t+1)=s|S_t=current_state] * P[obs_(t+1)|S_(t+1)=s]
                     for s in range(self.n_states):
                         p += self.A[current_state, s] * self.B[s, obs]
-                        # if obs == 1 and current_state == 2:
-                        #     print(
-                        #         "P[S_(t+1)={state}|S_t=Work] * \
-                        #          P[{obs}_(t+1)|S_(t+1)={state}] \
-                        #          = {x}*{y} = {p}".format(
-                        #             state=self.states[s],
-                        #             obs=self.observations[obs],
-                        #             x=self.A[current_state, s],
-                        #             y=self.B[s, obs],
-                        #             p=self.A[current_state, s] \
-                        #               * self.B[s, obs]))
                 else:
                     # P[obs_(t+i)|S_t=current_state] =
                     # sum_(s in states)
@@ -205,8 +196,7 @@ class Model:
             # Emission probabilities for each state
             print("B:")
             for s_id in range(self.n_states):
-                self.B[s_id, obs_id] = \
-                    m.states[s_id].distribution.parameters[0][obs]
+                self.B[s_id, obs_id] = m.states[s_id].distribution.parameters[0][obs]
                 print(self.B[s_id, obs_id])
             print()
         return
@@ -235,6 +225,7 @@ def get_default(observations):
 
 def get_random():
     devices_type = ['mobile', 'portable', 'fixed', 'server']
+    devices_type_weights = [0.3, 0.3, 0.3, 0.1]
     # devices_type_cnt = np.zeros(len(devices_type), dtype=np.uint)
     n_devices = random.randint(DEVICES_NUMBER_MIN, DEVICES_NUMBER_MAX)
 
@@ -244,13 +235,17 @@ def get_random():
 
     B = np.empty((n_states, n_devices), dtype=np.float64)
     devices_name = [None] * n_devices
+    picked_devices_type = [None] * n_devices
 
     for obs_id in range(n_devices):
         device_type_id = 0
         # Always put a mobile device first
         if obs_id != 0:
-            device_type_id = random.randint(0, len(devices_type) - 1)
+            # device_type_id = random.randint(0, len(devices_type) - 1)
+            device_type_id = np.random.choice(
+                range(len(devices_type)), p=devices_type_weights)
         device_type = devices_type[device_type_id]
+        picked_devices_type[obs_id] = devices_type
 
         # Bake probabilities of connection depending on device type
         if device_type == 'mobile':
@@ -280,6 +275,7 @@ def get_random():
 
     # Create model with
     m = Model()
+    m.devices_type = picked_devices_type
     m.set(A, B, states_name, devices_name)
 
     return m

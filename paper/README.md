@@ -6,6 +6,20 @@
    for the various sections.
     - `intro.tex` contains the intro section.
     - `related.tex` contains the Related Work section.
+    - `user-model.tex` contains the user-model stuff.
     - `algorithm.tex` contains a description of the algorithm.
+    - `privacy.tex` outlines our privacy expectations.
  - `preamble.tex` contains the LaTeX document preamble.
  - `p2p-private-cloud.tex` simply puts the files together.
+
+
+# Compilation
+
+Ensure that you've cloned all the needed submodules:
+```
+git submodule update --init --recursive
+```
+Then you can compile the paper using the make utility:
+```
+make
+```
