@@ -24,14 +24,18 @@ class User(gevent.Greenlet):
 
         self.conf = conf
         self.current_round = None
+        self.name = utils.random_name()
 
         self.receiving_files = {}
 
         self.state_history, self.devices_history = self.model.sample(
             length=conf['n_rounds'])
 
+    # Overriding Greenlet
+    def _run(self):
+        self.loop()
+
     def loop(self):
-        print("Hello!")
         while True:
             # Initial round
             if self.current_round is None:
@@ -86,3 +90,7 @@ class User(gevent.Greenlet):
     def get_prediction(self, device_id):
         return self.model.predict(
             1, device_id, self.state_history[self.current_round])[0]
+
+    # Overriding Greenlet
+    def __str__(self):
+        return "User({})".format(self.name)
