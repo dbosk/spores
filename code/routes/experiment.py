@@ -2,10 +2,10 @@
 
 # import numpy as np
 from datetime import datetime, timedelta
-from modules import config
-from modules.network import Network
-from modules.peers_view import PeersView
-from modules.user import User
+from . import config
+from .network import Network
+from .peers_view import PeersView
+from .user import User
 import pandas as pd
 import random
 import threading
