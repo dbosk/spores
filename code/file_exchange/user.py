@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 
-from . import model, device, config, file
-from .utils import random_string
+from . import model, device, config, file, utils
 import numpy as np
-
+import gevent
 
 FILE_ID_SIZE = 10
 
 
-class User:
+class User(gevent.Greenlet):
     def __init__(self, global_view, net, conf=config.default):
+        gevent.Greenlet.__init__(self)
         self.model = model.get_random()
 
         # Create devices
@@ -30,26 +30,33 @@ class User:
         self.state_history, self.devices_history = self.model.sample(
             length=conf['n_rounds'])
 
-    def increment_round(self):
-        if self.current_round is None:
-            self.current_round = 0
-        else:
-            self.current_round += 1
+    def loop(self):
+        print("Hello!")
+        while True:
+            # Initial round
+            if self.current_round is None:
+                self.current_round = 0
+            # Break if all rounds done
+            elif self.current_round == self.conf['n_rounds'] - 1:
+                print("Returned")
+                return
+            # Else increment round
+            else:
+                self.current_round += 1
 
-    def register_to_global_view(self):
-        for d_id, is_online in \
-                enumerate(self.devices_history[self.current_round]):
-            self.devices[d_id].register_to_global_view(is_online)
+            # Update devices' state
+            for d_id, is_online in \
+                    enumerate(self.devices_history[self.current_round]):
+                self.devices[d_id].update_state(is_online)
 
-    def act(self):
-        for d in self.devices:
-            d.rps()
+            # Sleep until next round
+            gevent.sleep(self.conf['period'].total_seconds())
 
     def init_file_receive(self, remote_device):
         d = self.get_online_device()
 
         H_rdv = d.build_route("receiver")
-        file_id = random_string(FILE_ID_SIZE)
+        file_id = utils.random_string(FILE_ID_SIZE)
 
         self.receiving_files[file_id] = file.File(
             self.conf['n_chunks'], file_id)

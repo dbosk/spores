@@ -35,7 +35,7 @@ class Device:
         # maps hash of route's layer -> previously picked device from layer
         self.connected_to = {}
 
-    def register_to_global_view(self, is_online):
+    def update_state(self, is_online):
         self.is_online = is_online
         if self.is_online:
             self.global_view.put(
@@ -44,16 +44,6 @@ class Device:
                 self.type,
                 self.owner.get_prediction(self.device_id)
             )
-
-    def act(self):
-        if not self.is_online:
-            return
-
-        self.random_peer_sampling()
-
-        # TODO: bandwidth
-        for f in self.sending_files:
-            self.send_file_chunk(f)
 
     def init_file_send(self, H_rdv, file_id):
         f = file.File(self.conf['n_chunks'])
@@ -128,7 +118,7 @@ class Device:
             self.global_view.get_sample(
                 n=self.gossip_size,
                 exclude_addr=self.addr))
-        # if len(self.peers_view.view) == 0:
+        # if len(self.peers_view.get()) == 0:
         #     print("Device's RPS returned 0 devices!"
         #           " Global peers view has {}.".format(
         #         len(self.global_view.view)))
@@ -145,8 +135,10 @@ class Device:
         else:
             raise ValueError("role should be either 'sender' or 'receiver'")
 
+        self.random_peer_sampling()
+
         route = [pd.DataFrame() for _ in range(n_layers)]
-        view = self.peers_view.view.copy()
+        view = self.peers_view.get().copy()
 
         converged = False
         while not converged:

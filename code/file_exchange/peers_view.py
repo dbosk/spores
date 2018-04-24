@@ -3,19 +3,24 @@
 import pandas as pd
 from datetime import timedelta, datetime
 from . import config
+from gevent.lock import Semaphore
 
 COLUMNS = ["t", "addr", "type", "p"]
 
 
 class PeersView:
     def __init__(self, conf=config.default):
-        self.view = pd.DataFrame(columns=COLUMNS)
+        self._view = pd.DataFrame(columns=COLUMNS)
         self.conf = conf
+        self.lock = Semaphore()
 
     def put(self, t, addr, typ, p):
-        self.view = self.view[self.view['addr'] != addr]
+        self.lock.acquire()
+        # Remove previous entry for addr if any
+        self._view = self._view[self._view['addr'] != addr]
 
-        self.view = self.view.append(
+        # Add the new line
+        self._view = self._view.append(
             pd.DataFrame({
                 't': t,
                 'addr': addr,
@@ -24,31 +29,55 @@ class PeersView:
             }, index=[t])
         )
 
-        self._prune_view()
+        # We prune on reads, not writes
+        # self._prune_view()
+        self.lock.release()
 
     # Items is a dataframe
     def insert(self, items):
         if items is None:
             return
 
-        self.view = self.view.append(items)
+        self.lock.acquire()
+        self._view = self._view.append(items)
+
+        # We prune on reads, not writes
+        # self._prune_view()
+        self.lock.release()
+
+    def get(self):
+        self.lock.acquire()
         self._prune_view()
+        ret = self._view.copy()
+        self.lock.release()
+        return ret
 
     def get_sample(self, n=3, exclude_addr=None):
-        view = self.view[self.view['addr'] != exclude_addr]
+        self.lock.acquire()
+        self._prune_view()
+        view = self._view[self._view['addr'] != exclude_addr]
 
         if n > view.shape[0]:
             n = view.shape[0]
         if n == 0:
+            self.lock.release()
             return None
 
-        return view.sample(n=n)
+        # Sample returns a copy of df, not a slice
+        ret = view.sample(n=n)
+        self.lock.release()
+
+        return ret
 
     def snapshot(self, additional_columns=None):
+        self.lock.acquire()
+        self._prune_view()
+        ret = self._view.copy()
+        self.lock.release()
+
         if additional_columns is None:
-            return self.view
+            return ret
         elif type(additional_columns) is dict:
-            ret = self.view.copy()
             for k, v in additional_columns.items():
                 ret[k] = v
             return ret
@@ -57,9 +86,10 @@ class PeersView:
                 "additional_columns must be a dict of 'colname' -> 'value' "
                 "to add the to the view")
 
+    # Must be called inside lock
     def _prune_view(self):
         # Time-bound
         expiration_limit = datetime.now() - self.conf['period']
 
-        # print(self.view.index)
-        self.view = self.view[self.view.index >= expiration_limit]
+        # print(self._view.index)
+        self._view = self._view[self._view.index >= expiration_limit]
