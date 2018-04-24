@@ -3,6 +3,8 @@
 from . import config, peers_view, file, network
 from .utils import random_string, hash_layer
 from datetime import timedelta, datetime
+from gevent.queue import Queue
+import gevent
 import numpy as np
 import pandas as pd
 import random
@@ -10,39 +12,93 @@ import random
 ADDR_SIZE = 12
 
 
-class Device:
+class Device(gevent.Greenlet):
     def __init__(
             self, owner, global_view, net, device_id, device_type,
             conf=config.default):
-
+        gevent.Greenlet.__init__(self)
         self.addr = random_string(ADDR_SIZE)
         self.conf = conf
         self.device_id = device_id
         self.global_view = global_view
         self.gossip_size = conf['gossip_size']
-        self.is_online = False
+        self.lock = gevent.lock.Semaphore()
         self.net = net
+        self.online = gevent.event.Event()
         self.owner = owner
         self.peers_view = peers_view.PeersView(conf)
+        self.message_queue = Queue()
         self.type = device_type
 
         net.add_device(self)
 
-        # File-exchange related
+        # Contains only files that this particular device is sending
         self.sending_files = {}
-        self.sending_files_routes = {}
 
         # maps hash of route's layer -> previously picked device from layer
         self.connected_to = {}
 
-    def update_state(self, is_online):
-        self.is_online = is_online
-        if self.is_online:
+    # Overriding Greenlet
+    def _run(self):
+        while True:
+            self.online.wait()
+
+            # sending_files is going to need locks...
+            for f_id, file_info in self.sending_files.items():
+                if file_info['f'].all_acknowledged():
+                    del self.sending_files[f_id]
+                self.send_file_chunk(file_info)
+
+                if not self.is_online():
+                    continue
+
+            # TODO: Add locks!
+            for m in self.message_queue:
+                if m.file_id in self.owner.receiving_files:
+                    file_info = self.owner.receiving_files[m.file_id]
+
+                    if m.type != network.MessType.CHUNK:
+                        print("dafuq?")
+
+                    file_info['f'].shared(m.chunk_id)
+
+                    self.send_file_ack(file_info, m.chunk_id)
+
+                elif m.file_id in self.owner.sending_files:
+                    file_info = self.owner.sending_files[m.file_id]
+
+                    if m.type != network.MessType.ACK:
+                        print("dafuq?")
+
+                    file_info['f'].acknowledged(m.chunk_id)
+
+                    if file_info['f'].all_acknowledged():
+                        del self.owner.sending_files[m.file_id]
+
+                else:
+                    self.forward_message(m)
+
+                # So I should put these everywhere
+                # Fits at the end of the for, though, otherwise m would be lost
+                if not self.is_online():
+                    continue
+
+        return
+
+    # Called from the user's greenlet
+    def update_state(self, is_online, p):
+        # Set Event according to is_online
+        if is_online:
+            self.online.set()
+        else:
+            self.online.clear()
+        if self.is_online():
+            # If online, register to global view
             self.global_view.put(
                 datetime.now(),
                 self.addr,
                 self.type,
-                self.owner.get_prediction(self.device_id)
+                p
             )
 
     def init_file_send(self, H_rdv_forward, H_rdv_backward, f):
@@ -52,7 +108,7 @@ class Device:
         forward_route = route + H_rdv_forward
         # backward_route = (L_l + ... + L_k + L_RV) + (L_j + ... + L_i) + L_A
         backward_route = H_rdv_backward + \
-            route[::-1] + [self.owner.get_all_devices()]
+            route[::-1] + [self.owner.get_all_devices_addr()]
 
         self.sending_files[f.id] = {
             'file': f,
@@ -60,78 +116,70 @@ class Device:
             'backward_route': backward_route,
         }
 
-        return forward_route, backward_route
+        return self.sending_files[f.id]
 
-    def send_file_chunk(self, f):
-        if f.all_shared():
-            print("[Device.send_file_chunk] file {} already completed".format(
-                f.id))
-            self.complete_file_exchange()
-            return
+    ### Messages exchange ###
+    def receive(self, message):
+        self.message_queue.put(message)
 
-        self.send(None, self.sending_files_routes[f.id],
-                  network.Message(
-                      typ=network.MessType.CHUNK,
-                      file_id=f.id,
-                      chunk_id=f.select_chunk()
-        ))
+    # def send_file_chunk(self, f):
+    #     if f.all_shared():
+    #         print("[Device.send_file_chunk] file {} already completed".format(
+    #             f.id))
+    #         self.complete_file_exchange()
+    #         return
 
-    def send(self, src, route, m):
-        if not self.is_online:
-            return
+    #     self.send(None, self.sending_files_routes[f.id],
+    #               network.Message(
+    #                   typ=network.MessType.CHUNK,
+    #                   file_id=f.id,
+    #                   chunk_id=f.select_chunk()
+    #     ))
 
-        # Am I the receiver?
-        if m.type == network.MessType.CHUNK and \
-                m.file_id in self.owner.receiving_files:
-            self.owner.receive_chunk(m)
-            # Forward ACK back to source
+    # def send(self, src, route, m):
+    #     if not self.is_online():
+    #         return
 
-        # because layers are encrypted, we are not supposed to be able
-        # to read more than the first one (layers are rotated at ever hop)
-        layer = route[0]
-        h = hash_layer(layer)
-        # Firt connection on this route: pick a device in layer
-        if not h in self.connected_to:
-            self.connected_to[h] = random.choice(layer['addr'])
+    #     # Am I the receiver?
+    #     if m.type == network.MessType.CHUNK and \
+    #             m.file_id in self.owner.receiving_files:
+    #         self.owner.receive_chunk(m)
+    #         # Forward ACK back to source
 
-        d = self.net.get_device(self.connected_to[h])
-        # If the device we were already connected with is offline
-        if not d.is_online:
-            # Try to find another online device and exit
-            others = layer[layer['addr'] != d.addr]['addr']
-            others = [
-                addr for addr in others if self.net.get_device(addr).is_online]
-            # We found an online device, connect to it
-            if len(others) > 0:
-                self.connected_to[h] = random.choice(others)
+    #     # because layers are encrypted, we are not supposed to be able
+    #     # to read more than the first one (layers are rotated at ever hop)
+    #     layer = route[0]
+    #     h = hash_layer(layer)
+    #     # Firt connection on this route: pick a device in layer
+    #     if not h in self.connected_to:
+    #         self.connected_to[h] = random.choice(layer['addr'])
 
-            return
+    #     d = self.net.get_device(self.connected_to[h])
+    #     # If the device we were already connected with is offline
+    #     if not d.is_online():
+    #         # Try to find another online device and exit
+    #         others = layer[layer['addr'] != d.addr]['addr']
+    #         others = [addr for addr in others
+    #                   if self.net.get_device(addr).is_online()]
+    #         # We found an online device, connect to it
+    #         if len(others) > 0:
+    #             self.connected_to[h] = random.choice(others)
 
-        # Rotate layers so that next device sees the right layer in route[0]
-        route.append(route[0])
-        del route[0]
-        # And send
-        d.send(self, route, m)
-        return
+    #         return
 
-    def complete_file_exchange(self, f):
-        if f.id in self.sending_files and f.all_shared():
-            del self.sending_files[f.id]
-            del self.sending_files_routes[f.id]
+    #     # Rotate layers so that next device sees the right layer in route[0]
+    #     route.append(route[0])
+    #     del route[0]
+    #     # And send
+    #     d.send(self, route, m)
+    #     return
 
-    def random_peer_sampling(self):
-        self.peers_view.insert(
-            self.global_view.get_sample(
-                n=self.gossip_size,
-                exclude_addr=self.addr))
-        # if len(self.peers_view.get()) == 0:
-        #     print("Device's RPS returned 0 devices!"
-        #           " Global peers view has {}.".format(
-        #         len(self.global_view.view)))
-        #     expiration_limit = datetime.now() - self.conf['period']
-        #     print("Expiration time:", expiration_limit)
-        #     print(self.global_view.view)
+    # def complete_file_exchange(self, f):
+    #     if f.id in self.sending_files and f.all_shared():
+    #         del self.sending_files[f.id]
+    #         del self.sending_files_routes[f.id]
 
+    # a priori no need lock (only place we use peers_view)
     def build_route(self, role):
         if role == "receiver":
             # 2 layers planned in advance
@@ -178,6 +226,15 @@ class Device:
 
         # In file_exchange, we ditch all info but the addresses
         for l_id in range(n_layers):
-            route[l_id] = list(route[l_id])
+            route[l_id] = list(route[l_id]['addr'])
 
         return route
+
+    def random_peer_sampling(self):
+        self.peers_view.insert(
+            self.global_view.get_sample(
+                n=self.gossip_size,
+                exclude_addr=self.addr))
+
+    def is_online(self):
+        return self.online.is_set()

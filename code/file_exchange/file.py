@@ -30,11 +30,11 @@ class File:
         # Chunks acknowledged (only for sender)
         self.acked_chunks = self.shared_chunks.astype(np.bool)
 
-    # Used by sender to pick
+    # Used by sender to pick right chunk to send
     def select_chunk(self):
         unsent_chunks_id = np.argwhere(self.shared_chunks == 0).ravel()
 
-        # If there are chunks we did not send yet, pick them
+        # If there are chunks we did not send yet, pick among them randomly
         if len(unsent_chunks_id) > 0:
             return np.random.choice(unsent_chunks_id)
 
@@ -51,6 +51,8 @@ class File:
             if x in not_acked_chunks_id:
                 return x
 
+    # Receiver: this chunk was received
+    # Sender: this chunk was sent
     def shared(self, chunk_id):
         if chunk_id < 0 or chunk_id >= self.n_chunks:
             raise ValueError(
@@ -59,6 +61,7 @@ class File:
 
         self.shared_chunks[chunk_id] += 1
 
+    # Sender: received ack for this chunk
     def acknowledged(self, chunk_id):
         if chunk_id < 0 or chunk_id >= self.n_chunks:
             raise ValueError(

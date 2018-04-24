@@ -9,7 +9,7 @@ default = {
     'n_file_chunks': 10,
     'n_layers': 3,  # must be odd
     'file_size': 11,  # MB
-    'chunk_max_size': 2  # MB, will depend on header size later
+    'chunk_max_size': 2,  # MB, will depend on header size later
     'n_rounds': 2,
     'n_users': 20,
     'period': timedelta(seconds=1),
