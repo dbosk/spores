@@ -45,16 +45,22 @@ class Device:
                 self.owner.get_prediction(self.device_id)
             )
 
-    def init_file_send(self, H_rdv, file_id):
-        f = file.File(self.conf['n_chunks'])
+    def init_file_send(self, H_rdv_forward, H_rdv_backward, f):
+        # route = L_i + ... + L_j
+        route = self.build_route("sender")
+        # forward_route = (L_i + ... + L_j) + (L_RV + L_k + ... + L_l + L_B)
+        forward_route = route + H_rdv_forward
+        # backward_route = (L_l + ... + L_k + L_RV) + (L_j + ... + L_i) + L_A
+        backward_route = H_rdv_backward + \
+            route[::-1] + [self.owner.get_all_devices()]
 
-        self.sending_files[f.id] = f
+        self.sending_files[f.id] = {
+            'file': f,
+            'forward_route': forward_route,
+            'backward_route': backward_route,
+        }
 
-        route = [None] * self.conf['n_layers']
-        route[:self.conf['n_layers'] // 2] = self.build_route("sender")
-        route[self.conf['n_layers'] // 2:] = H_rdv
-
-        self.sending_files_routes[f.id] = route
+        return forward_route, backward_route
 
     def send_file_chunk(self, f):
         if f.all_shared():
@@ -140,38 +146,38 @@ class Device:
         route = [pd.DataFrame() for _ in range(n_layers)]
         view = self.peers_view.get().copy()
 
-        converged = False
-        while not converged:
-            converged_layers = [False for _ in range(n_layers)]
+        converged_layers = [False for _ in range(n_layers)]
+        # Converged when all layers are converged
+        while not all(converged_layers):
             # Iteratively add one device per layer until converged
             for l_id in range(n_layers):
-                if len(route[l_id]) > 0:
-                    # Probability that all devices of layer will be offline
-                    p_failure = (1 - route[l_id]['p']).prod()
-                    # layer is converged when p_failure is below threshold
-                    converged_layers[l_id] = \
-                        p_failure < self.conf['layer_threshold']
+                # Skip this layer if converged
+                if converged_layers[l_id]:
+                    continue
 
-                    # Skip this layer if converged
-                    if converged_layers[l_id]:
-                        continue
-
-                # Else add a node to layer
-
-                # If view is empty, break
+                # If view is empty, exit
                 if len(view) == 0:
-                    print("[build route] No more available nodes: "
-                          "early abort.")
-                    converged = True
                     break
 
-                # Pick a device from view without replacement
+                # Add a node to layer
+                # By picking a device from view without replacement
                 d = view.iloc[np.random.choice(len(view))]
                 route[l_id] = route[l_id].append(d)
                 view.drop(d.name, inplace=True)
 
-            # Converged when all layers are converged
-            if not converged:
-                converged = all(converged_layers)
+                # Probability that all devices of layer will be offline
+                p_failure = (1 - route[l_id]['p']).prod()
+                # layer is converged when p_failure is below threshold
+                converged_layers[l_id] = \
+                    p_failure < self.conf['layer_threshold']
+
+            if len(view) == 0:
+                print("[build route] No more available nodes: "
+                      "early abort.")
+                break
+
+        # In file_exchange, we ditch all info but the addresses
+        for l_id in range(n_layers):
+            route[l_id] = list(route[l_id])
 
         return route

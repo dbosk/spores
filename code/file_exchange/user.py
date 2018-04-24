@@ -4,8 +4,6 @@ from . import model, device, config, file, utils
 import numpy as np
 import gevent
 
-FILE_ID_SIZE = 10
-
 
 class User(gevent.Greenlet):
     def __init__(self, global_view, net, conf=config.default):
@@ -26,16 +24,13 @@ class User(gevent.Greenlet):
         self.current_round = None
         self.name = utils.random_name()
 
-        self.receiving_files = {}
+        self.pending_files_info = {}
 
         self.state_history, self.devices_history = self.model.sample(
             length=conf['n_rounds'])
 
     # Overriding Greenlet
     def _run(self):
-        self.loop()
-
-    def loop(self):
         while True:
             # Initial round
             if self.current_round is None:
@@ -48,25 +43,40 @@ class User(gevent.Greenlet):
             else:
                 self.current_round += 1
 
-            # Update devices' state
-            for d_id, is_online in \
-                    enumerate(self.devices_history[self.current_round]):
-                self.devices[d_id].update_state(is_online)
+            self.update_state()
 
             # Sleep until next round
             gevent.sleep(self.conf['period'].total_seconds())
 
+    def update_state(self):
+        # Update devices' state
+        for d_id, is_online in \
+                enumerate(self.devices_history[self.current_round]):
+            self.devices[d_id].update_state(is_online)
+
     def init_file_receive(self, remote_device):
+        if self.current_round is None:
+            raise Error("User must do a first ")
         d = self.get_online_device()
 
-        H_rdv = d.build_route("receiver")
-        file_id = utils.random_string(FILE_ID_SIZE)
+        f = file.File(self.conf['file_size'], self.conf['chunk_max_size'])
 
-        self.receiving_files[file_id] = file.File(
-            self.conf['n_chunks'], file_id)
+        # route = L_RV + L_k + ... + L_l
+        route = d.build_route("receiver")
+        # H_rdv_forward = (L_RV + L_k + ... + L_l) + L_B (my devices)
+        H_rdv_forward = route + [self.get_all_devices()]
+        # H_rdv_backward = (L_l + ... + L_k + L_RV)
+        H_rdv_backward = route[::-1]
 
         # This exchange is out of band
-        remote_device.init_file_send(H_rdv, file_id)
+        forward_route, backward_route = remote_device.init_file_send(
+            H_rdv_forward, H_rdv_backward, f.copy())
+
+        self.sending_files[f.id] = {
+            'file': f,
+            'forward_route': forward_route,
+            'backward_route': backward_route,
+        }
 
     def receive_chunk(self, m):
         self.receiving_files[m.file_id].ack(m.chunk_id)
@@ -75,17 +85,8 @@ class User(gevent.Greenlet):
             # Maybe do something else
             del self.receiving_files[m.file_id]
 
-    def has_online_devices(self):
-        return self.devices_history[self.current_round].sum() != 0
-
-    def get_online_device(self):
-        return self.devices[
-            np.random.choice(
-                np.where(
-                    self.devices_history[self.current_round]
-                )[0]
-            )
-        ]
+    def get_all_devices(self):
+        return [d.addr for d in self.devices]
 
     def get_prediction(self, device_id):
         return self.model.predict(
@@ -94,3 +95,15 @@ class User(gevent.Greenlet):
     # Overriding Greenlet
     def __str__(self):
         return "User({})".format(self.name)
+
+    # def has_online_devices(self):
+    #     return self.devices_history[self.current_round].sum() != 0
+
+    # def get_online_device(self):
+    #     return self.devices[
+    #         np.random.choice(
+    #             np.where(
+    #                 self.devices_history[self.current_round]
+    #             )[0]
+    #         )
+    #     ]
