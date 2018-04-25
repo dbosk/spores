@@ -5,7 +5,7 @@ import numpy as np
 from .utils import random_string
 
 
-FILE_ID_SIZE = 10
+FILE_ID_SIZE = 6
 
 
 # We use this class to represent files to share and files to receive
@@ -42,12 +42,12 @@ class File:
         not_acked_chunks_id = np.argwhere(self.acked_chunks == False).ravel()
 
         # Wooo, all sent and all acknowledged
-        if len(not_acked_chunks_id):
+        if len(not_acked_chunks_id) == 0:
             return None
 
         # If all chunks were sent at least once
         # Return the chunk_id that was sent the least but did not get an ack
-        for x in unsent_chunks_id.argsort():
+        for x in self.shared_chunks.argsort():
             if x in not_acked_chunks_id:
                 return x
 

@@ -14,14 +14,12 @@ class User(gevent.Greenlet):
         self.n_devices = self.model.n_obs
         self.devices = [None] * self.n_devices
         self.devices_addr = [None] * self.n_devices
-        #self.devices_threads = gevent.pool.Group()
+
         for d_id in range(self.n_devices):
             self.devices[d_id] = device.Device(
                 self, global_view, net, d_id,
                 self.model.devices_type[d_id], conf)
             self.devices_addr[d_id] = self.devices[d_id].addr
-            self.devices[d_id].start()
-            # self.devices_threads.start(self.devices[d_id])
 
         self.conf = conf
         self.current_round = None
@@ -38,12 +36,21 @@ class User(gevent.Greenlet):
 
     # Overriding Greenlet
     def _run(self):
+        # Starting devices greenlets
+        for d in self.devices:
+            d.start()
+
         while self.current_round is None or \
                 self.current_round < self.conf['n_rounds'] - 1:
             self.update_state()
 
             # Sleep until next round
             gevent.sleep(self.conf['period'].total_seconds())
+
+        for d in self.devices:
+            d.please_die()
+        #print(self.name + " is waiting on his devices to die.")
+        gevent.joinall(self.devices)
 
     def update_state(self):
         self.lock.acquire()
@@ -56,6 +63,9 @@ class User(gevent.Greenlet):
         else:
             self.lock.release()
             return
+
+        # print("User {} is at round #{}/{}".format(
+        #     self.name, self.current_round+1, self.conf['n_rounds']))
 
         # Update devices' state
         for d_id, is_online in \
@@ -72,7 +82,9 @@ class User(gevent.Greenlet):
 
         if self.current_round is None:
             self.lock.release()
-            raise Exception("User must do a first ")
+            raise Exception(
+                "User {} must do a first round before exchanging files".format(
+                    self.name))
         d = self.get_online_device()
 
         f = file.File(self.conf['file_size'], self.conf['chunk_max_size'])
@@ -89,7 +101,7 @@ class User(gevent.Greenlet):
             H_rdv_forward, H_rdv_backward, f.copy())
 
         self.receiving_files[f.id] = {
-            'file': f,
+            'f': f,
             'forward_route': forward_route,
             'backward_route': backward_route,
         }
@@ -100,6 +112,12 @@ class User(gevent.Greenlet):
 
     def init_file_send(self, H_rdv_forward, H_rdv_backward, f):
         self.lock.acquire()
+        if self.current_round is None:
+            self.lock.release()
+            raise Exception(
+                "User {} must do a first round before exchanging files".format(
+                    self.name))
+
         d = self.get_online_device()
 
         file_info = d.init_file_send(H_rdv_forward, H_rdv_backward, f)
@@ -108,13 +126,6 @@ class User(gevent.Greenlet):
         self.lock.release()
 
         return file_info['forward_route'], file_info['backward_route']
-
-    # def receive_chunk(self, m):
-    #     self.receiving_files[m.file_id].ack(m.chunk_id)
-
-    #     if self.receiving_files[m.file_id].all_shared():
-    #         # Maybe do something else
-    #         del self.receiving_files[m.file_id]
 
     ### Getters ###
     def get_all_devices_addr(self):
@@ -130,6 +141,29 @@ class User(gevent.Greenlet):
     # Overriding Greenlet
     def __str__(self):
         return "User({})".format(self.name)
+
+    # m.file_id in self.receiving_file must be checked by the caller
+    # def receive_chunk(self, d, m):
+    #     # We never remove a file from receiving_files
+    #     self.lock.acquire()
+    #     file_info = self.receiving_files[m.file_id]
+    #     file_info['f'].shared(m.chunk_id)
+    #     self.lock.release()
+
+    #     d.send_ack(file_info, m)
+
+    # def receive_ack(self, m):
+    #     # We never remove a file from receiving_files
+    #     self.lock.acquire()
+    #     self.sending_files[m.file_id]['f'].acknowledged(m.chunk_id)
+    #     self.lock.release()
+
+    # def receive_chunk(self, m):
+    #     self.receiving_files[m.file_id].ack(m.chunk_id)
+
+    #     if self.receiving_files[m.file_id].all_shared():
+    #         # Maybe do something else
+    #         del self.receiving_files[m.file_id]
 
     # def has_online_devices(self):
     #     return self.devices_history[self.current_round].sum() != 0
