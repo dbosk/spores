@@ -4,9 +4,11 @@ all: p2p-private-cloud.pdf
 SRC+=		contents.tex abstract.tex
 SRC+= 		intro.tex
 SRC+= 		privacy.tex
+SRC+= 		related.tex
 SRC+= 		user-model.tex
 SRC+= 		algorithm.tex
-SRC+= 		related.tex
+SRC+= 		security-analysis.tex
+SRC+= 		conclusion.tex
 
 DEPENDS+= 	bibsp.sty meta.bib osn.bib anon.bib adrien.bib
 DEPENDS+=	figures/*.pdf
