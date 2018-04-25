@@ -12,8 +12,15 @@ NAMES = ['Cristy', 'Vickey', 'Sherie', 'Delilah', 'Rick', 'Denver', 'Stephany',
          'Kandi', 'Karlene', 'Lila', 'Nelly', 'Sibyl', 'Kermit', 'Luke',
          'Annabel', 'Moira', 'Hassie', 'Hilda', 'Vicki', 'Gloria', 'Kaci',
          'Dora', 'Gilbert', 'Livia', 'Buffy', 'Demetra', 'Barry', 'Lizzette',
-         'Julius', 'Queen', 'Lyndsey', 'Lucy', 'Garnett',
-         'Lavette', 'Magaly', 'Norene']
+         'Julius', 'Queen', 'Lyndsey', 'Lucy', 'Garnett', 'Lavette', 'Magaly',
+         'Norene', 'Toshiko', 'Maurita', 'Angelika', 'Ann', 'Bennie',
+         'Randolph', 'Temika', 'Evelyne', 'Bettye', 'Angelita', 'Shawnda',
+         'Magdalen', 'Benjamin', 'Lorine', 'Morgan', 'Tim', 'Elinor', 'Cordia',
+         'Jay', 'Brain', 'Broderick', 'Janise', 'Nadia', 'Delaine', 'Vonnie',
+         'Adaline', 'Leigh', 'Consuelo', 'Janetta', 'Isaura', 'Elvera', 'Jack',
+         'Cristina', 'Charissa', 'Kaylee', 'Britany', 'Jenae', 'Yuriko',
+         'Annelle', 'Twila', 'January', 'Jillian', 'Maximo', 'Daysi', 'Mazie',
+         'Bronwyn', 'Otha', 'Shane', 'Brande', 'Renna']
 
 
 def random_name():

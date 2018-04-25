@@ -141,29 +141,3 @@ class User(gevent.Greenlet):
     # Overriding Greenlet
     def __str__(self):
         return "User({})".format(self.name)
-
-    # m.file_id in self.receiving_file must be checked by the caller
-    # def receive_chunk(self, d, m):
-    #     # We never remove a file from receiving_files
-    #     self.lock.acquire()
-    #     file_info = self.receiving_files[m.file_id]
-    #     file_info['f'].shared(m.chunk_id)
-    #     self.lock.release()
-
-    #     d.send_ack(file_info, m)
-
-    # def receive_ack(self, m):
-    #     # We never remove a file from receiving_files
-    #     self.lock.acquire()
-    #     self.sending_files[m.file_id]['f'].acknowledged(m.chunk_id)
-    #     self.lock.release()
-
-    # def receive_chunk(self, m):
-    #     self.receiving_files[m.file_id].ack(m.chunk_id)
-
-    #     if self.receiving_files[m.file_id].all_shared():
-    #         # Maybe do something else
-    #         del self.receiving_files[m.file_id]
-
-    # def has_online_devices(self):
-    #     return self.devices_history[self.current_round].sum() != 0

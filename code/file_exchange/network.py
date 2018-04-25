@@ -2,27 +2,42 @@
 
 from enum import Enum
 import gevent
+import random
 
 
-def emulate_transfer(dst, m, header_size, bandwidth):
+def emulate_transfer(header, m, net, conf):
     '''
     Sleeps the duration of the file transfer ((m.size+header_size)/bandwidth),
-    Drops the packet if dst is offline, else send it to dst.
+    Then sends the message m to a connected peer in header or fails.
 
-    dst: device.Device object
-    m: network.Message object
-    header_size: size of the header
-    bandwidth: numeric value in MB/s
+    header: list of potential peers addresses
+    m: the message, a network.Message object
+    net: the Network object, to retrieve Device from address
+    conf: configuration variables (bandwidth and header_size)
 
     Returns True if m was sent, False otherwise'''
 
-    gevent.sleep((m.size+header_size)/bandwidth)
+    gevent.sleep((m.size+conf['header_size'])/conf['bandwidth'])
 
-    if dst.is_online():
-        dst.receive(m)
+    if conf['send_strategy'] == 'random':
+        # 1 - Pick a random device; send if online, fail if offline
+        dst = net.get_device(random.choice(header))
+        if dst.is_online():
+            dst.receive(m)
+            return True
+        return False
+
+    elif conf['send_strategy'] == 'random_connected':
+        # 2 - Pick a random *connected* device and send;
+        # Fails if no connected device
+        devices = [net.get_device(addr) for addr in header]
+        connected_devices = [d for d in devices if d.is_online()]
+        if len(connected_devices) == 0:
+            return False
+        random.choice(connected_devices).receive(m)
         return True
-
-    return False
+    else:
+        raise ValueError("conf['send_strategy'] is not valid.")
 
 
 class MessType(Enum):

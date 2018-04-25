@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from . import config, peers_view, file, network
+from . import config, peers_view, file, network, monitor
 from .utils import random_string, hash_layer
 from copy import deepcopy
 from datetime import timedelta, datetime
@@ -8,9 +8,13 @@ from gevent.queue import Queue
 import gevent
 import numpy as np
 import pandas as pd
-import random
+import time
+#import random
 
 ADDR_SIZE = 12
+MONITOR_COLUMNS = ['t', 'addr', 'owner',
+                   'file_id', 'chunk_id', 'type',
+                   'sent', 'received', 'forwarded']
 
 
 class Device(gevent.Greenlet):
@@ -26,6 +30,9 @@ class Device(gevent.Greenlet):
         self.global_view = global_view
         self.gossip_size = conf['gossip_size']
         self.lock = gevent.lock.Semaphore()
+        self.monitor = monitor.Monitor(MONITOR_COLUMNS,
+                                       conf['output_dir']+self.addr+'.csv',
+                                       conf['do_monitor'])
         self.net = net
         self.online = gevent.event.Event()
         self.owner = owner
@@ -49,11 +56,11 @@ class Device(gevent.Greenlet):
             while not self.online.wait(0.1):
                 # Kill the device if death requested
                 if self.death_requested and self.all_files_sent:
-                    return
+                    break
 
             # Kill the device if death requested
             if self.death_requested and self.all_files_sent:
-                return
+                break
 
             # Send file chunks I am currently sharing
             self.share_files()
@@ -84,13 +91,23 @@ class Device(gevent.Greenlet):
                 if m.file_id in self.owner.receiving_files and \
                         m.type == network.MessType.CHUNK:
 
+                    self.monitor.put([time.perf_counter(),
+                                      self.addr,
+                                      self.owner.name,
+                                      m.file_id,
+                                      m.chunk_id,
+                                      m.type,
+                                      0,
+                                      m.size+self.conf['header_size'],
+                                      0])
+
                     file_info = self.owner.receiving_files[m.file_id]
                     file_info['f'].shared(m.chunk_id)
 
-                    print("{} (owned by {}) successfully received "
-                          "file {}'s chunk #{}".format(
-                              self.addr, self.owner.name,
-                              m.file_id, m.chunk_id))
+                    # print("{} (owned by {}) successfully received "
+                    #       "file {}'s chunk #{}".format(
+                    #           self.addr, self.owner.name,
+                    #           m.file_id, m.chunk_id))
 
                     self.lock.release()
                     self.send_ack(file_info, m)
@@ -98,18 +115,24 @@ class Device(gevent.Greenlet):
                 elif m.file_id in self.owner.sending_files and \
                         m.type == network.MessType.ACK:
 
+                    self.monitor.put([time.perf_counter(),
+                                      self.addr,
+                                      self.owner.name,
+                                      m.file_id,
+                                      m.chunk_id,
+                                      m.type,
+                                      0,
+                                      m.size+self.conf['header_size'],
+                                      0])
+
                     # This will update Device.sending_files[file_id] too
                     self.owner.sending_files[m.file_id]['f'].acknowledged(
                         m.chunk_id)
 
-                    print("{} (owned by {}) successfully received ACK for "
-                          "file {}'s chunk #{}".format(
-                              self.addr, self.owner.name,
-                              m.file_id, m.chunk_id))
-
-                    if self.owner.sending_files[
-                            m.file_id]['f'].all_acknowledged():
-                        print("File sharing of "+m.file_id+" completed!")
+                    # print("{} (owned by {}) successfully received ACK for "
+                    #       "file {}'s chunk #{}".format(
+                    #           self.addr, self.owner.name,
+                    #           m.file_id, m.chunk_id))
 
                     self.lock.release()
 
@@ -118,6 +141,15 @@ class Device(gevent.Greenlet):
                     #     del self.owner.sending_files[m.file_id]
 
                 else:
+                    self.monitor.put([time.perf_counter(),
+                                      self.addr,
+                                      self.owner.name,
+                                      m.file_id,
+                                      m.chunk_id,
+                                      m.type,
+                                      0,
+                                      0,
+                                      m.size+self.conf['header_size']])
                     self.lock.release()
                     self.send(m)
 
@@ -126,6 +158,8 @@ class Device(gevent.Greenlet):
 
             # Release thread
             gevent.sleep(0)
+
+        self.monitor.save()
 
     def please_die(self):
         self.death_requested = True
@@ -198,13 +232,26 @@ class Device(gevent.Greenlet):
                 chunk_id=chunk_id,
                 size=f.chunks_size[chunk_id])
 
+           #  ['t', 'addr', 'owner',
+           # 'file_id', 'chunk_id',
+           # 'sent', 'received', 'forwarded']
+
             # self.send(m)
             if self.send(m):
                 f.shared(chunk_id)
-                print("{} (owned by {}) successfully sent "
-                      "file {}'s chunk #{}".format(
-                          self.addr, self.owner.name,
-                          f_id, chunk_id))
+                # print("{} (owned by {}) successfully sent "
+                #       "file {}'s chunk #{}".format(
+                #           self.addr, self.owner.name,
+                #           f_id, chunk_id))
+                self.monitor.put([time.perf_counter(),
+                                  self.addr,
+                                  self.owner.name,
+                                  m.file_id,
+                                  m.chunk_id,
+                                  m.type,
+                                  m.size+self.conf['header_size'],
+                                  0,
+                                  0])
 
             if not self.is_online():
                 return
@@ -221,17 +268,24 @@ class Device(gevent.Greenlet):
             chunk_id=m.chunk_id,
             size=self.conf['ack_size'])
 
-        self.send(m)
+        if self.send(m):
+            self.monitor.put([time.perf_counter(),
+                              self.addr,
+                              self.owner.name,
+                              m.file_id,
+                              m.chunk_id,
+                              m.type,
+                              m.size+self.conf['header_size'],
+                              0,
+                              0])
 
     def send(self, m):
-        d = self.net.get_device(random.choice(m.header[0]))
+        header = m.header[0]
 
         # Rotate the headers so that next layer is at m.header[0]
         m.header = m.header[1:] + [m.header[0]]
 
-        return network.emulate_transfer(
-            d, m,
-            self.conf['header_size'], self.conf['bandwidth'])
+        return network.emulate_transfer(header, m, self.net, self.conf)
 
     # a priori no need lock (only place we use peers_view)
     def build_route(self, role):
@@ -283,6 +337,9 @@ class Device(gevent.Greenlet):
 
         # In file_exchange, we ditch all info but the addresses
         for l_id in range(n_layers):
+            # Check that no empty layer too
+            if len(route[l_id]) == 0:
+                raise Exception("Some empty layer in this route, too bad.")
             route[l_id] = list(route[l_id]['addr'])
 
         return route
@@ -295,61 +352,3 @@ class Device(gevent.Greenlet):
 
     def is_online(self):
         return self.online.is_set()
-
-    # def send_file_chunk(self, f):
-    #     if f.all_shared():
-    #         print("[Device.send_file_chunk]"
-    #               " file {} already completed".format(
-    #             f.id))
-    #         self.complete_file_exchange()
-    #         return
-
-    #     self.send(None, self.sending_files_routes[f.id],
-    #               network.Message(
-    #                   typ=network.MessType.CHUNK,
-    #                   file_id=f.id,
-    #                   chunk_id=f.select_chunk()
-    #     ))
-
-    # def send(self, src, route, m):
-    #     if not self.is_online():
-    #         return
-
-    #     # Am I the receiver?
-    #     if m.type == network.MessType.CHUNK and \
-    #             m.file_id in self.owner.receiving_files:
-    #         self.owner.receive_chunk(m)
-    #         # Forward ACK back to source
-
-    #     # because layers are encrypted, we are not supposed to be able
-    #     # to read more than the first one (layers are rotated at ever hop)
-    #     layer = route[0]
-    #     h = hash_layer(layer)
-    #     # Firt connection on this route: pick a device in layer
-    #     if not h in self.connected_to:
-    #         self.connected_to[h] = random.choice(layer['addr'])
-
-    #     d = self.net.get_device(self.connected_to[h])
-    #     # If the device we were already connected with is offline
-    #     if not d.is_online():
-    #         # Try to find another online device and exit
-    #         others = layer[layer['addr'] != d.addr]['addr']
-    #         others = [addr for addr in others
-    #                   if self.net.get_device(addr).is_online()]
-    #         # We found an online device, connect to it
-    #         if len(others) > 0:
-    #             self.connected_to[h] = random.choice(others)
-
-    #         return
-
-    #     # Rotate layers so that next device sees the right layer in route[0]
-    #     route.append(route[0])
-    #     del route[0]
-    #     # And send
-    #     d.send(self, route, m)
-    #     return
-
-    # def complete_file_exchange(self, f):
-    #     if f.id in self.sending_files and f.all_shared():
-    #         del self.sending_files[f.id]
-    #         del self.sending_files_routes[f.id]
