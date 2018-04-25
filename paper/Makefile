@@ -9,7 +9,7 @@ SRC+= 		building-blocks.tex
 SRC+= 		algorithm.tex
 SRC+= 		related.tex
 
-DEPENDS+= 	bibsp.sty meta.bib osn.bib anon.bib adrien.bib
+DEPENDS+= 	bibsp.sty meta.bib osn.bib anon.bib be.bib adrien.bib
 DEPENDS+=	figures/*.pdf
 
 p2p-private-cloud.pdf: p2p-private-cloud.tex preamble.tex revision_macros.tex

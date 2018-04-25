@@ -2,3 +2,49 @@
 \label{BuildingBlocks}
 
 \dots
+
+\subsection{\Aclp*{KEM}}\label{KEM}
+
+\dots
+
+\subsection{\Acl*{BE}}\label{BE}
+
+We will do onion routing with many alternative nodes per hop.
+This means that we encrypt the same message for more than one possible 
+recipient.
+We will employ \iac{BE} scheme to do this.
+More specifically, we are interested in \iac{BE} adapted for \iac{P2P} setting 
+where devices can dynamically join and leave, \ie we do not want too much cost 
+for joining or leaving, \eg from key regeneration.
+We also want some privacy properties, \ie those of \ac{ANOBE}.
+
+\NewScheme{\DBE}{DBE}
+\NewAlgorithm{\DBEsetup}{\DBE\method Setup}
+\NewAlgorithm{\DBEjoin}{\DBE\method Join}
+\NewAlgorithm{\DBEleave}{\DBE\method Leave}
+\NewAlgorithm{\DBEenc}{\DBE\method Enc}
+\NewAlgorithm{\DBEdec}{\DBE\method Dec}
+
+% XXX Deal with self plagiarism here: \cite{PPACinPubFS}
+
+We need a decentralized \ac{BE} scheme, \(\DBE\).
+\(\DBE\) provides the following algorithms:
+\DBEsetup,\allowbreak \DBEjoin,\allowbreak \DBEleave,\allowbreak 
+\DBEenc,\allowbreak \DBEdec.
+
+The \(\DBEsetup\) algorithm generates the global parameters.
+The \(\DBEjoin\) algorithm performs necessary key generation and other 
+operations when a device joins whereas \(\DBEleave\) performs the necessary 
+operations when a device leaves.
+The \(\DBEenc\) algorithm takes a message and a recipient set \(S\) and returns 
+a ciphertext that everyone in \(S\) can decrypt using \(\DBEdec\).
+
+\NewScheme{\ANOBE}{ANOBE}
+\NewAlgorithm{\ANOBEsetup}{\ANOBE\method Setup}
+\NewAlgorithm{\ANOBEkeygen}{\ANOBE\method Keygen}
+
+We can use the \(\ANOBE\) scheme by \textcite{ANOBE} to instantiate our \(\DBE\) 
+scheme.
+We simply have to break \(\ANOBEsetup\) and \(\ANOBEkeygen\) into 
+\(\DBEsetup,\allowbreak \DBEjoin,\allowbreak \DBEleave\).
+
