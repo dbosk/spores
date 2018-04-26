@@ -18,13 +18,6 @@ setting, where devices can dynamically join and leave --- \ie we do not want too
 much cost for joining or leaving, \eg from key regeneration.
 We also want some privacy properties, \eg those of \ac{ANOBE}.
 
-\NewScheme{\ANOBE}{ANOBE}
-\NewAlgorithm{\ANOBEsetup}{\ANOBE\method Setup}
-\NewAlgorithm{\ANOBEjoin}{\ANOBE*\method Join}
-\NewAlgorithm{\ANOBEleave}{\ANOBE*\method Leave}
-\NewAlgorithm{\ANOBEenc}{\ANOBE\method Enc}
-\NewAlgorithm{\ANOBEdec}{\ANOBE\method Dec}
-
 Our \ac{P2P} setting requires something similar to \iac{DBE} scheme.
 However, we want a slightly different definition.
 We say that \iac{BE} scheme is \iac{DeBE} if
@@ -46,142 +39,122 @@ the total number of users --- \ie it can depend on the recipient set.
 In this sense, the trivial \ac{BE} scheme would fulfil our definition, but not 
 the definition of dynamic~\cite{DynamicBroadcastEncryption}.
 
-% XXX Deal with self plagiarism here: \cite{PPACinPubFS}
-
-\(\ANOBE\) provides the following algorithms:
-\ANOBEsetup,\allowbreak \ANOBEjoin,\allowbreak \ANOBEenc,\allowbreak \ANOBEdec.
-
-The \(\ANOBEsetup\) algorithm generates the global parameters.
-The \(\ANOBEjoin\) algorithm performs necessary key generation and other 
-operations when a device joins.
-The \(\ANOBEenc\) algorithm takes a message and a recipient set \(S\) and returns 
-a ciphertext that everyone in \(S\) can decrypt using \(\ANOBEdec\).
-
 \NewScheme{\ANOBE}{ANOBE}
-\NewAlgorithm{\ANOBEsetup}{\ANOBE\method Setup}
-\NewAlgorithm{\ANOBEkeygen}{\ANOBE\method Keygen}
+\NewScheme{\DeBE}{DeBE}
+\NewAlgorithm{\DeBEsetup}{\DeBE[Setup]}
+\NewAlgorithm{\DeBEjoin}{\DeBE[Join]}
+\NewAlgorithm{\DeBEenc}{\DeBE[Enc]}
+\NewAlgorithm{\DeBEdec}{\DeBE[Dec]}
 
-We can use the \(\ANOBE\) scheme by \textcite{ANOBE} to instantiate our 
-decentralized version.
-We simply have to break \(\ANOBEsetup\) and \(\ANOBEkeygen\) into 
-\(\ANOBEsetup,\allowbreak \ANOBEjoin\).
+Our \ac{DeBE} scheme, \(\DeBE\), provides the following algorithms:
+\(\DeBEsetup, \allowbreak \DeBEjoin, \allowbreak \DeBEenc, \allowbreak 
+  \DeBEdec\).
+We will use the proposed instantiation of \iac{ANOBE} scheme by \textcite{ANOBE} 
+to instantiate our \ac{DeBE} scheme.
+We will simply divide the steps of the \(\ANOBE\) algorithms differently.
 
-\endinput
+\NewVariable{\mpk}{MPK}
+\NewScheme{\Enc}{E}
+\NewScheme{\Sign}{S}
 
-\(\ANOBEsetup\) generates a master public key \(MPK = (\S*, \{\PubKey{i}\}_{i\in
-    U})\) and the master secret key \(MSK = \{\PriKey{i}\}_{i\in U}\), where 
-\((\PubKey{i}, \PriKey{i})\rgets \E*[Keygen][1^\lambda]\).
-\(\ANOBE[Keygen][MPK, MSK, i]\) simply returns \(\PriKey{i}\) from \(MSK\).
+\(\DeBEsetup[\lambda]\): takes the security parameter \(\lambda\) and generates 
+the global parameters for the underlying IND-CCA encryption scheme \(\Enc\) and 
+the one-time signature scheme \(\Sign\).
+It also creates a master public key, \(\mpk = \emptyset\).
 
-For encryption, we must first generate a one-time signature key-pair 
-\((\SignKey{}, \VerifKey{})\), then we choose a random permutation \(\pi\colon 
-  R\to R\).
-Next we must encrypt the message \(m\) and the verification key \((m, 
-  \VerifKey{})\) for every user \(i\in R\) in the recipient set \(R\subseteq 
-  U\) under their respective public key, \(c_{i} = \E*[Enc][\PubKey{i}, 
-  m\concat \VerifKey{}]\).
-We let the \ac{ANOBE} ciphertext be the tuple \((\VerifKey{}, C, \sigma)\), 
-where
-\(C = ( c_{\pi(1)}, \ldots, c_{\pi({|S|})})\) and
-\(\sigma = \S*[Sign][\SignKey{}, C ]\).
-Note that the signature does not authenticate the sender, it ties the 
-ciphertext together and is needed for correctness.
+\NewVariable{\pk}{pk}
+\NewVariable{\sk}{sk}
 
-\begin{frame}
-  \begin{figure}
-    \begin{algorithmic}
-      \Function{$\ANOBEenc$}{$MPK, m, R$}
-      \Comment{%
-        Recipient set $R$,
-        $m$ to be encrypted.
-      }
-        \State{%
-          $(\SignKey{}, \VerifKey{})\rgets{\S*[Keygen][1^\lambda]}$
-        }
-        \Comment{%
-          Signature key-pair, security parameter $\lambda$
-        }
-        \State{%
-          Choose a random permutation \(\pi\colon R\to R\).
-        }
+\((\pk_i, \sk_i)\gets \DeBEjoin[i]\): generates the public--private key-pair 
+\((\pk_i, \sk_i)\) for device \(i\) when it joins.
+It also adds \(\pk_i\) to \(\mpk\).
+See \cref{DeBEsetup} for an algorithmic overview.
 
-        \For{$i \in R$}
-          \State{%
-            $c_{i}\gets{ \E*[Enc][\PubKey{i}, m\concat \VerifKey{}] }$
-          }
-        \EndFor{}
+\begin{figure}
+  \begin{algorithmic}
+    \Require{$\Enc$ is an IND-CCA encryption scheme, $\Sign$ is a one-time 
+      signature scheme.}
 
-        \State{%
-          $C\gets{( c_{\pi(1)}, \ldots, c_{\pi({|S|})} )}$
-        }
-        \State{%
-          $\sigma\gets{ \S*[Sign][\SignKey{}, C] }$
-        }
-        \State{%
-          \Return{$(\VerifKey{}, C, \sigma)$}
-        }
-      \EndFunction{}
-    \end{algorithmic}
-    \caption{%
-      An algorithmic overview of the encryption algorithm in the \ac{ANOBE} 
-      scheme.
-    }\label{EncANOBE}
-  \end{figure}
-\end{frame}
+    \Function{\DeBEsetup}{$\lambda$}
+      \State $\Enc[Setup](\lambda), \Sign[Setup](\lambda)$
+      \State $\mpk\gets \emptyset$
+    \EndFunction
 
-We now have data which would like to decrypt.
-We parse it as \((\VerifKey{}, C, \sigma)\).
-If \(\S*[Verify][\VerifKey{}, C, \sigma ] = 0\), we return \(\bot\) as the 
-verification failed.
-For each \(c\) in \(C\):
-Compute \(M = \E*[Dec][\PriKey{}, c ]\).
-If \(M \neq \bot\) and \(M = (m, \VerifKey{})\), then return \(m\).
-Otherwise, try the next \(c\).
-If there are no more \(c\) to try, then return \(\bot\).
+    \Function{\DeBEjoin}{$i$}
+      \State $(\pk_i, \sk_i)\gets \Enc[Keygen]$
+      \State $\mpk\gets \mpk\cup \{\pk_i\}$
+      \State \Return $(\pk_i, \sk_i)$
+    \EndFunction
+  \end{algorithmic}
+  \caption{\label{DeBEsetup}\label{DeBEjoin}%
+    Algorithmic overview of \(\DeBEsetup\) and \(\DeBEjoin\).
+  }
+\end{figure}
 
-\begin{frame}
-  \begin{figure}
-    \begin{algorithmic}
-      \Function{$\ANOBEdec$}{$MPK, \PriKey{}, C_{\ANOBE}$}
-%      \Comment{%
-%        Private key \(\PriKey{}\),
-%        ciphertext $C_{\ANOBE} = (\VerifKey{}, C, \sigma)$.
-%      }
+\NewVariable{\ssk}{ssk}
+\NewVariable{\vk}{vk}
 
-        \If{$\S*[Verify][\VerifKey{}, C, \sigma ] = 0$}
-          \State{%
-            \Return{$\bot$}
-          }
-        \EndIf{}
+\((\vk, C, \sigma)\gets \DeBEenc[\mpk, m, S]\):
+takes a message \(m\) and a recipient set \(S\), it then encrypts the message 
+for each recipient's key, signs the tuple of all ciphertexts and returns the 
+verification key, ciphertexts and signature.
+(Note that the signature does not authenticate the sender, it ties the 
+ciphertext together and is needed for correctness, we refer to~\cite{ANOBE} for 
+details.)
 
-        \For{$c\in C$}
-          \State{%
-            $M\gets{\E*[Dec][\PriKey{}, c]}$
-          }
-          \Comment{%
-            Try to decrypt
-          }
-          \If{$M = \bot$}
-            \State{\Return{$\bot$}}
-          \ElsIf{$M = (m, \VerifKey{})$}
-            \State{\Return{m}}
-          \EndIf{}
-        \EndFor{}
-        \State{\Return{$\bot$}}
-      \EndFunction{}
-    \end{algorithmic}
-    \caption{%
-      An algorithmic overview of the decryption algorithm in the \ac{ANOBE} 
-      scheme.
-    }\label{DecANOBE}
-  \end{figure}
-\end{frame}
-
-To decrypt an \ac{ANOBE} ciphertext, we need a trial-and-error decryption 
-procedure to decide if the ciphertext was indeed intended for us.
-This is costly as it makes the decryption function complexity \(O(|S|)\).
-\citet{ANOBE} presented a tag-hint system along with their \ac{ANOBE} scheme.
+\(m\gets \DeBEdec[\mpk, \sk_i, (\vk, C, \sigma)]\):
+takes a ciphertext \((\vk, C, \sigma)\) and tries to decrypt the sub-ciphertexts 
+in \(C\) using the private key \(\sk_i\).
+If one succeeds, that message is returned, otherwise \(\bot\) is returned on 
+failure.
+This trial-and-error decryption is costly as it makes the decryption function 
+complexity \(O(|S|)\).
+\textcite{ANOBE} also presented a tag-hint system along with their \ac{ANOBE} 
+scheme.
 The tag-hint system reduced the complexity back to \(O(1)\).
 As this is not relevant for our discussion, we refer the reader to~\cite{ANOBE} 
 but note that it can be used.
+
+Both \(\DeBEenc\) and \(\DeBEdec\) are the same as in~\cite{ANOBE}.
+The algorithms are illustrated in \cref{DeBEenc,DeBEdec}.
+
+\begin{frame}
+  \begin{figure}
+    \begin{algorithmic}
+      \Require{$\Enc$ is an IND-CCA encryption scheme, $\Sign$ is a one-time 
+        signature scheme.}
+
+      \Function{$\DeBEenc$}{$\mpk, m, S$}
+        \State $(\ssk, \vk)\gets \Sign[Keygen]$
+        \State Choose a random permutation \(\pi\colon S\to S\).
+        \For{$i \in S$}
+          \State $c_i\gets \Enc[Enc](\pk_i, m\concat \vk)$
+        \EndFor
+        \State $C\gets ( c_{\pi(1)}, \dotsc, c_{\pi(|S|)} )$
+        \State $\sigma\gets \Sign[Sign](\ssk, C)$
+        \State \Return $(\vk, C, \sigma)$
+      \EndFunction
+
+      \Function{$\DeBEdec$}{$\mpk, \sk_i, (\vk, C, \sigma)$}
+        \If{$\Sign[Verify](\vk, C, \sigma) = \bot$}
+          \State \Return $\bot$
+        \EndIf
+        \For{$c\in C$}
+          \Comment Trial-and-error decryption
+          \State $M\gets{\Enc[Dec](\sk_i, c)}$
+          \If{$M = \bot$}
+            \State \Return $\bot$
+          \ElsIf{$M = (m, \vk)$}
+            \State \Return $m$
+          \EndIf
+        \EndFor
+        \State \Return $\bot$
+      \EndFunction
+    \end{algorithmic}
+    \caption{\label{DeBEenc}\label{DeBEdec}%
+      An algorithmic overview of the encryption and decryption algorithms in the 
+      \(\DeBE\) scheme, identical to those of \(\ANOBE\).%
+    }
+  \end{figure}
+\end{frame}
 
