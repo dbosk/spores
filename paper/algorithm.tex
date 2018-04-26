@@ -321,7 +321,9 @@ Then, she will have to select a new connected peer, and ask the predecessor of t
 This is fine in scenarii where participating servers only fail sporadically.
 But in our setup, where devices disconnection is a certainty, we need a more robust approach.
 
-We select several relays at each point of the route: $R_i=\{r_{i,j}\}$ would be the \emph{set} of possibly disconnected devices that will take the $i^\text{th}$ position in our onion route.
+We select several relays at each point of the route: $R_i=\{r_{i,j}\}$ would be 
+the \emph{set} of possibly disconnected devices that will take the 
+$i^{\text{th}}$ position in our onion route.
 In traditional onion routing, $r_1$ is the only one knowing the address of $r_2$, because it is written encrypted with its public key in the header.
 Here, every device in the $R_i$ can read the set $R_{i+1}$ in the header, because the symmetric key $sk$ used to encrypt the set $R_{i+1}$ is known to every device in $R_i$.
 The header indeed contains a version of $sk$ for each device $r_{i,j}$, encrypted with its own public key $pk_{r_{i,j}}$.
