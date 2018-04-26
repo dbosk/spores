@@ -19,5 +19,6 @@ default = {
     'n_users': 20,
     'n_file_exchanges': 10,
     'period': timedelta(seconds=1),  # don't put milliseconds!
+    'ping_time': 0.1,  # s
     'send_strategy': 'random',  # 'random' or 'random_connected'
 }

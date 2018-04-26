@@ -12,7 +12,7 @@ import time
 #import random
 
 ADDR_SIZE = 12
-MONITOR_COLUMNS = ['t', 'addr', 'owner',
+MONITOR_COLUMNS = ['t', 'addr', 'owner', 'current_round',
                    'file_id', 'chunk_id', 'type',
                    'sent', 'received', 'forwarded']
 
@@ -31,7 +31,7 @@ class Device(gevent.Greenlet):
         self.gossip_size = conf['gossip_size']
         self.lock = gevent.lock.Semaphore()
         self.monitor = monitor.Monitor(MONITOR_COLUMNS,
-                                       conf['output_dir']+self.addr+'.csv',
+                                       conf['output_dir'], self.addr,
                                        conf['do_monitor'])
         self.net = net
         self.online = gevent.event.Event()
@@ -94,9 +94,10 @@ class Device(gevent.Greenlet):
                     self.monitor.put([time.perf_counter(),
                                       self.addr,
                                       self.owner.name,
+                                      self.owner.get_current_round(),
                                       m.file_id,
                                       m.chunk_id,
-                                      m.type,
+                                      m.type.value,
                                       0,
                                       m.size+self.conf['header_size'],
                                       0])
@@ -118,9 +119,10 @@ class Device(gevent.Greenlet):
                     self.monitor.put([time.perf_counter(),
                                       self.addr,
                                       self.owner.name,
+                                      self.owner.get_current_round(),
                                       m.file_id,
                                       m.chunk_id,
-                                      m.type,
+                                      m.type.value,
                                       0,
                                       m.size+self.conf['header_size'],
                                       0])
@@ -144,9 +146,10 @@ class Device(gevent.Greenlet):
                     self.monitor.put([time.perf_counter(),
                                       self.addr,
                                       self.owner.name,
+                                      self.owner.get_current_round(),
                                       m.file_id,
                                       m.chunk_id,
-                                      m.type,
+                                      m.type.value,
                                       0,
                                       0,
                                       m.size+self.conf['header_size']])
@@ -246,9 +249,10 @@ class Device(gevent.Greenlet):
                 self.monitor.put([time.perf_counter(),
                                   self.addr,
                                   self.owner.name,
+                                  self.owner.get_current_round(),
                                   m.file_id,
                                   m.chunk_id,
-                                  m.type,
+                                  m.type.value,
                                   m.size+self.conf['header_size'],
                                   0,
                                   0])
@@ -272,9 +276,10 @@ class Device(gevent.Greenlet):
             self.monitor.put([time.perf_counter(),
                               self.addr,
                               self.owner.name,
+                              self.owner.get_current_round(),
                               m.file_id,
                               m.chunk_id,
-                              m.type,
+                              m.type.value,
                               m.size+self.conf['header_size'],
                               0,
                               0])

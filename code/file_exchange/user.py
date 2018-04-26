@@ -49,7 +49,6 @@ class User(gevent.Greenlet):
 
         for d in self.devices:
             d.please_die()
-        #print(self.name + " is waiting on his devices to die.")
         gevent.joinall(self.devices)
 
     def update_state(self):
@@ -137,6 +136,12 @@ class User(gevent.Greenlet):
 
     def get_online_device(self):
         return random.choice([d for d in self.devices if d.is_online()])
+
+    def get_current_round(self):
+        self.lock.acquire()
+        r = self.current_round
+        self.lock.release()
+        return r
 
     # Overriding Greenlet
     def __str__(self):

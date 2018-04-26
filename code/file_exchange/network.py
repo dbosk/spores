@@ -7,8 +7,9 @@ import random
 
 def emulate_transfer(header, m, net, conf):
     '''
-    Sleeps the duration of the file transfer ((m.size+header_size)/bandwidth),
-    Then sends the message m to a connected peer in header or fails.
+    Attempts to send m to a node in header.
+    Emulates traffic by sleeping ((m.size+header_size)/bandwidth).
+
 
     header: list of potential peers addresses
     m: the message, a network.Message object
@@ -17,10 +18,10 @@ def emulate_transfer(header, m, net, conf):
 
     Returns True if m was sent, False otherwise'''
 
-    gevent.sleep((m.size+conf['header_size'])/conf['bandwidth'])
-
     if conf['send_strategy'] == 'random':
-        # 1 - Pick a random device; send if online, fail if offline
+        # 1 - Try to send to a random device: we always sleep
+        # Fail if device is offline, else send to dst
+        gevent.sleep((m.size+conf['header_size'])/conf['bandwidth'])
         dst = net.get_device(random.choice(header))
         if dst.is_online():
             dst.receive(m)
@@ -28,12 +29,16 @@ def emulate_transfer(header, m, net, conf):
         return False
 
     elif conf['send_strategy'] == 'random_connected':
-        # 2 - Pick a random *connected* device and send;
-        # Fails if no connected device
+        # 2 - Ping devices to find a random *connected* one.
+        # Fail if no connected device, else send pick device.
         devices = [net.get_device(addr) for addr in header]
+        gevent.sleep(conf['ping_time'])
         connected_devices = [d for d in devices if d.is_online()]
+
         if len(connected_devices) == 0:
             return False
+
+        gevent.sleep((m.size+conf['header_size'])/conf['bandwidth'])
         random.choice(connected_devices).receive(m)
         return True
     else:
