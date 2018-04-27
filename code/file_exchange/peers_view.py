@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import pandas as pd
-from datetime import timedelta, datetime
+import time
 from . import config
 from gevent.lock import Semaphore
 
@@ -89,7 +89,8 @@ class PeersView:
     # Must be called inside lock
     def _prune_view(self):
         # Time-bound
-        expiration_limit = datetime.now() - self.conf['period']
+        expiration_limit = \
+            time.perf_counter() - self.conf['period'].total_seconds()
 
         # print(self._view.index)
         self._view = self._view[self._view.index >= expiration_limit]

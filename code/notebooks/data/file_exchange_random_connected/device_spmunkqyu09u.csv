@@ -1,0 +1,4 @@
+t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success
+167026.52870582,spmunkqyu09u,Brande,1,3n1k98,72,2999457820,2,0,100,0,True
+167141.10753407,spmunkqyu09u,Brande,12,3n1k98,22,3662633829,2,0,100,0,True
+167143.555767061,spmunkqyu09u,Brande,12,3n1k98,76,3573067213,2,0,100,0,True

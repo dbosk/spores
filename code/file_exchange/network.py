@@ -3,6 +3,7 @@
 from enum import Enum
 import gevent
 import random
+import sys
 
 
 def emulate_transfer(header, m, net, conf):
@@ -50,8 +51,15 @@ class MessType(Enum):
     ACK = 2
 
 
+MAX_MESSAGE_ID = 2**16
+
+
 class Message:
-    def __init__(self, header, typ, file_id, chunk_id, size):
+    def __init__(self, header, typ, file_id, chunk_id, size, m_id=None):
+        if m_id is None:
+            self.id = random.randint(0, MAX_MESSAGE_ID)
+        else:
+            self.id = m_id
         self.header = header
         self.type = typ
         self.file_id = file_id

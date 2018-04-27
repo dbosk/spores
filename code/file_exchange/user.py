@@ -1,16 +1,21 @@
 #!/usr/bin/env python3
 
-from . import model, device, config, file, utils
+from . import model, device, config, file, utils, monitor
 import gevent
 import random
+import time
+
+MONITOR_COLUMNS = ['t', 'user', 'current_round']
 
 
 class User(gevent.Greenlet):
     def __init__(self, global_view, net, conf=config.default):
         gevent.Greenlet.__init__(self)
-        self.model = model.get_random()
 
-        # Create devices
+        self.name = utils.random_name()
+
+        # Create model and devices
+        self.model = model.get_random()
         self.n_devices = self.model.n_obs
         self.devices = [None] * self.n_devices
         self.devices_addr = [None] * self.n_devices
@@ -23,7 +28,11 @@ class User(gevent.Greenlet):
 
         self.conf = conf
         self.current_round = None
-        self.name = utils.random_name()
+        self.monitor = monitor.Monitor(
+            MONITOR_COLUMNS,
+            conf['output_dir'],
+            "user_"+self.name,
+            conf['do_monitor'])
 
         # Any user's device can receive chunks
         self.receiving_files = {}
@@ -42,14 +51,23 @@ class User(gevent.Greenlet):
 
         while self.current_round is None or \
                 self.current_round < self.conf['n_rounds'] - 1:
+            t_start = time.perf_counter()
             self.update_state()
 
             # Sleep until next round
-            gevent.sleep(self.conf['period'].total_seconds())
+            gevent.sleep(self.conf['period'].total_seconds() -
+                         (time.perf_counter() - t_start))
+
+            # print("User {}: round #{}/{} in {:.2f}s".format(
+            #     self.name, self.current_round+1,
+            #     self.conf['n_rounds'], time.perf_counter() - t_start))
+
+        self.monitor.save()
 
         for d in self.devices:
             d.please_die()
         gevent.joinall(self.devices)
+        print("User {} is done".format(self.name))
 
     def update_state(self):
         self.lock.acquire()
@@ -63,8 +81,11 @@ class User(gevent.Greenlet):
             self.lock.release()
             return
 
-        # print("User {} is at round #{}/{}".format(
-        #     self.name, self.current_round+1, self.conf['n_rounds']))
+        self.monitor.put([
+            time.perf_counter(),
+            self.name,
+            self.current_round
+        ])
 
         # Update devices' state
         for d_id, is_online in \
@@ -84,12 +105,20 @@ class User(gevent.Greenlet):
             raise Exception(
                 "User {} must do a first round before exchanging files".format(
                     self.name))
+
         d = self.get_online_device()
+        if d is None:
+            self.lock.release()
+            raise Exception("No online devices")
 
         f = file.File(self.conf['file_size'], self.conf['chunk_max_size'])
 
         # route = L_RV + L_k + ... + L_l
-        route = d.build_route("receiver")
+        try:
+            route = d.build_route("receiver")
+        except:
+            self.lock.release()
+            raise
         # H_rdv_forward = (L_RV + L_k + ... + L_l) + L_B (my devices)
         H_rdv_forward = route + [self.get_all_devices_addr()]
         # H_rdv_backward = (L_l + ... + L_k + L_RV)
@@ -118,9 +147,15 @@ class User(gevent.Greenlet):
                     self.name))
 
         d = self.get_online_device()
+        if d is None:
+            self.lock.release()
+            raise Exception("No online devices")
 
-        file_info = d.init_file_send(H_rdv_forward, H_rdv_backward, f)
-        file_info['source_device'] = d
+        try:
+            file_info = d.init_file_send(H_rdv_forward, H_rdv_backward, f)
+        except:
+            self.lock.release()
+            raise
         self.sending_files[f.id] = file_info
         self.lock.release()
 
@@ -135,13 +170,10 @@ class User(gevent.Greenlet):
             1, device_id, self.state_history[self.current_round])[0]
 
     def get_online_device(self):
-        return random.choice([d for d in self.devices if d.is_online()])
-
-    def get_current_round(self):
-        self.lock.acquire()
-        r = self.current_round
-        self.lock.release()
-        return r
+        online_devices = [d for d in self.devices if d.is_online()]
+        if len(online_devices) == 0:
+            return None
+        return random.choice(online_devices)
 
     # Overriding Greenlet
     def __str__(self):

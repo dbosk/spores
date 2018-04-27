@@ -2,16 +2,18 @@
 
 from datetime import timedelta
 
+EXPERIMENT_NAME = 'default'
 default = {
-    'ack_size': 0,  # MB
-    'bandwidth': 10,  # MB/s
-    'chunk_max_size': 2,  # MB, will depend on header size later
-    'file_size': 11,  # MB
+    'ack_size': 0,  # kB
+    'bandwidth': 400,  # kB/s
+    'chunk_max_size': 128,  # kB, will depend on header size later
+    'file_size': 10240,  # kB
     'gossip_size': 20,
-    'header_size': 0.1,  # MB, will depend on #devices/layers later
+    'header_size': 100,  # kB, will depend on #devices/layers later
     'layer_threshold': 0.001,
     'minimum_node_availability': 0,
-    'output_dir': 'outputs/file_exchange/',
+    'experiment_name': EXPERIMENT_NAME,
+    'output_dir': 'data/'+EXPERIMENT_NAME+'/',
     'do_monitor': True,
     'n_file_chunks': 10,
     'n_layers': 3,  # must be odd

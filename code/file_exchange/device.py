@@ -9,12 +9,13 @@ import gevent
 import numpy as np
 import pandas as pd
 import time
-#import random
+# import random
 
 ADDR_SIZE = 12
 MONITOR_COLUMNS = ['t', 'addr', 'owner', 'current_round',
-                   'file_id', 'chunk_id', 'type',
-                   'sent', 'received', 'forwarded']
+                   'file_id', 'chunk_id', 'mess_id', 'type',
+                   'sent', 'received', 'forwarded', 'success',
+                   'messages_in_queue']
 
 
 class Device(gevent.Greenlet):
@@ -31,7 +32,8 @@ class Device(gevent.Greenlet):
         self.gossip_size = conf['gossip_size']
         self.lock = gevent.lock.Semaphore()
         self.monitor = monitor.Monitor(MONITOR_COLUMNS,
-                                       conf['output_dir'], self.addr,
+                                       conf['output_dir'],
+                                       "device_" + self.addr,
                                        conf['do_monitor'])
         self.net = net
         self.online = gevent.event.Event()
@@ -55,28 +57,19 @@ class Device(gevent.Greenlet):
             # online.wait(0.1) return True only if online has been set
             while not self.online.wait(0.1):
                 # Kill the device if death requested
-                if self.death_requested and self.all_files_sent:
+                if self.death_requested and self.all_files_sent and \
+                        self.message_queue.empty():
+                    # if self.death_requested:
                     break
 
             # Kill the device if death requested
-            if self.death_requested and self.all_files_sent:
+            if self.death_requested and self.all_files_sent and \
+                    self.message_queue.empty():
+                # if self.death_requested:
                 break
 
             # Send file chunks I am currently sharing
             self.share_files()
-
-            # self.lock.acquire()
-            # for f_id, file_info in self.sending_files.items():
-            #     if file_info['f'].all_acknowledged():
-            #         continue
-            #         # We never remove a file from sending_files
-            #         #del self.sending_files[f_id]
-
-            #     self.send_chunk(file_info)
-
-            #     if not self.is_online():
-            #         break
-            # self.lock.release()
 
             if not self.is_online():
                 continue
@@ -91,16 +84,7 @@ class Device(gevent.Greenlet):
                 if m.file_id in self.owner.receiving_files and \
                         m.type == network.MessType.CHUNK:
 
-                    self.monitor.put([time.perf_counter(),
-                                      self.addr,
-                                      self.owner.name,
-                                      self.owner.get_current_round(),
-                                      m.file_id,
-                                      m.chunk_id,
-                                      m.type.value,
-                                      0,
-                                      m.size+self.conf['header_size'],
-                                      0])
+                    self.log(m, 'received', True)
 
                     file_info = self.owner.receiving_files[m.file_id]
                     file_info['f'].shared(m.chunk_id)
@@ -116,20 +100,16 @@ class Device(gevent.Greenlet):
                 elif m.file_id in self.owner.sending_files and \
                         m.type == network.MessType.ACK:
 
-                    self.monitor.put([time.perf_counter(),
-                                      self.addr,
-                                      self.owner.name,
-                                      self.owner.get_current_round(),
-                                      m.file_id,
-                                      m.chunk_id,
-                                      m.type.value,
-                                      0,
-                                      m.size+self.conf['header_size'],
-                                      0])
+                    self.log(m, 'received', True)
 
                     # This will update Device.sending_files[file_id] too
+                    f = self.owner.sending_files[m.file_id]['f']
+                    previously_done = f.all_acknowledged()
                     self.owner.sending_files[m.file_id]['f'].acknowledged(
                         m.chunk_id)
+
+                    if not previously_done and f.all_acknowledged():
+                        print("Done receiving file {}!".format(f.id))
 
                     # print("{} (owned by {}) successfully received ACK for "
                     #       "file {}'s chunk #{}".format(
@@ -143,18 +123,9 @@ class Device(gevent.Greenlet):
                     #     del self.owner.sending_files[m.file_id]
 
                 else:
-                    self.monitor.put([time.perf_counter(),
-                                      self.addr,
-                                      self.owner.name,
-                                      self.owner.get_current_round(),
-                                      m.file_id,
-                                      m.chunk_id,
-                                      m.type.value,
-                                      0,
-                                      0,
-                                      m.size+self.conf['header_size']])
                     self.lock.release()
-                    self.send(m)
+                    success = self.send(m)
+                    self.log(m, 'forwarded', success)
 
                 if not self.is_online():
                     break
@@ -169,21 +140,20 @@ class Device(gevent.Greenlet):
 
     # Called from the user's greenlet
     def update_state(self, is_online, p):
-        self.lock.acquire()
         # Set Event according to is_online
         if is_online:
             self.online.set()
         else:
             self.online.clear()
+
         if self.is_online():
             # If online, register to global view
             self.global_view.put(
-                datetime.now(),
+                time.perf_counter(),
                 self.addr,
                 self.type,
                 p
             )
-        self.lock.release()
 
     def init_file_send(self, H_rdv_forward, H_rdv_backward, f):
         self.lock.acquire()
@@ -239,23 +209,14 @@ class Device(gevent.Greenlet):
            # 'file_id', 'chunk_id',
            # 'sent', 'received', 'forwarded']
 
-            # self.send(m)
-            if self.send(m):
+            success = self.send(m)
+            if success:
                 f.shared(chunk_id)
                 # print("{} (owned by {}) successfully sent "
                 #       "file {}'s chunk #{}".format(
                 #           self.addr, self.owner.name,
                 #           f_id, chunk_id))
-                self.monitor.put([time.perf_counter(),
-                                  self.addr,
-                                  self.owner.name,
-                                  self.owner.get_current_round(),
-                                  m.file_id,
-                                  m.chunk_id,
-                                  m.type.value,
-                                  m.size+self.conf['header_size'],
-                                  0,
-                                  0])
+            self.log(m, 'sent', success)
 
             if not self.is_online():
                 return
@@ -270,19 +231,11 @@ class Device(gevent.Greenlet):
             typ=network.MessType.ACK,
             file_id=m.file_id,
             chunk_id=m.chunk_id,
-            size=self.conf['ack_size'])
+            size=self.conf['ack_size'],
+            m_id=m.id)
 
-        if self.send(m):
-            self.monitor.put([time.perf_counter(),
-                              self.addr,
-                              self.owner.name,
-                              self.owner.get_current_round(),
-                              m.file_id,
-                              m.chunk_id,
-                              m.type.value,
-                              m.size+self.conf['header_size'],
-                              0,
-                              0])
+        success = self.send(m)
+        self.log(m, 'sent', success)
 
     def send(self, m):
         header = m.header[0]
@@ -291,6 +244,35 @@ class Device(gevent.Greenlet):
         m.header = m.header[1:] + [m.header[0]]
 
         return network.emulate_transfer(header, m, self.net, self.conf)
+
+    def log(self, m, direction, success):
+        sent, received, forwarded = 0, 0, 0
+        if direction == 'sent':
+            sent = m.size+self.conf['header_size']
+        elif direction == 'received':
+            received = m.size+self.conf['header_size']
+        elif direction == 'forwarded':
+            forwarded = m.size+self.conf['header_size']
+        else:
+            raise ValueError("Invalid direction argument")
+
+        # MONITOR_COLUMNS = ['t', 'addr', 'owner', 'current_round',
+        #                    'file_id', 'chunk_id', 'mess_id', 'type',
+        #                    'sent', 'received', 'forwarded', 'success'
+        #                    'messages_in_queue']
+
+        self.monitor.put([
+            time.perf_counter(),
+            self.addr,
+            self.owner.name,
+            self.owner.current_round,
+            m.file_id,
+            m.chunk_id,
+            m.id,
+            m.type.value,
+            sent, received, forwarded,
+            success,
+            len(self.message_queue)])
 
     # a priori no need lock (only place we use peers_view)
     def build_route(self, role):
@@ -350,6 +332,8 @@ class Device(gevent.Greenlet):
         return route
 
     def random_peer_sampling(self):
+        # print("Now={:.2f}s, global_view=\n{}".format(
+        #     time.perf_counter(), self.global_view._view))
         self.peers_view.insert(
             self.global_view.get_sample(
                 n=self.gossip_size,
