@@ -5,4 +5,19 @@
 % What's the findings? How was it evaluated, what are the results, limitations, 
 % what remains to be done?
 
-\dots
+%abstract
+%problem/topic
+This paper presents privacy-preserving file sharing without relying on any third-party storage such as cloud services or peers. 
+
+%research gap
+Centralized file-sharing systems, i.e. cloud storage such as Dropbox require trust in the service provider and can be monitored. P2P file-sharing relies on replicas on other people's machines. We are interested in minimizing trust needed in other systems and preserving the user's privacy in terms of data and metadata, i.e. what they share with whom and when.
+
+%why now
+Nowadays, many people use multiple devices and it has thus become possible to benefit from p2p technology for one's own devices alone and thus reducing one's exposure to security and privacy vulnerabilities and threats from third parties.
+
+%approach
+We enable onion routing to cope with probabilistic availability of nodes, informed by peer sampling and Hidden Markov Model predictions.
+
+%findings/contributions:
+We benefit from sender-receiver anonymity properties provided by onion routing. We show that even a relatively naive prediction model suffices to share files despite unreliable availability of individual nodes. The same model can potentially be applied for better informed churn handling in other p2p systems. In the case of TOR-like onion routing systems for anonymity, our solution allows the system to include unreliable nodes and take advantage of locality. 
+
