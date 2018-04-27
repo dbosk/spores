@@ -3,9 +3,14 @@
 
 \dots
 
-\subsection{\Aclp*{KEM}}\label{KEM}
+\subsection{Hybrid encryption}\label{KEM}
 
-\dots
+\Iac{HE} scheme is a combination of \iac{PKE} scheme and \iac{SKE} scheme.
+The \ac{PKE} scheme is used as \iac{KEM} to encrypt a symmetric key for the 
+\ac{SKE} scheme.
+Then the \ac{SKE} scheme is used as \iac{DEM} to encrypt the actual data.
+
+Whenever we use \iac{PKE} scheme, we mean to employ it in \iac{HE} scheme.
 
 \subsection{\Acl*{BE}}\label{BE}
 
@@ -72,7 +77,7 @@ See \cref{DeBEsetup} for an algorithmic overview.
 
 \begin{figure}
   \begin{algorithmic}
-    \Require{$\Enc$ is an IND-CCA encryption scheme, $\Sign$ is a one-time 
+    \Require{$\Enc$ is an IND-CCA \ac{PKE} scheme, $\Sign$ is a one-time 
       signature scheme.}
 
     \Function{\DeBEsetup}{$\lambda$}
@@ -121,7 +126,7 @@ The algorithms are illustrated in \cref{DeBEenc,DeBEdec}.
 \begin{frame}
   \begin{figure}
     \begin{algorithmic}
-      \Require{$\Enc$ is an IND-CCA encryption scheme, $\Sign$ is a one-time 
+      \Require{$\Enc$ is an IND-CCA \ac{PKE} scheme, $\Sign$ is a one-time 
         signature scheme.}
 
       \Function{$\DeBEenc$}{$\mpk, m, S$}
