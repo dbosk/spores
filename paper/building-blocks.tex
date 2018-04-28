@@ -99,7 +99,7 @@ See \cref{DeBEsetup} for an algorithmic overview.
 \NewVariable{\ssk}{ssk}
 \NewVariable{\vk}{vk}
 
-\((\vk, C, \sigma)\gets \DeBEenc[\mpk, m, S]\):
+\((\vk, C, \sigma)\gets \DeBEenc[\mpk, S, m]\):
 takes a message \(m\) and a recipient set \(S\), it then encrypts the message 
 for each recipient's key, signs the tuple of all ciphertexts and returns the 
 verification key, ciphertexts and signature.
@@ -129,7 +129,7 @@ The algorithms are illustrated in \cref{DeBEenc,DeBEdec}.
       \Require{$\Enc$ is an IND-CCA \ac{PKE} scheme, $\Sign$ is a one-time 
         signature scheme.}
 
-      \Function{$\DeBEenc$}{$\mpk, m, S$}
+      \Function{$\DeBEenc$}{$\mpk, S, m$}
         \State $(\ssk, \vk)\gets \Sign[Keygen]$
         \State Choose a random permutation \(\pi\colon S\to S\).
         \For{$i \in S$}
