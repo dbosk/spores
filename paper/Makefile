@@ -10,7 +10,7 @@ SRC+= 		algorithm.tex
 SRC+= 		performance.tex
 SRC+= 		related.tex
 
-DEPENDS+= 	bibsp.sty meta.bib osn.bib anon.bib be.bib crypto.bib
+DEPENDS+= 	bibsp.sty meta.bib osn.bib anon.bib be.bib crypto.bib p2p.bib
 DEPENDS+= 	adrien.bib
 DEPENDS+=	figures/*.pdf
 
