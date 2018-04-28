@@ -12,6 +12,10 @@ Since we have an in-package header, each node on the route can infer its
 position on the route.
 \commentDaniel{Maybe this can be solved by issue \#33.}
 
+Since we choose a new key for every file, we have forward secrecy between files.
+\Eg an adversary who compromises either Alice or Bob cannot determine what Alice 
+sent to Bob.
+
 We can choose different properties for \(\Enc*\).
 What makes sense is to choose at least an authenticated encryption 
 scheme~\cite{AuthEncryption}.
