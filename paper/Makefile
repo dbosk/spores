@@ -13,11 +13,13 @@ SRC+=		global-overlay-design.tex
 SRC+= 		message-passing-design.tex
 SRC+=		file-exchange-design.tex
 
+SRC+= 		security-analysis.tex
 SRC+= 		performance.tex
 SRC+= 		related.tex
 SRC+=		conclusion.tex
 
 DEPENDS+= 	bibsp.sty meta.bib osn.bib anon.bib be.bib crypto.bib p2p.bib
+DEPENDS+= 	otrmsg.bib
 DEPENDS+= 	adrien.bib
 DEPENDS+=	figures/*.pdf
 
