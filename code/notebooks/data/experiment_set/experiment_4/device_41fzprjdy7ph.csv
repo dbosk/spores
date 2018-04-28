@@ -1,0 +1,13 @@
+t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+188425.21496071,41fzprjdy7ph,Reita,53,5a34zk,76,51832,1,0,0,228,True,0
+188426.68455128,41fzprjdy7ph,Reita,53,5a34zk,62,30082,1,0,0,228,True,0
+188427.176379784,41fzprjdy7ph,Reita,53,5a34zk,76,51832,2,0,0,100,True,0
+188428.830368901,41fzprjdy7ph,Reita,53,5a34zk,7,28842,1,0,0,228,True,1
+188429.200253202,41fzprjdy7ph,Reita,53,5a34zk,62,30082,2,0,0,100,True,1
+188429.904390044,41fzprjdy7ph,Reita,53,5a34zk,67,27578,1,0,0,228,True,0
+188431.022826022,41fzprjdy7ph,Reita,53,5a34zk,53,1687,1,0,0,228,True,1
+188431.38531789,41fzprjdy7ph,Reita,53,5a34zk,7,28842,2,0,0,100,True,0
+188432.712475032,41fzprjdy7ph,Reita,53,5a34zk,21,26706,1,0,0,228,True,1
+188433.444575454,41fzprjdy7ph,Reita,54,5a34zk,69,57213,1,0,0,228,True,0
+188434.186005732,41fzprjdy7ph,Reita,54,5a34zk,23,65232,1,0,0,228,True,0
+188436.033159729,41fzprjdy7ph,Reita,54,5a34zk,23,65232,2,0,0,100,True,0

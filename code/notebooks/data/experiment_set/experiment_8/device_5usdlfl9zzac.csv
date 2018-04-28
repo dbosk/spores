@@ -1,0 +1,3 @@
+t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+189813.173453153,5usdlfl9zzac,Cordia,11,bz8tbo,46,47362,1,0,228,0,True,0
+189813.548962054,5usdlfl9zzac,Cordia,11,bz8tbo,46,47362,2,100,0,0,True,0

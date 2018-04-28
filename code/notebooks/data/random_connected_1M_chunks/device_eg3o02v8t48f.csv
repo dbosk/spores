@@ -1,0 +1,2 @@
+t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+195334.520456451,eg3o02v8t48f,Kaci,10,jgvbrz,5,57139,2,0,100,0,True,0

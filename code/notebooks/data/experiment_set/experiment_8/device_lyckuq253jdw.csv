@@ -1,0 +1,12 @@
+t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+189724.91646048,lyckuq253jdw,Annelle,2,gkjg4a,26,52458,2,0,100,0,True,0
+189747.141724786,lyckuq253jdw,Annelle,4,gkjg4a,62,62809,2,0,100,0,True,0
+189752.563692253,lyckuq253jdw,Annelle,5,gkjg4a,37,30165,2,0,100,0,True,0
+189765.039469082,lyckuq253jdw,Annelle,6,gkjg4a,63,20984,2,0,100,0,True,0
+189765.766658708,lyckuq253jdw,Annelle,6,gkjg4a,11,39365,2,0,100,0,True,0
+189767.099768113,lyckuq253jdw,Annelle,6,gkjg4a,3,45154,2,0,100,0,True,0
+189771.997829118,lyckuq253jdw,Annelle,7,gkjg4a,32,4230,2,0,100,0,True,0
+189804.592611871,lyckuq253jdw,Annelle,10,gkjg4a,73,64071,2,0,100,0,True,0
+189818.6750166,lyckuq253jdw,Annelle,11,gkjg4a,38,27096,2,0,100,0,True,0
+189824.534677007,lyckuq253jdw,Annelle,12,gkjg4a,8,58869,2,0,100,0,True,0
+189843.188849627,lyckuq253jdw,Annelle,14,gkjg4a,74,3455,2,0,100,0,True,0

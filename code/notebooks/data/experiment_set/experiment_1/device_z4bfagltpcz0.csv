@@ -1,0 +1,14 @@
+t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+187923.055168022,z4bfagltpcz0,Julianna,3,a6cerv,33,6605,1,0,228,0,True,0
+187923.4567057,z4bfagltpcz0,Julianna,3,a6cerv,33,6605,2,100,0,0,True,1
+187923.464149645,z4bfagltpcz0,Julianna,3,9j2eq8,25,30025,2,0,100,0,True,0
+187954.323234367,z4bfagltpcz0,Julianna,6,a6cerv,4,29247,1,0,228,0,True,0
+187954.713130035,z4bfagltpcz0,Julianna,6,a6cerv,4,29247,2,100,0,0,True,0
+187956.097799453,z4bfagltpcz0,Julianna,6,9j2eq8,76,7760,2,0,100,0,True,0
+187960.758798704,z4bfagltpcz0,Julianna,6,9j2eq8,20,40291,2,0,100,0,True,0
+188023.584080047,z4bfagltpcz0,Julianna,13,9j2eq8,13,18230,2,0,100,0,True,0
+188029.749971733,z4bfagltpcz0,Julianna,13,9j2eq8,5,25903,2,0,100,0,True,0
+188153.097438377,z4bfagltpcz0,Julianna,26,a6cerv,30,14326,1,0,228,0,True,0
+188153.493760952,z4bfagltpcz0,Julianna,26,a6cerv,30,14326,2,100,0,0,True,0
+188154.581469486,z4bfagltpcz0,Julianna,26,a6cerv,77,19887,1,0,228,0,True,0
+188154.957495918,z4bfagltpcz0,Julianna,26,a6cerv,77,19887,2,100,0,0,True,0

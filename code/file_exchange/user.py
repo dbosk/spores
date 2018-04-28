@@ -5,7 +5,7 @@ import gevent
 import random
 import time
 
-MONITOR_COLUMNS = ['t', 'user', 'current_round']
+MONITOR_COLUMNS = ['t', 'experiment_id', 'user', 'current_round']
 
 
 class User(gevent.Greenlet):
@@ -28,6 +28,7 @@ class User(gevent.Greenlet):
 
         self.conf = conf
         self.current_round = None
+        self.death_requested = False
         self.monitor = monitor.Monitor(
             MONITOR_COLUMNS,
             conf['output_dir'],
@@ -49,25 +50,32 @@ class User(gevent.Greenlet):
         for d in self.devices:
             d.start()
 
-        while self.current_round is None or \
-                self.current_round < self.conf['n_rounds'] - 1:
+        while (not self.death_requested) and \
+            (self.current_round is None or
+             self.current_round < self.conf['n_rounds'] - 1):
             t_start = time.perf_counter()
             self.update_state()
 
             # Sleep until next round
+
             gevent.sleep(self.conf['period'].total_seconds() -
                          (time.perf_counter() - t_start))
 
-            # print("User {}: round #{}/{} in {:.2f}s".format(
+            # print("User {}: round #{}/{} in {:.2f}s (die={})".format(
             #     self.name, self.current_round+1,
-            #     self.conf['n_rounds'], time.perf_counter() - t_start))
+            #     self.conf['n_rounds'], time.perf_counter() - t_start,
+            #     self.death_requested))
 
         self.monitor.save()
 
         for d in self.devices:
             d.please_die()
+
         gevent.joinall(self.devices)
-        print("User {} is done".format(self.name))
+        print("User {} is done.".format(self.name))
+
+    def please_die(self):
+        self.death_requested = True
 
     def update_state(self):
         self.lock.acquire()
@@ -83,6 +91,7 @@ class User(gevent.Greenlet):
 
         self.monitor.put([
             time.perf_counter(),
+            self.conf['experiment_id'],
             self.name,
             self.current_round
         ])
@@ -111,7 +120,7 @@ class User(gevent.Greenlet):
             self.lock.release()
             raise Exception("No online devices")
 
-        f = file.File(self.conf['file_size'], self.conf['chunk_max_size'])
+        f = file.File(self.conf)
 
         # route = L_RV + L_k + ... + L_l
         try:
@@ -125,8 +134,13 @@ class User(gevent.Greenlet):
         H_rdv_backward = route[::-1]
 
         # This exchange is out of band
-        forward_route, backward_route = remote_user.init_file_send(
-            H_rdv_forward, H_rdv_backward, f.copy())
+        # But can fail, in which case we cancel the file exchange
+        try:
+            forward_route, backward_route = remote_user.init_file_send(
+                H_rdv_forward, H_rdv_backward, f.copy())
+        except:
+            self.lock.release()
+            raise
 
         self.receiving_files[f.id] = {
             'f': f,

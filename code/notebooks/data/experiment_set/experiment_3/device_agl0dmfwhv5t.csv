@@ -1,0 +1,2 @@
+t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+188148.507894729,agl0dmfwhv5t,Lavette,25,zn5lx9,22,24783,2,0,100,0,True,0

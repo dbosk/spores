@@ -1,0 +1,5 @@
+t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+195284.567784,39p00kizi8c4,Kaci,5,jgvbrz,9,59219,2,0,100,0,True,0
+195315.077544283,39p00kizi8c4,Kaci,8,l1pi28,5,15681,2,0,100,0,True,0
+195374.442162079,39p00kizi8c4,Kaci,14,jgvbrz,6,22780,2,0,100,0,True,0
+195380.874189586,39p00kizi8c4,Kaci,15,jgvbrz,6,20900,2,0,100,0,True,0

@@ -1,0 +1,4 @@
+t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+188584.090597767,9bcrq9f13j7u,Reita,8,w8wa4o,32,41684,2,0,100,0,True,0
+188590.244737297,9bcrq9f13j7u,Reita,9,w8wa4o,44,35663,2,0,100,0,True,0
+188597.83282198,9bcrq9f13j7u,Reita,10,w8wa4o,68,45777,2,0,100,0,True,0

@@ -1,0 +1,3 @@
+t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+197754.510584031,wrm15mhv4p7u,Cordia,5,ta2g7e,0,33519,2,0,100,0,True,1
+197754.514245122,wrm15mhv4p7u,Cordia,5,ta2g7e,8,47902,2,0,100,0,True,0

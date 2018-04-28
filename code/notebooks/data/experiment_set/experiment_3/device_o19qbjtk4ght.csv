@@ -1,0 +1,7 @@
+t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+187955.444492734,o19qbjtk4ght,Annelle,6,9gelp6,2,50487,1,0,228,0,True,0
+187955.833098708,o19qbjtk4ght,Annelle,6,9gelp6,2,50487,2,100,0,0,True,0
+187956.259133856,o19qbjtk4ght,Annelle,6,9gelp6,21,52231,1,0,228,0,True,0
+187956.650530138,o19qbjtk4ght,Annelle,6,9gelp6,21,52231,2,100,0,0,True,0
+187957.00673069,o19qbjtk4ght,Annelle,6,9gelp6,68,57115,1,0,228,0,True,0
+187957.4033937,o19qbjtk4ght,Annelle,6,9gelp6,68,57115,2,100,0,0,True,0

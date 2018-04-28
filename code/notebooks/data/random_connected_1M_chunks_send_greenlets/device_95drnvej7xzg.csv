@@ -1,0 +1,15 @@
+t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+197743.089326926,95drnvej7xzg,Cordia,4,3jwruh,2,6012,2,0,0,100,True,1
+197743.093348356,95drnvej7xzg,Cordia,4,3jwruh,9,20806,2,0,0,100,True,0
+197746.048353854,95drnvej7xzg,Cordia,4,3jwruh,8,21150,2,0,0,100,True,4
+197746.053024495,95drnvej7xzg,Cordia,4,3jwruh,3,47168,2,0,0,100,True,3
+197746.059783953,95drnvej7xzg,Cordia,4,3jwruh,0,15367,2,0,0,100,True,2
+197746.064456137,95drnvej7xzg,Cordia,4,3jwruh,1,7604,2,0,0,100,True,1
+197746.068705924,95drnvej7xzg,Cordia,4,3jwruh,8,51680,2,0,0,100,True,0
+197754.465271634,95drnvej7xzg,Cordia,5,3jwruh,8,63349,2,0,0,100,True,3
+197754.472961305,95drnvej7xzg,Cordia,5,3jwruh,0,6345,2,0,0,100,True,2
+197754.478227926,95drnvej7xzg,Cordia,5,3jwruh,4,17069,2,0,0,100,True,1
+197754.483630398,95drnvej7xzg,Cordia,5,3jwruh,7,44876,2,0,0,100,True,0
+197755.967363412,95drnvej7xzg,Cordia,5,3jwruh,7,27799,1,0,0,1124,True,2
+197755.971689033,95drnvej7xzg,Cordia,5,3jwruh,7,16678,1,0,0,1124,True,1
+197755.976056804,95drnvej7xzg,Cordia,5,3jwruh,7,6710,1,0,0,1124,True,0

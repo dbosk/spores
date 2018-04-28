@@ -1,0 +1,5 @@
+t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+193561.283275971,zo7h4qkvxzup,Demetra,9,b3x35q,3,41162,2,0,100,0,True,0
+193567.415329819,zo7h4qkvxzup,Demetra,9,b3x35q,12,26483,2,0,100,0,True,0
+193635.919250719,zo7h4qkvxzup,Demetra,16,t0sxae,46,36744,1,0,228,0,True,0
+193636.286001244,zo7h4qkvxzup,Demetra,16,t0sxae,46,36744,2,100,0,0,True,0

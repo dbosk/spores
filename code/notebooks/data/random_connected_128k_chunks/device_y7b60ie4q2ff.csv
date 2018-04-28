@@ -1,0 +1,7 @@
+t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+193480.138560881,y7b60ie4q2ff,Kaci,1,fki02z,36,64369,2,0,100,0,True,0
+193485.423134105,y7b60ie4q2ff,Kaci,1,fki02z,61,26483,2,0,100,0,True,0
+193575.456487531,y7b60ie4q2ff,Kaci,10,fki02z,17,27361,2,0,100,0,True,0
+193679.249170342,y7b60ie4q2ff,Kaci,21,fki02z,6,40324,2,0,100,0,True,0
+193680.930358691,y7b60ie4q2ff,Kaci,21,fki02z,58,32148,2,0,100,0,True,0
+193682.364146815,y7b60ie4q2ff,Kaci,21,fki02z,19,59732,2,0,100,0,True,0

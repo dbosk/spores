@@ -1,0 +1,8 @@
+t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+195259.45004053,zpga3ihj928c,Kaci,2,l1pi28,2,14812,2,0,100,0,True,0
+195301.804823024,zpga3ihj928c,Kaci,7,jgvbrz,0,14348,2,0,100,0,True,0
+195302.824141612,zpga3ihj928c,Kaci,7,l1pi28,6,42645,2,0,100,0,True,0
+195327.616556958,zpga3ihj928c,Kaci,9,jgvbrz,7,21242,2,0,100,0,True,0
+195345.865282705,zpga3ihj928c,Kaci,11,l1pi28,7,10771,2,0,100,0,True,0
+195363.488928898,zpga3ihj928c,Kaci,13,jgvbrz,1,3316,2,0,100,0,True,0
+195385.356742391,zpga3ihj928c,Kaci,15,l1pi28,0,44187,2,0,100,0,True,0

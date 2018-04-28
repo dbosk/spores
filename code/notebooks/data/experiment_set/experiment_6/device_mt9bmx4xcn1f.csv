@@ -1,0 +1,4 @@
+t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+188665.711694483,mt9bmx4xcn1f,Brande,17,pq7qgc,12,18283,1,0,0,228,True,0
+188668.951922392,mt9bmx4xcn1f,Brande,17,pq7qgc,12,18283,2,0,0,100,True,0
+188758.205948982,mt9bmx4xcn1f,Brande,26,qxpuuk,61,36257,2,0,100,0,True,0

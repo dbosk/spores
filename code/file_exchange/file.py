@@ -3,6 +3,7 @@
 from copy import deepcopy
 import numpy as np
 from .utils import random_string
+import random
 
 
 FILE_ID_SIZE = 6
@@ -10,14 +11,16 @@ FILE_ID_SIZE = 6
 
 # We use this class to represent files to share and files to receive
 class File:
-    def __init__(self, size, chunk_max_size):
+    def __init__(self, conf):
         self.id = random_string(FILE_ID_SIZE)
-        self.size = size
+        self.size = random.randint(
+            conf['min_file_size'], conf['max_file_size'])
 
         # Computing size of chunks
         self.chunks_size = []
+        size = self.size
         while size > 0:
-            chunk_size = min(size, chunk_max_size)
+            chunk_size = min(size, conf['chunk_max_size'])
             size -= chunk_size
             self.chunks_size.append(chunk_size)
 

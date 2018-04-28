@@ -1,0 +1,3 @@
+t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+195321.285297412,7zcjx4s0d7em,Lavette,9,oud02s,1,40120,1,0,1124,0,True,0
+195321.663248204,7zcjx4s0d7em,Lavette,9,oud02s,1,40120,2,100,0,0,True,0

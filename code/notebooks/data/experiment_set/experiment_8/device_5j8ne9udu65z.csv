@@ -1,0 +1,12 @@
+t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+189833.070739029,5j8ne9udu65z,Adaline,13,ghmjsd,11,46292,2,0,0,100,True,1
+189833.434745025,5j8ne9udu65z,Adaline,13,ghmjsd,11,46078,2,0,0,100,True,1
+189834.12698827,5j8ne9udu65z,Adaline,13,bnovkv,47,59952,1,0,0,228,True,0
+189836.415570468,5j8ne9udu65z,Adaline,13,bnovkv,19,16273,2,0,0,100,True,0
+189851.360127496,5j8ne9udu65z,Adaline,15,bnovkv,20,62658,2,0,0,100,True,0
+189852.41052826,5j8ne9udu65z,Adaline,15,bnovkv,20,16593,2,0,0,100,True,1
+189852.78283327,5j8ne9udu65z,Adaline,15,bnovkv,20,56749,2,0,0,100,True,1
+189853.14693379,5j8ne9udu65z,Adaline,15,bnovkv,20,57441,2,0,0,100,True,1
+189853.512645854,5j8ne9udu65z,Adaline,15,bnovkv,20,23075,2,0,0,100,True,0
+189854.608598422,5j8ne9udu65z,Adaline,15,bnovkv,20,50831,2,0,0,100,True,1
+189854.970173213,5j8ne9udu65z,Adaline,15,bnovkv,20,40598,2,0,0,100,True,0

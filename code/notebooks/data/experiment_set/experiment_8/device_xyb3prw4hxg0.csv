@@ -1,0 +1,4 @@
+t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+189737.094929349,xyb3prw4hxg0,Beatriz,3,ghmjsd,71,46377,2,0,100,0,True,0
+189738.286590437,xyb3prw4hxg0,Beatriz,3,ghmjsd,58,69,2,0,100,0,True,0
+189808.464556262,xyb3prw4hxg0,Beatriz,10,ghmjsd,0,52546,2,0,100,0,True,0

@@ -1,0 +1,10 @@
+t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+193599.221082787,yxjd6u868itb,Gloria,13,z3cndz,63,55218,2,0,100,0,True,0
+193605.857181235,yxjd6u868itb,Gloria,13,mgjzm2,44,65044,1,0,228,0,True,0
+193606.235703363,yxjd6u868itb,Gloria,13,mgjzm2,44,65044,2,100,0,0,True,0
+193606.897110863,yxjd6u868itb,Gloria,13,z3cndz,5,55300,2,0,100,0,True,0
+193619.682618465,yxjd6u868itb,Gloria,15,5hvjk9,65,29697,2,0,100,0,True,0
+193620.008017789,yxjd6u868itb,Gloria,15,mgjzm2,44,57376,1,0,228,0,True,0
+193620.37644308,yxjd6u868itb,Gloria,15,mgjzm2,44,57376,2,100,0,0,True,0
+193745.004980054,yxjd6u868itb,Gloria,27,mgjzm2,16,65006,1,0,228,0,True,0
+193745.385003203,yxjd6u868itb,Gloria,27,mgjzm2,16,65006,2,100,0,0,True,0

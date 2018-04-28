@@ -1,0 +1,7 @@
+t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+189706.583111471,lh4ynv87q8gc,Kandi,0,zz30re,46,3917,2,0,100,0,True,0
+189736.119080984,lh4ynv87q8gc,Kandi,3,zz30re,33,23762,2,0,100,0,True,0
+189736.197315768,lh4ynv87q8gc,Kandi,3,zz30re,7,16410,2,0,100,0,True,0
+189737.610225202,lh4ynv87q8gc,Kandi,3,zz30re,44,62950,2,0,100,0,True,0
+189780.380878606,lh4ynv87q8gc,Kandi,8,zz30re,59,7468,2,0,100,0,True,0
+189780.467711486,lh4ynv87q8gc,Kandi,8,zz30re,59,54471,2,0,100,0,True,0

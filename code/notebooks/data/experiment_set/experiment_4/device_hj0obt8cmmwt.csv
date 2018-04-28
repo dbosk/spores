@@ -1,0 +1,3 @@
+t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+187970.439784287,hj0obt8cmmwt,Livia,7,9zghdu,50,56189,2,0,100,0,True,0
+188202.294107885,hj0obt8cmmwt,Livia,31,9zghdu,79,16227,2,0,100,0,True,0

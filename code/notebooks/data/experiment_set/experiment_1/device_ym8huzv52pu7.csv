@@ -1,0 +1,5 @@
+t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+187904.807998759,ym8huzv52pu7,Elvera,1,9j2eq8,28,29655,1,0,228,0,True,0
+187905.205873886,ym8huzv52pu7,Elvera,1,9j2eq8,28,29655,2,100,0,0,True,0
+187921.890674514,ym8huzv52pu7,Elvera,3,9j2eq8,30,3997,1,0,228,0,True,0
+187922.448412797,ym8huzv52pu7,Elvera,3,9j2eq8,30,3997,2,100,0,0,True,0

@@ -1,0 +1,7 @@
+t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+188503.592635224,qhtf1zsc8e4y,Sherie,0,s6rusd,39,51030,1,0,0,228,True,0
+188652.418630731,qhtf1zsc8e4y,Sherie,15,zj8cf9,44,4990,2,0,100,0,True,0
+188653.35398501,qhtf1zsc8e4y,Sherie,15,s6rusd,13,49862,1,0,0,228,True,0
+188935.497253372,qhtf1zsc8e4y,Sherie,44,s6rusd,40,64572,1,0,0,228,True,0
+188942.972405819,qhtf1zsc8e4y,Sherie,44,zj8cf9,16,50374,2,0,100,0,True,0
+188946.501396029,qhtf1zsc8e4y,Sherie,45,zj8cf9,16,48457,2,0,100,0,True,0

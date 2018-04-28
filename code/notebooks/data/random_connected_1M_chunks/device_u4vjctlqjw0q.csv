@@ -1,0 +1,7 @@
+t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+195294.903452396,u4vjctlqjw0q,Jayne,6,erq6gf,4,9953,2,0,100,0,True,0
+195321.579302318,u4vjctlqjw0q,Jayne,9,erq6gf,2,54901,2,0,100,0,True,0
+195327.151001917,u4vjctlqjw0q,Jayne,9,tts8aj,6,42701,1,0,1124,0,True,0
+195327.523734993,u4vjctlqjw0q,Jayne,9,tts8aj,6,42701,2,100,0,0,True,0
+195383.871631304,u4vjctlqjw0q,Jayne,15,l1pi28,0,44187,1,0,1124,0,True,0
+195384.24346441,u4vjctlqjw0q,Jayne,15,l1pi28,0,44187,2,100,0,0,True,0

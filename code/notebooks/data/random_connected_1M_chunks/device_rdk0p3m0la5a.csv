@@ -1,0 +1,7 @@
+t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+195253.514638314,rdk0p3m0la5a,Cristina,2,w3vp8g,8,40868,2,0,100,0,True,0
+195262.765206988,rdk0p3m0la5a,Cristina,3,8g7lj7,1,62723,1,0,1124,0,True,0
+195263.126042041,rdk0p3m0la5a,Cristina,3,8g7lj7,1,62723,2,100,0,0,True,0
+195349.206731886,rdk0p3m0la5a,Cristina,11,w3vp8g,5,8190,2,0,100,0,True,0
+195359.795445354,rdk0p3m0la5a,Cristina,12,w3vp8g,5,39846,2,0,100,0,True,0
+195385.361109601,rdk0p3m0la5a,Cristina,15,w3vp8g,6,5346,2,0,100,0,True,0

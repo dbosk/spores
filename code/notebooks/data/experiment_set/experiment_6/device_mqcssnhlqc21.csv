@@ -1,0 +1,5 @@
+t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+188546.035321985,mqcssnhlqc21,Rick,5,3nnais,5,53470,2,0,100,0,True,0
+188564.187676773,mqcssnhlqc21,Rick,6,3nnais,71,3254,2,0,100,0,True,0
+188589.684376154,mqcssnhlqc21,Rick,9,3nnais,36,29170,2,0,100,0,True,0
+188697.906964426,mqcssnhlqc21,Rick,20,3nnais,47,18257,2,0,100,0,True,0

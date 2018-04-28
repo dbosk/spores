@@ -255,12 +255,12 @@ def get_random():
             p = 0.6 + 0.4 * np.random.sample(n_states)
         elif device_type == 'portable':
             # Portable is more or less available with varying probability
-            p = 0.1 + 0.7 * np.random.sample(n_states)
+            p = 0.2 + 0.6 * np.random.sample(n_states)
         elif device_type == 'fixed':
             # Fixed is only available in one place ...
             p = np.zeros(n_states, dtype=np.float64)
             # ... with 0.4 to 1 probability
-            p[random.choice([0, 2])] = 0.2 + 0.8 * np.random.sample()
+            p[random.choice([0, 2])] = 0.4 + 0.4 * np.random.sample()
         elif device_type == 'server':
             # Server has high availability regardless of the user's location
             p = [0.9 + 0.1 * np.random.sample()] * n_states

@@ -1,0 +1,5 @@
+t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+189132.052167711,3n3gfopslg8r,Isaura,3,e4vh3n,59,9083,2,0,100,0,True,0
+189143.378894455,3n3gfopslg8r,Isaura,4,e4vh3n,53,49970,2,0,100,0,True,0
+189217.630624956,3n3gfopslg8r,Isaura,12,e4vh3n,64,47491,2,0,100,0,True,0
+189223.938474874,3n3gfopslg8r,Isaura,12,e4vh3n,48,31963,2,0,100,0,True,0

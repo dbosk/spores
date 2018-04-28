@@ -12,9 +12,9 @@ import time
 # import random
 
 ADDR_SIZE = 12
-MONITOR_COLUMNS = ['t', 'addr', 'owner', 'current_round',
-                   'file_id', 'chunk_id', 'mess_id', 'type',
-                   'sent', 'received', 'forwarded', 'success',
+MONITOR_COLUMNS = ['t', 'experiment_id', 'addr', 'owner',
+                   'current_round', 'file_id', 'chunk_id', 'mess_id',
+                   'type', 'sent', 'received', 'forwarded', 'success',
                    'messages_in_queue']
 
 
@@ -57,15 +57,11 @@ class Device(gevent.Greenlet):
             # online.wait(0.1) return True only if online has been set
             while not self.online.wait(0.1):
                 # Kill the device if death requested
-                if self.death_requested and self.all_files_sent and \
-                        self.message_queue.empty():
-                    # if self.death_requested:
+                if self.should_die():
                     break
 
             # Kill the device if death requested
-            if self.death_requested and self.all_files_sent and \
-                    self.message_queue.empty():
-                # if self.death_requested:
+            if self.should_die():
                 break
 
             # Send file chunks I am currently sharing
@@ -138,6 +134,11 @@ class Device(gevent.Greenlet):
     def please_die(self):
         self.death_requested = True
 
+    def should_die(self):
+        return self.death_requested
+        # return self.death_requested and self.all_files_sent and \
+        #             self.message_queue.empty()
+
     # Called from the user's greenlet
     def update_state(self, is_online, p):
         # Set Event according to is_online
@@ -155,28 +156,7 @@ class Device(gevent.Greenlet):
                 p
             )
 
-    def init_file_send(self, H_rdv_forward, H_rdv_backward, f):
-        self.lock.acquire()
-        # route = L_i + ... + L_j
-        route = self.build_route("sender")
-        # forward_route = (L_i + ... + L_j) + (L_RV + L_k + ... + L_l + L_B)
-        forward_route = route + H_rdv_forward
-        # backward_route = (L_l + ... + L_k + L_RV) + (L_j + ... + L_i) + L_A
-        backward_route = H_rdv_backward + \
-            route[::-1] + [self.owner.get_all_devices_addr()]
-
-        print("Device {} (owned by {}) will send file {}".format(
-            self.addr, self.owner.name, f.id))
-
-        self.sending_files[f.id] = {
-            'f': f,
-            'forward_route': forward_route,
-            'backward_route': backward_route,
-        }
-        self.lock.release()
-
-        return self.sending_files[f.id]
-
+    ### Messages exchange ###
     def share_files(self):
         if len(self.sending_files) == 0:
             return
@@ -221,7 +201,6 @@ class Device(gevent.Greenlet):
             if not self.is_online():
                 return
 
-    ### Messages exchange ###
     def receive(self, m):
         self.message_queue.put(m)
 
@@ -243,8 +222,11 @@ class Device(gevent.Greenlet):
         # Rotate the headers so that next layer is at m.header[0]
         m.header = m.header[1:] + [m.header[0]]
 
-        return network.emulate_transfer(header, m, self.net, self.conf)
+        gevent.spawn(network.emulate_transfer, header, m, self.net, self.conf)
 
+        return True
+
+    ### Logging to monitor ###
     def log(self, m, direction, success):
         sent, received, forwarded = 0, 0, 0
         if direction == 'sent':
@@ -263,6 +245,7 @@ class Device(gevent.Greenlet):
 
         self.monitor.put([
             time.perf_counter(),
+            self.conf['experiment_id'],
             self.addr,
             self.owner.name,
             self.owner.current_round,
@@ -273,6 +256,29 @@ class Device(gevent.Greenlet):
             sent, received, forwarded,
             success,
             len(self.message_queue)])
+
+    # File exchange initialization
+    def init_file_send(self, H_rdv_forward, H_rdv_backward, f):
+        self.lock.acquire()
+        # route = L_i + ... + L_j
+        route = self.build_route("sender")
+        # forward_route = (L_i + ... + L_j) + (L_RV + L_k + ... + L_l + L_B)
+        forward_route = route + H_rdv_forward
+        # backward_route = (L_l + ... + L_k + L_RV) + (L_j + ... + L_i) + L_A
+        backward_route = H_rdv_backward + \
+            route[::-1] + [self.owner.get_all_devices_addr()]
+
+        # print("Device {} (owned by {}) will send file {}".format(
+        #     self.addr, self.owner.name, f.id))
+
+        self.sending_files[f.id] = {
+            'f': f,
+            'forward_route': forward_route,
+            'backward_route': backward_route,
+        }
+        self.lock.release()
+
+        return self.sending_files[f.id]
 
     # a priori no need lock (only place we use peers_view)
     def build_route(self, role):
@@ -331,6 +337,7 @@ class Device(gevent.Greenlet):
 
         return route
 
+    ### Kinda getters ####
     def random_peer_sampling(self):
         # print("Now={:.2f}s, global_view=\n{}".format(
         #     time.perf_counter(), self.global_view._view))

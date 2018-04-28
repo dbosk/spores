@@ -1,0 +1,8 @@
+t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+187932.428211512,yidgje353rvr,Bobbi,4,xuieka,44,1604,2,0,100,0,True,0
+187937.415665488,yidgje353rvr,Bobbi,4,xuieka,0,37832,2,0,100,0,True,0
+187959.716240143,yidgje353rvr,Bobbi,6,xuieka,40,19158,2,0,100,0,True,0
+187970.498755412,yidgje353rvr,Bobbi,7,xuieka,19,27843,2,0,100,0,True,0
+187984.608165242,yidgje353rvr,Bobbi,9,xuieka,45,37183,2,0,100,0,True,0
+188002.07730421,yidgje353rvr,Bobbi,10,xuieka,14,15146,2,0,100,0,True,0
+188004.664771894,yidgje353rvr,Bobbi,11,xuieka,9,25124,2,0,100,0,True,0

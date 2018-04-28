@@ -7,7 +7,7 @@ import gevent
 
 
 NAMES = ['Cristy', 'Vickey', 'Sherie', 'Delilah', 'Rick', 'Denver', 'Stephany',
-         'Many', 'Sandie', 'Deneen', 'Jesica', 'Newton', 'Maxwell', 'Morty',
+         'Many', 'Sandie', 'Daniel', 'Jessica', 'Newton', 'Maxwell', 'Morty',
          'Beatriz', 'Georgene', 'Herma', 'Mi', 'Bobbi', 'Julianna', 'Reita',
          'Kandi', 'Karlene', 'Lila', 'Nelly', 'Sibyl', 'Kermit', 'Luke',
          'Annabel', 'Moira', 'Hassie', 'Gilda', 'Vicki', 'Gloria', 'Kaci',
@@ -16,8 +16,8 @@ NAMES = ['Cristy', 'Vickey', 'Sherie', 'Delilah', 'Rick', 'Denver', 'Stephany',
          'Norene', 'Toshiko', 'Maurita', 'Angelika', 'Ann', 'Bennie',
          'Randolph', 'Temika', 'Evelyne', 'Betty', 'Athena', 'Shawnda',
          'Magdalen', 'Benjamin', 'Lorine', 'Morgan', 'Tim', 'Elinor', 'Cordia',
-         'Jay Z', 'Brian', 'Broderick', 'Janise', 'Nadia', 'Delaine', 'Vonnie',
-         'Adaline', 'Leigh', 'Consuelo', 'Janetta', 'Isaura', 'Elvera', 'Jack',
+         'Jay Z', 'Brian', 'Broderick', 'Janis', 'Nadia', 'Delaine', 'Vonnie',
+         'Adaline', 'Leigh', 'Consuelo', 'Patty', 'Isaura', 'Elvera', 'Jack',
          'Cristina', 'Charissa', 'Kaylee', 'Britany', 'Jayne', 'Yuriko',
          'Annelle', 'Twila', 'January', 'Jillian', 'Jean Panda', 'Daisy', 'Mazie',
          'Bronwyn', 'Otha', 'Shane', 'Brande', 'Renna']

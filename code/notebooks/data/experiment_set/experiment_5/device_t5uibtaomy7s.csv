@@ -1,0 +1,11 @@
+t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+188520.044714582,t5uibtaomy7s,Maurita,2,w8wa4o,30,31253,1,0,228,0,True,0
+188520.430759774,t5uibtaomy7s,Maurita,2,w8wa4o,30,31253,2,100,0,0,True,0
+188559.747780043,t5uibtaomy7s,Maurita,6,w8wa4o,24,58632,1,0,228,0,True,0
+188560.154791274,t5uibtaomy7s,Maurita,6,w8wa4o,24,58632,2,100,0,0,True,0
+188561.197274691,t5uibtaomy7s,Maurita,6,w8wa4o,39,17750,1,0,228,0,True,0
+188561.56726619,t5uibtaomy7s,Maurita,6,w8wa4o,39,17750,2,100,0,0,True,0
+188563.61063249,t5uibtaomy7s,Maurita,6,w8wa4o,63,12171,1,0,228,0,True,0
+188564.002197523,t5uibtaomy7s,Maurita,6,w8wa4o,63,12171,2,100,0,0,True,0
+188590.585629663,t5uibtaomy7s,Maurita,9,w8wa4o,3,7092,1,0,228,0,True,0
+188590.968195171,t5uibtaomy7s,Maurita,9,w8wa4o,3,7092,2,100,0,0,True,0

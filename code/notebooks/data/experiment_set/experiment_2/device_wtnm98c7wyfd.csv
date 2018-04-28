@@ -1,0 +1,8 @@
+t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+187965.645825841,wtnm98c7wyfd,Nelly,7,asg1c9,74,15990,2,0,0,100,True,0
+187967.07929721,wtnm98c7wyfd,Nelly,7,asg1c9,26,50237,1,0,0,228,True,2
+187967.505891062,wtnm98c7wyfd,Nelly,7,asg1c9,12,30415,2,0,0,100,True,2
+187967.950115296,wtnm98c7wyfd,Nelly,7,9w1k8l,53,9178,2,0,0,100,True,2
+187968.323434954,wtnm98c7wyfd,Nelly,7,9w1k8l,10,40101,2,0,0,100,True,1
+187968.732521616,wtnm98c7wyfd,Nelly,7,asg1c9,26,50237,2,0,0,100,True,1
+187969.150430972,wtnm98c7wyfd,Nelly,7,9w1k8l,36,10959,2,0,0,100,True,0

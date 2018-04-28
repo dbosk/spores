@@ -1,0 +1,7 @@
+t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+187956.108255339,b2rns2auj8bs,Annabel,6,0w2jgu,11,50968,1,0,228,0,True,0
+187956.508345947,b2rns2auj8bs,Annabel,6,0w2jgu,11,50968,2,100,0,0,True,0
+187963.803773324,b2rns2auj8bs,Annabel,7,0w2jgu,13,21467,1,0,228,0,True,0
+187964.20821742,b2rns2auj8bs,Annabel,7,0w2jgu,13,21467,2,100,0,0,True,0
+188063.28492519,b2rns2auj8bs,Annabel,17,0w2jgu,27,30530,1,0,228,0,True,0
+188063.681760087,b2rns2auj8bs,Annabel,17,0w2jgu,27,30530,2,100,0,0,True,0
