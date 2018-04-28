@@ -1,0 +1,87 @@
+%% Creator: Inkscape inkscape 0.91, www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'outline.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{348.44502126bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,1.01704596)%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{outline.pdf}}%
+    \put(0.4723961,1.19002361){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{d}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{outline.pdf}}%
+    \put(1.05712697,1.25769539){\color[rgb]{0,0,0}\rotatebox{-90}{\makebox(0,0)[lb]{\smash{. . .}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{outline.pdf}}%
+    \put(1.71113342,1.1143186){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{\textit{H}}}}}%
+    \put(1.55427344,1.3010526){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{\textit{L}}\textbf{\textit{RV}}}}}%
+    \put(1.67761172,1.29697847){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{\textit{L}}\textbf{\textit{1}}}}}%
+    \put(1.78340792,1.29742246){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{\textit{L}}\textbf{\textit{2}}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{outline.pdf}}%
+    \put(-0.00224996,0.98691208){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\ref{sec:squad_overlay}}}}%
+    \put(-0.00224993,0.72231549){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\ref{sec:global_overlay}}}}%
+    \put(-0.00224992,0.45771892){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\ref{sec:message_passing}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{outline.pdf}}%
+    \put(1.58748015,0.39715483){\color[rgb]{0,0,0}\rotatebox{-129.55574526}{\makebox(0,0)[lb]{\smash{. . .}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=6]{outline.pdf}}%
+    \put(1.71110857,0.39715483){\color[rgb]{0,0,0}\rotatebox{-129.55574526}{\makebox(0,0)[lb]{\smash{. . .}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=7]{outline.pdf}}%
+    \put(1.834737,0.39715483){\color[rgb]{0,0,0}\rotatebox{-129.55574526}{\makebox(0,0)[lb]{\smash{. . .}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=8]{outline.pdf}}%
+    \put(-0.00224992,0.19312239){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\ref{sec:file_exchange}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=9]{outline.pdf}}%
+    \put(-1.07142126,0.96616091){\color[rgb]{0,0,0}\rotatebox{-90}{\makebox(0,0)[lb]{\smash{. . .}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=10]{outline.pdf}}%
+    \put(-0.94784349,0.96616091){\color[rgb]{0,0,0}\rotatebox{-90}{\makebox(0,0)[lb]{\smash{. . .}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=11]{outline.pdf}}%
+    \put(-0.82426574,0.96616091){\color[rgb]{0,0,0}\rotatebox{-90}{\makebox(0,0)[lb]{\smash{. . .}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=12]{outline.pdf}}%
+    \put(0.36062077,0.39715487){\color[rgb]{0,0,0}\rotatebox{-120.00000013}{\makebox(0,0)[lb]{\smash{. . .}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=13]{outline.pdf}}%
+    \put(0.48423744,0.39715487){\color[rgb]{0,0,0}\rotatebox{-120.00000013}{\makebox(0,0)[lb]{\smash{. . .}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=14]{outline.pdf}}%
+    \put(0.60785412,0.39715487){\color[rgb]{0,0,0}\rotatebox{-120.00000013}{\makebox(0,0)[lb]{\smash{. . .}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=15]{outline.pdf}}%
+  \end{picture}%
+\endgroup%
