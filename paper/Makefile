@@ -6,11 +6,14 @@ SRC+= 		intro.tex
 SRC+= 		privacy.tex
 SRC+= 		related.tex
 SRC+= 		user-model.tex
+SRC+= 		building-blocks.tex
 SRC+= 		algorithm.tex
 SRC+= 		security-analysis.tex
+SRC+= 		performance.tex
 SRC+= 		conclusion.tex
 
-DEPENDS+= 	bibsp.sty meta.bib osn.bib anon.bib adrien.bib
+DEPENDS+= 	bibsp.sty meta.bib osn.bib anon.bib be.bib crypto.bib p2p.bib
+DEPENDS+= 	adrien.bib
 DEPENDS+=	figures/*.pdf
 
 p2p-private-cloud.pdf: p2p-private-cloud.tex preamble.tex revision_macros.tex
