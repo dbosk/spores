@@ -1,8 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-188536.637149351,lqzj11wlhfyo,Delaine,4,qx3a2t,3,13763,2,0,100,0,True,0
-188540.551170554,lqzj11wlhfyo,Delaine,4,qx3a2t,49,60481,2,0,100,0,True,0
-188575.496753312,lqzj11wlhfyo,Delaine,8,qx3a2t,10,27252,2,0,100,0,True,0
-188578.424865127,lqzj11wlhfyo,Delaine,8,qx3a2t,6,30549,2,0,100,0,True,0
-188594.658775128,lqzj11wlhfyo,Delaine,10,qx3a2t,18,59713,2,0,100,0,True,0
-188622.396388842,lqzj11wlhfyo,Delaine,12,qx3a2t,52,3752,2,0,100,0,True,0
-188622.744439635,lqzj11wlhfyo,Delaine,12,qx3a2t,72,9432,2,0,100,0,True,0

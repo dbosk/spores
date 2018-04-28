@@ -1,7 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-188547.476840001,pvz4tpmgn4a5,Athena,5,57nmo9,63,12034,1,0,228,0,True,0
-188547.846196593,pvz4tpmgn4a5,Athena,5,57nmo9,63,12034,2,100,0,0,True,0
-188551.544194753,pvz4tpmgn4a5,Athena,5,57nmo9,56,59445,1,0,228,0,True,0
-188551.946921789,pvz4tpmgn4a5,Athena,5,57nmo9,56,59445,2,100,0,0,True,0
-188553.168757791,pvz4tpmgn4a5,Athena,5,57nmo9,9,57385,1,0,228,0,True,0
-188553.533117608,pvz4tpmgn4a5,Athena,5,57nmo9,9,57385,2,100,0,0,True,0

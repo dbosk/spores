@@ -1,4 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-195300.075602391,nmiik6t7xrpl,Mi,7,x1ti20,3,25634,1,0,1124,0,True,0
-195300.439147694,nmiik6t7xrpl,Mi,7,x1ti20,3,25634,2,100,0,0,True,0
-195304.027306115,nmiik6t7xrpl,Mi,7,oud02s,6,11127,2,0,100,0,True,0

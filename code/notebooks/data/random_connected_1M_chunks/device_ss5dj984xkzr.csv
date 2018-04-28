@@ -1,2 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-195374.989586123,ss5dj984xkzr,Kaci,14,l1pi28,0,51877,2,0,100,0,True,0

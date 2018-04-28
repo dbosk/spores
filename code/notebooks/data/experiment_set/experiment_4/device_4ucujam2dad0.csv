@@ -1,5 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-187923.200119722,4ucujam2dad0,Mi,3,dr23ql,35,59684,1,0,228,0,True,0
-187923.608657469,4ucujam2dad0,Mi,3,dr23ql,35,59684,2,100,0,0,True,0
-187986.131096921,4ucujam2dad0,Mi,9,dr23ql,8,32119,1,0,228,0,True,0
-187986.5346986,4ucujam2dad0,Mi,9,dr23ql,8,32119,2,100,0,0,True,0

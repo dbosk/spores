@@ -1,9 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-187952.902964273,0aoe3n92kzbz,Herma,6,oh3937,64,62868,1,0,228,0,True,0
-187953.368581532,0aoe3n92kzbz,Herma,6,oh3937,64,62868,2,100,0,0,True,0
-187958.319830647,0aoe3n92kzbz,Herma,6,oh3937,6,54000,1,0,228,0,True,0
-187958.710975075,0aoe3n92kzbz,Herma,6,oh3937,6,54000,2,100,0,0,True,0
-187961.012204784,0aoe3n92kzbz,Herma,6,oh3937,35,6334,1,0,228,0,True,0
-187961.494539188,0aoe3n92kzbz,Herma,6,oh3937,35,6334,2,100,0,0,True,0
-187977.901118356,0aoe3n92kzbz,Herma,8,oh3937,22,19311,1,0,228,0,True,0
-187978.289624594,0aoe3n92kzbz,Herma,8,oh3937,22,19311,2,100,0,0,True,0

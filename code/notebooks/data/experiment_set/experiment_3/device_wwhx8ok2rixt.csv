@@ -1,2 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-187965.772418643,wwhx8ok2rixt,Daniel,7,3xsw3i,32,8638,2,0,100,0,True,0

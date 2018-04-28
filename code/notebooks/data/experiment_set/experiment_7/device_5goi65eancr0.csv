@@ -1,5 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-189196.066923615,5goi65eancr0,Janis,9,22n0z4,31,60096,1,0,228,0,True,0
-189196.449052372,5goi65eancr0,Janis,9,22n0z4,31,60096,2,100,0,0,True,0
-189203.631004978,5goi65eancr0,Janis,10,c32wti,56,33210,2,0,100,0,True,0
-189212.894395721,5goi65eancr0,Janis,11,c32wti,5,39586,2,0,100,0,True,0

@@ -1,3 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-188943.376091541,cnfrhw2scdkv,Sherie,44,zj8cf9,2,56191,2,0,100,0,True,0
-188945.748660096,cnfrhw2scdkv,Sherie,45,zj8cf9,54,26493,2,0,100,0,True,0

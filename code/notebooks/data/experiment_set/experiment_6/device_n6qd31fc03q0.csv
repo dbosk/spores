@@ -1,5 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-188580.428312505,n6qd31fc03q0,Vicki,8,wd3mw4,75,38602,1,0,228,0,True,0
-188580.806945847,n6qd31fc03q0,Vicki,8,wd3mw4,75,38602,2,100,0,0,True,0
-188582.860819321,n6qd31fc03q0,Vicki,8,wd3mw4,53,51830,1,0,228,0,True,0
-188583.234856641,n6qd31fc03q0,Vicki,8,wd3mw4,53,51830,2,100,0,0,True,0

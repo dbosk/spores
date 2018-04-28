@@ -1,5 +1,0 @@
-t,experiment_id,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-260345.690635634,39,uf7jwefvbb9n,Julianna,10,3eqg9i,53,34185,2,0,100,0,True,1
-260345.702832607,39,uf7jwefvbb9n,Julianna,10,3eqg9i,66,40592,2,0,100,0,True,0
-260351.037777998,39,uf7jwefvbb9n,Julianna,10,3eqg9i,73,11689,2,0,100,0,True,1
-260351.04602096,39,uf7jwefvbb9n,Julianna,10,3eqg9i,27,18697,2,0,100,0,True,0

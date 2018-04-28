@@ -1,3 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-193598.305811254,lpjafghfoy1k,Bennie,12,5poehn,75,61789,2,0,100,0,True,0
-193660.205953078,lpjafghfoy1k,Bennie,19,5poehn,22,18464,2,0,100,0,True,0

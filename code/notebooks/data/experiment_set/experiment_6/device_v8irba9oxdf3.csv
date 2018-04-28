@@ -1,2 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-188596.10480702,v8irba9oxdf3,Daisy,10,z8cxhh,44,52561,2,0,100,0,True,0

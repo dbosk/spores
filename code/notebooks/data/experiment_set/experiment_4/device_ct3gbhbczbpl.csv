@@ -1,9 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-187902.014837998,ct3gbhbczbpl,Delilah,1,5o6o0b,6,3388,1,0,228,0,True,0
-187902.406712734,ct3gbhbczbpl,Delilah,1,5o6o0b,6,3388,2,100,0,0,True,0
-188103.425511417,ct3gbhbczbpl,Delilah,21,5o6o0b,14,57268,1,0,228,0,True,0
-188103.824614132,ct3gbhbczbpl,Delilah,21,5o6o0b,14,57268,2,100,0,0,True,0
-188123.006481089,ct3gbhbczbpl,Delilah,23,5o6o0b,75,54751,1,0,228,0,True,0
-188123.441879127,ct3gbhbczbpl,Delilah,23,5o6o0b,75,54751,2,100,0,0,True,0
-188155.189333015,ct3gbhbczbpl,Delilah,26,5o6o0b,20,45575,1,0,228,0,True,0
-188155.576084521,ct3gbhbczbpl,Delilah,26,5o6o0b,20,45575,2,100,0,0,True,0

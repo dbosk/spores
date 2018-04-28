@@ -1,6 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-189353.846199328,qm7m4mbve2u7,Hassie,25,uftxm0,71,58221,2,0,100,0,True,0
-189358.388491526,qm7m4mbve2u7,Hassie,26,uftxm0,34,50733,2,0,100,0,True,0
-189383.926813174,qm7m4mbve2u7,Hassie,28,uftxm0,49,17179,2,0,100,0,True,0
-189488.348555409,qm7m4mbve2u7,Hassie,39,uftxm0,16,25267,2,0,100,0,True,0
-189488.715201393,qm7m4mbve2u7,Hassie,39,uftxm0,74,40036,2,0,100,0,True,0

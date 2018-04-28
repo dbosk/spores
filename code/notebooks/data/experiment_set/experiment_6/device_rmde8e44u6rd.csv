@@ -1,3 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-188575.865403608,rmde8e44u6rd,Delaine,8,qx3a2t,8,11817,2,0,100,0,True,0
-188593.925019152,rmde8e44u6rd,Delaine,9,qx3a2t,70,4628,2,0,100,0,True,0

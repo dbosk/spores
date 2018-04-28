@@ -1,6 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-195256.16641024,01pb2qil0n2o,Jayne,2,tts8aj,3,30474,1,0,1124,0,True,0
-195256.535842596,01pb2qil0n2o,Jayne,2,tts8aj,3,30474,2,100,0,0,True,0
-195275.180328757,01pb2qil0n2o,Jayne,4,erq6gf,8,46020,2,0,100,0,True,0
-195342.981016918,01pb2qil0n2o,Jayne,11,erq6gf,4,65514,2,0,100,0,True,0
-195352.860443722,01pb2qil0n2o,Jayne,12,erq6gf,5,51162,2,0,100,0,True,0

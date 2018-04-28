@@ -1,2 +1,0 @@
-t,experiment_id,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-260459.109815416,26,j67czii09a4y,Morty,20,xnj60j,30,59728,2,0,100,0,True,0

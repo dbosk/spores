@@ -1,9 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-187930.620633203,do4hqiddyye9,Patty,3,8j33id,47,56499,2,0,0,100,True,0
-188085.052996654,do4hqiddyye9,Patty,19,8j33id,78,2807,1,0,0,228,True,0
-188085.87813377,do4hqiddyye9,Patty,19,8j33id,78,2807,2,0,0,100,True,0
-188126.117757796,do4hqiddyye9,Patty,23,8j33id,72,36765,2,0,0,100,True,1
-188126.826658019,do4hqiddyye9,Patty,23,8j33id,3,19498,1,0,0,228,True,1
-188127.193929683,do4hqiddyye9,Patty,23,8j33id,66,48601,2,0,0,100,True,0
-188134.056563416,do4hqiddyye9,Patty,24,8j33id,79,16906,1,0,0,228,True,0
-188134.839419829,do4hqiddyye9,Patty,24,8j33id,79,16906,2,0,0,100,True,0

@@ -1,5 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-195411.712314255,w6csgv7hz1pk,Twila,18,rj1shk,6,24164,2,0,100,0,True,0
-195414.978585243,w6csgv7hz1pk,Twila,18,rj1shk,8,41145,2,0,100,0,True,0
-195440.408684545,w6csgv7hz1pk,Twila,21,x1ti20,1,1134,2,0,100,0,True,0
-195444.070241193,w6csgv7hz1pk,Twila,21,x1ti20,8,25865,2,0,100,0,True,0

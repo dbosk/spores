@@ -1,5 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-187937.601746266,0h85r10gtmcb,Lila,4,4elgam,18,9490,2,0,100,0,True,0
-187941.070052259,0h85r10gtmcb,Lila,4,4elgam,6,16172,2,0,100,0,True,0
-188031.424404317,0h85r10gtmcb,Lila,13,4elgam,67,54896,2,0,100,0,True,0
-188079.740588572,0h85r10gtmcb,Lila,18,4elgam,74,48031,2,0,100,0,True,0

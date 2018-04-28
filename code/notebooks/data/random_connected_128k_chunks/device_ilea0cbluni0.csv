@@ -1,5 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-193606.540984287,ilea0cbluni0,Lavette,13,bcx9ic,40,5849,1,0,228,0,True,0
-193606.923226056,ilea0cbluni0,Lavette,13,bcx9ic,40,5849,2,100,0,0,True,0
-193607.940114726,ilea0cbluni0,Lavette,13,bcx9ic,15,31759,1,0,228,0,True,0
-193608.329575342,ilea0cbluni0,Lavette,14,bcx9ic,15,31759,2,100,0,0,True,0

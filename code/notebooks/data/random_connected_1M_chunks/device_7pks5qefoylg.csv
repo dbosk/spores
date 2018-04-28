@@ -1,9 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-195292.793314516,7pks5qefoylg,Twila,6,x1ti20,5,37736,2,0,100,0,True,0
-195323.180945288,7pks5qefoylg,Twila,9,x1ti20,0,15224,2,0,100,0,True,0
-195326.662291583,7pks5qefoylg,Twila,9,rj1shk,0,42340,2,0,100,0,True,0
-195332.790704165,7pks5qefoylg,Twila,10,x1ti20,9,5951,2,0,100,0,True,0
-195337.481001713,7pks5qefoylg,Twila,10,rj1shk,2,6241,2,0,100,0,True,0
-195346.17854255,7pks5qefoylg,Twila,11,rj1shk,7,55732,2,0,100,0,True,0
-195415.72850872,7pks5qefoylg,Twila,18,rj1shk,4,3141,2,0,100,0,True,0
-195444.065446121,7pks5qefoylg,Twila,21,x1ti20,7,25716,2,0,100,0,True,0

@@ -1,4 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-188503.098287577,jd10t2lf4j69,Garnett,0,eaatme,46,53423,1,0,0,228,True,0
-188826.716097993,jd10t2lf4j69,Garnett,33,zndpz5,13,17990,2,0,0,100,True,0
-188828.797517615,jd10t2lf4j69,Garnett,33,zndpz5,47,64800,2,0,0,100,True,0

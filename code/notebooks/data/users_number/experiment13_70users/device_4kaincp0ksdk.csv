@@ -1,8 +1,0 @@
-t,experiment_id,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-260237.754956341,13,4kaincp0ksdk,Jack,2,s9jmpl,77,6926,1,0,0,612,True,0
-260249.202589883,13,4kaincp0ksdk,Jack,3,s9jmpl,26,51152,1,0,0,612,True,4
-260249.21058206,13,4kaincp0ksdk,Jack,3,s9jmpl,76,23299,1,0,0,612,True,3
-260249.218270895,13,4kaincp0ksdk,Jack,3,s9jmpl,39,20501,1,0,0,612,True,2
-260249.226633727,13,4kaincp0ksdk,Jack,3,s9jmpl,62,38191,1,0,0,612,True,1
-260249.234093939,13,4kaincp0ksdk,Jack,3,s9jmpl,18,50191,1,0,0,612,True,0
-260252.247473706,13,4kaincp0ksdk,Jack,3,s9jmpl,7,16325,1,0,0,612,True,0

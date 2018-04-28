@@ -1,4 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-188608.475942369,f5jifjdnv4km,Beatriz,11,eaatme,17,19308,2,0,100,0,True,0
-188678.534748892,f5jifjdnv4km,Beatriz,18,eaatme,8,11325,2,0,100,0,True,0
-188681.099430642,f5jifjdnv4km,Beatriz,18,cdqvuo,42,3693,2,0,100,0,True,0

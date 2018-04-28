@@ -1,3 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-189712.147304956,1wznfqm3ozoe,Beatriz,1,ghmjsd,12,14233,2,0,100,0,True,0
-189825.599199834,1wznfqm3ozoe,Beatriz,12,ghmjsd,47,11318,2,0,100,0,True,0

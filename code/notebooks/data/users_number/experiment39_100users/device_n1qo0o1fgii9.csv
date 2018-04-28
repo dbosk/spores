@@ -1,9 +1,0 @@
-t,experiment_id,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-260391.891922824,39,n1qo0o1fgii9,Bennie,15,sch4ov,30,60125,1,0,612,0,True,1
-260391.899136313,39,n1qo0o1fgii9,Bennie,15,sch4ov,30,60125,2,100,0,0,True,1
-260391.907032247,39,n1qo0o1fgii9,Bennie,15,sch4ov,19,39491,1,0,612,0,True,0
-260391.914751549,39,n1qo0o1fgii9,Bennie,15,sch4ov,19,39491,2,100,0,0,True,0
-260403.827461075,39,n1qo0o1fgii9,Bennie,16,sch4ov,12,5674,1,0,612,0,True,0
-260403.83574551,39,n1qo0o1fgii9,Bennie,16,sch4ov,12,5674,2,100,0,0,True,0
-260406.185122023,39,n1qo0o1fgii9,Bennie,16,sch4ov,52,60015,1,0,612,0,True,0
-260406.192877641,39,n1qo0o1fgii9,Bennie,16,sch4ov,52,60015,2,100,0,0,True,0

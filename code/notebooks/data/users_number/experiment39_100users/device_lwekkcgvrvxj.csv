@@ -1,9 +1,0 @@
-t,experiment_id,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-260324.706110864,39,lwekkcgvrvxj,Renna,9,rqd2i7,5,24453,2,0,100,0,True,2
-260324.71301806,39,lwekkcgvrvxj,Renna,9,rqd2i7,96,8189,2,0,100,0,True,1
-260324.72081602,39,lwekkcgvrvxj,Renna,9,rqd2i7,0,52114,2,0,100,0,True,0
-260329.516332029,39,lwekkcgvrvxj,Renna,9,rqd2i7,6,2821,2,0,100,0,True,0
-260332.803173801,39,lwekkcgvrvxj,Renna,9,rqd2i7,78,49389,2,0,100,0,True,0
-260380.46412932,39,lwekkcgvrvxj,Renna,14,rqd2i7,51,49592,2,0,100,0,True,0
-260390.063775466,39,lwekkcgvrvxj,Renna,14,rqd2i7,84,42951,2,0,100,0,True,1
-260390.074681235,39,lwekkcgvrvxj,Renna,14,rqd2i7,50,12063,2,0,100,0,True,0

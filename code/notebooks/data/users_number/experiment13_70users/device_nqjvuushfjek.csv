@@ -1,9 +1,0 @@
-t,experiment_id,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-260306.053471288,13,nqjvuushfjek,Angelika,7,j2khg7,36,39358,1,0,612,0,True,3
-260306.060192216,13,nqjvuushfjek,Angelika,7,j2khg7,36,39358,2,100,0,0,True,3
-260306.067463114,13,nqjvuushfjek,Angelika,7,j2khg7,57,42246,1,0,612,0,True,2
-260306.074787019,13,nqjvuushfjek,Angelika,7,j2khg7,57,42246,2,100,0,0,True,2
-260306.081991039,13,nqjvuushfjek,Angelika,7,j2khg7,61,25631,1,0,612,0,True,1
-260306.089314635,13,nqjvuushfjek,Angelika,7,j2khg7,61,25631,2,100,0,0,True,1
-260306.096487875,13,nqjvuushfjek,Angelika,7,j2khg7,72,54441,1,0,612,0,True,0
-260306.103862364,13,nqjvuushfjek,Angelika,7,j2khg7,72,54441,2,100,0,0,True,0

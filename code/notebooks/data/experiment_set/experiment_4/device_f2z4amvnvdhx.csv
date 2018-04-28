@@ -1,6 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-187933.432652925,f2z4amvnvdhx,Livia,4,9zghdu,28,27414,2,0,100,0,True,0
-187942.564886199,f2z4amvnvdhx,Livia,5,9zghdu,25,24947,2,0,100,0,True,0
-187953.649920295,f2z4amvnvdhx,Livia,6,9zghdu,5,13286,2,0,100,0,True,0
-187990.783434481,f2z4amvnvdhx,Livia,9,9zghdu,18,47406,2,0,100,0,True,0
-188012.808467734,f2z4amvnvdhx,Livia,12,9zghdu,67,22200,2,0,100,0,True,0

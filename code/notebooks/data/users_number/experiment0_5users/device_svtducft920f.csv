@@ -1,3 +1,0 @@
-t,experiment_id,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-260432.42455336,0,svtducft920f,Queen,14,ildtmy,75,8395,1,0,612,0,True,0
-260432.434329822,0,svtducft920f,Queen,14,ildtmy,75,8395,2,100,0,0,True,0

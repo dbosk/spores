@@ -1,5 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-195318.961354537,u2nv8352tja4,Lavette,8,w3vp8g,1,56343,1,0,1124,0,True,0
-195319.328441273,u2nv8352tja4,Lavette,8,w3vp8g,1,56343,2,100,0,0,True,0
-195358.772234978,u2nv8352tja4,Lavette,12,w3vp8g,0,26751,1,0,1124,0,True,0
-195359.137519212,u2nv8352tja4,Lavette,12,w3vp8g,0,26751,2,100,0,0,True,0

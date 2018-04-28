@@ -1,9 +1,0 @@
-t,experiment_id,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-260343.141847339,26,k35gg2kfj4sp,Maurita,10,1vhs2v,52,50901,2,0,100,0,True,0
-260348.71358647,26,k35gg2kfj4sp,Maurita,10,1vhs2v,49,32422,2,0,100,0,True,3
-260348.723806537,26,k35gg2kfj4sp,Maurita,10,1vhs2v,45,17919,2,0,100,0,True,2
-260348.731864619,26,k35gg2kfj4sp,Maurita,10,1vhs2v,90,61673,2,0,100,0,True,1
-260348.739739534,26,k35gg2kfj4sp,Maurita,10,1vhs2v,93,296,2,0,100,0,True,0
-260482.228872184,26,k35gg2kfj4sp,Maurita,23,1vhs2v,52,26636,2,0,100,0,True,2
-260482.236498178,26,k35gg2kfj4sp,Maurita,23,1vhs2v,55,11138,2,0,100,0,True,1
-260482.243652805,26,k35gg2kfj4sp,Maurita,23,1vhs2v,77,1270,2,0,100,0,True,0

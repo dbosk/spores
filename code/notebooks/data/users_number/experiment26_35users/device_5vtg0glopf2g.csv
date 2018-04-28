@@ -1,7 +1,0 @@
-t,experiment_id,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-260442.684797021,26,5vtg0glopf2g,Beatriz,19,v0slso,57,48721,1,0,612,0,True,1
-260442.692082668,26,5vtg0glopf2g,Beatriz,19,v0slso,57,48721,2,100,0,0,True,1
-260442.69975664,26,5vtg0glopf2g,Beatriz,19,v0slso,64,64865,1,0,612,0,True,0
-260442.707550364,26,5vtg0glopf2g,Beatriz,19,v0slso,64,64865,2,100,0,0,True,0
-260447.556402498,26,5vtg0glopf2g,Beatriz,20,v0slso,1,31143,1,0,612,0,True,0
-260447.563715436,26,5vtg0glopf2g,Beatriz,20,v0slso,1,31143,2,100,0,0,True,0

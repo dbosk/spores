@@ -1,5 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-188086.683350528,rm3j2d9bet9b,Maurita,19,8j33id,78,2807,2,0,100,0,True,0
-188114.558030121,rm3j2d9bet9b,Maurita,22,8j33id,55,30042,2,0,100,0,True,0
-188114.986617342,rm3j2d9bet9b,Maurita,22,8j33id,54,5720,2,0,100,0,True,0
-188118.188686549,rm3j2d9bet9b,Maurita,22,8j33id,61,10270,2,0,100,0,True,0

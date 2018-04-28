@@ -1,8 +1,0 @@
-t,experiment_id,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-260284.980523501,39,ofmaixwp7214,Shawnda,5,sch4ov,34,34203,2,0,100,0,True,0
-260329.476161139,39,ofmaixwp7214,Shawnda,9,sch4ov,64,60206,2,0,100,0,True,0
-260332.78735701,39,ofmaixwp7214,Shawnda,9,sch4ov,93,57362,2,0,100,0,True,0
-260438.403842089,39,ofmaixwp7214,Shawnda,19,sch4ov,53,55714,2,0,100,0,True,2
-260438.411748506,39,ofmaixwp7214,Shawnda,19,sch4ov,41,0,2,0,100,0,True,1
-260438.419415062,39,ofmaixwp7214,Shawnda,19,sch4ov,33,19913,2,0,100,0,True,0
-260490.177553346,39,ofmaixwp7214,Shawnda,24,sch4ov,12,45131,2,0,100,0,True,0

@@ -1,3 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-188076.437852888,1wbe797a6qd7,Annelle,18,9gelp6,47,32812,1,0,228,0,True,0
-188076.903603421,1wbe797a6qd7,Annelle,18,9gelp6,47,32812,2,100,0,0,True,0

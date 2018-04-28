@@ -1,3 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success
-167021.562027832,ef8x1mdkzggt,Angelita,0,d1wh07,57,4223378368,2,0,0,100,True
-167025.81041773,ef8x1mdkzggt,Angelita,1,d1wh07,22,365019987,2,0,0,100,True

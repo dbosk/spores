@@ -1,6 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-195296.090589318,0xyi9axncb2y,Garnett,6,tts8aj,4,41670,2,0,100,0,True,0
-195321.420219771,0xyi9axncb2y,Garnett,9,tts8aj,9,13249,2,0,100,0,True,0
-195322.889308888,0xyi9axncb2y,Garnett,9,tts8aj,6,37902,2,0,100,0,True,0
-195330.670400725,0xyi9axncb2y,Garnett,10,rj1shk,2,6241,1,0,1124,0,True,0
-195331.030955984,0xyi9axncb2y,Garnett,10,rj1shk,2,6241,2,100,0,0,True,0

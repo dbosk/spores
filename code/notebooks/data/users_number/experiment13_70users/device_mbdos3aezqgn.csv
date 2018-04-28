@@ -1,9 +1,0 @@
-t,experiment_id,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-260311.290875,13,mbdos3aezqgn,Vickey,7,my2elp,25,42621,2,0,100,0,True,0
-260313.948691676,13,mbdos3aezqgn,Vickey,7,my2elp,50,40871,2,0,100,0,True,1
-260313.955863641,13,mbdos3aezqgn,Vickey,7,my2elp,70,38965,2,0,100,0,True,0
-260317.590612742,13,mbdos3aezqgn,Vickey,8,my2elp,8,32546,2,0,100,0,True,1
-260317.599536791,13,mbdos3aezqgn,Vickey,8,my2elp,56,10160,2,0,100,0,True,0
-260323.294514461,13,mbdos3aezqgn,Vickey,8,my2elp,83,42285,2,0,100,0,True,2
-260323.302113221,13,mbdos3aezqgn,Vickey,8,my2elp,59,39191,2,0,100,0,True,1
-260323.309891076,13,mbdos3aezqgn,Vickey,8,my2elp,6,61795,2,0,100,0,True,0

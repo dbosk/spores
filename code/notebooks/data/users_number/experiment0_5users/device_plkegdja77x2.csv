@@ -1,4 +1,0 @@
-t,experiment_id,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-260440.861599035,0,plkegdja77x2,Kermit,15,ildtmy,98,23326,2,0,100,0,True,0
-260445.64942532,0,plkegdja77x2,Kermit,15,ildtmy,17,1407,2,0,100,0,True,1
-260445.657669992,0,plkegdja77x2,Kermit,15,ildtmy,98,35215,2,0,100,0,True,0

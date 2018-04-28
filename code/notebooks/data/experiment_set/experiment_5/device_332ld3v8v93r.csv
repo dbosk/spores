@@ -1,7 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-188665.799604231,332ld3v8v93r,Barry,17,no6xr6,42,22757,2,0,100,0,True,0
-188669.088434236,332ld3v8v93r,Barry,17,no6xr6,71,45012,2,0,100,0,True,0
-188675.819434282,332ld3v8v93r,Barry,18,xbdxkr,68,20336,1,0,228,0,True,0
-188676.184796437,332ld3v8v93r,Barry,18,xbdxkr,68,20336,2,100,0,0,True,0
-188689.71648563,332ld3v8v93r,Barry,19,xbdxkr,29,8777,1,0,228,0,True,0
-188690.087855453,332ld3v8v93r,Barry,19,xbdxkr,29,8777,2,100,0,0,True,0

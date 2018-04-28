@@ -1,4 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-195315.195217052,nz7zumzvtu1e,Kaci,8,jgvbrz,4,56083,2,0,100,0,True,0
-195375.700430747,nz7zumzvtu1e,Kaci,14,jgvbrz,1,62170,2,0,100,0,True,0
-195378.402616647,nz7zumzvtu1e,Kaci,14,jgvbrz,6,33864,2,0,100,0,True,0

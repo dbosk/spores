@@ -1,2 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-195269.469411493,6zmoi3dtmkk4,Twila,3,x1ti20,4,32722,2,0,100,0,True,0

@@ -1,6 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-189177.404814879,m3dc1munpr7p,Luke,8,rczazu,67,45071,1,0,228,0,True,0
-189177.771608888,m3dc1munpr7p,Luke,8,rczazu,67,45071,2,100,0,0,True,0
-189178.754496216,m3dc1munpr7p,Luke,8,rczazu,57,25482,1,0,228,0,True,0
-189179.123213476,m3dc1munpr7p,Luke,8,rczazu,57,25482,2,100,0,0,True,0
-189559.364616059,m3dc1munpr7p,Luke,46,clo2wq,16,56174,2,0,100,0,True,0

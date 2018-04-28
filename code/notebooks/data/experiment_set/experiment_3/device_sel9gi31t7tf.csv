@@ -1,8 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-187903.938101802,sel9gi31t7tf,Maxwell,1,614z9c,60,30977,2,0,100,0,True,0
-187988.366607507,sel9gi31t7tf,Maxwell,9,614z9c,52,10541,2,0,100,0,True,0
-187989.220078612,sel9gi31t7tf,Maxwell,9,614z9c,58,46616,2,0,100,0,True,0
-188023.047039608,sel9gi31t7tf,Maxwell,13,614z9c,72,28527,2,0,100,0,True,0
-188103.687531672,sel9gi31t7tf,Maxwell,21,614z9c,42,19438,2,0,100,0,True,0
-188109.363234574,sel9gi31t7tf,Maxwell,21,614z9c,42,20372,2,0,100,0,True,0
-188110.375074894,sel9gi31t7tf,Maxwell,21,614z9c,37,37606,2,0,100,0,True,0

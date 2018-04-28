@@ -1,9 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-189720.620450106,bte4oznhi90d,Daisy,2,3ormp2,1,60187,1,0,228,0,True,0
-189720.995368715,bte4oznhi90d,Daisy,2,3ormp2,1,60187,2,100,0,0,True,0
-189728.263768733,bte4oznhi90d,Daisy,2,3ormp2,47,35186,1,0,228,0,True,0
-189728.659070204,bte4oznhi90d,Daisy,3,3ormp2,47,35186,2,100,0,0,True,0
-189738.810343908,bte4oznhi90d,Daisy,4,3ormp2,16,63395,1,0,228,0,True,0
-189739.176339901,bte4oznhi90d,Daisy,4,3ormp2,16,63395,2,100,0,0,True,0
-190008.64297978,bte4oznhi90d,Daisy,31,3ormp2,44,45058,1,0,228,0,True,0
-190009.021080135,bte4oznhi90d,Daisy,31,3ormp2,44,45058,2,100,0,0,True,0

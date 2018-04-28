@@ -1,7 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-189740.315622133,nscifwswlv0j,Cordia,4,bz8tbo,63,60894,1,0,228,0,True,0
-189740.706058247,nscifwswlv0j,Cordia,4,bz8tbo,63,60894,2,100,0,0,True,0
-189758.915230217,nscifwswlv0j,Cordia,6,bz8tbo,3,39268,1,0,228,0,True,0
-189759.295387429,nscifwswlv0j,Cordia,6,bz8tbo,3,39268,2,100,0,0,True,0
-189815.659768525,nscifwswlv0j,Cordia,11,bz8tbo,16,27817,1,0,228,0,True,0
-189816.034392039,nscifwswlv0j,Cordia,11,bz8tbo,16,27817,2,100,0,0,True,0

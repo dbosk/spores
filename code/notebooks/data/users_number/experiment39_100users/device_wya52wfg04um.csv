@@ -1,2 +1,0 @@
-t,experiment_id,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-260431.959804543,39,wya52wfg04um,Georgene,18,q84cv2,23,23866,2,0,100,0,True,0

@@ -1,4 +1,0 @@
-t,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
-188910.711803567,odlflf0poebu,Sherie,41,zj8cf9,32,14155,2,0,100,0,True,0
-188911.78960767,odlflf0poebu,Sherie,41,zj8cf9,63,59834,2,0,100,0,True,0
-188914.290895118,odlflf0poebu,Sherie,41,zj8cf9,3,5384,2,0,100,0,True,0
