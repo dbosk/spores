@@ -4,11 +4,17 @@ all: p2p-private-cloud.pdf
 SRC+=		contents.tex abstract.tex
 SRC+= 		intro.tex
 SRC+= 		privacy.tex
-SRC+= 		user-model.tex
-SRC+= 		building-blocks.tex
-SRC+= 		algorithm.tex
+
+SRC+=		design.tex
+SRC+= 		building-blocks.tex 
+SRC+= 		squad-overlay-design.tex 
+SRC+=		global-overlay-design.tex
+SRC+= 		message-passing.tex
+SRC+=		file-exchange.tex
+
 SRC+= 		performance.tex
 SRC+= 		related.tex
+SRC+=		conclusion.tex
 
 DEPENDS+= 	bibsp.sty meta.bib osn.bib anon.bib be.bib crypto.bib
 DEPENDS+= 	adrien.bib
