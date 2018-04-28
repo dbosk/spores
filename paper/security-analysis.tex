@@ -1,13 +1,19 @@
 \section{Security analysis}%
 \label{SecurityAnalysis}
 
-\dots
+\commentDaniel{Under editing.}
 
 The message \(m\) remains the same from hop to hop during the onion routing, 
 hence a global observer can track the message through the network.
+The same applies if one node occurs more than once in a route, \eg in both 
+Alice's and Bob's part of the route.
+
+Since we have an in-package header, each node on the route can infer its 
+position on the route.
+\commentDaniel{Maybe this can be solved by issue \#33.}
 
 We can choose different properties for \(\Enc*\).
-What makes sense is to choose an authenticated encryption 
+What makes sense is to choose at least an authenticated encryption 
 scheme~\cite{AuthEncryption}.
 We could also choose a deniable encryption scheme~\cite{DeniableEncryption}, \eg 
 the one by \textcite{OTPKX} which is both deniable and authenticated and 
