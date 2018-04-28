@@ -1,13 +1,41 @@
-\section{User model} 
+\subsection{The Squad overlay} 
 \label{sec:user_model}
 
-We consider many users owning several devices, that they freely turn on and off depending on their location and will.
-The participants' devices are the only nodes constituting our system; the unreliability of their connectivity has to be taken for granted.
+Each of Alice's (and Bob's) devices will keep track of its own online and 
+offline behaviour.
+They will use a protocol like Sprinkler~\cite{luxey:hal-01704172} to learn about 
+each other's online--offline behaviour.
+\commentDaniel{Is that correct?}
+This allows Alice's device swarm to infer a behavioural model for the device 
+swarm and do internal scheduling based on the probability of being online.
 
-We will first present a model of each user's behavior, that will drive the connection intervals of our system's nodes.
-%Then, we will show how devices can predict the future user's behavior given the model.
 
-\subsection{A model of the user's behavior}
+\subsubsection{Sharing knowledge} % (fold)
+\label{sub:sharing_knowledge}
+
+
+Each device initially only knows when it is connected. 
+To make a model of the user's behavior, they need to know the whole observation sequence $O$: which device is online at each time step.
+To do so, they employ a probabilistic dissemination protocol, 
+\textsc{Sprinkler}~\cite{luxey:hal-01704172}.
+This allows devices to gossip any new connection information to random peers in 
+the local swarm, ensuring that all devices know the full observation sequence 
+with a very high probability.
+\textsc{Sprinkler} has shown resilient to device churn~\cite{luxey:cascade}, and 
+is thus perfectly suited for our purpose, where a user's devices often 
+disconnect and reconnect. 
+
+% subsection sharing_knowledge (end)
+
+\commentAL{The following was the User Model section}
+
+% We consider many users owning several devices, that they freely turn on and off depending on their location and will.
+% The participants' devices are the only nodes constituting our system; the unreliability of their connectivity has to be taken for granted.
+
+% We will first present a model of each user's behavior, that will drive the connection intervals of our system's nodes.
+% %Then, we will show how devices can predict the future user's behavior given the model.
+
+\subsubsection{A model of the user's behavior}
 \label{sub:a_model_of_the_user_s_behavior}
 
 In \name, we take interest in users that own several devices, and wish to privately exchange files with each other without revealing .
