@@ -54,9 +54,6 @@ This process is illustrated in \cref{fig:file-exchange}.
 \NewAlgorithm{\GetRouteNode}{GetRouteNode}
 \NewAlgorithm{\GetRandomPeer}{GetRandomPeer}
 
-\NewAlgorithm{\Enc}{Enc}
-\NewVariable{\pk}{pk}
-
 \begin{figure}
   \begin{algorithmic}
     \Require{%
@@ -71,14 +68,16 @@ This process is illustrated in \cref{fig:file-exchange}.
         \State \Return $H$
       \EndIf
       \State $D\gets \GetRouteNode[\theta]$
-      \State $H\gets D\concat \Enc[_{\pk_{D}}][H]$
+      \State $H\gets D\concat \DeBEenc[\mpk, D, H]$
       \State \Return $\ExtendRoute[H, L-1, \theta]$
     \EndFunction
 
     \Function{\GetRouteNode}{$\theta$}
-      \State $D\gets \GetRandomPeer$
+      \State $d\gets \GetRandomPeer$
+      \State $D\gets \{d\}$
       \While{$\prod_{d\in D} \Pr[d \text{ offline at time } t] > \theta$}
-        \State $D\gets D\cup \GetRandomPeer$
+        \State $d\gets \GetRandomPeer$
+        \State $D\gets D\cup \{d\}$
       \EndWhile
       \State \Return $D$
     \EndFunction
@@ -107,7 +106,7 @@ This process is illustrated in \cref{fig:file-exchange}.
     \EndFunction
 
     \Function{\Store}{$c_m$}
-      \State $m\gets \Dec[_{\sk_D}][c_m]$
+      \State $m\gets \DeBEdec[\mpk, \sk, c_m]$
       \If{$m = \bot$}
         \State \Return $\bot$
       \EndIf
@@ -131,9 +130,9 @@ This process is illustrated in \cref{fig:file-exchange}.
       $\pk_D$ is the public-key of the recipient,
       $H_\rdv$ is the onion-route given by the recipient.
     }
-    \Function{\SPOR[\Send]}{$m, \pk_D, H_\rdv$}
+    \Function{\SPOR[\Send]}{$\mpk, D, H_\rdv, m$}
       \State $H\gets \ExtendRoute[H_\rdv, L, \theta]$
-      \State $c_m\gets \Enc[_{\pk_D}][m]$
+      \State $c_m\gets \DeBEenc[\mpk, D, m]$
       \State $D\concat C_H\gets H_\rdv$
       \For{$d\in D$}
         \Comment{Uniformly randomly chosen}
@@ -158,7 +157,7 @@ This process is illustrated in \cref{fig:file-exchange}.
   \begin{algorithmic}
     \Require{$\pk, \sk$ is the public--private key-pair of the node.}
     \Function{\SPOR[\Fwd]}{$C_H, c_m$}
-      \State $H\gets \Dec[_\sk][C_H]$
+      \State $H\gets \DeBEdec[\mpk, \sk, C_H]$
       \If{$H = \bot$}
         \State \Return $\bot$
       \EndIf
