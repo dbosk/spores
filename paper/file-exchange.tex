@@ -1,0 +1,14 @@
+\subsection{The file exchange}
+
+\commentDaniel{%
+  We must do the scheduling: \ie divide the file \(f\) into \(f_1, \dotsc, f_n\) 
+  and how the size of \(f_i\) relates to transmission time and size of the 
+  timeslot (for the validity of predictions).
+  After that we just do \(\SPOR[\Send]\) on each \(f_i\).%
+}
+
+
+\subsubsection{File exchange process}% (fold)
+\label{ssub:file_exchange_process}
+
+Firstly, Alice and Bob must exchange information out-of-band: an encryption key $ek$ to cipher the file, and an ID $k$ in the DHT pointing to information on how to reach Alice.

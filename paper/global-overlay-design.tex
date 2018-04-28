@@ -1,0 +1,24 @@
+\subsection{The Global overlay}
+
+\commentDaniel{%
+  We must cover how to do \(\Pr[d \text{ offline at time } t]\) as used in 
+  \cref{ExtendRoute}.
+  This is probably part of getting random peers in the same place.%
+}
+
+\commentDaniel{%
+  What is the probability distribution of the peer sample that we get?
+  Will it be close to uniformly random?%
+}
+
+\NewAlgorithm{\GetRandomPeer}{GetRandomPeer}
+
+Every time a device is online, it participates in the random peer sampling 
+protocol.
+If a device is sampled it provides the following information:
+\begin{itemize}
+  \item its address;
+	\item its public key;
+  \item the probability of being online.
+\end{itemize}
+
