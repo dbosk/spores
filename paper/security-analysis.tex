@@ -5,3 +5,10 @@
 
 The message \(m\) remains the same from hop to hop during the onion routing, 
 hence a global observer can track the message through the network.
+
+We can choose different properties for \(\Enc*\).
+What makes sense is to choose an authenticated encryption 
+scheme~\cite{AuthEncryption}.
+We could also choose a deniable encryption scheme~\cite{DeniableEncryption}, \eg 
+the one by \textcite{OTPKX} which is both deniable and authenticated and 
+provides \ac{DEN-SS}.

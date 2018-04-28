@@ -13,6 +13,7 @@ SRC+= 		performance.tex
 SRC+= 		conclusion.tex
 
 DEPENDS+= 	bibsp.sty meta.bib osn.bib anon.bib be.bib crypto.bib p2p.bib
+DEPENDS+= 	otrmsg.bib
 DEPENDS+= 	adrien.bib
 DEPENDS+=	figures/*.pdf
 
