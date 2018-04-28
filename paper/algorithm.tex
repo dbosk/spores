@@ -132,7 +132,7 @@ This process is illustrated in \cref{fig:file-exchange}.
 \end{figure}
 
 \NewAlgorithm{\ExtendRoute}{ExtendRoute}
-\NewAlgorithm{\GetRouteNode}{GetRouteNode}
+\NewAlgorithm{\CreateOnionLayer}{CreateOnionLayer}
 
 \begin{figure}
   \begin{algorithmic}
@@ -147,12 +147,12 @@ This process is illustrated in \cref{fig:file-exchange}.
       \If{$L\leq 0$}
         \State \Return $H$
       \EndIf
-      \State $D\gets \GetRouteNode[\theta]$
+      \State $D\gets \CreateOnionLayer[\theta]$
       \State $H\gets D\concat \DeBEenc[\mpk, D, H]$
       \State \Return $\ExtendRoute[H, L-1, \theta]$
     \EndFunction
 
-    \Function{\GetRouteNode}{$\theta$}
+    \Function{\CreateOnionLayer}{$\theta$}
       \State $d\gets \GetRandomPeer$
       \State $D\gets \{d\}$
       \While{$\prod_{d\in D} \Pr[d \text{ offline at time } t] > \theta$}
