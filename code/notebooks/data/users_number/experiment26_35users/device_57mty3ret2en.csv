@@ -1,1 +1,11 @@
 t,experiment_id,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+260242.785174096,26,57mty3ret2en,Sandie,3,0f12v5,70,27972,1,0,612,0,True,4
+260242.792260104,26,57mty3ret2en,Sandie,3,0f12v5,70,27972,2,100,0,0,True,4
+260242.799944156,26,57mty3ret2en,Sandie,3,0f12v5,40,50125,1,0,612,0,True,3
+260242.807832386,26,57mty3ret2en,Sandie,3,0f12v5,40,50125,2,100,0,0,True,3
+260242.815920131,26,57mty3ret2en,Sandie,3,0f12v5,73,13818,1,0,612,0,True,2
+260242.823955628,26,57mty3ret2en,Sandie,3,0f12v5,73,13818,2,100,0,0,True,2
+260242.831952902,26,57mty3ret2en,Sandie,3,0f12v5,17,27308,1,0,612,0,True,1
+260242.839771946,26,57mty3ret2en,Sandie,3,0f12v5,17,27308,2,100,0,0,True,1
+260242.847550865,26,57mty3ret2en,Sandie,3,0f12v5,10,10574,1,0,612,0,True,0
+260242.855284426,26,57mty3ret2en,Sandie,3,0f12v5,10,10574,2,100,0,0,True,0

@@ -1,1 +1,3 @@
 t,experiment_id,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+260488.752472479,39,r0rc99hcou5t,Livia,24,5gsg1w,62,4815,2,0,100,0,True,0
+260493.082661172,39,r0rc99hcou5t,Livia,24,5gsg1w,62,43626,2,0,100,0,True,0

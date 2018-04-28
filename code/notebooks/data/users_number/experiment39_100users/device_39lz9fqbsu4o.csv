@@ -1,1 +1,7 @@
 t,experiment_id,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+260401.998241931,39,39lz9fqbsu4o,Athena,16,3p2278,58,54005,2,0,100,0,True,0
+260411.439053105,39,39lz9fqbsu4o,Athena,16,3p2278,8,38066,2,0,100,0,True,0
+260456.790474637,39,39lz9fqbsu4o,Athena,21,3p2278,5,12519,2,0,100,0,True,1
+260456.79811606,39,39lz9fqbsu4o,Athena,21,3p2278,7,44036,2,0,100,0,True,0
+260463.263711796,39,39lz9fqbsu4o,Athena,21,3p2278,58,6988,2,0,100,0,True,1
+260463.27138846,39,39lz9fqbsu4o,Athena,21,3p2278,58,41631,2,0,100,0,True,0

@@ -1,1 +1,3 @@
 t,experiment_id,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+260440.401132157,13,z8bd8w3e1bug,Evelyne,19,v6gf3g,69,23601,1,0,612,0,True,0
+260440.408219814,13,z8bd8w3e1bug,Evelyne,19,v6gf3g,69,23601,2,100,0,0,True,0

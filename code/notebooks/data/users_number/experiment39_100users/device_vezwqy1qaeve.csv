@@ -1,1 +1,7 @@
 t,experiment_id,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+260400.07408521,39,vezwqy1qaeve,Julianna,15,3eqg9i,32,17249,2,0,100,0,True,1
+260400.081151401,39,vezwqy1qaeve,Julianna,15,3eqg9i,8,5902,2,0,100,0,True,0
+260420.125499709,39,vezwqy1qaeve,Julianna,17,3eqg9i,11,40150,2,0,100,0,True,0
+260421.638793043,39,vezwqy1qaeve,Julianna,17,3eqg9i,7,20757,2,0,100,0,True,0
+260425.341920731,39,vezwqy1qaeve,Julianna,17,3eqg9i,28,17724,2,0,100,0,True,0
+260450.963686994,39,vezwqy1qaeve,Julianna,19,3eqg9i,84,11261,2,0,100,0,True,0

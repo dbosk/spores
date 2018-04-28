@@ -1,1 +1,9 @@
 t,experiment_id,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+260352.000267023,13,oz6ew0aw9z2r,Kaylee,11,gc12nw,90,50377,1,0,612,0,True,1
+260352.007231972,13,oz6ew0aw9z2r,Kaylee,11,gc12nw,90,50377,2,100,0,0,True,1
+260352.014801123,13,oz6ew0aw9z2r,Kaylee,11,gc12nw,99,22149,1,0,612,0,True,0
+260352.022417677,13,oz6ew0aw9z2r,Kaylee,11,gc12nw,99,22149,2,100,0,0,True,0
+260360.183018475,13,oz6ew0aw9z2r,Kaylee,11,gc12nw,84,41128,1,0,612,0,True,0
+260360.190810411,13,oz6ew0aw9z2r,Kaylee,11,gc12nw,84,41128,2,100,0,0,True,0
+260362.426208509,13,oz6ew0aw9z2r,Kaylee,11,gc12nw,55,9617,1,0,612,0,True,0
+260362.433878062,13,oz6ew0aw9z2r,Kaylee,11,gc12nw,55,9617,2,100,0,0,True,0

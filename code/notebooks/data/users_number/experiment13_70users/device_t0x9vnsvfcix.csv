@@ -1,1 +1,15 @@
 t,experiment_id,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+260244.405837184,13,t0x9vnsvfcix,Newton,3,my2elp,53,49433,1,0,612,0,True,2
+260244.412831585,13,t0x9vnsvfcix,Newton,3,my2elp,53,49433,2,100,0,0,True,2
+260244.420340914,13,t0x9vnsvfcix,Newton,3,my2elp,63,15086,1,0,612,0,True,1
+260244.427994873,13,t0x9vnsvfcix,Newton,3,my2elp,63,15086,2,100,0,0,True,1
+260244.435450591,13,t0x9vnsvfcix,Newton,3,my2elp,70,38965,1,0,612,0,True,0
+260244.443121783,13,t0x9vnsvfcix,Newton,3,my2elp,70,38965,2,100,0,0,True,0
+260248.809831714,13,t0x9vnsvfcix,Newton,3,my2elp,56,10160,1,0,612,0,True,2
+260248.817708238,13,t0x9vnsvfcix,Newton,3,my2elp,56,10160,2,100,0,0,True,2
+260248.825487504,13,t0x9vnsvfcix,Newton,3,my2elp,22,20486,1,0,612,0,True,1
+260248.833190554,13,t0x9vnsvfcix,Newton,3,my2elp,22,20486,2,100,0,0,True,1
+260248.842494232,13,t0x9vnsvfcix,Newton,3,my2elp,58,32308,1,0,612,0,True,0
+260248.850336869,13,t0x9vnsvfcix,Newton,3,my2elp,58,32308,2,100,0,0,True,0
+260251.92152258,13,t0x9vnsvfcix,Newton,3,my2elp,46,58449,1,0,612,0,True,0
+260251.931418101,13,t0x9vnsvfcix,Newton,3,my2elp,46,58449,2,100,0,0,True,0

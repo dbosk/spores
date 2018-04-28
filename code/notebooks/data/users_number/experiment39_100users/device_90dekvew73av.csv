@@ -1,1 +1,4 @@
 t,experiment_id,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+260310.99713027,39,90dekvew73av,Shawnda,7,sch4ov,71,37657,2,0,100,0,True,0
+260357.986787851,39,90dekvew73av,Shawnda,11,sch4ov,6,41007,2,0,100,0,True,1
+260357.99433311,39,90dekvew73av,Shawnda,11,sch4ov,4,61709,2,0,100,0,True,0

@@ -1,1 +1,5 @@
 t,experiment_id,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+260394.194507743,39,n7yiu3hq7qf4,Morgan,15,3p2278,8,38066,1,0,612,0,True,0
+260394.201472104,39,n7yiu3hq7qf4,Morgan,15,3p2278,8,38066,2,100,0,0,True,0
+260497.827818641,39,n7yiu3hq7qf4,Morgan,24,3p2278,58,63589,1,0,612,0,True,0
+260497.848835167,39,n7yiu3hq7qf4,Morgan,24,3p2278,58,63589,2,100,0,0,True,0

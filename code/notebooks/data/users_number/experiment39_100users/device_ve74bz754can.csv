@@ -1,1 +1,7 @@
 t,experiment_id,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+260313.346040209,39,ve74bz754can,Renna,8,rqd2i7,86,41653,2,0,100,0,True,1
+260313.353026407,39,ve74bz754can,Renna,8,rqd2i7,75,53959,2,0,100,0,True,0
+260317.664105365,39,ve74bz754can,Renna,8,rqd2i7,23,57665,2,0,100,0,True,1
+260317.671891168,39,ve74bz754can,Renna,8,rqd2i7,1,33674,2,0,100,0,True,0
+260380.455901308,39,ve74bz754can,Renna,14,rqd2i7,85,64610,2,0,100,0,True,0
+260388.392457359,39,ve74bz754can,Renna,14,rqd2i7,98,40735,2,0,100,0,True,0

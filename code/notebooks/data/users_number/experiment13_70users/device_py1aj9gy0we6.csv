@@ -1,1 +1,10 @@
 t,experiment_id,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+260311.297667172,13,py1aj9gy0we6,Vickey,7,my2elp,91,1775,2,0,100,0,True,0
+260313.973951488,13,py1aj9gy0we6,Vickey,7,my2elp,3,11100,2,0,100,0,True,0
+260317.607606066,13,py1aj9gy0we6,Vickey,8,my2elp,55,53372,2,0,100,0,True,0
+260323.317589758,13,py1aj9gy0we6,Vickey,8,my2elp,76,60535,2,0,100,0,True,2
+260323.325559746,13,py1aj9gy0we6,Vickey,8,my2elp,40,2491,2,0,100,0,True,1
+260323.334624044,13,py1aj9gy0we6,Vickey,8,my2elp,52,35509,2,0,100,0,True,0
+260347.175666189,13,py1aj9gy0we6,Vickey,10,my2elp,41,11044,2,0,100,0,True,2
+260347.182678769,13,py1aj9gy0we6,Vickey,10,my2elp,44,46918,2,0,100,0,True,1
+260347.189752594,13,py1aj9gy0we6,Vickey,10,my2elp,91,8767,2,0,100,0,True,0

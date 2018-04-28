@@ -1,1 +1,3 @@
 t,experiment_id,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+260408.544137665,13,uet0t4js8ilr,Angelika,16,j2khg7,37,33222,1,0,612,0,True,0
+260408.551284707,13,uet0t4js8ilr,Angelika,16,j2khg7,37,33222,2,100,0,0,True,0

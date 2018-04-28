@@ -1,1 +1,11 @@
 t,experiment_id,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+260372.48938269,39,v6qew1s75lzz,Livia,13,5gsg1w,31,53767,2,0,100,0,True,0
+260462.461767693,39,v6qew1s75lzz,Livia,21,5gsg1w,16,57213,2,0,100,0,True,0
+260463.212862447,39,v6qew1s75lzz,Livia,21,5gsg1w,37,39109,2,0,100,0,True,0
+260485.36825623,39,v6qew1s75lzz,Livia,24,5gsg1w,62,60491,2,0,100,0,True,0
+260486.515566061,39,v6qew1s75lzz,Livia,24,5gsg1w,99,46199,2,0,100,0,True,0
+260491.289708985,39,v6qew1s75lzz,Livia,24,5gsg1w,11,410,2,0,100,0,True,0
+260492.782883338,39,v6qew1s75lzz,Livia,24,5gsg1w,62,47892,2,0,100,0,True,2
+260492.790264612,39,v6qew1s75lzz,Livia,24,5gsg1w,11,5024,2,0,100,0,True,1
+260492.797308337,39,v6qew1s75lzz,Livia,24,5gsg1w,99,37594,2,0,100,0,True,0
+260494.549414215,39,v6qew1s75lzz,Livia,24,5gsg1w,62,45463,2,0,100,0,True,0

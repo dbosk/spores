@@ -1,1 +1,16 @@
 t,experiment_id,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+260326.768462102,13,jvo5ubm85k1e,Kermit,8,wjqcjw,9,51793,2,0,100,0,True,2
+260326.775884893,13,jvo5ubm85k1e,Kermit,8,wjqcjw,76,34853,2,0,100,0,True,1
+260326.78510017,13,jvo5ubm85k1e,Kermit,8,wjqcjw,58,18180,2,0,100,0,True,0
+260339.12024172,13,jvo5ubm85k1e,Kermit,10,wjqcjw,45,33465,2,0,100,0,True,1
+260339.127891847,13,jvo5ubm85k1e,Kermit,10,wjqcjw,72,15369,2,0,100,0,True,0
+260345.311434016,13,jvo5ubm85k1e,Kermit,10,wjqcjw,31,37070,2,0,100,0,True,0
+260350.99186908,13,jvo5ubm85k1e,Kermit,10,wjqcjw,48,30278,2,0,100,0,True,0
+260397.102826149,13,jvo5ubm85k1e,Kermit,15,wjqcjw,60,14204,2,0,100,0,True,2
+260397.110839551,13,jvo5ubm85k1e,Kermit,15,wjqcjw,25,7751,2,0,100,0,True,1
+260397.119436124,13,jvo5ubm85k1e,Kermit,15,wjqcjw,59,25903,2,0,100,0,True,0
+260405.361558267,13,jvo5ubm85k1e,Kermit,15,wjqcjw,81,3655,2,0,100,0,True,1
+260405.36940986,13,jvo5ubm85k1e,Kermit,15,wjqcjw,16,34830,2,0,100,0,True,0
+260410.036450616,13,jvo5ubm85k1e,Kermit,16,wjqcjw,66,55153,2,0,100,0,True,0
+260415.795534995,13,jvo5ubm85k1e,Kermit,16,wjqcjw,3,51341,2,0,100,0,True,1
+260415.803867571,13,jvo5ubm85k1e,Kermit,16,wjqcjw,6,37177,2,0,100,0,True,0

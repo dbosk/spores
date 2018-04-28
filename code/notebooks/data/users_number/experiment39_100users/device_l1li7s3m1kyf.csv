@@ -1,1 +1,8 @@
 t,experiment_id,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+260301.425330613,39,l1li7s3m1kyf,Temika,7,2zqx27,28,615,2,0,100,0,True,0
+260306.01017509,39,l1li7s3m1kyf,Temika,7,2zqx27,50,64807,2,0,100,0,True,0
+260316.930525541,39,l1li7s3m1kyf,Temika,8,2zqx27,19,45952,2,0,100,0,True,2
+260316.938886024,39,l1li7s3m1kyf,Temika,8,2zqx27,31,5007,2,0,100,0,True,1
+260316.946294698,39,l1li7s3m1kyf,Temika,8,2zqx27,20,64015,2,0,100,0,True,0
+260328.99663517,39,l1li7s3m1kyf,Temika,9,2zqx27,89,47677,2,0,100,0,True,1
+260329.004147033,39,l1li7s3m1kyf,Temika,9,2zqx27,30,34912,2,0,100,0,True,0

@@ -1,1 +1,7 @@
 t,experiment_id,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+260300.938351875,13,kemk0wstlgkm,Elvera,7,s9jmpl,37,7801,1,0,612,0,True,0
+260300.945182951,13,kemk0wstlgkm,Elvera,7,s9jmpl,37,7801,2,100,0,0,True,0
+260310.403527539,13,kemk0wstlgkm,Elvera,7,s9jmpl,92,8717,1,0,612,0,True,0
+260310.411158172,13,kemk0wstlgkm,Elvera,7,s9jmpl,92,8717,2,100,0,0,True,0
+260356.45218779,13,kemk0wstlgkm,Elvera,12,s9jmpl,74,24804,1,0,612,0,True,0
+260356.460337322,13,kemk0wstlgkm,Elvera,12,s9jmpl,74,24804,2,100,0,0,True,0

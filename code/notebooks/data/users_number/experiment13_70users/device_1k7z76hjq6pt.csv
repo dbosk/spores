@@ -1,1 +1,14 @@
 t,experiment_id,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+260229.622610467,13,1k7z76hjq6pt,Nadia,2,s9jmpl,35,65021,1,0,0,612,True,4
+260229.641613684,13,1k7z76hjq6pt,Nadia,2,s9jmpl,76,23299,1,0,0,612,True,3
+260229.651869668,13,1k7z76hjq6pt,Nadia,2,s9jmpl,9,10883,1,0,0,612,True,2
+260229.6593168,13,1k7z76hjq6pt,Nadia,2,s9jmpl,54,878,1,0,0,612,True,1
+260229.679372973,13,1k7z76hjq6pt,Nadia,2,s9jmpl,24,46931,1,0,0,612,True,0
+260237.661724617,13,1k7z76hjq6pt,Nadia,2,s9jmpl,91,3034,1,0,0,612,True,1
+260237.668742362,13,1k7z76hjq6pt,Nadia,2,s9jmpl,81,46307,1,0,0,612,True,0
+260244.576477216,13,1k7z76hjq6pt,Nadia,3,s9jmpl,47,58624,1,0,0,612,True,0
+260248.991093749,13,1k7z76hjq6pt,Nadia,3,s9jmpl,46,40235,1,0,0,612,True,3
+260248.999042882,13,1k7z76hjq6pt,Nadia,3,s9jmpl,89,18234,1,0,0,612,True,2
+260249.007021693,13,1k7z76hjq6pt,Nadia,3,s9jmpl,88,51095,1,0,0,612,True,1
+260249.014814738,13,1k7z76hjq6pt,Nadia,3,s9jmpl,39,17320,1,0,0,612,True,0
+260252.05757431,13,1k7z76hjq6pt,Nadia,3,s9jmpl,85,6328,1,0,0,612,True,0

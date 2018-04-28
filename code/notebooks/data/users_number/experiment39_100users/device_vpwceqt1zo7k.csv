@@ -1,1 +1,13 @@
 t,experiment_id,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+260231.916867081,39,vpwceqt1zo7k,Janis,1,kie5tx,6,10076,2,0,100,0,True,1
+260231.923669809,39,vpwceqt1zo7k,Janis,1,kie5tx,17,63918,2,0,100,0,True,0
+260312.43409491,39,vpwceqt1zo7k,Janis,8,kie5tx,16,27875,2,0,100,0,True,0
+260317.435874427,39,vpwceqt1zo7k,Janis,8,kie5tx,15,56267,2,0,100,0,True,0
+260388.385178226,39,vpwceqt1zo7k,Janis,14,kie5tx,71,33450,2,0,100,0,True,0
+260390.056062692,39,vpwceqt1zo7k,Janis,14,kie5tx,73,10126,2,0,100,0,True,0
+260399.927359538,39,vpwceqt1zo7k,Janis,15,kie5tx,54,18723,2,0,100,0,True,0
+260408.70009856,39,vpwceqt1zo7k,Janis,16,kie5tx,7,44886,2,0,100,0,True,0
+260412.817683719,39,vpwceqt1zo7k,Janis,17,kie5tx,3,2392,2,0,100,0,True,0
+260454.999254118,39,vpwceqt1zo7k,Janis,20,kie5tx,54,25461,2,0,100,0,True,0
+260455.992148433,39,vpwceqt1zo7k,Janis,20,kie5tx,54,16620,2,0,100,0,True,0
+260467.364755538,39,vpwceqt1zo7k,Janis,22,kie5tx,54,45457,2,0,100,0,True,0

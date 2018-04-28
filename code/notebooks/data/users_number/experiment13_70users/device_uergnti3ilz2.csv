@@ -1,1 +1,9 @@
 t,experiment_id,addr,owner,current_round,file_id,chunk_id,mess_id,type,sent,received,forwarded,success,messages_in_queue
+260252.335546327,13,uergnti3ilz2,Denver,3,358r3v,81,40657,1,0,612,0,True,0
+260252.347459219,13,uergnti3ilz2,Denver,3,358r3v,81,40657,2,100,0,0,True,0
+260335.078960259,13,uergnti3ilz2,Denver,10,358r3v,23,12855,1,0,612,0,True,1
+260335.087353769,13,uergnti3ilz2,Denver,10,358r3v,23,12855,2,100,0,0,True,1
+260335.094938551,13,uergnti3ilz2,Denver,10,358r3v,64,3185,1,0,612,0,True,0
+260335.102747818,13,uergnti3ilz2,Denver,10,358r3v,64,3185,2,100,0,0,True,0
+260343.499868865,13,uergnti3ilz2,Denver,10,358r3v,77,41429,1,0,612,0,True,0
+260343.50773391,13,uergnti3ilz2,Denver,10,358r3v,77,41429,2,100,0,0,True,0
