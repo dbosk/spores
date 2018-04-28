@@ -72,14 +72,15 @@ We do stuff and things work.
 \subsection{The global device swarm and random peer sampling}
 
 \commentDaniel{%
-  We must cover how to do \(\Pr[d \text{ offline at time } t]\) as used in 
-  \cref{ExtendRoute}.
-  This is probably part of getting random peers in the same place.%
+  We must cover above how to compute \(p_d\) below, \ie the probability of being 
+  online.
+  We need this for \cref{ExtendRoute}.%
 }
 
 \commentDaniel{%
   What is the probability distribution of the peer sample that we get?
-  Will it be close to uniformly random?%
+  Will it be close to uniformly random?
+  I need this for the security analysis.%
 }
 
 \NewAlgorithm{\GetRandomPeer}{GetRandomPeer}
