@@ -27,32 +27,19 @@ Alice, \(a\in U\), has a device swarm, \(D_a\), and Bob, \(b\in U\) has a device
 swarm, \(D_b\).
 We let \(D = \cup_{u\in U} D_u\) be the set of all devices, the global device 
 swarm.
+Without loss of generality, we will use Alice, with device swarm \(D_a\), and 
+Bob, with device swarm \(D_b\), as examples.
 
-Without loss of generality, we will use Alice and Bob as examples.
+\subsection{The local swarm}%
+\label{local-overlay}
+
 Each of Alice's (and Bob's) devices will keep track of its own online and 
 offline behaviour.
 They will use a protocol like Sprinkler~\cite{luxey:hal-01704172} to learn about 
 each other's online--offline behaviour.
 \commentDaniel{Is that correct?}
-This allows Alice's device swarm to do internal scheduling.
-
-Each device \(d\in D_a\) will also participate in the global device swarm, 
-\(D\supset D_a\).
-
-\subsection{Adrien's old stuff}
-
-\newcommand{\localoverlay}{Local Overlay\xspace}
-\newcommand{\globaloverlay}{Global Overlay\xspace}
-
-\subsection{The \localoverlay}%
-\label{local-overlay}
-
-A user's devices, \(D_i\), use the \localoverlay to:
-\begin{enumerate}
-	\item Share information about the user's behavior.
-	Devices use it to build a behavioral model and infer their future connection probability;
-  \item Share files location \commentAL{Maybe \dots}
-\end{enumerate}
+This allows Alice's device swarm to infer a behavioural model for the device 
+swarm and do internal scheduling based on the probability of being online.
 
 \subsubsection{Sharing the user's behavior}% (fold)
 \label{ssub:sharing_the_user_s_behavior}
@@ -81,25 +68,6 @@ We do stuff and things work.
 
 % subsubsection sharing_files_location (end)
 
-\subsection{The \globaloverlay}%
-\label{global-overlay}
-
-Every time a device is online, it participates in the random peer sampling 
-protocol.
-If a device is sampled it provides the following information:
-\begin{itemize}
-  \item its address;
-	\item its public key;
-  \item the probability of being online.
-\end{itemize}
-
-\subsection{The file exchange}%
-\label{file-exchange}
-
-\subsubsection{File exchange process}% (fold)
-\label{ssub:file_exchange_process}
-
-Firstly, Alice and Bob must exchange information out-of-band: an encryption key $ek$ to cipher the file, and an ID $k$ in the DHT pointing to information on how to reach Alice.
 
 \subsection{Random peer sampling and predictions}
 
@@ -113,6 +81,18 @@ Firstly, Alice and Bob must exchange information out-of-band: an encryption key 
   What is the probability distribution of the peer sample that we get?
   Will it be close to uniformly random?%
 }
+
+\NewAlgorithm{\GetRandomPeer}{GetRandomPeer}
+
+Every time a device is online, it participates in the random peer sampling 
+protocol.
+If a device is sampled it provides the following information:
+\begin{itemize}
+  \item its address;
+	\item its public key;
+  \item the probability of being online.
+\end{itemize}
+
 
 \NewScheme{\SPOR}{SPOR}
 
@@ -153,7 +133,6 @@ This process is illustrated in \cref{fig:file-exchange}.
 
 \NewAlgorithm{\ExtendRoute}{ExtendRoute}
 \NewAlgorithm{\GetRouteNode}{GetRouteNode}
-\NewAlgorithm{\GetRandomPeer}{GetRandomPeer}
 
 \begin{figure}
   \begin{algorithmic}
@@ -293,34 +272,11 @@ This process is illustrated in \cref{fig:file-exchange}.
   After that we just do \(\SPOR[\Send]\) on each \(f_i\).%
 }
 
+\subsection{The file exchange}%
+\label{file-exchange}
 
-\endinput
+\subsubsection{File exchange process}% (fold)
+\label{ssub:file_exchange_process}
 
-% subsubsection onion_routes_in_face_of_churn (end)
+Firstly, Alice and Bob must exchange information out-of-band: an encryption key $ek$ to cipher the file, and an ID $k$ in the DHT pointing to information on how to reach Alice.
 
-% \begin{figure}[t]
-% \centering
-% \includegraphics[width=0.8\columnwidth]{figures/schema.pdf}
-% \caption{\label{fig:pipeline}Pipeline of the steps undergone by Alice when he shares a file from his laptop L with Bob.}
-% \end{figure}
-
-% \Cref{fig:pipeline} depicts the process of a file exchange from Alice to Bob.
-% The file $f$ is initially located on Alice's laptop $L$, which is potentially offline for now.
-% Firstly, Alice and Bob need to exchange encryption keys and the key $ID_f$ 
-% referencing the file on the \ac{DHT}.
-% They do so \emph{out-of-band}, that is using another channel than the one 
-% presented here (\eg bluetooth, email, \etc).
-
-% Then, Alice queries the DHT for devices that will most likely be online at the same time as his laptop $L$.
-% To this end, Alice uses his knowledge on his devices connection patterns $A_i$, along with the DHT's public information on devices connections.
-% Once Alice and the DHT agreed upon a set of peers $(M_1, M_2, M_3)$, their address is put in the DHT at the key $ID_f$ referencing the file of interest.
-
-% At the third step, Alice's laptop $L$ becomes available. 
-% Informed of the ongoing file exchange by Alice's Device Swarm Protocol, $L$ fetches the addresses of $M_1, M_2$ and $M_3$ on the DHT using the key $ID_f$.
-% These peers will serve as middle-men: $L$ sends them redundant chunks of $f$ through an onion route (thus remaining anonymous), for Bob to fetch them later.
-
-% In the last forth step, Bob fetches the file $f$ using any of her devices.
-% To do so, she uses the key $ID_f$ to learn the addresses of $M_1, M_2$ and $M_3$.
-% Then, she fetches parts of $f$ from the online middle-men through an onion route.
-% Given that $L$ sent redundant chunks to the middle-men, Bob will not need every middle-man to be connected to fetch the whole file.
-% Once Bob has completed the download, the key $ID_f$ is flushed on the DHT.
