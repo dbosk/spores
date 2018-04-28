@@ -88,10 +88,14 @@ Every time a device is online, it participates in the random peer sampling
 protocol.
 If a device is sampled it provides the following information:
 \begin{itemize}
-  \item its address;
-	\item its public key;
-  \item the probability of being online.
+  \item its address, \(d\);
+  \item its public key, \(\pk_d\);
+  \item the probability of being online, \(p_d\).
 \end{itemize}
+We will denote this by the following algorithm \((d, \pk_d, p_d)\gets 
+  \GetRandomPeer\), which will be used below.
+The probability of being online, \(p_d\), is inferred as above 
+(\cref{local-swarm}).
 
 
 \NewScheme{\SPOR}{SPOR}
@@ -153,9 +157,10 @@ This process is illustrated in \cref{fig:file-exchange}.
     \EndFunction
 
     \Function{\CreateOnionLayer}{$\theta$}
-      \State $d\gets \GetRandomPeer$
+      \State $(d, \pk_d, p_d)\gets \GetRandomPeer$
+      \Comment We use \(d\) as shorthand for this tuple.
       \State $D\gets \{d\}$
-      \While{$\prod_{d\in D} \Pr[d \text{ offline at time } t] > \theta$}
+      \While{$\prod_{d\in D} p_d > \theta$}
         \State $d\gets \GetRandomPeer$
         \State $D\gets D\cup \{d\}$
       \EndWhile
