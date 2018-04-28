@@ -269,13 +269,6 @@ This process is illustrated in \cref{fig:file-exchange}.
 \subsection{Scheduling and transferring a file}%
 \label{file-transfer}
 
-\commentDaniel{%
-  We must do the scheduling: \ie divide the file \(f\) into \(f_1, \dotsc, f_n\) 
-  and how the size of \(f_i\) relates to transmission time and size of the 
-  timeslot (for the validity of predictions).
-  After that we just do \(\SPOR[\Send]\) on each \(f_i\).%
-}
-
 We are interested in transferring large files.
 Every device \(d\in D\) in the global device swarm is only periodically online.
 We will thus divide the data to send into \(n\) smaller chunks (similar to 
