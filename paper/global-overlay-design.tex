@@ -1,0 +1,29 @@
+\subsection{The Global overlay}
+
+\commentDaniel{%
+  We must cover above how to compute \(p_d\) below, \ie the probability of being 
+  online.
+  We need this for \cref{ExtendRoute}.%
+}
+
+\commentDaniel{%
+  What is the probability distribution of the peer sample that we get?
+  Will it be close to uniformly random?
+  I need this for the security analysis.%
+}
+
+\NewAlgorithm{\GetRandomPeer}{GetRandomPeer}
+
+Every time a device is online, it participates in the random peer sampling 
+protocol.
+If a device is sampled it provides the following information:
+\begin{itemize}
+  \item its address, \(d\);
+  \item its public key, \(\pk_d\);
+  \item the probability of being online, \(p_d\).
+\end{itemize}
+We will denote this by the following algorithm \((d, \pk_d, p_d)\gets 
+  \GetRandomPeer\), which will be used below.
+The probability of being online, \(p_d\), is inferred as above 
+(\cref{local-swarm}).
+
