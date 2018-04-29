@@ -69,7 +69,10 @@ Our goal is to predict $O_{t+1}$ knowing $O_t$.
 
 To this end, we model the user's behavior as a Hidden Markov Models (HMMs) of order one, with multiple discrete \emph{observable} processes (one per device) stored in $O$. 
 The hidden process $S=S_1, ..., S_i, ...$ represents the user's locations, constituted of a set of $N$ potential locations (e.g. home, work or outside), $N$ being a user-defined parameter.
+A HMM of order one is such that the hidden variable at time $t$, $S_t$, only depends on the hidden variable at $t-1$, $S_{t-1}$.
+The observations at time $t$, $O_t$, depend on the current hidden variable only, $S_t$.
 
+We first formally define our HMM, then show how to predict the future knowing the HMM, then finally present how to infer the model from the observable sequence only.
 
 
 
@@ -93,33 +96,9 @@ The hidden process $S=S_1, ..., S_i, ...$ represents the user's locations, const
 
 \paragraph*{Formal definition} 
 
-% \begin{figure}[t]
-% \centering
-% \vspace{-1em}
-
-% $$A =
-% \kbordermatrix{
-%       & W            & O            & H            \cr
-%     W & \sfrac{2}{3} & \sfrac{1}{3} & 0            \cr
-%     O & \sfrac{1}{3} & \sfrac{1}{3} & \sfrac{1}{3} \cr
-%     H & 0            & \sfrac{1}{3} & \sfrac{2}{3} \\[0.3em]
-% }, \;
-% B = 
-% \kbordermatrix{
-%       & W     & O   & H   \cr
-%     o_p & 0.7 & 0.6 & 0.8 \cr
-%     o_w & 0.7 & 0   & 0   \cr
-%     o_h & 0   & 0   & 0.7 \cr
-%     o_l & 0.2 & 0.4 & 0.6 \\[0.3em]
-% }$$
-
-% \includegraphics[width=0.9\columnwidth]{figures/hmm.pdf}
-% \caption{ \label{fig:hmm} Example Hidden Markov Model (HMM) of a user's behavior.}
-% \end{figure}
-
-We consider a single user, owning a set of $\mathcal{D}$ devices.
-Time is discretized \commentAL{Discretized/synchronous time needs more explanation}. Needs, and the devices' observations are independent: Alice can have her laptop and phone connected at the same time.
-The hidden process $S=S_1,\dots,S_T$ is built from an alphabet of states $\mathcal{S}$, while the observable process $O=O_1, \dots, \O_T$ contains events from the alphabet $\mathcal{O}$. We define a multivariate HMM $\lambda_N$ as follows:
+%We consider a single user, owning a set of $\mathcal{D}$ devices.
+%Time is discretized \commentAL{Discretized/synchronous time needs more explanation}. Needs, and the devices' observations are independent: Alice can have her laptop and phone connected at the same time.
+The hidden process $S=S_1,\dots,S_i, \dots$ is built from an alphabet of states $\mathcal{S}$, while the observable process $O=O_1, \dots, \O_i, \dots$ contains elements from the alphabet $\mathcal{O}$. We define a multivariate HMM $\lambda_N$ as follows:
 
 $$\text{HMM}:\;\lambda_N=(\Pi, A, B)$$
 
@@ -134,60 +113,32 @@ where
 	\item $A = \left\{ a_{i\,j}\right\}_{(i,j)\in\mathcal{S}^2}$ is the state transition matrix:\\
 	$a_{i\,j}=P[S_t=j \mid S_{t-1}=i]$;
 
-	\item $B = \left\{ b_{i\,k}\right\}_{(i,k)\in\mathcal{S}\times\mathcal{O}}$ is the matrix of event emission probabilities for each state:
+	\item $B = \left\{ b_{i\,k}\right\}_{(i,k)\in\mathcal{S}\times\mathcal{D}}$ is the matrix of event emission probabilities for each state:
 	$b_{i\,k} = P[ k \in O_t \mid S_t = i]$.
 \end{itemize}
 
-In our case, the states are the different locations where the user is susceptible to go;
-we considered the three following ones: $\mathcal{S}=\left\{ \mathit{work}, \mathit{outside}, \mathit{home} \right\}$. 
-There is one event per device $d$: $\mathcal{O} = \left\{ o_d \right\}_{d\in \mathcal{D}}$. Several devices can be connected at the same time, such that $O_t$ is a set, and $o_d \in O_t$ means that device $d$ was connected at time $t$. Devices' connection probabilities are independent.
-
-In \cref{fig:hmm}, we show an example HMM of a user's behavioral HMM, along with its graphical representation (the initial state distribution $\Pi$ was left out for simplicity). 
-The represented user possesses a phone and a laptop, that she carries around with her, a home computer, that is only accessible from her home, and a workstation, located at her workplace. She never forgets to turn off her fixed appliances before leaving.
-
-% \begin{figure}[t]
-% \centering
-% \includegraphics[width=\columnwidth]{figures/sample_usage.pdf}
-
-% \caption{\label{fig:sample_usage}Sample device usages using the previous HMM specifications. 
-% %The bottom line reads the HMM's states: \textbf{W}ork, \textbf{O}utside, and \textbf{H}ome, while the dark lines read when the devices (\textbf{h}ome computer, \textbf{p}hone, and \textbf{w}orkstation) are online.
-% }
-
-% \end{figure}
-
-% Using the toggle events, we compute the device's \emph{connection} events, represented by the multivariate Bernoulli process $C=\left\{ c^{(d)} \right\}_{d\in\mathcal{D}}$. 
-% $c^{(d)}_t=1$ (resp. 0) means that the device $d$ was online (resp. offline) at time step $t$.
-
-% We state that every device starts offline, and compute $c^{(d)}_t$ as follows:
-
-% $$ \forall d \in \mathcal{D},
-% \begin{cases}
-% c^{(d)}_t=0 &\text{when } t=0; \\
-% c^{(d)}_t=c^{(d)}_{t-1} \oplus o^{(d)}_t &\text{when } t>0.
-% \end{cases}$$
-
-Figure~\ref{fig:sample_usage}, shows a possible trace of the user's behavior, using the parameters depicted in figure~\ref{fig:hmm}. 
-It reads the timeline of $o_{d}$ for each device $d$. On the bottom of the graph, the first letter of the user's location is shown at each time step.
-We see that devices connections depend on the user's location, and that any number of devices can be connected at the same time.
-
-% Each device starts offline; then, the user either toggles one device per round or does nothing.
-% In this figure, we show the device \emph{usage}, that is a consequence of the $\mathit{toggle}$ events defined by the HMM.
-% As a consequence, several devices can be online at the same time, as happens in the figure.
-
-% subsubsection formal_definition (end)
+In our case, the states $\mathcal{S}$ are the different locations $\mathcal{L}$ where the user is susceptible to go.
+The events represent the devices connection, hence $\mathcal{O} = \mathcal{D}$, where $\mathcal{D}$ is the set of the user's devices.
+Several devices can be connected at the same time, such that $O_t$ is a set, and $d \in O_t$ means that device $d$ was connected at time $t$. Devices' connection probabilities are independent.
 
 
-\subsubsection{Predicting future behavior} % (fold)
-\label{ssub:predicting_future_behavior}
-Devices want to predict whether they are likely to be connected in the near future.
-This information will be publicly available, and will allow routes selection for the  files exchange between users.
+% In \cref{fig:hmm}, we show an example HMM of a user's behavioral HMM, along with its graphical representation (the initial state distribution $\Pi$ was left out for simplicity). 
+% The represented user possesses a phone and a laptop, that she carries around with her, a home computer, that is only accessible from her home, and a workstation, located at her workplace. She never forgets to turn off her fixed appliances before leaving.
+
+% Figure~\ref{fig:sample_usage}, shows a possible trace of the user's behavior, using the parameters depicted in figure~\ref{fig:hmm}. 
+% It reads the timeline of $o_{d}$ for each device $d$. On the bottom of the graph, the first letter of the user's location is shown at each time step.
+% We see that devices connections depend on the user's location, and that any number of devices can be connected at the same time.
+
+\paragraph*{Predicting future behavior} 
+As already stated, devices want to predict whether they are likely to be connected in the near future.
+This information will be publicly available, and will enable the intelligent building of routes.
 
 Because devices connections only depend on the users location, we can predict the devices connections in $i$ round $O_{t+i}$ given only the model $\lambda_N$ and the current user's location $S_t$. We first compute the probability that a device $d$ will be connected next turn:
 
 $$
-P\left[ o_d \in O_{t} \mid S_{t-1} = s \right] = 
+P\left[ d \in O_{t} \mid S_{t-1} = s \right] = 
 \sum\limits_{s' \in \mathcal{S}} 
-a_{s\,s'} * b_{s'\,o_d}.
+a_{s\,s'} * b_{s'\,d}.
 $$
 
 It is the sum of the probabilities, for each state $s$, that the user switches to $s$ and uses her device.
@@ -195,13 +146,16 @@ It is the sum of the probabilities, for each state $s$, that the user switches t
 Recursively, predicting $i$ turns in advance follows the same logic:
 
 \begin{multline*}
-P\left[ o_d \in O_{t+i} \mid S_{t} = s \right] = \\
+P\left[ d \in O_{t+i} \mid S_{t} = s \right] = \\
 \sum\limits_{s' \in \mathcal{S}}
 P\left[ S_{t+1} = s' \mid S_t = s \right] * 
-P\left[ o_d \in O_{t+i} \mid S_{t+1} = s'\right].
+P\left[ d \in O_{t+i} \mid S_{t+1} = s'\right].
 \end{multline*}
 
+We show in section~\ref{sub:devices_predictions_of_the_user_behavior} that $P\left[ d \in O_{t+1} \mid S_{t} = s \right] \simeq P\left[ d \in O_{t+i} \mid S_{t} = s \right]$. 
+For that reason, devices only compute the prediction of their connection at $t+1$, that is considered a good enough estimator of their state ``in the near future''.
 
-\commentAL{In conclusion: we want more unicorns at the Olympic Games.}
 
-\commentAL{I don't mention prediction yet since I am not sure we get good enough results.}
+\paragraph*{Inferring the model from the sequence of observations}
+
+
