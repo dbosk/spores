@@ -1,56 +1,60 @@
 \section{Introduction}
 
 % What's the problem?
-Following the Weiserian vision, nowadays, we are
-evolving in a new era of cooperation and interactions among humans.
-The exponential proliferation of devices connected to the Internet is
+Following Mark Weiser's vision, we are nowadays
+experiencing a new era of cooperation and interactions between humans.
+The exponential proliferation of connected devices is
 drastically impacting human experience and enhancing human
-interactions \cite{Dearman:2008, Oh:2017, Sohn:2008,Harper08}. It further opens new area of research such as
+exchanges~\cite{Dearman:2008, Oh:2017, Sohn:2008,Harper08}. This evolution has opened new areas of research such as
 \textit{proxemics} applied to ubiquitous computing
-\cite{Marquardt:2011}. Users are evolving in their social space with 
-multiple kinds of computing devices that form a \textit{squad} of users'
-devices, named \squad in the remainder of the
-paper. Leveraging on the help of their \squad, users increase
-their expectations in terms of connectivity and interactions
+\cite{Marquardt:2011}. When evolving in their social space, users can today rely on
+multiple kinds of computing devices that form a \textit{personal squad} of connected entities, or \squad as we shall call them in the remainder of the
+paper. Helped by their \squad, users
+have come to expect ever higher levels of connectivity and interaction
 possibilities. For instance, as users bring
-their devices close to one another, they expect to initiate cross
-device interactions \textit{in situ} to share digital content
+their devices close to one another, they expect to be able to initiate cross-device
+interactions \textit{in situ} in order to share digital content
 \cite{Oh:2017} among devices of their own \squad or with the ones 
 from other users' \squad. More broadly, users expect to share digital content,
-whatever the content location, from one
-device to another in a seamless manner \cite{Dearman:2008}, as they
+wherever the content, its sender, or its recipient might be located, from one
+arbitrary device to another in a seamless manner~\cite{Dearman:2008}, as they
 would have done in the old days with an USB key or with an email. 
 
-From a technical perspective, one major trend to provide a seamless
-sharing of digital contents among users' devices is to leverage on the
-cloud, which acts as a key enabler for ubiquitous computing. Users' data
-are pushed online, into the cloud with either Dropbox, Google Docs,
-OneDrive, Amazon Drive, etc. to make it accessible anytime,
-anywhere to the users' devices.  In the last decades, a lot of research work has
-emerged to promote the use of this offloading strategy to overcome scarce
-resources of users' devices, and to provide an always-on availability
-\cite{Zhang:2014,Gordon:2012,Chun:2011}. It paves the way of different kind
-of clouds, such as mobile cloud computing, mobile-edge computing
-and/or fog computing, that aim to use the nodes from the cloud
-infrastructure that are the closest to end users
-for offloading with an improved quality of service and user experience.
+This thirst for seamless sharing explains the rise and ongoing popularity
+of personal sharing platforms such as Dropbox, Google Docs,
+OneDrive, Amazon Drive, etc. These solutions are able to share data on any device, between any user, almost
+anytime, anywhere. They achieve this feat by relying heavily on
+remotely hosted cloud services, which have now become a key enabler of ubiquitous ecosystems. 
+% argument: cloud -> danger, 
+%% From a technical perspective, one major trend to provide a seamless
+%% sharing of digital contents among users' devices is to leverage on the
+%% cloud, which acts as a key enabler for ubiquitous computing. Users' data
+%% are pushed online, into the cloud with either Dropbox, Google Docs,
+%% OneDrive, Amazon Drive, etc. to make it accessible anytime,
+%% anywhere to the users' devices.
+%% \commentFT{Removing the following, as seems to be a detour from main argument: \emph{In the last decades, a lot of research work has
+%% emerged to promote the use of this offloading strategy to overcome scarce
+%% resources of users' devices, and to provide an always-on availability
+%% \cite{Zhang:2014,Gordon:2012,Chun:2011}. It paves the way of different kind
+%% of clouds, such as mobile cloud computing, mobile-edge computing
+%% and/or fog computing, that aim to use the nodes from the cloud
+%% infrastructure that are the closest to end users
+%% for offloading with an improved quality of service and user experience.}}
+%% Hence, the cloud, and its variants constitute a perfect complement
+%% to perform storage and computation on behalf of the resource
+%% constrained devices.
+Unfortunately, this reliance on the cloud comes at a strong price: 
+%% users and their devices become totally tethered to the cloud ecosystem and its providers. As
+%% a direct consequence,
+users lose control over their own data, which become distributed over
+multiple data centers, often in foreign jurisdictions, making it difficult for most users to grasp, review, and assess, the privacy, and
+confidentiality guaranties they can expect. In practice, user data hosted in the cloud is routinely harvested, often without explicit
+consent, either by cloud providers or third parties.
 
-Hence, the cloud, and its variants constitute a perfect complement
-to perform storage and computation on behalf of the resource
-constrained devices. However, this cloud reliance comes at a strong price:
-devices become totally tethered to a cloud ecosystem and provider. As
-a direct consequence, users lose the control over their own data as it is
-stored and spanned into multiple foreign data centers. Hence, it becomes difficult at 
-the legal level to assess the privacy, and
-confidentiality delivered to the end users. Further, at the practical
-level, users' data can be harvested on their behalf, and without their
-consent, by either the cloud provider or third parties.
-Data sent by the user can be encrypted, but it is not enough
-\cite{granick_2017, HooffLZZ15, HarnikPS10}.  As stated by a famous quotation from
-NSA: "we kill people based on metadata''. Metadata such as the users'
+Although data encryption is often proposed as a first line of defense for cloud-hosted data, it is unfortunately  insufficient, because it does not protect meta-data information~\cite{granick_2017, HooffLZZ15, HarnikPS10}. This turns out to be a critical limitation, as famously emphasized by a former NSA and CIA director: "We kill people based on metadata.''~\cite{NaughtonTheGuardian2016} Metadata such as a user'
 location and activity can be still tracked, including the access
-control history revealing what users share with whom and when.
-Users’ devices become tracking and/or monitoring \squad that turn to
+control history revealing what each user shared with whom and when.
+User devices become tracking and/or monitoring \squad that turn to
 be the best spy over users. 
 
 Constructing a system that provides anonymous communication is a very
