@@ -36,6 +36,23 @@ Sphinx~\cite{Sphinx} cryptographic packet format to the routing of
 
 % \end{itemize}
 
-% It would be interesting to adapt the Sphinx~\cite{Sphinx} cryptographic packet 
-% format to the routing of \(\SPOR\).
-% Then we could achieve the properties of Sphinx and enjoy provable security.
+
+We see two alternative paths for improving the header.
+First, we might be able to adapt the Sphinx~\cite{Sphinx} cryptographic packet 
+format to the routing of \(\SPOR\).
+Then we could achieve the properties of Sphinx and enjoy provable security.
+
+The second approach would be to use the technique by \textcite{PPACinPubFS}.
+They adapt \(\ANOBE\) in such a way that its ciphertexts decrypt to different 
+things for different recipients.
+This way we could have one ciphertext encrypted for all the alternative nodes 
+--- across layers.
+Then the ciphertext would decrypt to different plaintexts for nodes on different 
+layers in the route.
+This would hide the path length (constant-size ciphertexts by padding) and the 
+position of individual nodes.
+This approach would probably be the easiest, but would probably not provide all 
+the properties from Sphinx (\eg resistance to active tagging attacks and bitwise 
+unlinkability).
+
+
