@@ -4,36 +4,43 @@
 \commentDaniel{Under editing.
   Must move suggestions for fixes to future work.}
 
-Alice wants to prevent Bob from learning which are her devices. Bob is allowed 
-to infer the behaviour of devices in the global device swarm, a file transfer 
-from Alice should not give Bob any information about which devices are Alice's.
+Alice wants to prevent Bob from learning which are her devices.
+Bob is allowed to infer the behaviour of devices in the Global Device Retinue, 
+but a file transfer from Alice should not give Bob any information about which 
+devices are Alice's.
 
-We also prevent Carol and David to know that Alice and Bob exchanged a file. 
-They forwarded unknown messages.
+Bob constructs \iac{SPOR} route that he gives to Alice.
+This means that Alice does not learn any of Bob's destination devices.
+When Alice starts sending the message, she will not connect directly to the 
+device at the head of the route, since that might be Bob's device.
+Alice will construct her own \ac{SPOR} route.
+Thus Alice's devices are hidden from Bob's observation and vice versa.
 
-The message \(m\) remains the same from hop to hop during the onion routing, 
-hence a global observer can track the message through the network.
-The same applies if one node occurs more than once in a route, \eg in both 
-Alice's and Bob's part of the route.
+Alice and Bob also want to prevent Carol and David to learn that Alice sent a 
+message to Bob.
+Alice and Bob construct their \ac{SPOR} route by including devices from the 
+Global Device Retinue, which also includes devices from Carol and David.
+If all devices on the route belong to Carol and David, then they can, of course, 
+learn that Alice sent a message to Bob.
+How well they can do if they do not control the entire route, depends on the 
+choice of the encryption scheme \(\Enc*\), used to encrypt the message \(m\) in 
+in \cref{sec:file_exchange}.
 
-Since we have an in-package header, each node on the route can infer its 
-position on the route.
-
-Since we choose a new key for every file, we have forward secrecy between files.
-\Eg an adversary who compromises either Alice or Bob cannot determine what Alice 
-sent to Bob.
-
-We can choose different properties for the encryption scheme, \(\Enc*\), used to 
-encrypt the message \(m\) in in \cref{sec:file_exchange}, depending on what 
-security properties we would like to achieve.
 What makes sense is to choose at least an authenticated encryption 
 scheme~\cite{AuthEncryption}.
-This would give confidentiality and integrity for the message, but if the first 
-and the last node on the route colludes, they can infer that Alice sent a 
-message to Bob.
-We could also choose a deniable encryption scheme~\cite{DeniableEncryption}, \eg 
-the one by \textcite{OTPKX} which is both deniable and authenticated and 
-provides \ac{DEN-SS}.
+(We could also choose a deniable encryption scheme~\cite{DeniableEncryption}, 
+\eg the one by \textcite{OTPKX} which is both deniable and authenticated and 
+provides \ac{DEN-SS}.)
+This would give confidentiality (or deniability) and integrity for the message, 
+but if the first and the last node belong to Carol and David, they can infer 
+that Alice sent a message to Bob.
+Note that as our in-package header is designed, each node on the route can infer 
+its position on the route \emph{relative to the destination}.
+(We discuss how to remedy this in \cref{conclusion}.)
+None of the nodes can know if they are the first node or not, unless they 
+collude with the previous node.
+The last node, however, can know for sure that the next hop is the destination, 
+but not who it belongs to.
 
 If we choose \(\Enc*\) as a universal re-encryption~\cite{UniversalReencryption} 
 scheme (possibly composed with the deniable, authenticated encryption above), 
@@ -43,9 +50,15 @@ the route.
 re-encryption of \(m\) before forwarding the message to the next hop.)
 Without universal re-encryption, the message \(m\) itself remains constant 
 throughout the route and thus constitutes a tag for tracking.
-As long as \emph{at least one node on the route is honest} and actually performs 
-the re-encryption --- there is no incentive for them to do this, as neither 
-Alice nor Bob can detect it without talking directly to each other to compare 
-the ciphertexts --- then the link between Alice and Bob is broken.
-(Alice and Bob are, of course, still susceptible to traffic analysis.)
+As long as \emph{at least one node on the route is honest}, \ie actually 
+performs the re-encryption --- there is no incentive for them to do this, as 
+neither Alice nor Bob can detect cheating without talking directly to each other 
+to compare the ciphertexts --- then the link between Alice and Bob is broken.
+This means that Carol and David must control all nodes on the route to link 
+Alice's transfer to Bob.
+
+Since Alice and Bob choose a new key for every file, we have forward secrecy 
+between files.
+\Eg an adversary who compromises either Alice or Bob cannot determine what Alice 
+sent to Bob, unless it is an ongoing transfer.
 
