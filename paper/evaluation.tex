@@ -28,12 +28,11 @@ We thus model each user with a Hidden Markov Model, as presented in section~\ref
 We keep the different possible locations $\mathcal{L}$ to a number of three, and generate different state transition matrices $A$ and emission probability matrices $B$ for each user. 
 
 $B_{*, d}$, the probability that device $d$ is used in each location, depends on $d$'s device type: 
-
 \begin{itemize}
 	\item for each location, every mobile device $d_m$ has a random but high probability of being online: $\forall l \in \mathcal{L}, B_{l, d_m} \in [0.6, 1]$;
 	\item a portable device $d_p$ has a much lower probability of being used ($\forall l \in \mathcal{L}, B_{l, d_p} \in [0.2, 0.8]$); 
 	\item a fixed appliance $d_f$ has a non-zero probability of usage in only one location: $\exists l \in \mathcal{L}, \forall l' \neq l, B_{l, d_f} \in [0.4, 0.8] \& B_{l, d_f} = 0$
-	\item a server $d_s $has a very high probability of working, 
+	\item a server $d_s$ has a very high probability of working, whatever the user's location: $\exists p \in [0.9, 1], \forall l \in \mathcal{L}, B{l, d_s} = p$.
 \end{itemize} 
 
 \begin{figure}[t]
