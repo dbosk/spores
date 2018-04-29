@@ -36,24 +36,23 @@ From there on, Alice and Bob add the POR information to the headers of their sub
 % Without loss of generality, we will use Alice, with device swarm \(D_a\), and 
 % Bob, with device swarm \(D_b\), as examples.
 
-
-The privacy objectives of our system require encryption primitives that we first detail in section~\ref{BuildingBlocks}. The other constituents of \name are depicted in figure~\ref{fig:outline}.
-On top, the devices of each user are circled in gray, and form a user's device squad. The squad online members communicate among themselves: they exchange files and messages information, and cooperate to predict the user's future behavior. This first protocol is called the \emph{Squad Overlay} and will be discussed in section~\ref{sec:squad_overlay}.
-%On top we see that each user's devices (shown as clouds) communicate with one another through a dissemination protocol---coined the \emph{squad overlay}---that will be discussed in section~\ref{sec:squad_overlay}. 
-Below, we see all devices connected in a random graph: each device gives information about itself to random nodes when it is online. 
-This \emph{Global Overlay} will be covered in section~\ref{sec:global_overlay}.
-The information brought by these overlays allows devices to securely and reliably exchange messages between users, as will be explained in section~\ref{sec:message_passing}.
-Given this message passing protocol, users can privately exchange files, as shown in the bottom of the figure. We will cover this ultimate goal in section~\ref{sec:file_exchange}.
-
 \begin{figure}[t]
 \centering
 \def\svgwidth{\columnwidth}
 %\input{outline.pdf_tex}
 \import{figures/}{outline.pdf_tex}
 %\includegraphics[width=0.9\columnwidth]{figures/outline.pdf}
-\caption{\label{fig:outline}Outline of \name's components.}
-
+\caption{\label{fig:outline}Outline of \name's components. Users squads of devices are circled in gray. From top to bottom: a user's devices collaborate through the Squad Overlay; online devices globally share information about them to random peers; using the two above overlays allows for the creation or Predictive Onion Routes (PORs) between sets of devices; secure file exchange between users is enabled by PORs.}
 \end{figure}
+
+The privacy objectives of our system require encryption primitives that we first detail in section~\ref{BuildingBlocks}. The other constituents of \name are depicted in figure~\ref{fig:outline}.
+On top, the devices of each user are circled in gray, and form a user's device squad. The squad online members communicate among themselves: they exchange files and messages information, and cooperate to predict the user's future behavior. 
+This first protocol is called the \emph{Squad Overlay} and will be discussed in section~\ref{sec:squad_overlay}.
+%On top we see that each user's devices (shown as clouds) communicate with one another through a dissemination protocol---coined the \emph{squad overlay}---that will be discussed in section~\ref{sec:squad_overlay}. 
+Below, we see all devices connected in a random graph: each device gives information about itself to random nodes when it is online. 
+This \emph{Global Overlay} will be covered in section~\ref{sec:global_overlay}.
+The information brought by these overlays allows devices to securely and reliably exchange messages between users by creating Predictive Onion Routes (PORs), as will be explained in section~\ref{sec:message_passing}.
+Given this message passing protocol, users can privately exchange files, as shown in the bottom of the figure. We will cover this ultimate goal in section~\ref{sec:file_exchange}.
 
 
 \include*{building-blocks}
