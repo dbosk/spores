@@ -3,7 +3,7 @@ all: p2p-private-cloud.pdf
 
 SRC+=		contents.tex abstract.tex
 SRC+= 		intro.tex
-SRC+= 		privacy.tex
+SRC+= 		system-model.tex
 
 SRC+=		design.tex
 SRC+= 		building-blocks.tex 
