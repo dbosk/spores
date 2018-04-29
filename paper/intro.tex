@@ -1,40 +1,53 @@
 \section{Introduction}
 
 % What's the problem?
+Following the Weiserian vision, nowadays, we are
+evolving in a new era of cooperation and interactions among humans.
+The exponential proliferation of devices connected to the Internet is
+drastically impacting human experience and enhancing human
+interactions \cite{Dearman:2008, Oh:2017, Sohn:2008,Harper08}. It further opens new area of research such as
+\textit{proxemics} applied to ubiquitous computing
+\cite{Marquardt:2011}. Users are evolving in their social space with 
+multiple kinds of computing devices that form a \textit{squad} of users'
+devices. Leveraging on the help of their devices squad, users increase their expectations in
+terms of connectivity and interactions possibilities. For instance, as users bring
+their devices close to one another, they expect to initiate cross
+device interactions \textit{in situ} to share digital content
+\cite{Oh:2017} among devices of their own or with devices 
+from other users. More broadly, users expect to share digital content,
+whatever the content location, from one
+device to another in a seamless manner \cite{Dearman:2008}, as they
+would have done in the old days with an USB key. 
 
-It is common nowadays to use a third party, \ie someone else's computer (better 
-known as the Cloud), as an intermediate to share files.
-For instance, it is common for Alice to upload a file to \eg Box, Dropbox or 
-OneDrive and share the link with Bob who can then download it.
-The goal of this work is to design a decentralized, distributed system where 
-Alice can share files \emph{effortlessly} between her own devices, \eg laptop, 
-smartphone and tablet.
-But Alice should also be able to use her smartphone to share a file on her home 
-computer with Bob.
-Since these are Alice's private devices, privacy is essential.
-E.g.\ it would be devastating for Alice's privacy if Bob could stalk her by 
-tracking her devices or discern usage patterns.
+From a technical perspective, one major trend to provide a seamless
+sharing of digital contents among users' devices is to leverage on the
+cloud, which acts as a key enabler for ubiquitous computing. Users' data
+are pushed online, into the cloud with either Dropbox, Google Docs,
+OneDrive, Amazon Drive, etc. to make it accessible anytime,
+anywhere to the users' devices.  In the last decades, a lot of research work has
+emerged to promote the use of this offloading strategy to overcome scarce
+resources of users' devices, and to provide an always-on availability
+\cite{Zhang:2014,Gordon:2012,Chun:2011}. It paves the way of different kind
+of clouds, such as mobile cloud computing, the mobile-edge computing
+and/or the fog computing, that aim to use the nodes from the cloud
+infrastructure that are the closest to end users
+for offloading with an improved quality of service and user experience.
 
-% XXX Why is it a problem? Research gap left by other approaches?
-% Why is it important, why care?
+Hence, the cloud, and its variants constitue a perfect complement
+to perform storage and computation on behalf of the resource
+constrained devices. However, this cloud reliance comes at a price:
+devices become totally tethered to a cloud ecosystem and provider. As
+a direct consequence, users lose the control over their own data as it is
+stored and spanned into multiple foreign data centers. Hence, it becomes difficult at 
+the legal level to assess the privacy, and
+confidentiality delivered to the end users. Further, at the practical
+level, users' data can be harvested on their behalf by either the cloud provider or third parties.
+Data sent by the user can be encrypted, but it is not enough
+\cite{granick_2017, HooffLZZ15}. As stated by a famous quotation from
+NSA: "we kill people based on metadata''. Metadata such as the users'
+location and activity can be still tracked, including the access
+control history revealing what users share with whom and when.
+Users’ devices become tracking and/or monitoring devices that turn to
+be the best spy over users. 
 
-\commentDaniel{Summarize here why related work is not enough.}
-
-% XXX What's the approach? How to solve the problem?
-
-We use a purely \ac{P2P} design.
-We first provide \iac{P2P} design connecting Alice's own devices.
-This decreases the risk of third-party behavior tracking.
-Then we also use \iac{P2P} design to connect Alice's and Bob's devices.
-This requires some more care, in this case Bob can track Alice since his devices 
-are interacting directly with hers.
-
-% XXX What's the findings?
-% How was it evaluated, what are the results, limitations, what remains to be 
-% done?
-
-\commentDaniel{Summarize our results.}
-
-\commentAL{The proposal:}We propose \name, a \ac{P2P} system for secret file exchange.
-Using only devices owned by participants, \name creates onion routes that allow two users to exchange a file such that nobody is able to determine the content of the file, nor its source and destination.
-Personal devices, unlike servers, often disconnect from the network. To permit reliable file exchange despite the unreliability of the nodes constituting the system, we use devices' knowledge on their owner's behavior to predict future (dis)connections. 
+In this paper, we introduce SPORE
