@@ -29,7 +29,8 @@ format to the routing of \(\SPOR\) as a step toward provable security.
 % 	\item More in-depth knowledge of the user's behavior would allow to predict devices connections farther in the future;
 % 	\item Changing devices' asymmetric keys regularly would increase security.
 % 	Updating keys is easy in \name given the RPS that propagates new information to all nodes.
-% 	However, more reflection would be needed to avoid key updates breaking ongoing communications passing through the devices in question.
+% 	However, more reflection would be needed to avoid key updates breaking ongoing communications passing through the devices in question;
+% 	\item \name is not resilient to Byzantine nodes for now: malicious users could potentially make users pick Predictive Onion Routes that pass through them with a high probability, thus allowing the attacker to learn the file sender and receiver. To circumvent this, we would need to employ a secure Random Peer Sampling \cite{Jesi_Montresor_van_Steen_2010}, and prevent devices to lie on their probability of being online.
 
 % \end{itemize}
 
