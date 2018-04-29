@@ -55,16 +55,4 @@ This approach would probably be the easiest, but would probably not provide all
 the properties from Sphinx (\eg resistance to active tagging attacks and bitwise 
 unlinkability).
 
-We should provide bitwise unlinkability for the message between hops on the 
-route.
-Currently the message (\(m\) in \cref{SPORFwd}) itself remains constant 
-throughout the route and thus constitutes a tag for tracking.
-This problem can be solved by choosing the encryption scheme \(\Enc*\) (used to 
-encrypt the message in \cref{sec:file_exchange}) to have ciphertexts that can be 
-re-randomized, \eg schemes for universal 
-re-encryption~\cite{UniversalReencryption}.
-However, then we must assume that at least one node is honest and actually 
-performs the re-randomization (re-encryption) --- there is no incentive for them 
-to do this, as neither Alice nor Bob can detect it without talking directly to 
-each other to compare the ciphertexts.
 

@@ -23,9 +23,29 @@ Since we choose a new key for every file, we have forward secrecy between files.
 \Eg an adversary who compromises either Alice or Bob cannot determine what Alice 
 sent to Bob.
 
-We can choose different properties for \(\Enc*\).
+We can choose different properties for the encryption scheme, \(\Enc*\), used to 
+encrypt the message \(m\) in in \cref{sec:file_exchange}, depending on what 
+security properties we would like to achieve.
 What makes sense is to choose at least an authenticated encryption 
 scheme~\cite{AuthEncryption}.
+This would give confidentiality and integrity for the message, but if the first 
+and the last node on the route colludes, they can infer that Alice sent a 
+message to Bob.
 We could also choose a deniable encryption scheme~\cite{DeniableEncryption}, \eg 
 the one by \textcite{OTPKX} which is both deniable and authenticated and 
 provides \ac{DEN-SS}.
+
+If we choose \(\Enc*\) as a universal re-encryption~\cite{UniversalReencryption} 
+scheme (possibly composed with the deniable, authenticated encryption above), 
+then we could also provide bitwise unlinkability for the message between hops on 
+the route.
+(We would also need to modify \(\SPOR[\Fwd]\), \cref{SPORFwd}, to perform the 
+re-encryption of \(m\) before forwarding the message to the next hop.)
+Without universal re-encryption, the message \(m\) itself remains constant 
+throughout the route and thus constitutes a tag for tracking.
+As long as \emph{at least one node on the route is honest} and actually performs 
+the re-encryption --- there is no incentive for them to do this, as neither 
+Alice nor Bob can detect it without talking directly to each other to compare 
+the ciphertexts --- then the link between Alice and Bob is broken.
+(Alice and Bob are, of course, still susceptible to traffic analysis.)
+
