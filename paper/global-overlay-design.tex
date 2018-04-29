@@ -1,30 +1,43 @@
 \subsection{The Global Overlay}
 \label{sec:global_overlay}
 
-\commentDaniel{%
-  We must cover above how to compute \(p_d\) below, \ie the probability of being 
-  online.
-  We need this for \cref{ExtendRoute}.%
-}
+\newcommand{\viewsize}{\ensuremath{l_{\text{view}}}}
+\NewAlgorithm{\GetRandomPeer}{RPS()}
 
-\commentDaniel{%
-  What is the probability distribution of the peer sample that we get?
-  Will it be close to uniformly random?
-  I need this for the security analysis.%
-}
 
-\NewAlgorithm{\GetRandomPeer}{GetRandomPeer}
-
-Every time a device is online, it participates in the random peer sampling 
-protocol.
-If a device is sampled it provides the following information:
+To reach this goal, we employ Random Peer Sampling (RPS) \cite{Voulgaris_Gavidia_van_Steen_2005,Jelasity_Voulgaris_Guerraoui_Kermarrec_van_Steen_2007}.
+Essentially, each node maintains a \emph{view} containing \viewsize other devices' descriptors. 
+By periodically exchanging random descriptors with a carefully selected node from its view, RPS allows devices to always have a fairly random sample of the nodes in the system inside their view.
+Due to the RPS's eviction policy, stale descriptors are removed quickly: each device thus knows a random sample of \viewsize connected nodes.
+An RPS descriptor for device $d$ is constituted of the following information:
 \begin{itemize}
-  \item its address, \(d\);
-  \item its public key, \(\pk_d\);
-  \item the probability of being online, \(p_d\).
+  \item Its address: $@_d$;
+  \item Its public key: \(\pk_d\);
+  \item Its probability of being online in the near future, as provided by the Squad Overlay: $p_d=P\left[d \in O_{t+1} | S_t\right]$.
 \end{itemize}
-We will denote this by the following algorithm \((d, \pk_d, p_d)\gets 
-  \GetRandomPeer\), which will be used below.
-The probability of being online, \(p_d\), is inferred as above 
-(\cref{local-swarm}).
+
+Devices now have all the information they need to establish reliable PORs between two sets of devices.
+
+
+
+% \commentDaniel{%
+%   What is the probability distribution of the peer sample that we get?
+%   Will it be close to uniformly random?
+%   I need this for the security analysis.%
+% }
+
+% \NewAlgorithm{\GetRandomPeer}{GetRandomPeer}
+
+% Every time a device is online, it participates in the random peer sampling 
+% protocol.
+% If a device is sampled it provides the following information:
+% \begin{itemize}
+%   \item its address, $@_d$;
+%   \item its public key, \(\pk_d\);
+%   \item the probability of being online, $p_d=P\left[d \in O_{t+1} | S_t\right] $.
+% \end{itemize}
+% We will denote this by the following algorithm $(@_d, \pk_d, p_d)\gets 
+%   \GetRandomPeer$, which will be used below.
+% The probability of being online, \(p_d\), is inferred as above 
+% (\ref{sub:a_model_of_the_user_s_behavior}).
 

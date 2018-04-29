@@ -2,10 +2,18 @@
 \label{RelatedWork}
 
 
+
+Cloud services for availability of files on multiple devices and sharing with others, such as Dropbox, Box, or iCloud, require trust in the service provider, at minimum to keep the service running without changes to the terms of service that would make them unacceptable. Alternatively, users could set up their own cloud using a dedicated server or edge device such as a home gateway. This would require equipment that users are less likely to already have than laptops or smartphones. 
+
+P2P file sharing has been researched extensively, with respect to aspects such as architecture (starting with the semi-centralized Napster), availability and replication (Gnutella), scalability (Bittorrent~\cite{bittorrent}), anonymity (Freenet~\cite{freenet}, TOR~\cite{Tor}, and distributed hash tables (DHT) such as CAN, Chord, Pastry, and Tapestry (see \cite{dhtchurn} for an overview). In contrast to our work, the main goal was to enable dissemination to many users who do not necessarily know each other in person. Here, we focus on sharing files in a more deliberate yet ad-hoc manner, i.e., between users that out-of-band agree to share a file but do not keep it available for anyone else in the future. TOR~\cite{Tor}, although not designed for file sharing specifically, comes closest in that respect, but does not address the following aspect.
+
+There is a concern shared with traditional p2p file sharing, namely churn~\cite{dhtchurn} and its effect on availability - here in the narrow context of the set of user devices based on user behavior. We thus discuss the related work on predicting device availability next.
+
 \commentAL{Will need another pass.}
 \paragraph*{Modeling devices' connection and disconnection} 
 % To simulate users' devices participating in a distributed protocol, we build upon existing literature on two topics: 
 % multi-device interaction, and churn in P2P networks. 
+
 In our experiments, we simulate users' devices participating in a distributed protocol.
 To make this simulation realistic, we based our models on existing literature. 
 
