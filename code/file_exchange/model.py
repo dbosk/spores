@@ -151,24 +151,16 @@ class Model:
         for obs_id, obs_sequence in enumerate(sequence.T):
             obs = self.observations[obs_id]
             non_obs = "non_"+obs
-            print("Observation "+obs)
 
             # We bake a sequence with obs and non_obs names
             obs_sequence = [obs if o else non_obs for o in obs_sequence]
-            print("Sequence:")
-            print(obs_sequence)
-
-            print("A:")
-            print(self.A)
-
             states = []
-            print("B:")
+
             for s_id, state_name in enumerate(self.states):
                 obs_uniform_proba = pg.DiscreteDistribution({
                     obs: self.B[s_id, obs_id],
                     non_obs: 1 - self.B[s_id, obs_id]
                 })
-                print(self.B[s_id, obs_id])
                 states.append(pg.State(obs_uniform_proba, name=state_name))
 
             # And define a Pomegranates HMM with states obs and state non_obs
@@ -182,26 +174,20 @@ class Model:
             m.bake()
 
             # Let Pomegranate do the Baum-Welsh fitting
-            print("fitting...")
             m.fit([obs_sequence])
 
             # Incorporate the Pomegranate parameters back into our model
             A = m.dense_transition_matrix()
 
-            print("A:")
-            print(A)
             # Transition matrix
             self.A = A[:self.n_states, :self.n_states]
             # Initial probability
             self.init = A[self.n_states, :self.n_states]
             # Emission probabilities for each state
-            print("B:")
             for s_id in range(self.n_states):
                 self.B[s_id, obs_id] = \
                     m.states[s_id].distribution.parameters[0][obs]
-                print(self.B[s_id, obs_id])
-            print()
-        return
+        return self
 
 
 def get_default_model(observations):
