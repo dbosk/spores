@@ -9,6 +9,33 @@
 
 \end{itemize}
 
-It would be interesting to adapt the Sphinx~\cite{Sphinx} cryptographic packet 
+We see two alternative paths for improving the header.
+First, we might be able to adapt the Sphinx~\cite{Sphinx} cryptographic packet 
 format to the routing of \(\SPOR\).
 Then we could achieve the properties of Sphinx and enjoy provable security.
+
+The second approach would be to use the technique by \textcite{PPACinPubFS}.
+They adapt \(\ANOBE\) in such a way that its ciphertexts decrypt to different 
+things for different recipients.
+This way we could have one ciphertext encrypted for all the alternative nodes 
+--- across layers.
+Then the ciphertext would decrypt to different plaintexts for nodes on different 
+layers in the route.
+This would hide the path length (constant-size ciphertexts by padding) and the 
+position of individual nodes.
+This approach would probably be the easiest, but would probably not provide all 
+the properties from Sphinx (\eg resistance to active tagging attacks and bitwise 
+unlinkability).
+
+We should provide bitwise unlinkability for the message between hops on the 
+route.
+Currently the message (\(m\) in \cref{SPORFwd}) itself remains constant 
+throughout the route and thus constitutes a tag for tracking.
+This problem can be solved by choosing the encryption scheme \(\Enc*\) (used to 
+encrypt the message in \cref{sec:file_exchange}) to have ciphertexts that can be 
+re-randomized, \eg schemes for universal 
+re-encryption~\cite{UniversalReencryption}.
+However, then we must assume that at least one node is honest and actually 
+performs the re-randomization (re-encryption) --- there is no incentive for them 
+to do this, as neither Alice nor Bob can detect it without talking directly to 
+each other to compare the ciphertexts.
