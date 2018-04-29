@@ -5,7 +5,9 @@ Our goal is to enable private and reliable file exchange between users participa
 When Alice and Bob, two users of our system, want to exchange a file $f$ through \name; they start by sharing some information out-of-band, e.g. from their smartphones.
 More precisely, they exchange metadata on $f$, encryption keys, and agree upon a Predictive Onion Route (POR).
 PORs are our adaptation of onion routes, allowing secret communication between two entities despite the unreliability of the nodes that relay their messages.
-From there on, Alice and Bob add the POR information to the headers of their subsequent file exchange messages, such that the file transfer remains secret to anyone but them.
+From there on, Alice and Bob add the \ac{SPOR} route information to the headers 
+of their subsequent file exchange messages, such that the file transfer remains 
+secret to anyone but them.
 
 % Alice and Bob each has a set of devices containing their files, \eg a 
 % smartphone, laptop and a desktop computer.
@@ -42,7 +44,12 @@ From there on, Alice and Bob add the POR information to the headers of their sub
 %\input{outline.pdf_tex}
 \import{figures/}{outline.pdf_tex}
 %\includegraphics[width=0.9\columnwidth]{figures/outline.pdf}
-\caption{\label{fig:outline}Outline of \name's components. Users squads of devices are circled in gray. From top to bottom: a user's devices collaborate through the Squad Overlay; online devices globally share information about them to random peers; using the two above overlays allows for the creation or Predictive Onion Routes (PORs) between sets of devices; secure file exchange between users is enabled by PORs.}
+\caption{\label{fig:outline}Outline of \name's components. Users squads of 
+  devices are circled in gray. From top to bottom: a user's devices collaborate 
+  through the Squad Overlay; online devices globally share information about 
+  them to random peers; using the two above overlays allows for the creation of 
+  \ac{SPOR} routes between sets of devices; secure file exchange between users 
+  is enabled by \ac{SPOR}.}
 \end{figure}
 
 The privacy objectives of our system require encryption primitives that we first detail in section~\ref{BuildingBlocks}. The other constituents of \name are depicted in figure~\ref{fig:outline}.
