@@ -1,7 +1,61 @@
 \section{Design of the \name file exchange system}
 
+This section presents the \name protocol in detail.
+Our goal is to enable private and reliable file exchange between users participating in the system, by using their respective devices only.
+When Alice and Bob, two users of our system, want to exchange a file $f$ through \name; they start by sharing some information out-of-band, e.g. from their smartphones.
+More precisely, they exchange metadata on $f$, encryption keys, and agree upon a Probabilistic Onion Routes (POR).
+PORs are our adaptation of onion routes, allowing secret communication between two entities despite the unreliability of the nodes that relay their messages.
+From there on, Alice and Bob add the POR information to the headers of their subsequent file exchange messages, such that the file transfer remains secret to anyone but them.
 
-\include*{outline-design}
+% Alice and Bob each has a set of devices containing their files, \eg a 
+% smartphone, laptop and a desktop computer.
+% Alice and Bob meet in a café carrying only their smartphones and Alice wants to 
+% share a file, \(f\), with Bob.
+% Alice's smartphone knows some metadata of \(f\) and that it resides on Alice's 
+% desktop computer.
+% She gives some metadata about \(f\) to Bob, at least the file size.
+% Bob creates an onion route of low-availability devices with some subset of Bob's 
+% devices as the destination.
+% The layers of the route are chosen such that the probability of all devices 
+% being offline at the same time is low.
+% Bob gives this route to Alice.
+% Alice's smartphone ensures that her desktop computer (containing the file \(f\)) 
+% gets the route and the instruction to send \(f\) using this route.
+% When Alice's desktop computer receives this instruction it will create the first 
+% half of the route and concatenate it with Bob's route, then transfer \(f\) to 
+% Bob.
+% In this section we will present the details of the necessary algorithms.
+
+% We have a set of users, \(U\), each user \(u\in U\) has a set of devices, 
+% \(D_u\).
+% We call \(D_u\) the device swarm of \(u\).
+% Alice, \(a\in U\), has a device swarm, \(D_a\), and Bob, \(b\in U\) has a device 
+% swarm, \(D_b\).
+% We let \(D = \cup_{u\in U} D_u\) be the set of all devices, the global device 
+% swarm.
+% Without loss of generality, we will use Alice, with device swarm \(D_a\), and 
+% Bob, with device swarm \(D_b\), as examples.
+
+
+The privacy objectives of our system require encryption primitives that we first detail in section~\ref{BuildingBlocks}. The other constituents of \name are depicted in figure~\ref{fig:outline}.
+On top, the devices of each user are circled in gray, and form a user's device squad. The squad online members communicate among themselves: they exchange files and messages information, and cooperate to predict the user's future behavior. This first protocol is called the \emph{Squad Overlay} and will be discussed in section~\ref{sec:squad_overlay}.
+%On top we see that each user's devices (shown as clouds) communicate with one another through a dissemination protocol---coined the \emph{squad overlay}---that will be discussed in section~\ref{sec:squad_overlay}. 
+Below, we see all devices connected in a random graph: each device gives information about itself to random nodes when it is online. 
+This \emph{Global Overlay} will be covered in section~\ref{sec:global_overlay}.
+The information brought by these overlays allows devices to securely and reliably exchange messages between users, as will be explained in section~\ref{sec:message_passing}.
+Given this message passing protocol, users can privately exchange files, as shown in the bottom of the figure. We will cover this ultimate goal in section~\ref{sec:file_exchange}.
+
+\begin{figure}[t]
+\centering
+\def\svgwidth{\columnwidth}
+%\input{outline.pdf_tex}
+\import{figures/}{outline.pdf_tex}
+%\includegraphics[width=0.9\columnwidth]{figures/outline.pdf}
+\caption{\label{fig:outline}Outline of \name's components.}
+
+\end{figure}
+
+
 \include*{building-blocks}
 \include*{squad-overlay-design}
 \include*{global-overlay-design}
