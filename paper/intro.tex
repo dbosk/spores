@@ -9,14 +9,14 @@ interactions \cite{Dearman:2008, Oh:2017, Sohn:2008,Harper08}. It further opens 
 \textit{proxemics} applied to ubiquitous computing
 \cite{Marquardt:2011}. Users are evolving in their social space with 
 multiple kinds of computing devices that form a \textit{squad} of users'
-devices, named \textit{E-Squad} in the remainder of the
-paper. Leveraging on the help of their \textit{E-Squad}, users increase
+devices, named \squad in the remainder of the
+paper. Leveraging on the help of their \squad, users increase
 their expectations in terms of connectivity and interactions
 possibilities. For instance, as users bring
 their devices close to one another, they expect to initiate cross
 device interactions \textit{in situ} to share digital content
-\cite{Oh:2017} among devices of their own \textit{E-Squad} or with the ones 
-from other users' \textit{E-Squad}. More broadly, users expect to share digital content,
+\cite{Oh:2017} among devices of their own \squad or with the ones 
+from other users' \squad. More broadly, users expect to share digital content,
 whatever the content location, from one
 device to another in a seamless manner \cite{Dearman:2008}, as they
 would have done in the old days with an USB key or with an email. 
@@ -50,7 +50,7 @@ Data sent by the user can be encrypted, but it is not enough
 NSA: "we kill people based on metadata''. Metadata such as the users'
 location and activity can be still tracked, including the access
 control history revealing what users share with whom and when.
-Users’ devices become tracking and/or monitoring \textit{E-Squad} that turn to
+Users’ devices become tracking and/or monitoring \squad that turn to
 be the best spy over users. 
 
 Constructing a system that provides anonymous communication is a very
@@ -70,19 +70,33 @@ centralized design through the use of directory
 servers to advertise available trusted nodes to bootstrap Onion
 routes. 
 
-In this paper, we introduce SPORES, Stateless Predictive Onion Routing
-for E-Squads, a novel approach to perform a decentralized, autonomous, and self-organizing 
-file sharing among users' devices while preserving the users’ privacy
-in terms of data and metadata. The key originality of our approach is
-to consider that users share files in ...
+In this paper, we introduce \name, Stateless Predictive Onion Routing
+for \squad, a novel approach to perform a decentralized, autonomous,
+and self-organizing file sharing among users' devices while preserving the users’ privacy
+in terms of data and metadata. We leverage on the latest works achieved
+in p2p systems, privacy and anonymity. The originality of our approach come
+from two key aspects. First, we consider proxemics relationships as a key enabler to initiate file
+transfers. Intimate distance among users enable them to share
+routing information out-of-band, e.g. from their
+\squad. Compared to the state of the art on p2p systems, with \name,
+users agree out-of-band to share a file but
+do not keep it available for anyone else in the future. Second, we
+rely on distributed machine learning technics to predict the
+availability of nodes. As such, \name provides optimized onion routes; it avoids routes
+reconstruction under churns.
 
+Our contributions are as follows: \david{please update}
+\begin{itemize}
+\item We showed the effectiveness of \iac{ANOBE} scheme by \textcite{ANOBE} 
+  to build a \ac{DeBE} as required by \name to
+  provide.... 
+\item A \squad overlay 
+\item Model the user’s behavior as a Hidden Markov Models (HMMs)
+\item SPOR provides stateless algorithms for the onion-routing.
+\item An evaluation testbed where each user’s behavior
+\end{itemize}
 
-
-Our contributions are as follows:
-
-
-
-
+In the following, we detail \name 's concepts and approach...
 
 % Cashmere: resilient anonymous routing.
 % Route fingerprinting in anonymous communications.
