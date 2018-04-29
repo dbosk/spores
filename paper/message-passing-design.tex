@@ -1,22 +1,23 @@
-\NewScheme{\SPOR}{SPOR}
-
-\subsection{Message Passing through Predictive Onion Routes (PORs)}
+\subsection{Message Passing through \acl*{SPOR}}%
 \label{sec:message_passing}
 
+We have \iac{SPOR} scheme, which provides probabilistically onion-routed message 
+passing.
+Instead of providing only one address per hop in the route (as in \eg 
+Tor~\cite{Tor} or remailers), \ac{SPOR} provides several alternatives for the 
+next hop depending on their probability of being online.
+To do this, the \ac{SPOR} scheme provides stateless algorithms for the 
+onion-routing.
+
+\NewScheme{\SPOR}{SPOR}
 \NewAlgorithm{\Send}{Send}
 \NewAlgorithm{\Fwd}{Forward}
 \NewAlgorithm{\Recv}{Receive}
 \NewVariable{\rdv}{rdv}
 
-We have the Stateless Predictive Onion Routing scheme, \SPOR, which provides 
-probabilistically onion-routed message passing.
-Instead of providing only one address per hop in the route (as in \eg 
-Tor~\cite{Tor}), \(\SPOR\) provides several alternatives for the next hop 
-depending on their probability of being online.
-To do this, \(\SPOR\) provides stateless algorithms for the onion-routing.
-
-\(\SPOR\) provides three algorithms: \(\SPOR[\Send]\) (\cref{SPORSend}), 
-\(\SPOR[\Fwd]\) (\cref{SPORFwd}) and \(\SPOR[\Recv]\) (\cref{SPORRecv}).
+The \(\SPOR\) scheme provides three algorithms: \(\SPOR[\Send]\) 
+(\cref{SPORSend}), \(\SPOR[\Fwd]\) (\cref{SPORFwd}) and \(\SPOR[\Recv]\) 
+(\cref{SPORRecv}).
 Say Alice wants to send a message \(m\) to Bob.
 Bob uses \(\SPOR[\Recv]\) to create a probabilistic onion route \(H_\rdv\) from 
 a rendez-vous point to his own device swarm --- all the hops on the route are 
