@@ -1,11 +1,11 @@
-\subsection{The Squad Overlay} 
+\subsection{The E-Squad Overlay} 
 \label{sec:squad_overlay}
 
 At the root of \name is predictive routing.
 %By sharing information among themselves, a user's devices (her \emph{squad}) can model her behavior.
-Our goal here is that each online device predicts the probability that it stays online in the near future.
+Our key objective is to enable each online device to predict its probability to stay online in the near future.
 This probability will later be used to create Probabilistic Onion Routes (POR).
-A device's connection depends on the activity of its user; thus, a user's devices (her \emph{squad}) want to predict her future behavior.
+A device's connection depends on the activity of its user; thus, a user's devices (her \squad}) want to predict her future behavior.
 
 In this section, we only take interest in one user (called Alice) and her squad.
 
@@ -22,15 +22,16 @@ In this section, we only take interest in one user (called Alice) and her squad.
 \label{sub:sharing_knowledge}
 
 Online devices want to know whether they are likely to stay online in the near future.
+
 Taken separately, each device only knows local information: when Alice used it, and maybe mobility information if it is mobile.
 When combining these informations, though, we obtain a sequence of the user's behavior that is far more complete.
 For instance, the probability that Alice uses her home computer and workstation simultaneously is null: these devices are too far apart.
 
-The Squad Overlay leverages on a probabilistic dissemination protocol, \textsc{Sprinkler}~\cite{luxey:hal-01704172}, that does just that: 
+The \squad Overlay leverages on a probabilistic dissemination protocol, \textsc{Sprinkler}~\cite{luxey:hal-01704172}, that does just that: 
 it allows one's devices to inform one another every time the user performs an action.
 Previous work in our team~\cite{luxey:cascade} showed that \textsc{Sprinkler} is resilient to devices churn: 
 devices let each other know of what they have missed while offline.
-We thus employ \textsc{Sprinkler} to disseminate the user's activity to its squad.
+We thus employ \textsc{Sprinkler} to disseminate the user's activity to its \squad.
 
 % Each device initially only knows when it is connected, which is not sufficient to make reliable predictions on whether it is likely to stay online.
 % If they knew the other devices' connection and disconnection times, they 
@@ -49,13 +50,15 @@ We thus employ \textsc{Sprinkler} to disseminate the user's activity to its squa
 % \subsubsection{Other uses of the Squad Overlay} % (fold)
 % \label{ssub:other_uses_of_the_squad_overlay}
 
-\paragraph*{Other uses of the Squad Overlay} In addition to user's behavior, devices use th Squad Overlay for several purposes. Firstly, they share files location: when Alice wants to share a file $f$ that resides on her home computer, using her smartphone as the exchange initiator, her smartphone knows where $f$ is located and can create the route accordingly. 
+\paragraph*{Other uses of the Squad Overlay} In addition to user's behavior, devices use th \squad Overlay for several purposes. Firstly, they share files location: when Alice wants to share a file $f$ that resides on her home computer, using her smartphone as the exchange initiator, her smartphone knows where $f$ is located and can create the route accordingly. 
 Secondly, each device is also informed of its user's ongoing file transfers (which serves the next purpose).
 
+\david{the following paragraph is not clear at all }
 \name knows two message types (as will be covered in~\ref{sec:file_exchange}): file chunk, and acknowledgment.
-Alice typically wants to receive a file on one particular device; respectively, only one of her devices is interested in acknowledging reception of the file chunks it is sending.
+Alice typically wants to receive a file on one particular device; respectively, only one of her devices is interested in acknowledging reception of the file chunks it is sending. \david{what is the relationship with \squad Overlay?}
 However, \name allows all squad members to receive messages destined to Alice.
 Thus, the third complementary purpose of the Squad Overlay is to relay messages among the squad: when a message is not destined to the device that received it, the receiver forwards the message to its final destination.
+\david{and then?}
 
 \subsubsection{Modeling the user's behavior}
 \label{sub:a_model_of_the_user_s_behavior}
