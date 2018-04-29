@@ -19,12 +19,12 @@ Every time a device is online, it participates in the random peer sampling
 protocol.
 If a device is sampled it provides the following information:
 \begin{itemize}
-  \item its address, \(d\);
+  \item its address, $@_d$;
   \item its public key, \(\pk_d\);
-  \item the probability of being online, \(p_d\).
+  \item the probability of being online, $p_d=P\left[d \in O_{t+1} | S_t\right] $.
 \end{itemize}
-We will denote this by the following algorithm \((d, \pk_d, p_d)\gets 
-  \GetRandomPeer\), which will be used below.
+We will denote this by the following algorithm $(@_d, \pk_d, p_d)\gets 
+  \GetRandomPeer$, which will be used below.
 The probability of being online, \(p_d\), is inferred as above 
-(\cref{local-swarm}).
+(\ref{sub:a_model_of_the_user_s_behavior}).
 
