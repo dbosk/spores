@@ -46,24 +46,22 @@ We thus employ \textsc{Sprinkler} to disseminate the user's activity to its squa
 
 % subsection sharing_knowledge (end)
 
-\subsubsection{Other uses of the Squad Overlay} % (fold)
-\label{ssub:other_uses_of_the_squad_overlay}
+% \subsubsection{Other uses of the Squad Overlay} % (fold)
+% \label{ssub:other_uses_of_the_squad_overlay}
 
-In addition to user's behavior, devices firstly share user-chosen files location: when Alice wants to share a file $f$ that resides on her home computer, using her smartphone as the exchange initiator, her smartphone knows where $f$ is located and can create the route accordingly. 
-Secondly, each device is also informed of its user's ongoing file transfers.
+\paragraph*{Other uses of the Squad Overlay} In addition to user's behavior, devices use th Squad Overlay for several purposes. Firstly, they share files location: when Alice wants to share a file $f$ that resides on her home computer, using her smartphone as the exchange initiator, her smartphone knows where $f$ is located and can create the route accordingly. 
+Secondly, each device is also informed of its user's ongoing file transfers (which serves the next purpose).
 
 \name knows two message types (as will be covered in~\ref{sec:file_exchange}): file chunk, and acknowledgment.
 Alice typically wants to receive a file on one particular device; respectively, only one of her devices is interested in acknowledging reception of the file chunks it is sending.
 However, \name allows all squad members to receive messages destined to Alice.
 Thus, the third complementary purpose of the Squad Overlay is to relay messages among the squad: when a message is not destined to the device that received it, the receiver forwards the message to its final destination.
-% We consider many users owning several devices, that they freely turn on and off depending on their location and will.
-% The participants' devices are the only nodes constituting our system; the unreliability of their connectivity has to be taken for granted.
 
-% We will first present a model of each user's behavior, that will drive the connection intervals of our system's nodes.
-% %Then, we will show how devices can predict the future user's behavior given the model.
-
-\subsubsection{A model of the user's behavior}
+\subsubsection{Modeling the user's behavior}
 \label{sub:a_model_of_the_user_s_behavior}
+
+To model the user's behavior (and predict its future activity), we employ discrete Hidden Markov Models (HMMs) of order one, with multiple discrete observation processes (the devices connection). 
+
 
 In \name, we take interest in users that own several devices, and wish to privately exchange files with each other without revealing .
 To the best of our knowledge, no real-world traces of multi-devices usage over several days exist, as would be needed for the experimental evaluation of our system.
