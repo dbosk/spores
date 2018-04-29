@@ -1,14 +1,38 @@
 \section{Conclusion and Future Work}
 
-\commentAL{To rewrite as real paragraphs} Future work and prospects:
-\begin{itemize}
-	\item More in-depth knowledge of the user's behavior would allow to predict devices connections farther in the future;
-	\item Changing devices' asymmetric keys regularly would increase security.
-	Updating keys is easy in \name given the RPS that propagates new information to all nodes.
-	However, more reflection would be needed to avoid key updates breaking ongoing communications passing through the devices in question.
+We presented \(\SPOR\) that, in analogy to their biological
+counterparts, enables dissemination under unfavorable conditions. More
+specifially, the deliberate dissemination of files without using
+storage on third-party devices, be they peers or cloud service
+providers. This constraint results in the unfavorable conditions of
+reduced a-priori availability and therefore unreliable nodes. We build
+resilience to these conditions by using predictive modeling for user
+behavior and the ensuing availability of their devices. From our
+experiments, we find that even suboptimal prediction already results in
+successful file transfer with high probability, though often at low
+speed. More in-depth knowledge of the users' behavior would allow us
+to predict device connectivity farther into the future and thus likely
+improve the throughput. From a security and privacy perspective, we
+were guided by the properties of TOR~\cite{Tor}, which we modified to
+a stateless protocol to accommodate unreliable nodes. While we took
+the first steps toward analyzing the consequences of the modifications
+on security and privacy, more is needed to ensure that the added
+features of unreliable nodes, peer sampling, and the side effect of
+enabling more local TOR routing (for example, keeping routes inside a
+country) does not compromise security. On a related note, it would be
+interesting to adapt the Sphinx~\cite{Sphinx} cryptographic packet
+format to the routing of \(\SPOR\) as a step toward provable security.
 
-\end{itemize}
 
-It would be interesting to adapt the Sphinx~\cite{Sphinx} cryptographic packet 
-format to the routing of \(\SPOR\).
-Then we could achieve the properties of Sphinx and enjoy provable security.
+% \commentAL{To rewrite as real paragraphs} Future work and prospects:
+% \begin{itemize}
+% 	\item More in-depth knowledge of the user's behavior would allow to predict devices connections farther in the future;
+% 	\item Changing devices' asymmetric keys regularly would increase security.
+% 	Updating keys is easy in \name given the RPS that propagates new information to all nodes.
+% 	However, more reflection would be needed to avoid key updates breaking ongoing communications passing through the devices in question.
+
+% \end{itemize}
+
+% It would be interesting to adapt the Sphinx~\cite{Sphinx} cryptographic packet 
+% format to the routing of \(\SPOR\).
+% Then we could achieve the properties of Sphinx and enjoy provable security.
