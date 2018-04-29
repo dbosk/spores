@@ -9,12 +9,14 @@ interactions \cite{Dearman:2008, Oh:2017, Sohn:2008,Harper08}. It further opens 
 \textit{proxemics} applied to ubiquitous computing
 \cite{Marquardt:2011}. Users are evolving in their social space with 
 multiple kinds of computing devices that form a \textit{squad} of users'
-devices. Leveraging on the help of their devices squad, users increase their expectations in
-terms of connectivity and interactions possibilities. For instance, as users bring
+devices, named \textit{E-Squad} in the remainder of the
+paper. Leveraging on the help of their \textit{E-Squad}, users increase
+their expectations in terms of connectivity and interactions
+possibilities. For instance, as users bring
 their devices close to one another, they expect to initiate cross
 device interactions \textit{in situ} to share digital content
-\cite{Oh:2017} among devices of their own or with devices 
-from other users. More broadly, users expect to share digital content,
+\cite{Oh:2017} among devices of their own \textit{E-Squad} or with the ones 
+from other users' \textit{E-Squad}. More broadly, users expect to share digital content,
 whatever the content location, from one
 device to another in a seamless manner \cite{Dearman:2008}, as they
 would have done in the old days with an USB key or with an email. 
@@ -33,7 +35,7 @@ and/or fog computing, that aim to use the nodes from the cloud
 infrastructure that are the closest to end users
 for offloading with an improved quality of service and user experience.
 
-Hence, the cloud, and its variants constitue a perfect complement
+Hence, the cloud, and its variants constitute a perfect complement
 to perform storage and computation on behalf of the resource
 constrained devices. However, this cloud reliance comes at a strong price:
 devices become totally tethered to a cloud ecosystem and provider. As
@@ -44,11 +46,48 @@ confidentiality delivered to the end users. Further, at the practical
 level, users' data can be harvested on their behalf, and without their
 consent, by either the cloud provider or third parties.
 Data sent by the user can be encrypted, but it is not enough
-\cite{granick_2017, HooffLZZ15}. As stated by a famous quotation from
+\cite{granick_2017, HooffLZZ15, HarnikPS10}.  As stated by a famous quotation from
 NSA: "we kill people based on metadata''. Metadata such as the users'
 location and activity can be still tracked, including the access
 control history revealing what users share with whom and when.
-Users’ devices become tracking and/or monitoring devices that turn to
+Users’ devices become tracking and/or monitoring \textit{E-Squad} that turn to
 be the best spy over users. 
 
-In this paper, we introduce SPORE
+Constructing a system that provides anonymous communication is a very
+challenging issue. The last decades, we have witnessed a
+ huge set of attempts at building privacy preserving and anonymous p2p
+ networks \cite{Clarke:2001, Gnunet2002, Freedman:2002, Nambiar:2006,
+   Rennhard:2002}. They are mainly based on onion
+ routing concepts \cite{Chaum:1981}, with some improvements to perform node
+ discovery in a distributed manner, which are otherwise
+centralized in traditional onion routing schemes. However, due to high
+churn of peer-to-peer networks, performance of these systems is
+discouraging \cite{LeBlond:2013}; churn implies frequent
+reconstruction of routes, which is very expensive. In comparison, Tor
+\cite{Dingledine:2004}, one of the most popular anonymous network
+mitigate lack of performances of anonymity at the cost of a
+centralized design through the use of directory
+servers to advertise available trusted nodes to bootstrap Onion
+routes. 
+
+In this paper, we introduce SPORES, Stateless Predictive Onion Routing
+for E-Squads, a novel approach to perform a decentralized, autonomous, and self-organizing 
+file sharing among users' devices while preserving the users’ privacy
+in terms of data and metadata. The key originality of our approach is
+to consider that users share files in ...
+
+
+
+Our contributions are as follows:
+
+
+
+
+
+% Cashmere: resilient anonymous routing.
+% Route fingerprinting in anonymous communications.
+% Bridging and fingerprinting:
+% Epistemic attacks on route selection
+% Breaking the collusion detection mechanism of morphmix
+% Denial of service or denial of security? How attacks
+% on reliability can compromise anonymity
