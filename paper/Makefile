@@ -13,7 +13,7 @@ SRC+= 		message-passing-design.tex
 SRC+=		file-exchange-design.tex
 
 SRC+= 		security-analysis.tex
-SRC+= 		performance.tex
+SRC+= 		evaluation.tex
 SRC+= 		related.tex
 SRC+=		conclusion.tex
 

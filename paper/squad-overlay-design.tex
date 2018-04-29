@@ -27,7 +27,7 @@ When combining these informations, though, we obtain a sequence of the user's be
 For instance, the probability that Alice uses her home computer and workstation simultaneously is null: these devices are too far apart.
 
 The Squad Overlay leverages on a probabilistic dissemination protocol, \textsc{Sprinkler}~\cite{luxey:hal-01704172}, that does just that: 
-it allows one's devices to inform one another every time the user performs an action (under the condition that no actions are concurrent).
+it allows one's devices to inform one another every time the user performs an action.
 Previous work in our team~\cite{luxey:cascade} showed that \textsc{Sprinkler} is resilient to devices churn: 
 devices let each other know of what they have missed while offline.
 We thus employ \textsc{Sprinkler} to disseminate the user's activity to its squad.
@@ -60,35 +60,38 @@ Thus, the third complementary purpose of the Squad Overlay is to relay messages 
 \subsubsection{Modeling the user's behavior}
 \label{sub:a_model_of_the_user_s_behavior}
 
-To model the user's behavior (and predict its future activity), we employ discrete Hidden Markov Models (HMMs) of order one, with multiple discrete observation processes (the devices connection). 
+We need a probabilistic model of the user's behavior to predict its future activity.
+In \name, the only data we collect are the connection times of each device.
+In this section only, we discretize time. 
+We store the connection times in an ever-increasing \emph{sequence} $O=O_1, ..., O_i, ...$ of actions performed at every \emph{round}, that lasts a short period of time $T$. 
+$d \in O_t$ thus means that the device $d$ was online from time $t$ to time $t+T$.
+Our goal is to predict $O_{t+1}$ knowing $O_t$.
+
+To this end, we model the user's behavior as a Hidden Markov Models (HMMs) of order one, with multiple discrete \emph{observable} processes (one per device) stored in $O$. 
+The hidden process $S=S_1, ..., S_i, ...$ represents the user's locations, constituted of a set of $N$ potential locations (e.g. home, work or outside), $N$ being a user-defined parameter.
 
 
-In \name, we take interest in users that own several devices, and wish to privately exchange files with each other without revealing .
-To the best of our knowledge, no real-world traces of multi-devices usage over several days exist, as would be needed for the experimental evaluation of our system.
-For that reason, we propose a user behavioral model having the following features:
 
-\begin{itemize}
-	\item Each user owns a variable amount of devices. We consider the following device types: mobile, portable, fixed, and server;
-	\item The user travels between three ``locations'' according to a simple probabilistic model: her home, her workplace, and outside;
-	\item She makes a different use of her devices depending on her location: at home, she will her laptop that at work; she cannot use her workstation at home.
-\end{itemize}
 
-To this end, we use a Hidden Markov Model (HMM) of order one, with multiple discrete observation processes. 
-The hidden Markovian process $S$ represents the user's locations, while the \emph{observable} process $O=O_1, \dots, \O_T$ represents the connection state of her devices (either connected or disconnected at any point in time).
-% The \emph{hidden} Markovian process $S=S_1,\dots,S_T$ represents the user's progression among the three proposed locations up to time step $T$.
-% For every device $d$ owned by the user, the \emph{observable} process $O_d=O_{d,1},\dots,O_{d,T}$ reads $d$'s state: it is either online ($o_d$) or offline ($\overline{o_d}$) at each point in time. $O_t = O_1, \dots, \O_T$ represents the connection of all the user's devices, such that $o_d \in O_t$ means that device $d$ was connected at time $t$.
+% In \name, we take interest in users that own several devices, and wish to privately exchange files with each other without revealing .
+% To the best of our knowledge, no real-world traces of multi-devices usage over several days exist, as would be needed for the experimental evaluation of our system.
+% For that reason, we propose a user behavioral model having the following features:
 
-% The probability of observable events depends only on the current location.
-% For example, the probability that the user's home computer is on while she is at work is null (in our model, users never forget to turn off their fixed devices before leaving).
+% \begin{itemize}
+% 	\item Each user owns a variable amount of devices. We consider the following device types: mobile, portable, fixed, and server;
+% 	\item The user travels between three ``locations'' according to a simple probabilistic model: her home, her workplace, and outside;
+% 	\item She makes a different use of her devices depending on her location: at home, she will her laptop that at work; she cannot use her workstation at home.
+% \end{itemize}
 
-Such a statistical model is simplistic (e.g. it does not encapsulate date \& time nor location), but it is on purpose: simplicity is bliss.
-Given the lack of real-world data for our testbed, building a more complex and realistic user model would add no value to our proposal: 
-our goal is to see devices exhibiting frequent disconnections and reconnections (also called \emph{churn}).
-Our simple model being able to put extravagant stress on our system, it is sufficient to access \name's resilience.
+% To this end, we use a Hidden Markov Model (HMM) of order one, with multiple discrete observation processes. 
+% The hidden Markovian process $S$ represents the user's locations, while the \emph{observable} process $O=O_1, \dots, \O_T$ represents the connection state of her devices (either connected or disconnected at any point in time).
 
-\subsubsection{Formal definition} % (fold)
-\label{ssub:formal_definition}
+% Such a statistical model is simplistic (e.g. it does not encapsulate date \& time nor location), but it is on purpose: simplicity is bliss.
+% Given the lack of real-world data for our testbed, building a more complex and realistic user model would add no value to our proposal: 
+% our goal is to see devices exhibiting frequent disconnections and reconnections (also called \emph{churn}).
+% Our simple model being able to put extravagant stress on our system, it is sufficient to access \name's resilience.
 
+\paragraph*{Formal definition} 
 
 \begin{figure}[t]
 \centering
