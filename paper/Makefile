@@ -6,7 +6,6 @@ SRC+= 		intro.tex
 SRC+= 		privacy.tex
 
 SRC+=		design.tex
-SRC+= 		outline-design.tex
 SRC+= 		building-blocks.tex 
 SRC+= 		squad-overlay-design.tex 
 SRC+=		global-overlay-design.tex

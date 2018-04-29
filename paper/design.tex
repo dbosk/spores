@@ -4,7 +4,7 @@ This section presents the \name protocol in detail.
 Our goal is to enable private and reliable file exchange between users participating in the system, by using their respective devices only.
 When Alice and Bob, two users of our system, want to exchange a file $f$ through \name; they start by sharing some information out-of-band, e.g. from their smartphones.
 More precisely, they exchange metadata on $f$, encryption keys, and agree upon a Probabilistic Onion Routes (POR).
-PORs are our adaptation of onion routes, allowing secret communication between two entities despite the unreliability of the nodes that will relay their messages.
+PORs are our adaptation of onion routes, allowing secret communication between two entities despite the unreliability of the nodes that relay their messages.
 From there on, Alice and Bob add the POR information to the headers of their subsequent file exchange messages, such that the file transfer remains secret to anyone but them.
 
 % Alice and Bob each has a set of devices containing their files, \eg a 
@@ -38,9 +38,10 @@ From there on, Alice and Bob add the POR information to the headers of their sub
 
 
 The privacy objectives of our system require encryption primitives that we first detail in section~\ref{BuildingBlocks}. The other constituents of \name are depicted in figure~\ref{fig:outline}.
-On top, the devices of each user are circled in gray, and form a user's device squad. The squad online members communicate among themselves: they exchange files and messages information, and cooperate to predict the user's future behavior. This first protocol is called the \emph{squad overlay} and will be discussed in section~\ref{sec:squad_overlay}.
+On top, the devices of each user are circled in gray, and form a user's device squad. The squad online members communicate among themselves: they exchange files and messages information, and cooperate to predict the user's future behavior. This first protocol is called the \emph{Squad Overlay} and will be discussed in section~\ref{sec:squad_overlay}.
 %On top we see that each user's devices (shown as clouds) communicate with one another through a dissemination protocol---coined the \emph{squad overlay}---that will be discussed in section~\ref{sec:squad_overlay}. 
-Below, we see all devices connected in a random graph: each online device gives information about itself. This \emph{global overlay} will be covered in section~\ref{sec:global_overlay}.
+Below, we see all devices connected in a random graph: each device gives information about itself to random nodes when it is online. 
+This \emph{Global Overlay} will be covered in section~\ref{sec:global_overlay}.
 The information brought by these overlays allows devices to securely and reliably exchange messages between users, as will be explained in section~\ref{sec:message_passing}.
 Given this message passing protocol, users can privately exchange files, as shown in the bottom of the figure. We will cover this ultimate goal in section~\ref{sec:file_exchange}.
 

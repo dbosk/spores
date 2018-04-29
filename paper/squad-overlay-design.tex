@@ -1,34 +1,61 @@
-\subsection{The Squad overlay} 
+\subsection{The Squad Overlay} 
 \label{sec:squad_overlay}
 
-Each of Alice's (and Bob's) devices will keep track of its own online and 
-offline behavior.
-They will use a protocol like Sprinkler~\cite{luxey:hal-01704172} to learn about 
-each other's online--offline behavior.
-\commentDaniel{Is that correct?}
-This allows Alice's device swarm to infer a behavioral model for the device 
-swarm and do internal scheduling based on the probability of being online.
+At the root of \name is predictive routing.
+%By sharing information among themselves, a user's devices (her \emph{squad}) can model her behavior.
+Our goal here is that each online device predicts the probability that it stays online in the near future.
+This probability will later be used to create Probabilistic Onion Routes (POR).
+A device's connection depends on the activity of its user; thus, a user's devices (her \emph{squad}) want to predict her future behavior.
+
+In this section, we only take interest in one user (called Alice) and her squad.
+
+% Each of Alice's (and Bob's) devices will keep track of its own online and 
+% offline behavior.
+% They will use a protocol like Sprinkler~\cite{luxey:hal-01704172} to learn about 
+% each other's online--offline behavior.
+% \commentDaniel{Is that correct?}
+% This allows Alice's device swarm to infer a behavioral model for the device 
+% swarm and do internal scheduling based on the probability of being online.
 
 
-\subsubsection{Sharing knowledge} % (fold)
+\subsubsection{Sharing the user's behavior} % (fold)
 \label{sub:sharing_knowledge}
 
+Online devices want to know whether they are likely to stay online in the near future.
+Taken separately, each device only knows local information: when Alice used it, and maybe mobility information if it is mobile.
+When combining these informations, though, we obtain a sequence of the user's behavior that is far more complete.
+For instance, the probability that Alice uses her home computer and workstation simultaneously is null: these devices are too far apart.
 
-Each device initially only knows when it is connected. 
-To make a model of the user's behavior, they need to know the whole observation sequence $O$: which device is online at each time step.
-To do so, they employ a probabilistic dissemination protocol, 
-\textsc{Sprinkler}~\cite{luxey:hal-01704172}.
-This allows devices to gossip any new connection information to random peers in 
-the local swarm, ensuring that all devices know the full observation sequence 
-with a very high probability.
-\textsc{Sprinkler} has shown resilient to device churn~\cite{luxey:cascade}, and 
-is thus perfectly suited for our purpose, where a user's devices often 
-disconnect and reconnect. 
+The Squad Overlay leverages on a probabilistic dissemination protocol, \textsc{Sprinkler}~\cite{luxey:hal-01704172}, that does just that: 
+it allows one's devices to inform one another every time the user performs an action (under the condition that no actions are concurrent).
+Previous work in our team~\cite{luxey:cascade} showed that \textsc{Sprinkler} is resilient to devices churn: 
+devices let each other know of what they have missed while offline.
+We thus employ \textsc{Sprinkler} to disseminate the user's activity to its squad.
+
+% Each device initially only knows when it is connected, which is not sufficient to make reliable predictions on whether it is likely to stay online.
+% If they knew the other devices' connection and disconnection times, they 
+% To make a model of the user's behavior, they need to know the whole observation sequence $O$: which device is online at each time step.
+% To do so, they employ a probabilistic dissemination protocol, 
+% \textsc{Sprinkler}~\cite{luxey:hal-01704172}.
+% This allows devices to gossip any new connection information to random peers in 
+% the local swarm, ensuring that all devices know the full observation sequence 
+% with a very high probability.
+% \textsc{Sprinkler} has shown resilient to device churn~\cite{luxey:cascade}, and 
+% is thus perfectly suited for our purpose, where a user's devices often 
+% disconnect and reconnect. 
 
 % subsection sharing_knowledge (end)
 
-\commentAL{The following was the User Model section}
+\subsubsection{Other uses of the Squad Overlay} % (fold)
+\label{ssub:other_uses_of_the_squad_overlay}
 
+In addition to user's behavior, devices firstly share user-chosen files location: when Alice wants to share a file $f$ that resides on her home computer, using her smartphone as the exchange initiator, her smartphone knows where $f$ is located and can create the route accordingly. 
+Secondly, each device is also informed of its user's ongoing file transfers.
+
+\name knows two message types (as will be covered in~\ref{sec:file_exchange}): file chunk, and acknowledgment.
+Alice typically wants to receive a file on one particular device; respectively, only one of her devices is interested in acknowledging reception of the file chunks it is sending.
+However, \name allows all squad members to receive messages destined to Alice.
+Thus, the third complementary purpose of the Squad Overlay is to relay messages among the squad: when a message is not destined to the device that received it, the receiver forwards the message to its final destination.
 % We consider many users owning several devices, that they freely turn on and off depending on their location and will.
 % The participants' devices are the only nodes constituting our system; the unreliability of their connectivity has to be taken for granted.
 
