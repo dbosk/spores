@@ -3,10 +3,13 @@
 
 \name is a distributed system made of users' devices. 
 Each device can communicate with any other device that it knows the
-address for. All devices belonging to one user
+address for (\eg using the Internet). All devices belonging to one user
  know which other devices belong to the same user, \ie the \squad.
 Thus the devices from an \squad only knows the mapping from devices to users for the devices in 
 the \squad it belongs to.
+We also assume that the users can exchange some limited amounts of data 
+out-of-band, \ie through some other channel than the network just mentioned (\eg 
+using \ac{NFC}).
 
 \paragraph*{In the cloud setting} if Alice wants to share a file with
 Bob, she picks up and pushes one of her files, from one of her devices, to the cloud
