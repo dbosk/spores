@@ -8,26 +8,65 @@
 \NewAlgorithm{\Recv}{Receive}
 \NewVariable{\rdv}{rdv}
 
-We have the Stateless Predictive Onion Routing scheme, \SPOR, which provides 
-probabilistically onion-routed message passing.
-Instead of providing only one address per hop in the route (as in \eg 
-Tor~\cite{Tor}), \(\SPOR\) provides several alternatives for the next hop 
-depending on their probability of being online.
-To do this, \(\SPOR\) provides stateless algorithms for the onion-routing.
+\david{each protocol should be explained individually}
 
-\(\SPOR\) provides three algorithms: \(\SPOR[\Send]\) (\cref{SPORSend}), 
-\(\SPOR[\Fwd]\) (\cref{SPORFwd}) and \(\SPOR[\Recv]\) (\cref{SPORRecv}).
-Say Alice wants to send a message \(m\) to Bob.
-Bob uses \(\SPOR[\Recv]\) to create a probabilistic onion route \(H_\rdv\) from 
-a rendez-vous point to his own device swarm --- all the hops on the route are 
-chosen by Bob uniformly at random.
-Bob gives \(H_\rdv\) to Alice using an out-of-band channel, \eg using his phone.
-Alice uses \(\SPOR[\Send]\) at some later time to send the message to Bob using 
-any of her devices.
-\(\SPOR[\Send]\) extends the route \(H_\rdv\) with some hops of Alice's choosing 
-(uniformly randomly chosen), then starts to forward the message (using 
-\(\SPOR[\Fwd]\)) through the hops on the route to Bob.
-This process is illustrated in \cref{fig:file-exchange}.
+In contrast to Tor~\cite{Tor} that provides only one address per hop
+in the route, \name provides for each layer of the onion several
+alternatives for the next hop in the route depending on their
+probability of being online. To implement our  probabilistic
+predictive onion routing mechanism, \name defined three different algorithms to
+receive, send and forward messages among users' \squad. For instance,
+if Alice wants to send a message \(m\) to Bob, Bob uses the
+\(\SPOR[\Recv]\) algorithm (See \cref{SPORRecv}) to create a probabilistic onion route \(H_\rdv\) from
+ a rendez-vous point to its own devices from its \squad --- all the hops on the route are 
+chosen by Bob uniformly at random from the RPS. \(\SPOR[\Recv]\)
+returns the \(H_\rdv\) that Bob gives to Alice using an
+out-of-band channel, \eg using one device of its \squad.
+PORs have \(L\) layers, and for each layer the number of
+alternatives nodes depends of a failure threshold \(\theta\). 
+As long as \(\theta\) is not exceeded, alternatives nodes are added in
+\(H_\rdv\) as depicted in \cref{ExtendRoute}. Thus the probability of
+failure for the extension is \(1 - (1 - \theta)^L\).
+
+Once Alice get the \(H_\rdv\), Alice uses \(\SPOR[\Send]\) at some
+later time to send the message to Bob using any of her devices from
+its \squad (See \cref{SPORSend}). First, \(\SPOR[\Send]\) extends the route
+\(H_\rdv\) with some hops of Alice's choosing (uniformly randomly
+chosen). Second, \(\SPOR[\Send]\) extracts from the onion the first
+layer, which contained the overall
+possible rendez-vous points $D$ previously selected by the recipient (i.e. Bob).
+One device from $D$ is randomly chosen, and the \(\SPOR[\Fwd]\)
+sub-function is called as long as the message forwarding to one node of
+the next layer is not successful (See \cref{SPORFwd}). Along the path, each node decrypts
+in sequence the different layer with the current node’s private key. 
+The end of the route is reached when special value \(H_\rdv = \top\) is
+encountered. Consequently the ciphered message \(c_m\) is then stored
+in the disk of the local node through the \(\Store\) sub function 
+(\cref{SPORRecv}).
+
+\david{the use of DeBE algorithms must be explicitly explained here}
+
+%The special value \(H = \top\) indicated the end of the route, thus \(c_m\) 
+%    is intended for the local node and \(c_m\) is instead sent to disk using 
+%    \(\Store\) (\cref{SPORRecv}).% 
+
+
+%The SPOR.Forward algorithm forwards m down the route H, obtained by
+%decrypting CH with the node’s associated private key. The special
+%value H = ⊤ indicated the end of the route, thus cm is intended for
+%the local node and cm is instead sent to disk using Store
+
+%extends the route \(H_\rdv\) (using 
+ %   \(\ExtendRoute\), \cref{ExtendRoute}) and sends the message \(m\) down the 
+  %  extended route using the \(\SPOR[\Fwd]\) algorithm (\cref{SPORFwd}).
+   % The first node of \(H_\rdv\) is the rendez-vous point selected by the 
+    %recipient.
+
+%It creates a probabilistic onion-route from a rendez-vous point to its own 
+%    devices and returns the route to the sender.
+ 
+
+
 
 \begin{figure}
   \includegraphics[width=\linewidth]{figures/file_exchange.pdf}
@@ -40,8 +79,9 @@ This process is illustrated in \cref{fig:file-exchange}.
 \NewAlgorithm{\CreateOnionLayer}{CreateOnionLayer}
 
 \begin{figure}
+
   \framebox{\begin{minipage}{0.96\linewidth}
-  \begin{algorithmic}
+  \begin{algorithmic}[1]
     \Require{%
       $H$ is a header of the form \(D\concat H'\) or \(D\concat \top\), where 
       \(D\) is a set of device addresses.
@@ -57,26 +97,24 @@ This process is illustrated in \cref{fig:file-exchange}.
       \State $H\gets D\concat \DeBEenc[\mpk, D, H]$
       \State \Return $\ExtendRoute[H, L-1, \theta]$
     \EndFunction
-
+  \vspace{0.3em}
     \Function{\CreateOnionLayer}{$\theta$}
       \State $(d, \pk_d, p_d)\gets \GetRandomPeer$
-      \Comment We use \(d\) as shorthand for this tuple.
-      \State $D\gets \{d\}$
+      \State $D\gets \{(d, \pk_d, p_d)\}$
       \While{$\prod_{d\in D} p_d > \theta$}
-        \State $d\gets \GetRandomPeer$
-        \State $D\gets D\cup \{d\}$
+        \State $(d, \pk_d, p_d)\gets \GetRandomPeer$
+        \State $D\gets D\cup \{(d, \pk_d, p_d)\}$
       \EndWhile
       \State \Return $D$
     \EndFunction
   \end{algorithmic}
   \end{minipage}}
   \caption{\label{ExtendRoute}%
-    The \(\ExtendRoute\) algorithm extends a route \(H\) with \(L\) hops and 
-    failure threshold of \(\theta\) for each hop in the route.
-    Thus the probability of failure for the extension is \(1 - (1 - \theta)^L\).
-    The function \(\GetRandomPeer\) is any random peer-sampling algorithm.
+    \scriptsize
+    The \(\ExtendRoute\) algorithm extends a route \(H\)
   }
 \end{figure}
+
 
 \NewAlgorithm{\Store}{Store}
 \NewAlgorithm{\Dec}{Dec}
@@ -93,23 +131,11 @@ This process is illustrated in \cref{fig:file-exchange}.
       \State \Return $H_\rdv$
         \Comment{Give to sender out-of-bound.}
     \EndFunction
-
-    \Function{\Store}{$m$}
-      \State $m\gets \DeBEdec[\mpk, \sk, c_m]$
-      \If{$m = \bot$}
-        \State \Return $\bot$
-      \EndIf
-      \State Store $m$ to disk.
-      \State \Return $\top$
-    \EndFunction
   \end{algorithmic}
   \end{minipage}}
   \caption{\label{SPORRecv}%
+\scriptsize
     The \(\SPOR[\Recv]\) algorithm prepares the recipient for receiving a file.
-    It creates a probabilistic onion-route from a rendez-vous point to its own 
-    devices and returns the route to the sender.
-    The \(\Store\) algorithm is used by the local \(\SPOR[\Fwd]\) algorithm to 
-    store messages intended for itself.
   }
 \end{figure}
 
@@ -134,11 +160,8 @@ This process is illustrated in \cref{fig:file-exchange}.
   \end{algorithmic}
   \end{minipage}}
   \caption{\label{SPORSend}%
-    The \(\SPOR[\Send]\) algorithm extends the route \(H_\rdv\) (using 
-    \(\ExtendRoute\), \cref{ExtendRoute}) and sends the message \(m\) down the 
-    extended route using the \(\SPOR[\Fwd]\) algorithm (\cref{SPORFwd}).
-    The first node of \(H_\rdv\) is the rendez-vous point selected by the 
-    recipient.
+    \scriptsize
+    The \(\SPOR[\Send]\) algorithm 
   }
 \end{figure}
 
@@ -162,6 +185,14 @@ This process is illustrated in \cref{fig:file-exchange}.
         \EndIf
       \EndFor
       \State \Return $\bot$
+    \EndFunction
+    \Function{\Store}{$m$}
+      \State $m\gets \DeBEdec[\mpk, \sk, c_m]$
+      \If{$m = \bot$}
+        \State \Return $\bot$
+      \EndIf
+      \State Store $m$ to disk.
+      \State \Return $\top$
     \EndFunction
   \end{algorithmic}
   \end{minipage}}

@@ -4,8 +4,7 @@
 \newcommand{\viewsize}{\ensuremath{l_{\text{view}}}}
 \NewAlgorithm{\GetRandomPeer}{RPS()}
 
-
-To reach this goal, we employ Random Peer Sampling (RPS) \cite{Voulgaris_Gavidia_van_Steen_2005,Jelasity_Voulgaris_Guerraoui_Kermarrec_van_Steen_2007}.
+To reach this goal \david{which one?}, we employ Random Peer Sampling (RPS) \cite{Voulgaris_Gavidia_van_Steen_2005,Jelasity_Voulgaris_Guerraoui_Kermarrec_van_Steen_2007}.
 Essentially, each node maintains a \emph{view} containing \viewsize other devices' descriptors. 
 By periodically exchanging random descriptors with a carefully selected node from its view, RPS allows devices to always have a fairly random sample of the nodes in the system inside their view.
 Due to the RPS's eviction policy, stale descriptors are removed quickly: each device thus knows a random sample of \viewsize connected nodes.
@@ -17,8 +16,6 @@ An RPS descriptor for device $d$ is constituted of the following information:
 \end{itemize}
 
 Devices now have all the information they need to establish reliable PORs between two sets of devices.
-
-
 
 % \commentDaniel{%
 %   What is the probability distribution of the peer sample that we get?
