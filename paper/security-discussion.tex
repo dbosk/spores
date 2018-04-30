@@ -3,7 +3,7 @@
 
 Alice wants to prevent Bob from learning which are her devices (as defined in 
 \cref{system-model}).
-Bob is allowed to infer the behaviour of devices in the Global Device Retinue, 
+Bob is allowed to infer the behaviour of devices in the global set, % Global Device Retinue, 
 but a file transfer from Alice should not give Bob any information about which 
 devices are Alice's.
 
@@ -14,14 +14,16 @@ device at the head of the route, since that might be Bob's device.
 Alice will construct her own \ac{SPOR} route.
 Thus Alice's devices are hidden from Bob's observation and vice versa.
 If we assume that Alice and Bob can sample their nodes uniformly randomly from 
-the \emph{entire} Global Device Retinue (we will return to this assumption 
+the \emph{entire} global set of devices %Global Device Retinue 
+(we will return to this assumption 
 below), then their probability of successful attack is proportional to their 
 size in the network, \ie \(\frac{|D_i|}{|D|}\), for \(i\in \{a,b\}\).
 
 Alice and Bob also want to prevent Carol and David to learn that Alice sent a 
 message to Bob (as defined in \cref{system-model}).
 Alice and Bob construct their \ac{SPOR} route by including devices from the 
-Global Device Retinue, which also includes devices from Carol and David.
+global set %Global Device Retinue
+, which also includes devices from Carol and David.
 If all devices on the route belong to Carol and David, then they can, of course, 
 learn that Alice sent a message to Bob.
 How well they can do if they do not control the entire route, depends on the 
@@ -78,7 +80,7 @@ mechanism, \eg~\cite{%
 }.
 So, even if our system is secure in theory, it will not be secure in practice 
 unless the random peer sampling algorithm returns peers chosen uniformly 
-randomly from the entire Global Device Retinue.
+randomly from the entire global set. %Global Device Retinue.
 
 To prevent attacks on the random peer sampling, some systems have employed 
 techniques to detect colluding nodes, \eg~\cite{%
