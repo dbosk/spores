@@ -77,32 +77,66 @@ This way, even though the round period is fixed, devices enter and leave the sys
 }
 \end{figure}
 
-\subsection{Devices' predictions of the user behavior} % (fold)
-\label{sub:devices_predictions_of_the_user_behavior}
+\subsubsection{Experimental parameters} % (fold)
+\label{ssub:experimental_parameters}
 
-% subsection devices_predictions_of_the_user_behavior (end)
-\commentAL{Should evaluate the inference of the model given only the observable sequence. Also show that $P[O_{t+1} | S_t] \simeq P[O_{t+i} | S_t]$}
+In the following, we perform two types of experiments: figures~\ref{fig:nodes_per_layer_vs_theta} and \ref{fig:success_rate_vs_t} illustrate the establishment of PORs, while the next ones measure file transfer.
 
-\subsection{Predictive Onion Routes creation} % (fold)
-\label{sub:predictive_onion_routes_creation}
-
-
-In figure \ref{fig:nodes_per_layer_vs_theta} and \ref{fig:success_rate_vs_t}, we computed 10 experiments per set of settings.
+Figures \ref{fig:nodes_per_layer_vs_theta} and \ref{fig:success_rate_vs_t} come from the same data, with 10 experiments per set of settings.
 $\theta$ is the threshold of the probability that all nodes fail at once: we keep adding nodes to a layer until the layer's probability is below $\theta$. 
 It takes the following values: $[0.1, 0.01, 0.001, 0.0001]$.
 $L$, the number of layers constituting a route, takes the following values: $[3, 5, 7]$.
-The time since route establishment goes from 1 to 10 with  unit step. 
+The time since route establishment goes from 1 to 10 with  unit step.
+It is measured in time periods $T$, the interval at which users change the connection state of their devices.
 An experiment consisted in $L*5$ users, where we randomly picked pairs of users to compute 20 routes.
 Hence, each point in figure~\ref{fig:nodes_per_layer_vs_theta} is the average of 3000 layers size; 
 each point in figure~\ref{fig:nodes_per_layer_vs_theta} is the availability rate over 200 routes.
 
-\begin{figure}
+
+\subsection{Devices' predictions of the user behavior} % (fold)
+\label{sub:devices_predictions_of_the_user_behavior}
+
+\commentAL{Will probably ditch that}
+
+% subsection devices_predictions_of_the_user_behavior (end)
+%\commentAL{Should evaluate the inference of the model given only the observable sequence. Also show that $P[O_{t+1} | S_t] \simeq P[O_{t+i} | S_t]$}
+
+\subsection{Predictive Onion Routes creation} % (fold)
+\label{sub:predictive_onion_routes_creation}
+
+\begin{figure}[t]
 \centering
 \includegraphics[width=0.8\columnwidth]{figures/nodes_per_layer_vs_theta.pdf}
-\caption{\label{fig:nodes_per_layer_vs_theta}Number of nodes per layer of Predictive Onion Route as a function of the parameter $\theta$ (the maximal probability that all nodes in a layer fail at once). We see that the number of nodes exponentially decreases a we relax the $\theta$ constraint.}
+\caption{\label{fig:nodes_per_layer_vs_theta}Number of nodes per layer of POR as a function of the parameter $\theta$ (the maximal probability that all nodes in a layer fail at once). We see that the number of nodes logarithmically decreases as we relax the $\theta$ constraint.}
 \end{figure}
 
-\begin{figure}
+We first measure the influence of the parameter $\theta$ on the number of nodes per layer in figure~\ref{fig:nodes_per_layer_vs_theta}, by displaying average and standard deviation of the number of nodes for $\theta=[10^{-4}, 10^{-3}, 10^{-2}, 10^{-1}]$ (the other experiment parameters are listed in section~\ref{ssub:experimental_parameters}).
+As we can see, the number of devices per layer logarithmically decreases as we relax the constraint on the layer's availability.
+The mean required number of devices per layer is reasonable: between 2 and 6.
+Still, the number of nodes per layer is very variable: at $\theta=10^{-4}$, values range from 2 to 11, with a standard deviation of 1.44. 
+
+\begin{figure}[t]
 \includegraphics[width=\columnwidth]{figures/success_rate_vs_t.pdf}
 \caption{\label{fig:success_rate_vs_t}Availability rate of routes as a function of the time since the route establishment, for several values of the parameters $\theta$ (the maximal probability that all nodes in a layer fail at once) and $L$ (the number of layers in the route).}
 \end{figure}
+
+We now study the influence of the parameters on the future availability of the routes in figure~\ref{fig:success_rate_vs_t}.
+We consider a route available if at least one node per layer is online at this time.
+The plots reads the mean availability of routes as a function of the time since the route's establishment, for every couple of parameters $(\theta, L)$.
+First of all, we observe that time has a negligible impact on the availability of routes. 
+This shows, as was stated in section~\ref{para:predicting future behavior}, that the prediction that devices make of behavior at $t+1$ is a good enough estimator for $t+i$.
+We also see that $\theta$ has a big impact on the availability average, and variability.
+Still, $\theta\in[10^-4, 10^-3]$ allows highly available routes with an average availability of 100\% and 99.5\% respectively.
+Combined with the results from figure~\ref{fig:nodes_per_layer_vs_theta}, it means that routes will need an average of 5-6 devices per layer to be highly available.
+Finally, increasing $L$ logically hinders the results when using low-availability layers.
+
+We showed that creating reliable onion routes using a backbone of unreliable nodes is feasible by using predictive algorithms.
+The counterpart is that messages header size grows \commentAL{How does it grow? Quadratically, exponentially?} with the number of layers and the number of devices per layer.
+Considering that most onion routing solutions use a statically defined message size to avoid information leakage, this means that a more reliable onion route comes at the cost of an increased network traffic.
+
+\subsection{File transfer} % (fold)
+\label{sub:file_transfer}
+
+\commentAL{Git-noobiness removed my data: it has to compute again overnight.}
+
+% subsection file_transfer (end)
