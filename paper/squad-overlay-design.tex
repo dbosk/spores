@@ -1,13 +1,16 @@
 \subsection{The \squad Overlay} 
 \label{sec:squad_overlay}
 
-At the root of \name is predictive routing.
-%By sharing information among themselves, a user's devices (her \emph{squad}) can model her behavior.
-Our key objective is to enable each online device to predict its probability to stay online in the near future.
-This probability will later be used to create Probabilistic Onion Routes (POR).
-A device's connection depends on the activity of its user; thus, a user's devices (her \squad) want to predict her future behavior.
+At the root of \name is predictive routing, based on the concept of Probabilistic Onion Routes (POR).
+To create PORs, as a device's availability strongly depends on the activity of its owner,
+ a user's devices (her \squad) must predict the future behavior of their owner. 
+However, one device, belonging to an \squad, can only predict its probability to stay online in the near future
+if it has a global knowledge of the user behavior over the other devices of the \squad it belongs to.
+To reach this aim, \name relies on a \squad overlay to share the user's behavior among devices of its \squad.
 
-In this section, we only take interest in one user (called Alice) and her \squad.
+%By sharing information among themselves, a user's devices (her \emph{squad}) can model her behavior.
+
+%In this section, we only take interest in one user (called Alice) and her \squad.
 
 % Each of Alice's (and Bob's) devices will keep track of its own online and 
 % offline behavior.
@@ -21,15 +24,13 @@ In this section, we only take interest in one user (called Alice) and her \squad
 \subsubsection{Sharing the user's behavior} % (fold)
 \label{sub:sharing_knowledge}
 
-Online devices want to know whether they are likely to stay online in the near future.
-
-Taken separately, each device only knows local information: when Alice used it, and maybe mobility information if it is mobile.
-When combining these informations, though, we obtain a sequence of the user's behavior that is far more complete.
-For instance, the probability that Alice uses her home computer and workstation simultaneously is null: these devices are too far apart.
-
-The \squad Overlay leverages on a probabilistic dissemination protocol, \textsc{Sprinkler}~\cite{luxey:hal-01704172}, that does just that: 
+%Online devices want to know whether they are likely to stay online in the near future.
+taken separately, each device only knows local information such as when its user used it, and potentially mobility information if it is handheld device. When combining all these local observations, each device can obtain a refined model of the user’s behavior to predict its future activity in an accurate manner. To build this sequence of observations, 
+%a sequence of the user's behavior that is far more complete.
+%For instance, the probability that Alice uses her home computer and workstation simultaneously is null: these devices are too far apart.
+the \squad overlay leverages on a probabilistic dissemination protocol, \textsc{Sprinkler}~\cite{luxey:hal-01704172}.
 it allows one's devices to inform one another every time the user performs an action.
-Previous work in our team~\cite{luxey:cascade} showed that \textsc{Sprinkler} is resilient to devices churn: 
+In our previous work~\cite{luxey:cascade}, we showed that \textsc{Sprinkler} is resilient to devices churn: 
 devices let each other know of what they have missed while offline.
 We thus employ \textsc{Sprinkler} to disseminate the user's activity to its \squad.
 
@@ -50,7 +51,7 @@ We thus employ \textsc{Sprinkler} to disseminate the user's activity to its \squ
 % \subsubsection{Other uses of the Squad Overlay} % (fold)
 % \label{ssub:other_uses_of_the_squad_overlay}
 
-\paragraph*{Other uses of the \squad Overlay} In addition to user's behavior, devices use th \squad Overlay for several purposes. Firstly, they share files location: when Alice wants to share a file $f$ that resides on her home computer, using her smartphone as the exchange initiator, her smartphone knows where $f$ is located and can create the route accordingly. 
+\paragraph*{Other uses of the \squad Overlay} In addition to user's behavior, devices use the \squad overlay for several purposes. Firstly, they share files location: when Alice wants to share a file $f$ that resides on her home computer, using her smartphone as the exchange initiator, her smartphone knows where $f$ is located and can create the route accordingly. 
 Secondly, each device is also informed of its user's ongoing file transfers (which serves the next purpose).
 Finally, because devices can receive messages on behalf of their fellow squad members to ensure reception despite the proper recipient being offline, 
 one's devices can forward messages among the \squad.
@@ -65,10 +66,10 @@ one's devices can forward messages among the \squad.
 \subsubsection{Modeling the user's behavior}
 \label{sub:a_model_of_the_user_s_behavior}
 
-We need a probabilistic model of the user's behavior to predict its future activity.
-In \name, the only data we collect are the connection times of each device.
-In this section only, we discretize time. 
-We store the connection times in an ever-increasing \emph{sequence} $O=O_1, ..., O_i, ...$ of actions performed at every \emph{round}, that lasts a short period of time $T$. 
+we need a probabilistic model of the user's behavior to predict its future activity.
+In \name, the only data we collect and share, through the \squad overlay, are the availability times of each device among a \squad.
+In our model, time is discretized, i.e. users periodically change the availability stated of their devices in a predefined period.
+We store the availability times in an ever-increasing \emph{sequence} $O=O_1, ..., O_i, ...$ of actions performed at every \emph{round}, that lasts a short period of time $T$. 
 $d \in O_t$ thus means that the device $d$ was online from time $t$ to time $t+T$.
 Our goal is to predict $O_{t+1}$ knowing $O_t$.
 
@@ -78,8 +79,6 @@ A HMM of order one is such that the hidden variable at time $t$, $S_t$, only dep
 The observations at time $t$, $O_t$, depend on the current hidden variable only, $S_t$.
 
 We first formally define our HMM, then show how to predict the future knowing the HMM, then finally present how to infer the model from the observable sequence only.
-
-
 
 % In \name, we take interest in users that own several devices, and wish to privately exchange files with each other without revealing .
 % To the best of our knowledge, no real-world traces of multi-devices usage over several days exist, as would be needed for the experimental evaluation of our system.
@@ -123,8 +122,8 @@ where
 \end{itemize}
 
 In our case, the states $\mathcal{S}$ are the different locations $\mathcal{L}$ where the user is susceptible to go.
-The events represent the devices connection, hence $\mathcal{O} = \mathcal{D}$, where $\mathcal{D}$ is the set of the user's devices.
-Several devices can be connected at the same time, such that $O_t$ is a set, and $d \in O_t$ means that device $d$ was connected at time $t$. Devices' connection probabilities are independent.
+The events represent the devices availability, hence $\mathcal{O} = \mathcal{D}$, where $\mathcal{D}$ is the set of the user's devices.
+Several devices can be available at the same time, such that $O_t$ is a set, and $d \in O_t$ means that device $d$ was available at time $t$. Devices' availability probabilities are independent.
 
 
 % In \cref{fig:hmm}, we show an example HMM of a user's behavioral HMM, along with its graphical representation (the initial state distribution $\Pi$ was left out for simplicity). 
@@ -136,10 +135,10 @@ Several devices can be connected at the same time, such that $O_t$ is a set, and
 
 \paragraph*{Predicting future behavior} 
 \label{para:predicting future behavior}
-As already stated, devices want to predict whether they are likely to be connected in the near future.
-This information will be publicly available, and will enable the intelligent building of routes.
+As already stated, devices want to predict whether they are likely to be available in the near future.
+This information will be publicly available to enable the intelligent building of routes.
 
-Because devices connections only depend on the users location, we can predict the devices connections in $i$ round $O_{t+i}$ given only the model $\lambda_N$ and the current user's location $S_t$. We first compute the probability that a device $d$ will be connected next turn:
+Because devices availability only depend on the users location, we can predict the devices availability in $i$ round $O_{t+i}$ given only the model $\lambda_N$ and the current user's location $S_t$. We first compute the probability that a device $d$ will be available next turn:
 
 $$
 P\left[ d \in O_{t} \mid S_{t-1} = s \right] = 
@@ -157,9 +156,8 @@ P\left[ S_{t+1} = s' \mid S_t = s \right] *
 P\left[ d \in O_{t+i} \mid S_{t+1} = s'\right].
 \end{multline*}
 
-We show in section~\ref{sub:predictive_onion_routes_creation} that the prediction of devices' availability at $t+1$ is a good enough estimator of their connection state at $t+i$.
+We show in section~\ref{sub:predictive_onion_routes_creation} that the prediction of devices' availability at $t+1$ is a good enough estimator of their availability state at $t+i$.
 For that reason, devices only compute and publish $P\left[ d \in O_{t+1} \mid S_{t} = s \right]$.
-
 
 \paragraph*{Inferring the model from the sequence of observations}
 
