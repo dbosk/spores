@@ -1,0 +1,31 @@
+\section{System model, adversary model and desired privacy properties}%
+\label{system-model}
+
+Our system consists of users' devices.
+Each device can communicate with any other device that it knows the address for.
+We assume that each user has configured its own devices to know which other 
+devices belong to the same user, \ie the \squad.
+Thus the devices only knows the mapping from devices to users for the devices in 
+the own \squad.
+
+Alice wants to share a file with Bob.
+In the cloud setting, she can instruct the cloud service to make one of her 
+files available to Bob.
+This provides some privacy properties which we have to consider when changing 
+the setting to that of \ac{P2P}~\cite{DevilInMetadata}.
+We can see that in this scenario, Alice and Bob are the only ones who learn 
+about Alice sharing a file with Bob (except for the cloud provider).
+We can also see that Alice and Bob learn nothing about each others' devices, \ie 
+they cannot map any device as belonging to each other.
+(Of course, the cloud provider learns this.)
+
+When changing from the cloud setting to \ac{P2P}, we want to keep the privacy 
+that Alice and Bob enjoy but remove the cloud provider to increase privacy 
+further.
+\Ie we want to protect from friendly surveillance~\cite{FriendlySurveillance} in 
+an honest-but-curious setting.
+
+We will not consider a global network adversary, only subsets of colluding 
+parties.
+We know that it is notoriously difficult to achieve security against a global 
+network adversary~\cite{SystemsForAnonymousCommunication}.
