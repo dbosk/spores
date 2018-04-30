@@ -37,7 +37,7 @@ layer, which contained the overall
 possible rendez-vous points $D$ selected by the recipient (i.e. Bob).
 One device from $D$ is randomly chosen, and the \(\SPOR[\Fwd]\)
 sub-function is called as long as the message forwarding to one node of
-the next layer is not successful. Along the path, each node decrypts
+the next layer is not successful (See \cref{SPORFwd}). Along the path, each node decrypts
 in sequence the different layer with the current node’s private key. 
 The end of the route is reached when special value \(H_\rdv = \top\) is
 encountered. Consequently the ciphered message \(c_m\) is then stored
