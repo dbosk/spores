@@ -177,11 +177,30 @@ $(1 - p_d)$ is the probability that a device $d$ will be offline; the product is
 \label{ssub:routing_messages}
 
 
+Once Alice get the \(H_\rdv\), Alice uses \([\Send]\) at some
+later time to send the message to Bob using any of her devices from
+its \squad.% (See \cref{SPORSend}). 
+First, \([\Send]\) extends the route
+\(H_\rdv\) with some hops of Alice's choosing (uniformly randomly
+chosen). Second, \([\Send]\) extracts from the onion the first
+layer, which contained the overall
+possible rendez-vous points $D$ previously selected by the recipient (i.e. Bob).
+One device from $D$ is randomly chosen, and the \([\Fwd]\)
+sub-function is called as long as the message forwarding to one node of
+the next layer is not successful.% (See \cref{SPORFwd}). 
+Along the path, each node decrypts
+in sequence the different layer with the current node’s private key. 
+The end of the route is reached when special value \(H_\rdv = \top\) is
+encountered. Consequently the ciphered message \(c_m\) is then stored
+in the disk of the local node through the \(\Store\) sub function.%(\cref{SPORRecv}).
+
+\david{the use of DeBE algorithms must be explicitly explained here}
+
 \begin{figure}[t]
   %\framebox{\begin{minipage}{0.96\linewidth}
   \begin{algorithmic}[1]
     %\Require{$\pk, \sk$ is the public--private key-pair of the node.}
-    \Function{\SPOR[\Fwd]}{$C_H, m$}
+    \Function{[\Fwd]}{$C_H, m$}
       \State $H\gets \DeBEdec[\mpk, \sk, C_H]$
       \If{$H = \bot$}
         \State \Return $\bot$
@@ -212,45 +231,45 @@ $(1 - p_d)$ is the probability that a device $d$ will be offline; the product is
   \end{algorithmic}
   %\end{minipage}}
   \caption{\label{SPORFwd}%
-    The \(\SPOR[\Fwd]\) algorithm forwards \(m\) down the route \(H\), obtained 
+    The \([\Fwd]\) algorithm forwards \(m\) down the route \(H\), obtained 
     by decrypting \(C_H\) with the node's associated private key.
     The special value \(H = \top\) indicated the end of the route, thus \(c_m\) 
     is intended for the local node and \(c_m\) is instead sent to disk using 
-    \(\Store\) (\cref{SPORRecv}).%
+    \(\Store\).% (\cref{SPORRecv}).%
   }
 \end{figure}
 
 
-For instance, if Alice wants to send a message \(m\) to Bob, they are both going to perform a part of the building algorithm.
-Bob uses the \(\SPOR[\Recv]\) function (See \cref{SPORRecv}) to create a probabilistic onion route $\mathcal{H_B}$ from
- a rendez-vous (RV) layer $\mathcal{L_{RV}}$ to its own devices from its \squad---all the hops on the route are 
-chosen by Bob uniformly at random from the Global Overlay.
- \(\SPOR[\Recv]\)
-returns $\mathcal{H_B}$ and  that Bob gives to Alice using an
-out-of-band channel, \eg using one device of its \squad.
-PORs have \(L\) layers, and for each layer the number of
-alternatives nodes depends of a failure threshold \(\theta\). 
-As long as \(\theta\) is not exceeded, alternatives nodes are added in
-\(H_\rdv\) as depicted in \cref{ExtendRoute}. Thus the probability of
-failure for the extension is \(1 - (1 - \theta)^L\).
+% For instance, if Alice wants to send a message \(m\) to Bob, they are both going to perform a part of the building algorithm.
+% Bob uses the \([\Recv]\) function (See \cref{SPORRecv}) to create a probabilistic onion route $\mathcal{H_B}$ from
+%  a rendez-vous (RV) layer $\mathcal{L_{RV}}$ to its own devices from its \squad---all the hops on the route are 
+% chosen by Bob uniformly at random from the Global Overlay.
+%  \(\SPOR[\Recv]\)
+% returns $\mathcal{H_B}$ and  that Bob gives to Alice using an
+% out-of-band channel, \eg using one device of its \squad.
+% PORs have \(L\) layers, and for each layer the number of
+% alternatives nodes depends of a failure threshold \(\theta\). 
+% As long as \(\theta\) is not exceeded, alternatives nodes are added in
+% \(H_\rdv\) as depicted in \cref{ExtendRoute}. Thus the probability of
+% failure for the extension is \(1 - (1 - \theta)^L\).
 
-Once Alice get the \(H_\rdv\), Alice uses \(\SPOR[\Send]\) at some
-later time to send the message to Bob using any of her devices from
-its \squad (See \cref{SPORSend}). First, \(\SPOR[\Send]\) extends the route
-\(H_\rdv\) with some hops of Alice's choosing (uniformly randomly
-chosen). Second, \(\SPOR[\Send]\) extracts from the onion the first
-layer, which contained the overall
-possible rendez-vous points $D$ previously selected by the recipient (i.e. Bob).
-One device from $D$ is randomly chosen, and the \(\SPOR[\Fwd]\)
-sub-function is called as long as the message forwarding to one node of
-the next layer is not successful (See \cref{SPORFwd}). Along the path, each node decrypts
-in sequence the different layer with the current node’s private key. 
-The end of the route is reached when special value \(H_\rdv = \top\) is
-encountered. Consequently the ciphered message \(c_m\) is then stored
-in the disk of the local node through the \(\Store\) sub function 
-(\cref{SPORRecv}).
+% Once Alice get the \(H_\rdv\), Alice uses \(\SPOR[\Send]\) at some
+% later time to send the message to Bob using any of her devices from
+% its \squad (See \cref{SPORSend}). First, \(\SPOR[\Send]\) extends the route
+% \(H_\rdv\) with some hops of Alice's choosing (uniformly randomly
+% chosen). Second, \(\SPOR[\Send]\) extracts from the onion the first
+% layer, which contained the overall
+% possible rendez-vous points $D$ previously selected by the recipient (i.e. Bob).
+% One device from $D$ is randomly chosen, and the \(\SPOR[\Fwd]\)
+% sub-function is called as long as the message forwarding to one node of
+% the next layer is not successful (See \cref{SPORFwd}). Along the path, each node decrypts
+% in sequence the different layer with the current node’s private key. 
+% The end of the route is reached when special value \(H_\rdv = \top\) is
+% encountered. Consequently the ciphered message \(c_m\) is then stored
+% in the disk of the local node through the \(\Store\) sub function 
+% (\cref{SPORRecv}).
 
-\david{the use of DeBE algorithms must be explicitly explained here}
+
 
 %The special value \(H = \top\) indicated the end of the route, thus \(c_m\) 
 %    is intended for the local node and \(c_m\) is instead sent to disk using 

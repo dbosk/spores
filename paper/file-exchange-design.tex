@@ -15,7 +15,8 @@ their smartphones.
 The information they will exchange is the following:
 \begin{enumerate}
   \item Bob creates an onion route header, \(H_\rdv\), by running 
-    \(\SPOR[\Recv]\) (\cref{SPORRecv}) and gives it to Alice.
+    \([\Recv]\) %(\cref{SPORRecv}) 
+    and gives it to Alice.
   \item Alice gives Bob number of file chunks, \(n\), and the size of the file 
     chunks.
   \item They agree on a file-specific key \(k\) for some (authenticated) 
@@ -24,6 +25,6 @@ The information they will exchange is the following:
 Then Alice encrypts the file \(f\) and receives the ciphertext \(c_f\gets 
   \Enc*[Enc](k, f)\).
 She then divides \(c_f\) into \(n\) chunks, \(c_f^{(1)}, \dotsc, c_f^{(n)}\), 
-and runs \(\SPOR[\Send](H_\rdv, c_f^{(i)})\) for all \(1\leq i\leq n\) in 
+and runs \([\Send](H_\rdv, c_f^{(i)})\) for all \(1\leq i\leq n\) in 
 parallel.
 \commentDaniel{Or shall we do it sequentially?}
