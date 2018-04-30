@@ -36,7 +36,7 @@
   }%
   \providecommand\rotatebox[2]{#2}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{348.44502126bp}%
+    \setlength{\unitlength}{348.44499963bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -48,21 +48,13 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,1.01704596)%
+  \begin{picture}(1,0.7553117)%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{outline.pdf}}%
-    \put(-0.00224996,0.98691208){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\ref{sec:squad_overlay}}}}%
+    \put(-0.00225003,0.72517781){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\ref{sec:squad_overlay}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=2]{outline.pdf}}%
-    \put(0.36062077,0.39715487){\color[rgb]{0,0,0}\rotatebox{-120.00000013}{\makebox(0,0)[lb]{\smash{. . .}}}}%
+    \put(-0.00225,0.46084871){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\ref{sec:global_overlay}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=3]{outline.pdf}}%
-    \put(0.48423744,0.39715487){\color[rgb]{0,0,0}\rotatebox{-120.00000013}{\makebox(0,0)[lb]{\smash{. . .}}}}%
+    \put(-0.00224999,0.19312222){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\ref{sec:message_passing}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=4]{outline.pdf}}%
-    \put(0.60785412,0.39715487){\color[rgb]{0,0,0}\rotatebox{-120.00000013}{\makebox(0,0)[lb]{\smash{. . .}}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=5]{outline.pdf}}%
-    \put(-0.00224993,0.72231549){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\ref{sec:global_overlay}}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=6]{outline.pdf}}%
-    \put(-0.00224992,0.45771892){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\ref{sec:message_passing}}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=7]{outline.pdf}}%
-    \put(-0.00224992,0.19312239){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\ref{sec:file_exchange}}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=8]{outline.pdf}}%
   \end{picture}%
 \endgroup%

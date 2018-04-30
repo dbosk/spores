@@ -22,8 +22,10 @@
 \NewVariable{\Hsendbackward}{\mathcal{H}_{\text{send b}}\xspace}
 \NewVariable{\Hrecforward}{\mathcal{H}_{\text{rec f}}\xspace}
 \NewVariable{\Hrecbackward}{\mathcal{H}_{\text{rec b}}\xspace}
+\NewVariable{\datakey}{k_{\text{data}}\xspace}
 %\NewVariable{\nfilechunks}{\#\text{chunks}}
 
+\david{the use of DeBE algorithms must be explicitly explained in this section}
 
 
 The principle of onion routing à la Tor~\cite{Tor} is to put nodes relaying messages between a source and a destination.
@@ -52,8 +54,9 @@ Alice uses the forward route to send file chunks to Bob, while Bob uses the back
 \subsubsection{Building routes} 
 \label{ssub:building_routes}
 
+\commentAL{A symmetric key \datakey should be exchanged during this step, to encrypt the data}
 
-When Alice wants to send a file to Bob, they first have to call the route building algorithm, and to exchange relevant information out of band (e.g. using mail, or their phones' bluetooth connection).
+When Alice wants to send a file $f$ to Bob, they first have to call the route building algorithm, and to exchange relevant information out of band (e.g. using mail, or their phones' bluetooth connection).
 They create a route of $L$ layers, a configuration parameter that must be odd. We introduce $l=(L-1)/2$.
 
 Bob (the receiver) initiates the route creation by calling the \Recv function displayed in figure~\ref{fig:route building algo}
@@ -187,28 +190,27 @@ $l = (L-1)/2$ & Number of layers (excluding $\LRV$) created by each end of the r
   \caption{\label{fig:route building algo}The route building algorithm}
 \end{figure}
 
+
 \subsubsection{Routing messages}
 \label{ssub:routing_messages}
 
 
-Once Alice get the \(H_\rdv\), Alice uses \(\Send\) at some
-later time to send the message to Bob using any of her devices from
-its \squad.% (See \cref{SPORSend}). 
-First, \(\Send\) extends the route
-\(H_\rdv\) with some hops of Alice's choosing (uniformly randomly
-chosen). Second, \(\Send\) extracts from the onion the first
-layer, which contained the overall
-possible rendez-vous points $D$ previously selected by the recipient (i.e. Bob).
-One device from $D$ is randomly chosen, and the \(\Fwd\)
-sub-function is called as long as the message forwarding to one node of
-the next layer is not successful.% (See \cref{SPORFwd}). 
-Along the path, each node decrypts
-in sequence the different layer with the current node’s private key. 
-The end of the route is reached when special value \(H_\rdv = \top\) is
-encountered. Consequently the ciphered message \(c_m\) is then stored
-in the disk of the local node through the \(\Store\) sub function.%(\cref{SPORRecv}).
-
-\david{the use of DeBE algorithms must be explicitly explained here}
+% Alice uses \(\Send\) at some
+% later time to send the message to Bob using any of her devices from
+% its \squad.% (See \cref{SPORSend}). 
+% First, \(\Send\) extends the route
+% \(H_\rdv\) with some hops of Alice's choosing (uniformly randomly
+% chosen). Second, \(\Send\) extracts from the onion the first
+% layer, which contained the overall
+% possible rendez-vous points $D$ previously selected by the recipient (i.e. Bob).
+% One device from $D$ is randomly chosen, and the \(\Fwd\)
+% sub-function is called as long as the message forwarding to one node of
+% the next layer is not successful.% (See \cref{SPORFwd}). 
+% Along the path, each node decrypts
+% in sequence the different layer with the current node’s private key. 
+% The end of the route is reached when special value \(H_\rdv = \top\) is
+% encountered. Consequently the ciphered message \(c_m\) is then stored
+% in the disk of the local node through the \(\Store\) sub function.%(\cref{SPORRecv}).
 
 \begin{figure}[t]
   %\framebox{\begin{minipage}{0.96\linewidth}
@@ -252,6 +254,70 @@ in the disk of the local node through the \(\Store\) sub function.%(\cref{SPORRe
     \(\Store\).% (\cref{SPORRecv}).%
   }
 \end{figure}
+
+\subsubsection{Exchanging a file} % (fold)
+\label{ssub:exchanging_a_file}
+
+% subsubsection exchanging_a_file (end)
+\newcommand{\messagesize}{\ensuremath{s_m}}
+\newcommand{\filesize}{\ensuremath{s_f}}
+\newcommand{\headersize}{\ensuremath{s_{\mathcal{H}}}}
+
+Once Alice get the \Hforward, she can start sending her file $f$ to Bob. 
+To do so, she chunks it to pieces, and iteratively send the chunks to Bob, that replies with an acknowledgment (ACK) for that chunk.
+Once all chunks have been acknowledged, Alice sends an empty message to Bob, signifying transfer termination.
+
+To prevent \name from message size analysis attacks, the messages have a fixed size \messagesize.
+As shown in the previous section~\ref{ssub:building_routes}, headers have a variable size \headersize per route (but \Hforward remains constant once the POR is established).
+For this reason, file chunks have a fixed size per session: $\filesize = \messagesize - \headersize$.
+
+A message payload is composed of the following information:
+
+\begin{itemize}
+  \item An identifier for the file;
+  \item The chunk ID, that identifies its position in $f$;
+  \item The file chunk;
+  \item An error correction code (e.g. a SHA-1 hash of the chunk, à la BitTorrent\cite{bt_bep3}).
+\end{itemize}
+
+Payloads are encoded using \datakey that was shared between Alice and Bob during route creation \commentAL{Not done}.
+
+
+% We are interested in transferring large files.
+% Every device \(d\in D\) in the global device swarm is only periodically online.
+% We will thus divide the data to send into \(n\) smaller chunks (similar to 
+% BitTorrent~\cite{BitTorrent}).
+% The idea is to choose \(n\) such that each chunk will be small enough to be 
+% successfully relayed by a device before it goes offline again.
+% The chunk size is empirically determined in \cref{Performance}.
+% \commentDaniel{Adrien, is that true?}
+
+% As stated above, Alice and Bob exchange some limited data out-of-bound using 
+% their smartphones.
+% The information they will exchange is the following:
+% \begin{enumerate}
+%   \item Bob creates an onion route header, \(H_\rdv\), by running 
+%     \([\Recv]\) %(\cref{SPORRecv}) 
+%     and gives it to Alice.
+%   \item Alice gives Bob number of file chunks, \(n\), and the size of the file 
+%     chunks.
+%   \item They agree on a file-specific key \(k\) for some (authenticated) 
+%     encryption scheme \(\Enc*\).
+% \end{enumerate}
+% Then Alice encrypts the file \(f\) and receives the ciphertext \(c_f\gets 
+%   \Enc*[Enc](k, f)\).
+% She then divides \(c_f\) into \(n\) chunks, \(c_f^{(1)}, \dotsc, c_f^{(n)}\), 
+% and runs \(\Send(H_\rdv, c_f^{(i)})\) for all \(1\leq i\leq n\) in 
+% parallel.
+% \commentDaniel{Or shall we do it sequentially?}
+
+
+
+
+
+
+
+
 
 
 % For instance, if Alice wants to send a message \(m\) to Bob, they are both going to perform a part of the building algorithm.
