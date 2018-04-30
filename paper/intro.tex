@@ -74,7 +74,10 @@ a partially centralized design that hinges on a set of \emph{directory
 servers}, which are used to advertise trusted nodes that are available to bootstrap onion
 routes. 
 
-In this paper, we demonstrate how good performance can be reconciled with strong privacy protection in data-sharing systems. We present \name{}, a novel fully decentralized, autonomous,
+In this paper, we demonstrate how good performance can be reconciled
+with strong privacy protection in data-sharing systems. We present
+\name{}, a novel fully decentralized, autonomous,
+
 % approach that provides a 
 and self-organizing file sharing service between the \squad{}s of different users that preserves user privacy
 in terms of both data \emph{and} metadata. Our proposal hinges on two key ideas: \emph{First}, we consider proxemics relationships as a key enabler to initiate file
@@ -99,19 +102,24 @@ availability of user devices, and use this ability to implement a \emph{probabil
 %% availability of nodes. As such, \name provides optimized onion routes; it avoids routes
 %% reconstruction under churns.
 
-Our contributions are as follows: \david{please update}
+Our contributions are as follows: 
 \begin{itemize}
-\item We showed the effectiveness of \iac{ANOBE} scheme by \textcite{ANOBE} 
-  to build a \ac{DeBE} as required by \name to
-  provide.... 
-\item A \squad overlay 
-\item Model the user’s behavior as a Hidden Markov Models (HMMs)
-\item SPOR provides stateless algorithms for the onion-routing.
-\item An evaluation testbed where each user’s behavior
+\item We have designed \name, a novel fully decentralized, autonomous,
+and self-organizing file sharing service among users based on a novel
+concept named Probabilistic Onion Routes (POR), which combines onion routing with
+probabilistic node selection, informed by random peer sampling and
+Hidden Markov Model predictions for node availability. 
+\item  We have demonstrated the successfulness of our approach. Even
+  suboptimal prediction results in successful file transfer with high
+  probability. 
 \end{itemize}
 
-In the following, we detail \name 's concepts and approach...
-
+In the following, in Section~\ref{system-model}, we introduce the
+adversary model the desired privacy properties of \name. Section~\ref{design}
+introduce the design of our proposed solution. Section~\ref{Performance}
+evaluates the proposed approach. In Section~\ref{security-discussion}, we lead a security discussion
+about advantages, shortcomings of our approach.
+Finally, Section~\ref{conclusion} discusses future work and conclusions.
 % Cashmere: resilient anonymous routing.
 % Route fingerprinting in anonymous communications.
 % Bridging and fingerprinting:
