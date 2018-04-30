@@ -8,15 +8,19 @@
 \NewAlgorithm{\Recv}{Receive}
 \NewVariable{\rdv}{rdv}
 
+\david{each protocol should be explained individually}
+
 We have the Stateless Predictive Onion Routing scheme, \SPOR, which provides 
 probabilistically onion-routed message passing.
 Instead of providing only one address per hop in the route (as in \eg 
 Tor~\cite{Tor}), \(\SPOR\) provides several alternatives for the next hop 
 depending on their probability of being online.
-To do this, \(\SPOR\) provides stateless algorithms for the onion-routing.
+To do this, \(\SPOR\) provides stateless algorithms for the
+onion-routing. \david{why stateless?}
 
 \(\SPOR\) provides three algorithms: \(\SPOR[\Send]\) (\cref{SPORSend}), 
 \(\SPOR[\Fwd]\) (\cref{SPORFwd}) and \(\SPOR[\Recv]\) (\cref{SPORRecv}).
+
 Say Alice wants to send a message \(m\) to Bob.
 Bob uses \(\SPOR[\Recv]\) to create a probabilistic onion route \(H_\rdv\) from 
 a rendez-vous point to his own device swarm --- all the hops on the route are 
@@ -40,7 +44,7 @@ This process is illustrated in \cref{fig:file-exchange}.
 \NewAlgorithm{\CreateOnionLayer}{CreateOnionLayer}
 
 \begin{figure}
-  \begin{algorithmic}
+  \begin{algorithmic}[1]
     \Require{%
       $H$ is a header of the form \(D\concat H'\) or \(D\concat \top\), where 
       \(D\) is a set of device addresses.
@@ -56,14 +60,13 @@ This process is illustrated in \cref{fig:file-exchange}.
       \State $H\gets D\concat \DeBEenc[\mpk, D, H]$
       \State \Return $\ExtendRoute[H, L-1, \theta]$
     \EndFunction
-
+  \vspace{0.3em}
     \Function{\CreateOnionLayer}{$\theta$}
       \State $(d, \pk_d, p_d)\gets \GetRandomPeer$
-      \Comment We use \(d\) as shorthand for this tuple.
-      \State $D\gets \{d\}$
+      \State $D\gets \{(d, \pk_d, p_d)\}$
       \While{$\prod_{d\in D} p_d > \theta$}
-        \State $d\gets \GetRandomPeer$
-        \State $D\gets D\cup \{d\}$
+        \State $(d, \pk_d, p_d)\gets \GetRandomPeer$
+        \State $D\gets D\cup \{(d, \pk_d, p_d)\}$
       \EndWhile
       \State \Return $D$
     \EndFunction
@@ -75,6 +78,7 @@ This process is illustrated in \cref{fig:file-exchange}.
     The function \(\GetRandomPeer\) is any random peer-sampling algorithm.
   }
 \end{figure}
+
 
 \NewAlgorithm{\Store}{Store}
 \NewAlgorithm{\Dec}{Dec}
