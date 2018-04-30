@@ -16,8 +16,8 @@
 \NewVariable{\LRV}{\mathcal{L_{RV}}\xspace}
 \NewVariable{\Hsend}{\mathcal{H}_{\text{send}}\xspace}
 \NewVariable{\Hrec}{\mathcal{H}_{\text{rec}}\xspace}
-\NewVariable{\Hforward}{\mathcal{H}_f \xspace}
-\NewVariable{\Hbackward}{\mathcal{H}_b \xspace}
+\NewVariable{\Hforward}{\mathcal{H}_f\xspace}
+\NewVariable{\Hbackward}{\mathcal{H}_b\xspace}
 \NewVariable{\Hsendforward}{\mathcal{H}_{\text{send f}}\xspace}
 \NewVariable{\Hsendbackward}{\mathcal{H}_{\text{send b}}\xspace}
 \NewVariable{\Hrecforward}{\mathcal{H}_{\text{rec f}}\xspace}
@@ -25,7 +25,6 @@
 %\NewVariable{\nfilechunks}{\#\text{chunks}}
 
 
-\david{each protocol should be explained individually}
 
 The principle of onion routing à la Tor~\cite{Tor} is to put nodes relaying messages between a source and a destination.
 By employing encryption layers, a relay doesn't know where it is situated on the message's path. 
@@ -74,7 +73,7 @@ Back to \Recv function: Bob has the full backward header $\Hbackward$, as shown 
 
 
 \paragraph*{Layer creation}
-The function \CreateOnionLayer() iteratively add random nodes (from the RPS's view \view) until the product $\prod_{d\in \mathcal{L}} (1 - p_d)$ falls below $\theta$.
+The function \CreateOnionLayer() iteratively adds random nodes (from the RPS's view \view) until the product $\prod_{d\in \mathcal{L}} (1 - p_d)$ falls below $\theta$.
 $(1 - p_d)$ is the probability that a device $d$ will be offline; the product is the probability that all devices on layer $\mathcal{L}$ fall offline at the same time.
 
 
