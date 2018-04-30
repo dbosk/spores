@@ -1,11 +1,12 @@
-\NewScheme{\SPOR}{SPOR}
+\NewScheme{\SPOR}{SPORES}
 
 \subsection{Message Passing through Predictive Onion Routes (PORs)}
 \label{sec:message_passing}
 
-\NewAlgorithm{\Send}{Send}
+
 \NewAlgorithm{\Fwd}{Forward}
-\NewAlgorithm{\Recv}{Receive}
+\NewAlgorithm{\Send}{BuildSender}
+\NewAlgorithm{\Recv}{BuildReceiver}
 \NewVariable{\rdv}{rdv}
 
 \david{each protocol should be explained individually}

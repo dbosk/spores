@@ -157,8 +157,8 @@ P\left[ S_{t+1} = s' \mid S_t = s \right] *
 P\left[ d \in O_{t+i} \mid S_{t+1} = s'\right].
 \end{multline*}
 
-We show in section~\label{sub:predictive_onion_routes_creation} that the prediction of their availability at $t+1$ is a good enough estimator of their connection state at $t+i$.
-For that reason, devices only share $P\left[ d \in O_{t+1} \mid S_{t} = s \right]$ with other devices for PORs creation.
+We show in section~\ref{sub:predictive_onion_routes_creation} that the prediction of devices' availability at $t+1$ is a good enough estimator of their connection state at $t+i$.
+For that reason, devices only compute and publish $P\left[ d \in O_{t+1} \mid S_{t} = s \right]$.
 
 
 \paragraph*{Inferring the model from the sequence of observations}

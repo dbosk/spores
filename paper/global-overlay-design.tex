@@ -1,21 +1,29 @@
 \subsection{The Global Overlay}
 \label{sec:global_overlay}
 
-\newcommand{\viewsize}{\ensuremath{l_{\text{view}}}}
-\NewAlgorithm{\GetRandomPeer}{RPS()}
+\newcommand{\viewsize}{\ensuremath{l_{\text{view}}\xspace}}
+\newcommand{\view}{\ensuremath{\mathcal{V}_{\text{RPS}}\xspace}}
+\NewAlgorithm{\GetRandomPeer}{random descriptor from \view}
 
-To reach this goal \david{which one?}, we employ Random Peer Sampling (RPS) \cite{Voulgaris_Gavidia_van_Steen_2005,Jelasity_Voulgaris_Guerraoui_Kermarrec_van_Steen_2007}.
-Essentially, each node maintains a \emph{view} containing \viewsize other devices' descriptors. 
-By periodically exchanging random descriptors with a carefully selected node from its view, RPS allows devices to always have a fairly random sample of the nodes in the system inside their view.
-Due to the RPS's eviction policy, stale descriptors are removed quickly: each device thus knows a random sample of \viewsize connected nodes.
-An RPS descriptor for device $d$ is constituted of the following information:
+To create PORs, devices need to know the address, encryption key, and probability of remaining available of some nodes in the system, to pick them as relays on the route.
+
+To reach this goal, we employ Random Peer Sampling (RPS) \cite{Voulgaris_Gavidia_van_Steen_2005,Jelasity_Voulgaris_Guerraoui_Kermarrec_van_Steen_2007}.
+Essentially, each node maintains a view \view containing \viewsize other devices' descriptors. 
+This view is periodically updated as follows: a device $d$ pops the oldest descriptor $d'$ from its view, then swaps a predefined number of $l$ elements from \view with $d'$.
+Both devices add a descriptor for themselves to the view exchange.
+If $d'$ was offline, its descriptor is simply removed from the $d$'s view, but \view is otherwise not updated.
+
+This allows for two things: firstly, each device's view contains a constantly changing random sample of the whole set of devices;
+secondly, offline nodes get removed from one's view fairly fast---we can say that a \view contains \emph{mostly} descriptors of online devices.
+
+In \name, an RPS descriptor for device $d$ is constituted of the following information:
 \begin{itemize}
-  \item Its address: $@_d$;
+  \item Its address: $d$;
   \item Its public key: \(\pk_d\);
   \item Its probability of being online in the near future, as provided by the Squad Overlay: $p_d=P\left[d \in O_{t+1} | S_t\right]$.
 \end{itemize}
 
-Devices now have all the information they need to establish reliable PORs between two sets of devices.
+Devices now have all the information they need to establish reliable PORs.
 
 % \commentDaniel{%
 %   What is the probability distribution of the peer sample that we get?

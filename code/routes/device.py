@@ -89,6 +89,9 @@ class Device:
         route = [pd.DataFrame() for _ in range(n_layers)]
         view = self.peers_view.view.copy()
 
+        if len(view) == 0:
+            raise("Dayum")
+
         converged = False
         while not converged:
             converged_layers = [False for _ in range(n_layers)]

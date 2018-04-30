@@ -1,0 +1,132 @@
+%% Creator: Inkscape inkscape 0.91, www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'file_exchange.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{595.27559055bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,1.41428571)%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{file_exchange.pdf}}%
+    \put(0.19924552,1.47314133){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{d}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{file_exchange.pdf}}%
+    \put(0.5415182,1.51275305){\color[rgb]{0,0,0}\rotatebox{-90}{\makebox(0,0)[lb]{\smash{. . .}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{file_exchange.pdf}}%
+    \put(0.92434135,1.42882736){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{\textit{H}}}}}%
+    \put(0.83252324,1.53813221){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{\textit{L}}\textbf{\textit{RV}}}}}%
+    \put(0.9047194,1.53574744){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{\textit{L}}\textbf{\textit{1}}}}}%
+    \put(0.9666472,1.53600732){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{\textit{L}}\textbf{\textit{2}}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{file_exchange.pdf}}%
+    \put(0.51884779,1.1819705){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{\textit{H}}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{file_exchange.pdf}}%
+    \put(0.37156019,1.2793354){\color[rgb]{0,0,0}\rotatebox{-90}{\makebox(0,0)[lb]{\smash{. . .}}}}%
+    \put(0.3546718,1.34462085){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{\textit{L}}\textbf{\textit{RV}}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=6]{file_exchange.pdf}}%
+    \put(0.44164836,1.27933534){\color[rgb]{0,0,0}\rotatebox{-90}{\makebox(0,0)[lb]{\smash{. . .}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=7]{file_exchange.pdf}}%
+    \put(0.43220942,1.34232779){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{\textit{L}}\textbf{\textit{3}}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=8]{file_exchange.pdf}}%
+    \put(0.50918249,1.27933534){\color[rgb]{0,0,0}\rotatebox{-90}{\makebox(0,0)[lb]{\smash{. . .}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=9]{file_exchange.pdf}}%
+    \put(0.49947601,1.34261825){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{\textit{L}}\textbf{\textit{4}}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=10]{file_exchange.pdf}}%
+    \put(0.6288236,1.30647778){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Bob}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=11]{file_exchange.pdf}}%
+    \put(0.04816734,1.30647778){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Alice}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=12]{file_exchange.pdf}}%
+    \put(0.23360704,0.77210662){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{\textit{H}}\textbf{\textit{'}}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=13]{file_exchange.pdf}}%
+    \put(0.37156019,0.877535){\color[rgb]{0,0,0}\rotatebox{-90}{\makebox(0,0)[lb]{\smash{. . .}}}}%
+    \put(0.3546718,0.94282045){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{\textit{L}}\textbf{\textit{RV}}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=14]{file_exchange.pdf}}%
+    \put(0.23393806,0.87753494){\color[rgb]{0,0,0}\rotatebox{-90}{\makebox(0,0)[lb]{\smash{. . .}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=15]{file_exchange.pdf}}%
+    \put(0.22449912,0.9405274){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{\textit{L}}\textbf{\textit{1}}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=16]{file_exchange.pdf}}%
+    \put(0.30147211,0.87753494){\color[rgb]{0,0,0}\rotatebox{-90}{\makebox(0,0)[lb]{\smash{. . .}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=17]{file_exchange.pdf}}%
+    \put(0.29176563,0.94081785){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{\textit{L}}\textbf{\textit{2}}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=18]{file_exchange.pdf}}%
+    \put(0.6288236,0.90467738){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Bob}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=19]{file_exchange.pdf}}%
+    \put(0.04816734,0.90467738){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Alice}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=20]{file_exchange.pdf}}%
+    \put(0.6288236,1.09634915){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Bob}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=21]{file_exchange.pdf}}%
+    \put(0.04816734,1.09634915){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Alice}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=22]{file_exchange.pdf}}%
+    \put(0.24339891,1.04996052){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{\textit{H}}\textbf{\textit{forward}}\textbf{\textit{ + H}}\textbf{\textit{backward}}\textbf{\textit{ + @L}}\textbf{\textit{RV}}}}}%
+    \put(0.31602775,1.09234138){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Out of band}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=23]{file_exchange.pdf}}%
+    \put(0.6288236,0.68119266){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Bob}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=24]{file_exchange.pdf}}%
+    \put(0.04816734,0.68119266){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Alice}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=25]{file_exchange.pdf}}%
+    \put(0.32850796,0.64555532){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{\textit{H}}\textbf{\textit{'}}\textbf{\textit{backward}}}}}%
+    \put(0.31602775,0.68793623){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Out of band}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=26]{file_exchange.pdf}}%
+    \put(0.6288236,0.4705623){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Bob}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=27]{file_exchange.pdf}}%
+    \put(0.04816734,0.4705623){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Alice}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=28]{file_exchange.pdf}}%
+    \put(0.37156019,0.44073215){\color[rgb]{0,0,0}\rotatebox{-90}{\makebox(0,0)[lb]{\smash{. . .}}}}%
+    \put(0.29530445,0.50315672){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Payload: chunk of }}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=29]{file_exchange.pdf}}%
+    \put(0.29529625,0.52478075){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Header:}}}%
+    \put(0.35174069,0.52733473){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{\textit{H}}\textbf{\textit{'}}\textbf{\textit{forward}}\textbf{\textit{ + H}}\textbf{\textit{forward}}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=30]{file_exchange.pdf}}%
+    \put(0.44164836,0.44073208){\color[rgb]{0,0,0}\rotatebox{-90}{\makebox(0,0)[lb]{\smash{. . .}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=31]{file_exchange.pdf}}%
+    \put(0.50918249,0.44073209){\color[rgb]{0,0,0}\rotatebox{-90}{\makebox(0,0)[lb]{\smash{. . .}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=32]{file_exchange.pdf}}%
+    \put(0.23393704,0.44073208){\color[rgb]{0,0,0}\rotatebox{-90}{\makebox(0,0)[lb]{\smash{. . .}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=33]{file_exchange.pdf}}%
+    \put(0.30147294,0.44073208){\color[rgb]{0,0,0}\rotatebox{-90}{\makebox(0,0)[lb]{\smash{. . .}}}}%
+    \put(0.30336794,0.30694508){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Payload: ACK for }}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=34]{file_exchange.pdf}}%
+    \put(0.30335974,0.3366326){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Header:}}}%
+    \put(0.35980419,0.33918658){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{\textit{H}}\textbf{\textit{backward}}\textbf{\textit{ + H}}\textbf{\textit{'}}\textbf{\textit{backward}}}}}%
+  \end{picture}%
+\endgroup%
