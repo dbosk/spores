@@ -70,48 +70,34 @@ sent to Bob, unless it is an ongoing transfer.
 
 \subsection{Limitations}%
 \label{security-limitations}
-from mails:
 
-- Route fingerprinting in anonymous communications.
+Many attacks against anonymous communications systems target the peer sampling 
+mechanism, \eg~\cite{%
+  RouteFingerprinting,%
+  EpistemicAttacksOnRouteSelection,%
+}.
+So, even if our system is secure in theory, it will not be secure in practice 
+unless the random peer sampling algorithm returns peers chosen uniformly 
+randomly from the entire Global Device Retinue.
 
-It depends on the random peer sampling I suppose. And I have no clue 
-about how that one works. Adrien referred to a paper by Anne-Marie.
+To prevent attacks on the random peer sampling, some systems have employed 
+techniques to detect colluding nodes, \eg~\cite{%
+  SecurePeerSampling,%
+  MorphMix,%
+}.
+However, as is the case of~\cite{MorphMix}, these can be 
+broken~\cite{BreakingMorphMix}.
 
-If I were to guess, I'd say: if Anne-Marie's RPS protocol is Byzantine 
-fault tolerant, maybe; otherwise, we're most likely screwed.
-
-> - Bridging and fingerprinting: Epistemic attacks on route selection
-
-I'd say the same as above. It's about peer selection.
-
-> - Breaking the collusion detection mechanism of morphmix
-
-We don't do any collusion detection, so I'd say we're vulnerable. We 
-assume we choose nodes uniformly at random, so colluding nodes have 
-uniform probability of success --- but that falls back on the RPS and 
-Anne-Marie's paper. So maybe or screwed.
-
-> - Denial of service or denial of security? How attacks on reliability can
-> compromise anonymity
-
-After just reading the abstract, most likely vulnerable. But thanks to 
-our stateless design we don't have to do retransmission the whole way, 
-as might be the case for active circuits --- only the node who 
-experience the failure going forward will need to retransmit. (Thanks Adrien for 
-insisting on creating a route back for the ACK ;-) So we might not be in as bad 
-a position as other systems, it'll take more rounds of attack to break it --- 
-but I'm quite sure it will break.
-
-But in general, these all face global and possibly malicious 
-adversaries. We don't have that in our adversary model. If everyone 
-colludes against Alice and Bob in our setting, they're screwed.
-
-It's basically impossible to remain anonymous against the global 
-adversary (statistical inference, paper by Danezis) unless Alice sends a 
-message to everyone whenever she wants to send a message to Bob. 
-Basically the anonymous communication community is converging on methods 
-like Loopix and HORNET --- have enough throughput so that the global 
-adversary is overwhelmed with data. (Tor is too slow.)
+There are also other types of attacks, \eg denial of service attacks that can 
+lead to the adversary learning more from the system~\cite{DenialOfSecurity}.
+It is difficult to say to what extent our system might be vulnerable to this 
+type of attack without a deeper analysis.
+Unfortunately this is outside the scope of this study.
+However, we hypothesize that our stateless and redundant design might have some 
+advantages, \eg no control messages sent back from where the error happened to 
+the source.
+But these advantages will only postpone the success of the attack, eventually 
+even our protocol must resend.
 
 \subsection{Future Work}
 %
@@ -125,10 +111,12 @@ adversary is overwhelmed with data. (Tor is too slow.)
 
 % \end{itemize}
 
+One thing that we can directly improve is the header.
 We see two alternative paths for improving the header.
 First, we might be able to adapt the Sphinx~\cite{Sphinx} cryptographic packet 
 format to the routing of \(\SPOR\).
-Then we could achieve the properties of Sphinx and enjoy provable security.
+Then we could achieve the properties of Sphinx, \eg preventing the last node to 
+learn the destination, and enjoy provable security.
 
 The second approach would be to use the technique by \textcite{PPACinPubFS}.
 They adapt \(\ANOBE\) in such a way that its ciphertexts decrypt to different 
@@ -140,5 +128,4 @@ layers in the route.
 This would hide the path length (constant-size ciphertexts by padding) and the 
 position of individual nodes.
 This approach would probably be the easiest, but would probably not provide all 
-the properties from Sphinx (\eg resistance to active tagging attacks and bitwise 
-unlinkability).
+the properties from Sphinx (\eg resistance to active tagging attacks).
