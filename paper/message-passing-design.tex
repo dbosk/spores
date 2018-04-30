@@ -8,20 +8,20 @@
 \NewAlgorithm{\Send}{BuildRouteSender}
 \NewAlgorithm{\Recv}{BuildRouteReceiver}
 \NewAlgorithm{\ExtendRoute}{ExtendRoute}
-\NewAlgorithm{\CreateOnionLayer}{CreateOnionLayer}
+\NewAlgorithm{\CreateOnionLayer}{CreateLayer}
 \NewAlgorithm{\Dec}{Dec}
 \NewAlgorithm{\Store}{Store}
 \NewVariable{\sk}{sk}
 \NewVariable{\rdv}{rdv}
 \NewVariable{\LRV}{\mathcal{L_{RV}}\xspace}
-\NewVariable{\Hsend}{\mathcal{H}_{\text{send}}\begin{algorithmic}[1]}
-\NewVariable{\Hrec}{\mathcal{H}_{\text{rec}}\begin{algorithmic}[1]}
-\NewVariable{\Hforward}{\mathcal{H}_{\text{forward}}\begin{algorithmic}[1]}
-\NewVariable{\Hbackward}{\mathcal{H}_{\text{backward}}\begin{algorithmic}[1]}
-\NewVariable{\Hsendforward}{\mathcal{H}_{\text{send forward}}\begin{algorithmic}[1]}
-\NewVariable{\Hsendbackward}{\mathcal{H}_{\text{send backward}}\begin{algorithmic}[1]}
-\NewVariable{\Hrecforward}{\mathcal{H}_{\text{rec forward}}\begin{algorithmic}[1]}
-\NewVariable{\Hrecbackward}{\mathcal{H}_{\text{rec backward}}\begin{algorithmic}[1]}
+\NewVariable{\Hsend}{\mathcal{H}_{\text{send}}\xspace}
+\NewVariable{\Hrec}{\mathcal{H}_{\text{rec}}\xspace}
+\NewVariable{\Hforward}{\mathcal{H}_{\text{forward}}\xspace}
+\NewVariable{\Hbackward}{\mathcal{H}_{\text{backward}}\xspace}
+\NewVariable{\Hsendforward}{\mathcal{H}_{\text{send forward}}\xspace}
+\NewVariable{\Hsendbackward}{\mathcal{H}_{\text{send backward}}\xspace}
+\NewVariable{\Hrecforward}{\mathcal{H}_{\text{rec forward}}\xspace}
+\NewVariable{\Hrecbackward}{\mathcal{H}_{\text{rec backward}}\xspace}
 
 
 \david{each protocol should be explained individually}
@@ -38,11 +38,11 @@ probability of being online.
 We call our modified onion routes Probabilistic Onion Routes or PORs.
 
 Another difference from Tor, where connections are established by all nodes in the route, \name is stateless: the route's ends (the sender Alice and receiver Bob) cooperate to create the headers containing all the necessary routing information for future communication between Alice and Bob.
-In that regard, two headers are required: $\Hforward$ to route packets from Alice to Bob, and $\Hbackward$ for packets from Bob to Alice.
+In that regard, two headers are required: \Hforward to route packets from Alice to Bob, and \Hbackward for packets from Bob to Alice.
 
 To implement our predictive onion routing mechanism, \name is thus split in two algorithms: the route building one, and the message routing one.
 Figure~\ref{fig:file-exchange} shows the process of the route creation until the first exchange of a file chunk from Alice to Bob.
-Bob uses the backward route to send acknowledgments back to Alice.
+Alice uses the forward route to send file chunks to Bob, while Bob uses the backward route to send acknowledgments back to Alice.
 
 \begin{figure}[t]
   \includegraphics[width=\linewidth]{figures/file_exchange.pdf}
@@ -64,6 +64,10 @@ He also crafts his part of the header for the backward route, \Hrecbackward: it 
 
 Bob sends \Hrecforward and the descriptors of the \LRV nodes to Alice.
 Alice still has her part of the route to create: like Bob, she randomly picks nodes to constitutes $l$ layers from her \squad to \LRV.
+She also build two headers: \Hsendforward contains the route from her \squad (excluded) to \LRV (included), while \Hsendbackward contains the route from \LRV (excluded) to her \squad (included).
+Alice finally sends \Hsendbackward back to Bob: he is going to need it to sends acknowledgments back to Alice.
+
+
 
 \paragraph*{Layer creation}
 
@@ -75,10 +79,19 @@ Alice still has her part of the route to create: like Bob, she randomly picks no
     % \Require{%
     %   $D$ is the set of alternative recipient devices.
     % }
-    \Function{\Recv}{$D$}
-      \State $H_\rdv\gets \ExtendRoute[D\concat \top, L, \theta]$
-      \State \Return $H_\rdv$
-        \Comment{Give to sender out-of-bound.}
+    \Function{\Recv}{sender}
+      \State $\LRV \gets \CreateOnionLayer()$
+      \State layers $\gets [\,]$
+      % \While{len(layers) $ < l$}
+      %   \State layers.append(\CreateOnionLayer())
+      % \EndWhile
+      % \State \Hrecforward \gets properly encrypted layers
+      % \State \Hrecbackward \gets properly encrypted layers
+      % \State \Hsendforward \gets sender.\Send(\Hrecforward, \LRV)
+      % \State \Hbackward \gets \Hrecbackward || \Hsendbackward
+      % \State $H_\rdv\gets \ExtendRoute[D\concat \top, L, \theta]$
+      % \State \Return $H_\rdv$
+      %   \Comment{Give to sender out-of-bound.}
     \EndFunction
   \end{algorithmic}
   %\end{minipage}}
@@ -114,7 +127,7 @@ Alice still has her part of the route to create: like Bob, she randomly picks no
     %   $L$ is the length of the route,
     %   $\theta$ is the threshold of probability of failure.%
     % }
-    \Function{\ExtendRoute}{$H, L, \theta$}
+    \Function{\ExtendRoute}{$\mathcal{H}, l$}
       \If{$L\leq 0$}
         \State \Return $H$
       \EndIf
@@ -123,7 +136,7 @@ Alice still has her part of the route to create: like Bob, she randomly picks no
       \State \Return $\ExtendRoute[H, L-1, \theta]$
     \EndFunction
   \vspace{0.3em}
-    \Function{\CreateOnionLayer}{$\theta$}
+    \Function{\CreateOnionLayer}{\null}
       \State $(d, \pk_d, p_d)\gets \GetRandomPeer$
       \State $D\gets \{(d, \pk_d, p_d)\}$
       \While{$\prod_{d\in D} p_d > \theta$}
