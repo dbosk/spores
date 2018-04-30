@@ -182,10 +182,10 @@ later time to send the message to Bob using any of her devices from
 its \squad.% (See \cref{SPORSend}). 
 First, \([\Send]\) extends the route
 \(H_\rdv\) with some hops of Alice's choosing (uniformly randomly
-chosen). Second, \([\Send]\) extracts from the onion the first
+chosen). Second, \(\Send\) extracts from the onion the first
 layer, which contained the overall
 possible rendez-vous points $D$ previously selected by the recipient (i.e. Bob).
-One device from $D$ is randomly chosen, and the \([\Fwd]\)
+One device from $D$ is randomly chosen, and the \(\Fwd\)
 sub-function is called as long as the message forwarding to one node of
 the next layer is not successful.% (See \cref{SPORFwd}). 
 Along the path, each node decrypts
@@ -200,7 +200,7 @@ in the disk of the local node through the \(\Store\) sub function.%(\cref{SPORRe
   %\framebox{\begin{minipage}{0.96\linewidth}
   \begin{algorithmic}[1]
     %\Require{$\pk, \sk$ is the public--private key-pair of the node.}
-    \Function{[\Fwd]}{$C_H, m$}
+    \Function{\Fwd}{$C_H, m$}
       \State $H\gets \DeBEdec[\mpk, \sk, C_H]$
       \If{$H = \bot$}
         \State \Return $\bot$
@@ -231,7 +231,7 @@ in the disk of the local node through the \(\Store\) sub function.%(\cref{SPORRe
   \end{algorithmic}
   %\end{minipage}}
   \caption{\label{SPORFwd}%
-    The \([\Fwd]\) algorithm forwards \(m\) down the route \(H\), obtained 
+    The \(\Fwd\) algorithm forwards \(m\) down the route \(H\), obtained 
     by decrypting \(C_H\) with the node's associated private key.
     The special value \(H = \top\) indicated the end of the route, thus \(c_m\) 
     is intended for the local node and \(c_m\) is instead sent to disk using 
