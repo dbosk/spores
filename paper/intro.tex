@@ -14,17 +14,16 @@ have come to expect ever higher levels of connectivity and interaction
 possibilities. For instance, as users bring
 their devices close to one another, they expect to be able to initiate cross-device
 interactions \textit{in situ} in order to share digital content
-\cite{Oh:2017} among devices of their own \squad or with the ones 
-from other users' \squad. More broadly, users expect to share digital content,
+\cite{Oh:2017} between devices of their own \squad or with those of other users' \squad{}\emph{s}. More broadly, users expect to share digital content,
 wherever the content, its sender, or its recipient might be located, from one
 arbitrary device to another in a seamless manner~\cite{Dearman:2008}, as they
 would have done in the old days with an USB key or with an email. 
 
 This thirst for seamless sharing explains the rise and ongoing popularity
 of personal sharing platforms such as Dropbox, Google Docs,
-OneDrive, Amazon Drive, etc. These solutions are able to share data on any device, between any user, almost
+OneDrive, Amazon Drive, etc. These solutions are able to share data between any device, any user, almost
 anytime, anywhere. They achieve this feat by relying heavily on
-remotely hosted cloud services, which have now become a key enabler of ubiquitous ecosystems. 
+\emph{remote cloud services}, which have now become a key enabler of ubiquitous ecosystems. 
 % argument: cloud -> danger, 
 %% From a technical perspective, one major trend to provide a seamless
 %% sharing of digital contents among users' devices is to leverage on the
@@ -46,48 +45,59 @@ remotely hosted cloud services, which have now become a key enabler of ubiquitou
 Unfortunately, this reliance on the cloud comes at a strong price: 
 %% users and their devices become totally tethered to the cloud ecosystem and its providers. As
 %% a direct consequence,
-users lose control over their own data, which become distributed over
-multiple data centers, often in foreign jurisdictions, making it difficult for most users to grasp, review, and assess, the privacy, and
+users lose control over their own data, which is distributed over
+multiple data centers, often in foreign jurisdictions, making it difficult for most users to grasp, review, and assess the privacy, and
 confidentiality guaranties they can expect. In practice, user data hosted in the cloud is routinely harvested, often without explicit
 consent, either by cloud providers or third parties.
 
-Although data encryption is often proposed as a first line of defense for cloud-hosted data, it is unfortunately  insufficient, because it does not protect meta-data information~\cite{granick_2017, HooffLZZ15, HarnikPS10}. This turns out to be a critical limitation, as famously emphasized by a former NSA and CIA director: "We kill people based on metadata.''~\cite{NaughtonTheGuardian2016} Metadata such as a user'
+Although data encryption is often proposed as a first line of defense for cloud-hosted data, it is unfortunately  insufficient~\cite{granick_2017, HooffLZZ15, HarnikPS10}. Metadata such as a user'
 location and activity can be still tracked, including the access
-control history revealing what each user shared with whom and when.
+control history revealing what each user shared with whom and when. 
+%  because it does not protect meta-data information
+This turns out to be a critical limitation, as famously emphasized by a former NSA and CIA director: "We kill people based on metadata.''~\cite{NaughtonTheGuardian2016} 
 User devices become tracking and/or monitoring \squad that turn to
 be the best spy over users. 
 
-Constructing a system that provides anonymous communication is a very
-challenging issue. The last decades, we have witnessed a
- huge set of attempts at building privacy preserving and anonymous p2p
- networks \cite{Clarke:2001, Gnunet2002, Freedman:2002, Nambiar:2006,
-   Rennhard:2002}. They are mainly based on onion
- routing concepts \cite{Chaum:1981}, with some improvements to perform node
- discovery in a distributed manner, which are otherwise
-centralized in traditional onion routing schemes. However, due to high
-churn of peer-to-peer networks, performance of these systems is
-discouraging \cite{LeBlond:2013}; churn implies frequent
-reconstruction of routes, which is very expensive. In comparison, Tor
-\cite{Dingledine:2004}, one of the most popular anonymous network
-mitigate lack of performances of anonymity at the cost of a
-centralized design through the use of directory
-servers to advertise available trusted nodes to bootstrap Onion
+Constructing a system that provides fully anonymous content sharing is highly
+challenging. The last two decades have witnessed many attempts at building privacy preserving and anonymous P2P data-sharing
+networks~\cite{Clarke:2001,Gnunet2002,Freedman:2002,Nambiar:2006,Rennhard:2002}.
+These solutions typically leverage \emph{onion
+ routing}~\cite{Chaum:1981}, with some improvements to perform node
+ discovery in a distributed manner, a step that is otherwise
+centralized in traditional onion routing schemes. However, because of the high
+churn typically experienced by P2P networks, the performance of these systems is
+discouraging~\cite{LeBlond:2013}; churn causes routes to be frequently
+reconstructed, which is very expensive. By contrast, Tor
+\cite{Dingledine:2004}, one of the most popular anonymous networks,
+trades lower anonymity guaranties for a much better performance. Tor's lower protection arises from
+a partially centralized design that hinges on a set of \emph{directory
+servers}, which are used to advertise trusted nodes that are available to bootstrap onion
 routes. 
 
-In this paper, we introduce \name, Stateless Predictive Onion Routing
-for \squad, a novel approach to perform a decentralized, autonomous,
-and self-organizing file sharing among users' devices while preserving the users’ privacy
-in terms of data and metadata. We leverage on the latest works achieved
-in p2p systems, privacy and anonymity. The originality of our approach come
-from two key aspects. First, we consider proxemics relationships as a key enabler to initiate file
-transfers. Intimate distance among users enable them to share
+In this paper, we demonstrate how good performance can be reconciled with strong privacy protection in data-sharing systems. We present \name{}, a novel fully decentralized, autonomous,
+% approach that provides a 
+and self-organizing file sharing service between the \squad{}\emph{s} of different users that preserves user privacy
+in terms of both data \emph{and} metadata. Our proposal hinges on two key ideas: \emph{First}, we consider proxemics relationships as a key enabler to initiate file
+transfers. Close distance among users enable them to share
 routing information out-of-band, e.g. from their
-\squad. Compared to the state of the art on p2p systems, with \name,
-users agree out-of-band to share a file but
-do not keep it available for anyone else in the future. Second, we
-rely on distributed machine learning technics to predict the
-availability of nodes. As such, \name provides optimized onion routes; it avoids routes
-reconstruction under churns.
+\squad. In contrast to state-of-the-art P2P systems, users agree in \name out-of-band to share a file, but
+do not keep it available for anyone else in the future. \emph{Second}, we
+rely on distributed machine learning techniques to predict the future
+availability of user devices, and use this ability to implement a \emph{probabilistic predictive onion routing} mechanism. The predictive nature of our routing allows us to overcome the inherent fragility of pure P2P data-sharing schemes.
+
+%% In this paper, we introduce \name{}, a novel approach to perform a decentralized, autonomous,
+%% and self-organizing file sharing among users' devices while preserving the users’ privacy
+%% in terms of data and metadata. We leverage on the latest works achieved
+%% in p2p systems, privacy and anonymity. The originality of our approach come
+%% from two key aspects. First, we consider proxemics relationships as a key enabler to initiate file
+%% transfers. Intimate distance among users enable them to share
+%% routing information out-of-band, e.g. from their
+%% \squad. Compared to the state of the art on p2p systems, with \name,
+%% users agree out-of-band to share a file but
+%% do not keep it available for anyone else in the future. Second, we
+%% rely on distributed machine learning technics to predict the
+%% availability of nodes. As such, \name provides optimized onion routes; it avoids routes
+%% reconstruction under churns.
 
 Our contributions are as follows: \david{please update}
 \begin{itemize}
