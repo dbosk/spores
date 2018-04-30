@@ -6,7 +6,7 @@ from .utils import random_string
 import random
 
 
-FILE_ID_SIZE = 6
+FILE_ID_SIZE = 12
 
 
 # We use this class to represent files to share and files to receive

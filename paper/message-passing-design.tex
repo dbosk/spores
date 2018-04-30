@@ -53,7 +53,6 @@ Alice uses the forward route to send file chunks to Bob, while Bob uses the back
 \label{ssub:building_routes}
 
 
-
 When Alice wants to send a file to Bob, they first have to call the route building algorithm, and to exchange relevant information out of band (e.g. using mail, or their phones' bluetooth connection).
 They create a route of $L$ layers, a configuration parameter that must be odd. We introduce $l=(L-1)/2$.
 
@@ -77,7 +76,23 @@ The function \CreateOnionLayer() iteratively adds random nodes (from the RPS's v
 $(1 - p_d)$ is the probability that a device $d$ will be offline; the product is the probability that all devices on layer $\mathcal{L}$ fall offline at the same time.
 
 
-%\paragraph*{Header preparation}
+\begin{table}[t]
+\resizebox{\columnwidth}{!}{
+\begin{tabular}{lp{0.9\linewidth}}
+\toprule
+\multicolumn{2}{c}{\textbf{Parameters of the algorithm}} \\
+\midrule
+$\theta$ & Stopping criterion for the layers creation: maximum authorized  probability that all devices in a layer fail at once. \\
+$L$      & Number of layers in a Predictive Onion Route. \\
+$l = (L-1)/2$ & Number of layers (excluding $\LRV$) created by each end of the route. \\
+\bottomrule
+\end{tabular}
+}
+\label{tab:parameters}
+\end{table}
+
+
+\paragraph*{Header preparation} \commentAL{TODO}
 
 \begin{figure}[t]
   %\framebox{\begin{minipage}{0.96\linewidth}
@@ -176,10 +191,10 @@ $(1 - p_d)$ is the probability that a device $d$ will be offline; the product is
 \label{ssub:routing_messages}
 
 
-Once Alice get the \(H_\rdv\), Alice uses \([\Send]\) at some
+Once Alice get the \(H_\rdv\), Alice uses \(\Send\) at some
 later time to send the message to Bob using any of her devices from
 its \squad.% (See \cref{SPORSend}). 
-First, \([\Send]\) extends the route
+First, \(\Send\) extends the route
 \(H_\rdv\) with some hops of Alice's choosing (uniformly randomly
 chosen). Second, \(\Send\) extracts from the onion the first
 layer, which contained the overall

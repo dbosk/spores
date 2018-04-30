@@ -51,7 +51,7 @@ class MessType(Enum):
     ACK = 2
 
 
-MAX_MESSAGE_ID = 2**16
+MAX_MESSAGE_ID = 2**63
 
 
 class Message:
