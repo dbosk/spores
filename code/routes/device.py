@@ -58,6 +58,22 @@ class Device:
         #     print("Expiration time:", expiration_limit)
         #     print(self.global_view.view)
 
+    def build_random_route(self, nodes_per_layer):
+        n_layers = len(nodes_per_layer)
+        route = [pd.DataFrame() for _ in range(n_layers)]
+        view = self.peers_view.view.copy()
+
+        for l_id in range(n_layers):
+            while len(route[l_id]) < nodes_per_layer[l_id]:
+                if len(view) == 0:
+                    raise Exception("Damn, son")
+                # Pick a device from view without replacement
+                d = view.iloc[np.random.choice(len(view))]
+                route[l_id] = route[l_id].append(d)
+                view.drop(d.name, inplace=True)
+
+        return route
+
     def build_route(self, role):
         if role == "receiver":
             # 2 layers planned in advance

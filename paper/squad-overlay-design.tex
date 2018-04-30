@@ -5,7 +5,7 @@ At the root of \name is predictive routing.
 %By sharing information among themselves, a user's devices (her \emph{squad}) can model her behavior.
 Our key objective is to enable each online device to predict its probability to stay online in the near future.
 This probability will later be used to create Probabilistic Onion Routes (POR).
-A device's connection depends on the activity of its user; thus, a user's devices (her \squad}) want to predict her future behavior.
+A device's connection depends on the activity of its user; thus, a user's devices (her \squad) want to predict her future behavior.
 
 In this section, we only take interest in one user (called Alice) and her squad.
 
@@ -133,6 +133,7 @@ Several devices can be connected at the same time, such that $O_t$ is a set, and
 % We see that devices connections depend on the user's location, and that any number of devices can be connected at the same time.
 
 \paragraph*{Predicting future behavior} 
+\label{para:predicting future behavior}
 As already stated, devices want to predict whether they are likely to be connected in the near future.
 This information will be publicly available, and will enable the intelligent building of routes.
 
@@ -145,7 +146,6 @@ a_{s\,s'} * b_{s'\,d}.
 $$
 
 It is the sum of the probabilities, for each state $s$, that the user switches to $s$ and uses her device.
-\commentAL{Following maybe not needed if we only use $t+1$:}
 Recursively, predicting $i$ turns in advance follows the same logic:
 
 \begin{multline*}
@@ -155,8 +155,8 @@ P\left[ S_{t+1} = s' \mid S_t = s \right] *
 P\left[ d \in O_{t+i} \mid S_{t+1} = s'\right].
 \end{multline*}
 
-We show in section~\ref{sub:devices_predictions_of_the_user_behavior} that $P\left[ d \in O_{t+1} \mid S_{t} = s \right] \simeq P\left[ d \in O_{t+i} \mid S_{t} = s \right]$. 
-For that reason, devices only compute the prediction of their connection at $t+1$, that is considered a good enough estimator of their connection state ``in the near future''.
+We show in section~\label{sub:predictive_onion_routes_creation} that the prediction of their availability at $t+1$ is a good enough estimator of their connection state at $t+i$.
+For that reason, devices only share $P\left[ d \in O_{t+1} \mid S_{t} = s \right]$ with other devices for PORs creation.
 
 
 \paragraph*{Inferring the model from the sequence of observations}
