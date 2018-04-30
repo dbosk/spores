@@ -67,8 +67,8 @@ one's devices can forward messages among the \squad.
 \label{sub:a_model_of_the_user_s_behavior}
 
 we need a probabilistic model of the user's behavior to predict its future activity.
-In \name, the only data we collect are the availability times of each device.
-In this section only, we discretize time. 
+In \name, the only data we collect and share, through the \squad overlay, are the availability times of each device among a \squad.
+In our model, time is discretized, i.e. users periodically change the availability stated of their devices in a predefined period.
 We store the availability times in an ever-increasing \emph{sequence} $O=O_1, ..., O_i, ...$ of actions performed at every \emph{round}, that lasts a short period of time $T$. 
 $d \in O_t$ thus means that the device $d$ was online from time $t$ to time $t+T$.
 Our goal is to predict $O_{t+1}$ knowing $O_t$.
@@ -158,7 +158,6 @@ P\left[ d \in O_{t+i} \mid S_{t+1} = s'\right].
 
 We show in section~\ref{sub:predictive_onion_routes_creation} that the prediction of devices' availability at $t+1$ is a good enough estimator of their availability state at $t+i$.
 For that reason, devices only compute and publish $P\left[ d \in O_{t+1} \mid S_{t} = s \right]$.
-
 
 \paragraph*{Inferring the model from the sequence of observations}
 
