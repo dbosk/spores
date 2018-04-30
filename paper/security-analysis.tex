@@ -1,27 +1,32 @@
 \section{Security Discussion}%
-\label{SecurityDiscussion}
+\label{security-discussion}
 
-Alice wants to prevent Bob from learning which are her devices.
+Alice wants to prevent Bob from learning which are her devices (as defined in 
+\cref{system-model}).
 Bob is allowed to infer the behaviour of devices in the Global Device Retinue, 
 but a file transfer from Alice should not give Bob any information about which 
 devices are Alice's.
 
-Bob constructs \name route that he gives to Alice.
+Bob constructs \iac{SPOR} route that he gives to Alice.
 This means that Alice does not learn any of Bob's destination devices.
 When Alice starts sending the message, she will not connect directly to the 
 device at the head of the route, since that might be Bob's device.
 Alice will construct her own \ac{SPOR} route.
 Thus Alice's devices are hidden from Bob's observation and vice versa.
+If we assume that Alice and Bob can sample their nodes uniformly randomly from 
+the \emph{entire} Global Device Retinue (we will return to this assumption 
+below), then their probability of successful attack is proportional to their 
+size in the network, \ie \(\frac{|D_i|}{|D|}\), for \(i\in \{a,b\}\).
 
 Alice and Bob also want to prevent Carol and David to learn that Alice sent a 
-message to Bob.
+message to Bob (as defined in \cref{system-model}).
 Alice and Bob construct their \ac{SPOR} route by including devices from the 
 Global Device Retinue, which also includes devices from Carol and David.
 If all devices on the route belong to Carol and David, then they can, of course, 
 learn that Alice sent a message to Bob.
 How well they can do if they do not control the entire route, depends on the 
-choice of the encryption scheme \(\Enc*\), used to encrypt the message \(m\) in 
-in \cref{sec:file_exchange}.
+choice of the encryption scheme \(\Enc*\), used to encrypt the message \(m\) 
+(see \cref{sec:file_exchange}).
 
 What makes sense is to choose at least an authenticated encryption 
 scheme~\cite{AuthEncryption}.
@@ -34,8 +39,8 @@ that Alice sent a message to Bob.
 Note that as our in-package header is designed, each node on the route can infer 
 its position on the route \emph{relative to the destination}.
 (We discuss how to remedy this below.)
-None of the nodes can know if they are the first node or not, unless they 
-collude with the previous node.
+None of the nodes can know if the previous node is the originator or not, unless 
+they collude with the previous node.
 The last node, however, can know for sure that the next hop is the destination, 
 but not who it belongs to.
 
@@ -53,15 +58,21 @@ neither Alice nor Bob can detect cheating without talking directly to each other
 to compare the ciphertexts --- then the link between Alice and Bob is broken.
 This means that Carol and David must control all nodes on the route to link 
 Alice's transfer to Bob.
+As above, if we assume uniformly random peer sampling, then Carol and David's 
+success probability is proportional to their joint size in the network.
 
-Since Alice and Bob choose a new key for every file, we have forward secrecy 
-between files.
+This means that under the assumption of uniformly random peer sampling, we 
+achieve the properties we outlined in \cref{system-model}.
+Additionally, since Alice and Bob choose a new key for every file, we have 
+forward secrecy between files.
 \Eg an adversary who compromises either Alice or Bob cannot determine what Alice 
 sent to Bob, unless it is an ongoing transfer.
 
+\subsection{Limitations}%
+\label{security-limitations}
+from mails:
 
-\subsection{Limitations}
-from mails:  - Route fingerprinting in anonymous communications.
+- Route fingerprinting in anonymous communications.
 
 It depends on the random peer sampling I suppose. And I have no clue 
 about how that one works. Adrien referred to a paper by Anne-Marie.
@@ -86,10 +97,10 @@ Anne-Marie's paper. So maybe or screwed.
 After just reading the abstract, most likely vulnerable. But thanks to 
 our stateless design we don't have to do retransmission the whole way, 
 as might be the case for active circuits --- only the node who 
-experience the failure going forward will need to retransmit. (Thanks 
-Adrien for insisting on creating a route back for the ACK ;-)) So we 
-might not be in as bad a position as other systems, it'll take more 
-rounds of attack to break it --- but I'm quite sure it will break.
+experience the failure going forward will need to retransmit. (Thanks Adrien for 
+insisting on creating a route back for the ACK ;-) So we might not be in as bad 
+a position as other systems, it'll take more rounds of attack to break it --- 
+but I'm quite sure it will break.
 
 But in general, these all face global and possibly malicious 
 adversaries. We don't have that in our adversary model. If everyone 
@@ -103,6 +114,7 @@ like Loopix and HORNET --- have enough throughput so that the global
 adversary is overwhelmed with data. (Tor is too slow.)
 
 \subsection{Future Work}
+%
 % \commentAL{To rewrite as real paragraphs} Future work and prospects:
 % \begin{itemize}
 % 	\item More in-depth knowledge of the user's behavior would allow to predict devices connections farther in the future;
