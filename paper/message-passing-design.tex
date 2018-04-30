@@ -28,6 +28,8 @@ As long as \(\theta\) is not exceeded, alternatives nodes are added in
 \(H_\rdv\) as depicted in \cref{ExtendRoute}. Thus the probability of
 failure for the extension is \(1 - (1 - \theta)^L\).
 
+\NewAlgorithm{\Store}{Store}
+
 Once Alice get the \(H_\rdv\), Alice uses \(\SPOR[\Send]\) at some
 later time to send the message to Bob using any of her devices from
 its \squad (See \cref{SPORSend}). First, \(\SPOR[\Send]\) extends the route
@@ -116,7 +118,6 @@ in the disk of the local node through the \(\Store\) sub function
 \end{figure}
 
 
-\NewAlgorithm{\Store}{Store}
 \NewAlgorithm{\Dec}{Dec}
 \NewVariable{\sk}{sk}
 
