@@ -74,6 +74,7 @@ It also adds \(\pk_i\) to \(\mpk\).
 See \cref{DeBEsetup} for an algorithmic overview.
 
 \begin{figure}
+  \framebox{\begin{minipage}{0.96\linewidth}
   \begin{algorithmic}
     \Require{$\Enc$ is an IND-CCA \ac{PKE} scheme, $\Sign$ is a one-time 
       signature scheme.}
@@ -89,6 +90,7 @@ See \cref{DeBEsetup} for an algorithmic overview.
       \State \Return $(\pk_i, \sk_i)$
     \EndFunction
   \end{algorithmic}
+  \end{minipage}}
   \caption{\label{DeBEsetup}\label{DeBEjoin}%
     Algorithmic overview of \(\DeBEsetup\) and \(\DeBEjoin\).
   }
@@ -121,43 +123,43 @@ but note that it can be used.
 Both \(\DeBEenc\) and \(\DeBEdec\) are the same as in~\cite{ANOBE}.
 The algorithms are illustrated in \cref{DeBEenc,DeBEdec}.
 
-\begin{frame}
-  \begin{figure}
-    \begin{algorithmic}
-      \Require{$\Enc$ is an IND-CCA \ac{PKE} scheme, $\Sign$ is a one-time 
-        signature scheme.}
+\begin{figure}
+  \framebox{\begin{minipage}{0.96\linewidth}
+  \begin{algorithmic}
+    \Require{$\Enc$ is an IND-CCA \ac{PKE} scheme, $\Sign$ is a one-time 
+      signature scheme.}
 
-      \Function{$\DeBEenc$}{$\mpk, S, m$}
-        \State $(\ssk, \vk)\gets \Sign[Keygen]$
-        \State Choose a random permutation \(\pi\colon S\to S\).
-        \For{$i \in S$}
-          \State $c_i\gets \Enc[Enc](\pk_i, m\concat \vk)$
-        \EndFor
-        \State $C\gets ( c_{\pi(1)}, \dotsc, c_{\pi(|S|)} )$
-        \State $\sigma\gets \Sign[Sign](\ssk, C)$
-        \State \Return $(\vk, C, \sigma)$
-      \EndFunction
+    \Function{$\DeBEenc$}{$\mpk, S, m$}
+      \State $(\ssk, \vk)\gets \Sign[Keygen]$
+      \State Choose a random permutation \(\pi\colon S\to S\).
+      \For{$i \in S$}
+        \State $c_i\gets \Enc[Enc](\pk_i, m\concat \vk)$
+      \EndFor
+      \State $C\gets ( c_{\pi(1)}, \dotsc, c_{\pi(|S|)} )$
+      \State $\sigma\gets \Sign[Sign](\ssk, C)$
+      \State \Return $(\vk, C, \sigma)$
+    \EndFunction
 
-      \Function{$\DeBEdec$}{$\mpk, \sk_i, (\vk, C, \sigma)$}
-        \If{$\Sign[Verify](\vk, C, \sigma) = \bot$}
-          \State \Return $\bot$
-        \EndIf
-        \For{$c\in C$}
-          \Comment Trial-and-error decryption
-          \State $M\gets{\Enc[Dec](\sk_i, c)}$
-          \If{$M = \bot$}
-            \State \Return $\bot$
-          \ElsIf{$M = (m, \vk)$}
-            \State \Return $m$
-          \EndIf
-        \EndFor
+    \Function{$\DeBEdec$}{$\mpk, \sk_i, (\vk, C, \sigma)$}
+      \If{$\Sign[Verify](\vk, C, \sigma) = \bot$}
         \State \Return $\bot$
-      \EndFunction
-    \end{algorithmic}
-    \caption{\label{DeBEenc}\label{DeBEdec}%
-      An algorithmic overview of the encryption and decryption algorithms in the 
-      \(\DeBE\) scheme, identical to those of \(\ANOBE\).%
-    }
-  \end{figure}
-\end{frame}
+      \EndIf
+      \For{$c\in C$}
+        \Comment Trial-and-error decryption
+        \State $M\gets{\Enc[Dec](\sk_i, c)}$
+        \If{$M = \bot$}
+          \State \Return $\bot$
+        \ElsIf{$M = (m, \vk)$}
+          \State \Return $m$
+        \EndIf
+      \EndFor
+      \State \Return $\bot$
+    \EndFunction
+  \end{algorithmic}
+  \end{minipage}}
+  \caption{\label{DeBEenc}\label{DeBEdec}%
+    An algorithmic overview of the encryption and decryption algorithms in the 
+    \(\DeBE\) scheme, identical to those of \(\ANOBE\).%
+  }
+\end{figure}
 

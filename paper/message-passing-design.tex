@@ -40,6 +40,7 @@ This process is illustrated in \cref{fig:file-exchange}.
 \NewAlgorithm{\CreateOnionLayer}{CreateOnionLayer}
 
 \begin{figure}
+  \framebox{\begin{minipage}{0.96\linewidth}
   \begin{algorithmic}
     \Require{%
       $H$ is a header of the form \(D\concat H'\) or \(D\concat \top\), where 
@@ -68,6 +69,7 @@ This process is illustrated in \cref{fig:file-exchange}.
       \State \Return $D$
     \EndFunction
   \end{algorithmic}
+  \end{minipage}}
   \caption{\label{ExtendRoute}%
     The \(\ExtendRoute\) algorithm extends a route \(H\) with \(L\) hops and 
     failure threshold of \(\theta\) for each hop in the route.
@@ -81,6 +83,7 @@ This process is illustrated in \cref{fig:file-exchange}.
 \NewVariable{\sk}{sk}
 
 \begin{figure}
+  \framebox{\begin{minipage}{0.96\linewidth}
   \begin{algorithmic}
     \Require{%
       $D$ is the set of alternative recipient devices.
@@ -100,6 +103,7 @@ This process is illustrated in \cref{fig:file-exchange}.
       \State \Return $\top$
     \EndFunction
   \end{algorithmic}
+  \end{minipage}}
   \caption{\label{SPORRecv}%
     The \(\SPOR[\Recv]\) algorithm prepares the recipient for receiving a file.
     It creates a probabilistic onion-route from a rendez-vous point to its own 
@@ -110,6 +114,7 @@ This process is illustrated in \cref{fig:file-exchange}.
 \end{figure}
 
 \begin{figure}
+  \framebox{\begin{minipage}{0.96\linewidth}
   \begin{algorithmic}
     \Require{%
       $m$ is the message to be sent,
@@ -127,6 +132,7 @@ This process is illustrated in \cref{fig:file-exchange}.
       \State \Return $\bot$
     \EndFunction
   \end{algorithmic}
+  \end{minipage}}
   \caption{\label{SPORSend}%
     The \(\SPOR[\Send]\) algorithm extends the route \(H_\rdv\) (using 
     \(\ExtendRoute\), \cref{ExtendRoute}) and sends the message \(m\) down the 
@@ -137,6 +143,7 @@ This process is illustrated in \cref{fig:file-exchange}.
 \end{figure}
 
 \begin{figure}
+  \framebox{\begin{minipage}{0.96\linewidth}
   \begin{algorithmic}
     \Require{$\pk, \sk$ is the public--private key-pair of the node.}
     \Function{\SPOR[\Fwd]}{$C_H, m$}
@@ -157,6 +164,7 @@ This process is illustrated in \cref{fig:file-exchange}.
       \State \Return $\bot$
     \EndFunction
   \end{algorithmic}
+  \end{minipage}}
   \caption{\label{SPORFwd}%
     The \(\SPOR[\Fwd]\) algorithm forwards \(m\) down the route \(H\), obtained 
     by decrypting \(C_H\) with the node's associated private key.
