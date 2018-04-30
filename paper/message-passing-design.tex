@@ -22,6 +22,7 @@
 \NewVariable{\Hsendbackward}{\mathcal{H}_{\text{send b}}\xspace}
 \NewVariable{\Hrecforward}{\mathcal{H}_{\text{rec f}}\xspace}
 \NewVariable{\Hrecbackward}{\mathcal{H}_{\text{rec b}}\xspace}
+%\NewVariable{\nfilechunks}{\#\text{chunks}}
 
 
 \david{each protocol should be explained individually}
@@ -56,20 +57,24 @@ Alice uses the forward route to send file chunks to Bob, while Bob uses the back
 
 When Alice wants to send a file to Bob, they first have to call the route building algorithm, and to exchange relevant information out of band (e.g. using mail, or their phones' bluetooth connection).
 They create a route of $L$ layers, a configuration parameter that must be odd. We introduce $l=(L-1)/2$.
-Bob (the receiver) initiates the route creation. 
+
+Bob (the receiver) initiates the route creation by calling the \Recv function displayed in figure~\ref{fig:route building algo}
 He randomly chooses nodes to constitute a rendez-vous layer \LRV, and nodes to constitute $l$ layers from \LRV to his \squad. 
 We come back on layer creation below.
 He crafts a layered encrypted header (more details below) to \LRV (excluded) to his squad (included), that we will call \Hrecforward.
 He also crafts his part of the header for the backward route, \Hrecbackward: it contains the route from Bob's \squad (excluded) to \LRV (included).
 
-Bob sends \Hrecforward and the descriptors of the \LRV nodes to Alice.
-Alice still has her part of the route to create: like Bob, she randomly picks nodes to constitutes $l$ layers from her \squad to \LRV.
-She also build two headers: \Hsendforward contains the route from her \squad (excluded) to \LRV (included), while \Hsendbackward contains the route from \LRV (excluded) to her \squad (included).
-Alice finally sends \Hsendbackward back to Bob: he is going to need it to sends acknowledgments back to Alice.
+Bob then sends \Hrecforward and the descriptors of the \LRV nodes to Alice, by calling Alice's \Send function (also in figure~\ref{fig:route building algo}).
+like Bob, Alice randomly picks nodes to constitutes $l$ layers from her \squad to \LRV.
+She also builds two encrypted headers: \Hsendforward contains the route from her \squad (excluded) to \LRV (included), while \Hsendbackward contains the route from \LRV (excluded) to her \squad (included).
+Alice finally sends \Hsendbackward back to Bob.
 
+Back to Bob's \Recv
 
 
 \paragraph*{Layer creation}
+
+The 
 
 \paragraph*{Header preparation}
 
@@ -88,7 +93,9 @@ Alice finally sends \Hsendbackward back to Bob: he is going to need it to sends 
       \State $\Hrecforward \gets$ properly encrypted layers
       \State $\Hrecbackward \gets$ properly encrypted layers
 
+      \Comment{Out-of-band exchange}
       \State $\Hsendbackward \gets$ sender.\Send(\Hrecforward, \LRV)
+
       \State $\Hbackward \gets \Hrecbackward \concat \Hsendbackward$
       %\State $H_\rdv\gets \ExtendRoute[D\concat \top, L, \theta]$
       % \State \Return $H_\rdv$
@@ -127,25 +134,29 @@ Alice finally sends \Hsendbackward back to Bob: he is going to need it to sends 
   \end{algorithmic}
   %\end{minipage}}
 
+  % \vspace{0.3em}
+  % %\framebox{\begin{minipage}{0.96\linewidth}
+  % \begin{algorithmic}[1]
+  %   % \Require{%
+  %   %   $H$ is a header of the form \(D\concat H'\) or \(D\concat \top\), where 
+  %   %   \(D\) is a set of device addresses.
+  %   %   $\pk_D$ is the public key of device set $D$.
+  %   %   $L$ is the length of the route,
+  %   %   $\theta$ is the threshold of probability of failure.%
+  %   % }
+  %   \Function{\ExtendRoute}{$\mathcal{H}, l$}
+  %     \If{$L\leq 0$}
+  %       \State \Return $H$
+  %     \EndIf
+  %     \State $D\gets \CreateOnionLayer[\theta]$
+  %     \State $H\gets D\concat \DeBEenc[\mpk, D, H]$
+  %     \State \Return $\ExtendRoute[H, L-1, \theta]$
+  %   \EndFunction
+  % \end{algorithmic}
+
   \vspace{0.3em}
-  %\framebox{\begin{minipage}{0.96\linewidth}
+
   \begin{algorithmic}[1]
-    % \Require{%
-    %   $H$ is a header of the form \(D\concat H'\) or \(D\concat \top\), where 
-    %   \(D\) is a set of device addresses.
-    %   $\pk_D$ is the public key of device set $D$.
-    %   $L$ is the length of the route,
-    %   $\theta$ is the threshold of probability of failure.%
-    % }
-    \Function{\ExtendRoute}{$\mathcal{H}, l$}
-      \If{$L\leq 0$}
-        \State \Return $H$
-      \EndIf
-      \State $D\gets \CreateOnionLayer[\theta]$
-      \State $H\gets D\concat \DeBEenc[\mpk, D, H]$
-      \State \Return $\ExtendRoute[H, L-1, \theta]$
-    \EndFunction
-  \vspace{0.3em}
     \Function{\CreateOnionLayer}{\null}
       \State $(d, \pk_d, p_d)\gets \GetRandomPeer$
       \State $\mathcal{L}\gets \{(d, \pk_d, p_d)\}$
