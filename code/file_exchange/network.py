@@ -19,31 +19,18 @@ def emulate_transfer(header, m, net, conf):
 
     Returns True if m was sent, False otherwise'''
 
-    if conf['send_strategy'] == 'random':
-        # 1 - Try to send to a random device: we always sleep
-        # Fail if device is offline, else send to dst
-        gevent.sleep((m.size+conf['header_size'])/conf['bandwidth'])
-        dst = net.get_device(random.choice(header))
-        if dst.is_online():
-            dst.receive(m)
-            return True
+    # Ping devices to find a random *connected* one.
+    # Fail if no connected device, else send pick device.
+    devices = [net.get_device(addr) for addr in header]
+    gevent.sleep(conf['ping_time'])
+    connected_devices = [d for d in devices if d.is_online()]
+
+    if len(connected_devices) == 0:
         return False
 
-    elif conf['send_strategy'] == 'random_connected':
-        # 2 - Ping devices to find a random *connected* one.
-        # Fail if no connected device, else send pick device.
-        devices = [net.get_device(addr) for addr in header]
-        gevent.sleep(conf['ping_time'])
-        connected_devices = [d for d in devices if d.is_online()]
-
-        if len(connected_devices) == 0:
-            return False
-
-        gevent.sleep((m.size+conf['header_size'])/conf['bandwidth'])
-        random.choice(connected_devices).receive(m)
-        return True
-    else:
-        raise ValueError("conf['send_strategy'] is not valid.")
+    gevent.sleep((m.size+conf['header_size'])/conf['bandwidth'])
+    random.choice(connected_devices).receive(m)
+    return True
 
 
 class MessType(Enum):
