@@ -291,14 +291,14 @@ class Device(gevent.Greenlet):
             raise ValueError("role should be either 'sender' or 'receiver'")
 
         self.random_peer_sampling()
-
-        route = [pd.DataFrame() for _ in range(n_layers)]
-        view = self.peers_view.get().copy()
-
+        view = self.peers_view.get()
         if len(view) == 0:
             raise Exception("The view is empty")
 
+        route = [pd.DataFrame() for _ in range(n_layers)]
         converged_layers = [False for _ in range(n_layers)]
+        minimum_probability = self.conf['minimum_node_availability']
+
         # Converged when all layers are converged
         while not all(converged_layers):
             # Iteratively add one device per layer until converged
@@ -307,15 +307,27 @@ class Device(gevent.Greenlet):
                 if converged_layers[l_id]:
                     continue
 
-                # If view is empty, exit
-                if len(view) == 0:
+                # We only pick the devices having a proba > minimum_probability
+                most_probable_devices = view[view['p'] >=
+                                             minimum_probability]
+
+                # If most_probable_devices is empty
+                if len(most_probable_devices) == 0:
+                    # Increase minimum_probability and break
+                    minimum_probability = max(0, minimum_probability-0.1)
                     break
 
                 # Add a node to layer
-                # By picking a device from view without replacement
-                d = view.iloc[np.random.choice(len(view))]
-                route[l_id] = route[l_id].append(d)
+                # By picking a device from most_probable_devices
+                # without replacement (we drop d from the view)
+                d = most_probable_devices.iloc[np.random.choice(
+                    len(most_probable_devices))].copy()
                 view.drop(d.name, inplace=True)
+
+                # Let the node report the minimum_probability
+                d['minimum_probability'] = minimum_probability
+                # And append
+                route[l_id] = route[l_id].append(d)
 
                 # Probability that all devices of layer will be offline
                 p_failure = (1 - route[l_id]['p']).prod()

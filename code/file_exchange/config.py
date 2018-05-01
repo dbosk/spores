@@ -23,5 +23,4 @@ default = {
     'output_dir': 'data/'+EXPERIMENT_NAME+'/',
     'period': timedelta(seconds=1),  # don't put milliseconds!
     'ping_time': 0.1,  # s
-    'send_strategy': 'random',  # 'random' or 'random_connected'
 }
