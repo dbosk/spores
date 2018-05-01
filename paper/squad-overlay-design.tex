@@ -6,7 +6,7 @@ To create PORs, as a device's availability strongly depends on the activity of i
  a user's devices (her \squad) must predict the future behavior of their owner. 
 However, one device, belonging to an \squad, can only predict its probability to stay online in the near future
 if it has a global knowledge of the user behavior over the other devices of the \squad it belongs to.
-To reach this aim, \name relies on a \squad overlay to share the user's behavior among devices of its \squad.
+To reach this aim, \name relies on a overlay, named thereafter the \squad overlay, to share the user's behavior among devices of its \squad.
 
 %By sharing information among themselves, a user's devices (her \emph{squad}) can model her behavior.
 
@@ -25,7 +25,8 @@ To reach this aim, \name relies on a \squad overlay to share the user's behavior
 \label{sub:sharing_knowledge}
 
 %Online devices want to know whether they are likely to stay online in the near future.
-taken separately, each device only knows local information such as when its user used it, and potentially mobility information if it is handheld device. When combining all these local observations, each device can obtain a refined model of the user’s behavior to predict its future activity in an accurate manner. To build this sequence of observations, 
+taken separately, each device can only get local observations, such as when its user used it, and mobility information if it is a handheld device.
+If all these local observations can be combined, a device can infer a refined model of the user’s behavior to predict its future activity in an accurate manner. To build such a sequence of observations, 
 %a sequence of the user's behavior that is far more complete.
 %For instance, the probability that Alice uses her home computer and workstation simultaneously is null: these devices are too far apart.
 the \squad overlay leverages on a probabilistic dissemination protocol, \textsc{Sprinkler}~\cite{luxey:hal-01704172}.
@@ -68,7 +69,7 @@ one's devices can forward messages among the \squad.
 
 we need a probabilistic model of the user's behavior to predict its future activity.
 In \name, the only data we collect and share, through the \squad overlay, are the availability times of each device among a \squad.
-In our model, time is discretized, i.e. users periodically change the availability stated of their devices in a predefined period.
+In our model, time is discretized, i.e. users periodically change the state availability of their devices in a predefined period.
 We store the availability times in an ever-increasing \emph{sequence} $O=O_1, ..., O_i, ...$ of actions performed at every \emph{round}, that lasts a short period of time $T$. 
 $d \in O_t$ thus means that the device $d$ was online from time $t$ to time $t+T$.
 Our goal is to predict $O_{t+1}$ knowing $O_t$.
