@@ -101,6 +101,22 @@ the source.
 But these advantages will only postpone the success of the attack, eventually 
 even our protocol must resend.
 
+Finally, we would also need the random peer sampling to be privacy preserving.
+Consider the following scenario.
+Alice requests a set of peers, say \(\{d_1, \dotsc, d_n\}\).
+If \(d_i\) interacts in each sampling operation resulting in \(d_i\) being in 
+the sample, then \(d_i\) can generate a new public key \(\pk_d^{(j)}\) for each 
+sample \(j\).
+This means that, if Alice sampled \(d_i\), she knows the public key 
+\(\pk_i^{(j)}\), and if \(d_i\) knows it is included in Alice's sample, then it 
+will also know a route belongs to Alice whenever \(\pk_i^{(j)}\) is used to 
+encrypt the header.
+\Ie every node on Alice's route would know that Alice is either the source or 
+the destination.
+When running the protocol, Alice only creates one part of the route and Bob 
+creates the other.
+This means that no device knows both ends of the route unless they collude.
+
 \subsection{Future Work}
 
 One thing that we can directly improve is the header.
