@@ -54,15 +54,15 @@ B =
     l & 0.2 & 0.4 & 0.6 \\[0.3em]
 }$$
 
-\includegraphics[width=0.65\columnwidth]{figures/hmm.pdf}
-\vspace{2ex}
+%\includegraphics[width=0.65\columnwidth]{figures/hmm.pdf}
+%\vspace{2ex}
 \includegraphics[width=0.9\columnwidth]{figures/sample_usage.pdf}
 
-\caption{\label{fig:hmm} Example Hidden Markov Model (HMM) of a user's behavior: on top are the HMM parameters, on the middle is a visual representation of the model, and on the bottom is a sample output from the model.}
+\caption{\label{fig:hmm} Example Hidden Markov Model (HMM) of a user's behavior: on top are the HMM parametersand on the bottom is a sample output from the model.}
 \end{figure}
 
 HMMs being generative probabilistic models, they allow the generation of observation sequence $O$ given the parameters of the model $\lambda_N$.
-Figure~\ref{fig:hmm} shows a possible outcome of the creation of a user's HMM $\lambda_N$, its graphical representation, along with a sample observation sequence $O$ output from the model $\lambda_N$.
+Figure~\ref{fig:hmm} shows a possible outcome of the creation of a user's HMM $\lambda_N$ along with a sample observation sequence $O$ output from the model $\lambda_N$.
 
 Each round lasts $T=10s$ and users start at different times. 
 This way, even though the round period is fixed, devices enter and leave the system at different points in the continuous time.
@@ -103,7 +103,7 @@ Still, the number of nodes per layer is very variable: at $\theta=10^{-4}$, valu
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.7\columnwidth]{figures/nodes_per_layer_vs_theta.pdf}
-\vspace{2ex}
+\vspace{1ex}
 \includegraphics[width=0.9\columnwidth]{figures/success_rate_vs_t.pdf}
 \caption{\label{fig:success_rate_vs_t}On top: Number of nodes per layer of POR as a function of the parameter $\theta$ (the maximal probability that all nodes in a layer fail at once). The number of nodes logarithmically decreases as we relax the $\theta$ constraint. On bottom: Availability rate of routes as a function of the time since the route establishment, for several values of the parameters $\theta$ (the maximal probability that all nodes in a layer fail at once) and $L$ (the number of layers in the route).}
 \end{figure}
