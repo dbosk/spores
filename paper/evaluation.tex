@@ -36,7 +36,8 @@ $B_{*, d}$, the probability that device $d$ is used in each location, depends on
 \begin{figure}[t]
 \centering
 \vspace{-1em}
-
+\footnotesize
+\centering
 $$A =
 \kbordermatrix{
       & W   & O   & H   \cr
@@ -53,9 +54,9 @@ B =
     l & 0.2 & 0.4 & 0.6 \\[0.3em]
 }$$
 
-\includegraphics[width=0.9\columnwidth]{figures/hmm.pdf}
+\includegraphics[width=0.65\columnwidth]{figures/hmm.pdf}
 \vspace{2ex}
-\includegraphics[width=\columnwidth]{figures/sample_usage.pdf}
+\includegraphics[width=0.9\columnwidth]{figures/sample_usage.pdf}
 
 \caption{\label{fig:hmm} Example Hidden Markov Model (HMM) of a user's behavior: on top are the HMM parameters, on the middle is a visual representation of the model, and on the bottom is a sample output from the model.}
 \end{figure}
@@ -97,7 +98,7 @@ We use a constant file chunk size of 512kB, a constant header size of 100kB, and
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.8\columnwidth]{figures/nodes_per_layer_vs_theta.pdf}
+\includegraphics[width=0.7\columnwidth]{figures/nodes_per_layer_vs_theta.pdf}
 \caption{\label{fig:nodes_per_layer_vs_theta}Number of nodes per layer of POR as a function of the parameter $\theta$ (the maximal probability that all nodes in a layer fail at once). The number of nodes logarithmically decreases as we relax the $\theta$ constraint.}
 \end{figure}
 
@@ -107,7 +108,7 @@ The mean number of devices per layer lies between 2 and 6.
 Still, the number of nodes per layer is very variable: at $\theta=10^{-4}$, values range from 2 to 11, with a standard deviation of 1.44. 
 
 \begin{figure}[t]
-\includegraphics[width=\columnwidth]{figures/success_rate_vs_t.pdf}
+\includegraphics[width=0.9\columnwidth]{figures/success_rate_vs_t.pdf}
 \caption{\label{fig:success_rate_vs_t}Availability rate of routes as a function of the time since the route establishment, for several values of the parameters $\theta$ (the maximal probability that all nodes in a layer fail at once) and $L$ (the number of layers in the route).}
 \end{figure}
 
@@ -130,19 +131,33 @@ Considering that most onion routing solutions use a statically defined message s
 \subsection{File transfer time} % (fold)
 \label{sub:file_transfer}
 
-\newcommand{\fsize}{\ensuremath{s_f}}
 
-To assess the efficiency of \name, we did several file exchanges with fixed parameters and a random file size $\fsize\in [5\text{MB}, 500\text{MB}]$. 
+To assess the efficiency of \name, we did several file exchanges with fixed parameters and a random file size between 5MB and 500MB.
 By performing 20 experiments using the parameters described in \ref{ssub:experimental_parameters}, we obtained traces for 200 file exchanges.
+All files reached their destination successfully.
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.9\columnwidth]{figures/transfer_time_vs_size.pdf}
+\includegraphics[width=0.7\columnwidth]{figures/transfer_time_vs_size.pdf}
 
 \caption{\label{fig:transfer_time_vs_size}Files' transfer time as a function of their size, along with a log-linear regression of the same data.}
-
-
 \end{figure}
+
+Figure~\ref{fig:transfer_time_vs_size} shows the results of this experiment: it plots the transfer time as a function of the file size. File size is binned into 20 bins, making the series of points representing the average transfer time per bin with standard deviation bars.
+We fitted a log-linear regression to this plot, displayed as a curve.
+It shows that transfer time increases less fast that the file size.
+
+Absolute time values are meaningless here: our system was evaluated on a single machine and on a single process. The code execution was not parallel, and only one device was executing at any point in time.
+
+Still, we investigated the message transmission. In this simulation, 145172 chunks were sent, and 141276 ACKs were received: 6.00\% of the chunks were lost in transit. A chunk took an average of 56s $\pm$ 36s to reach its destination, while ACKs to 48s $\pm$ 33s to do so. This is explained mostly by devices falling offline between the time they receive a message and the time they forward it.
+
+We now understand the log-linear curve and it's big initial slope: messages spend a long time in transit, but sending messages in parallel does not impact this time. Even small files thus need a lot of time to transfer, while bigger files do not suffer more than small files from the messages delay.
+\\
+
+Overall, we succeeded in creating a reliable and secure file transfer protocol over an underlying network of unreliable, low-end devices.
+Its performance could be enhanced by taking interest in bottlenecks in the messages transmission, i.e. scheduling messages in a similar predictive manner as we planned routes creation.
+
+
 
 
 % subsection file_transfer (end)
