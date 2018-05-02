@@ -27,14 +27,14 @@ global set %Global Device Retinue
 If all devices on the route belong to Carol and David, then they can, of course, 
 learn that Alice sent a message to Bob.
 How well they can do if they do not control the entire route, depends on the 
-choice of the encryption scheme \(\Enc*\), used to encrypt the message \(m\) 
-(see \cref{sec:file_exchange}).
+choice of the encryption scheme \(\Enc*\), used to encrypt the message \(m\). 
+%(see \cref{sec:file_exchange}).
 
 What makes sense is to choose at least an authenticated encryption 
 scheme~\cite{AuthEncryption}.
 (We could also choose a deniable encryption scheme~\cite{DeniableEncryption}, 
-\eg the one by \textcite{OTPKX} which is both deniable and authenticated and 
-provides \ac{DEN-SS}.)
+\eg \cite{OTPKX} which is authenticated and provides deniability under
+surveillance-state attacks.) %is both deniable and authenticated and  provides \ac{DEN-SS}.)
 This would give confidentiality (or deniability) and integrity for the message, 
 but if the first and the last node belong to Carol and David, they can infer 
 that Alice sent a message to Bob.
@@ -119,7 +119,7 @@ This means that no device knows both ends of the route unless they collude.
 
 \subsection{Future Work}
 
-One thing that we can directly improve is the header.
+One part that we can directly improve is the header.
 We see two alternative paths for improving the header.
 First, we might be able to adapt the Sphinx~\cite{Sphinx} cryptographic packet 
 format to the routing of \(\SPOR\).
