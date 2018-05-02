@@ -33,7 +33,7 @@ if Alice wants to send a message \(m\) to Bob, Bob uses the
 \([Recv]\) algorithm (See \cref{SPORFwd}) to create a probabilistic onion route \(H_{Bob}\) from
  a set of rendez-vous point to its own devices from its \squad --- all the hops on the route are 
 chosen by Bob uniformly at random from its RPS (\view).
- \([Recv]\) returns the \(H_{Bob}\).
+ %\([Recv]\) returns the \(H_{Bob}\).
 PORs have \(L\) layers, and for each layer the number of
 alternatives nodes depends of a failure threshold \(\theta\). 
 As long as \(\theta\) is not exceeded, alternatives nodes are added in
@@ -41,7 +41,7 @@ As long as \(\theta\) is not exceeded, alternatives nodes are added in
 failure for the extension is \(1 - (1 - \theta)^L\). In a similar
 manner, Alice create an onion route \(H_{Alice}\) to enable Bob to
 acknowledge its messages. Bob and Alice exchange then their calculated
-PORs (i.e. H_{Bob} andH_{Alice}), using an
+PORs (i.e. H_{Bob} and H_{Alice}), using an
 out-of-band channel, \eg using one device of their \squad (See
 Fig.~\ref{fig:file-exchange}~\ding{182}).
 
@@ -53,12 +53,12 @@ its \squad (See \cref{SPORFwd}). First, \([Send]\) extends the route
 \(H_{Bob}\) with some hops of Alice's choosing (uniformly randomly
 chosen). Second, \([Send]\) extracts from the onion the first
 layer, which contained the overall
-possible rendez-vous points $D$ previously selected by the recipient (i.e. Bob).
+possible alternative nodes $D$.
 One device from $D$ is randomly chosen, and the \([Fwd]\)
 sub-function is called as long as the message forwarding to one node of
 the next layer is not successful (See \cref{SPORFwd}). Along the path, each node decrypts
 in sequence the different layer with the current node’s private key. 
-The end of the route is reached when special value \(H_{Bob} = \top\) is
+The end of the route is reached when the special value \(H_{Bob} = \top\) is
 encountered. Consequently the ciphered message \(c_m\) is then stored
 in the disk of the local node through the \([Store]\) sub function 
 (\cref{SPORFwd}).
