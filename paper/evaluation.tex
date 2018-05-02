@@ -78,12 +78,12 @@ For that reason, they used different parameter sets.
 
 \paragraph*{PORs creation}
 Figure \ref{fig:success_rate_vs_t} come from the same data, with 10 experiments per set of settings.
-$\theta$, the threshold of the probability that all nodes fail at once (cf. \ref{ssub:building_routes}), takes the following values: $[0.1, 0.01, 0.001, 0.0001]$.
+$\theta$, the threshold of the probability that all nodes fail at once, takes the following values: $[0.1, 0.01, 0.001, 0.0001]$.
 $L$, the number of layers constituting a route, takes the following values: $[3, 5, 7]$.
 The time since route establishment goes from 1 to 10 with  unit step.
 It is measured in time periods $T$, the interval at which users change the connection state of their devices.
 An experiment consisted in $L*5$ users, where we randomly picked pairs of users to compute 20 routes.
-Hence, each point on the top of figure~\ref{fig:nodes_per_layer_vs_theta} is the average of 3000 layers size; 
+Hence, each point on the top of figure~\ref{fig:success_rate_vs_t} is the average of 3000 layers size; 
 each point on the bottom is the availability rate over 200 routes.
 
 
@@ -115,7 +115,7 @@ First of all, we observe that time has a negligible impact on the availability o
 This shows, as was stated in section~\ref{para:predicting future behavior}, that the prediction that devices make of behavior at $t+1$ is a good enough estimator for $t+i$.
 We also see that $\theta$ has a big impact on the mean availability and its variability.
 Still, $\theta\in\{10^-4, 10^-3\}$ allows highly available routes with an average availability of 100\% and 99.5\% respectively.
-Combined with the results from figure~\ref{fig:nodes_per_layer_vs_theta}, it means that routes will need an average of 5-6 devices per layer to be highly available.
+Combined with the results from figure~\ref{fig:success_rate_vs_t}, it means that routes will need an average of 5-6 devices per layer to be highly available.
 Finally, increasing $L$ logically hinders the results when using low-availability layers.
 \\
 
