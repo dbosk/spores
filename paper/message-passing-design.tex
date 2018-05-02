@@ -47,7 +47,7 @@ Figure~\ref{fig:file-exchange} shows the process of the route creation until the
 Alice uses the forward route to send file chunks to Bob, while Bob uses the backward route to send acknowledgments back to Alice.
 
 \begin{figure}[t]
-  \includegraphics[width=\linewidth]{figures/file_exchange_v2.pdf}
+  \includegraphics[width=\linewidth]{figures/file_exchange.pdf}
   \caption{\label{fig:file-exchange}A schematic of the creation and usage of PORs between Alice and Bob's e-squads.}
 \end{figure}
 
@@ -140,38 +140,39 @@ $l = (L-1)/2$ & Number of layers (excluding $\LRV$) created by each end of the r
       \State $\Hforward \gets \Hsendforward \concat \Hrecforward$ \label{hforward}
       \State \Return \Hsendbackward
 
-      % \State $H\gets \ExtendRoute[H_\rdv, L, \theta]$
-      % \State $D\concat C_H\gets H_\rdv$
-      % \For{$d\in D$}
-      %   \Comment{Uniformly randomly chosen}
-      %   \If{$d\method \Fwd[C_H, m] \neq \bot$}
-      %     \State \Return $\top$
-      %   \EndIf
-      % \EndFor
-      % \State \Return $\bot$
+
+      \STATE $H\gets \ExtendRoute[H_\rdv, L, \theta]$
+      \State $D\concat C_H\gets H_\rdv$
+      \For{$d\in D$}
+        \Comment{Uniformly randomly chosen}
+        \If{$d\method \Fwd[C_H, m] \neq \bot$}
+          \State \Return $\top$
+        \EndIf
+      \EndFor
+      \State \Return $\bot$
     \EndFunction
   \end{algorithmic}
   %\end{minipage}}
 
   % \vspace{0.3em}
   % %\framebox{\begin{minipage}{0.96\linewidth}
-  % \begin{algorithmic}[1]
-  %   % \Require{%
-  %   %   $H$ is a header of the form \(D\concat H'\) or \(D\concat \top\), where 
-  %   %   \(D\) is a set of device addresses.
-  %   %   $\pk_D$ is the public key of device set $D$.
-  %   %   $L$ is the length of the route,
-  %   %   $\theta$ is the threshold of probability of failure.%
-  %   % }
-  %   \Function{\ExtendRoute}{$\mathcal{H}, l$}
-  %     \If{$L\leq 0$}
-  %       \State \Return $H$
-  %     \EndIf
-  %     \State $D\gets \CreateOnionLayer[\theta]$
-  %     \State $H\gets D\concat \DeBEenc[\mpk, D, H]$
-  %     \State \Return $\ExtendRoute[H, L-1, \theta]$
-  %   \EndFunction
-  % \end{algorithmic}
+  \begin{algorithmic}[1]
+    \Require{%
+      $H$ is a header of the form \(D\concat H'\) or \(D\concat \top\), where 
+      \(D\) is a set of device addresses.
+      $\pk_D$ is the public key of device set $D$.
+      $L$ is the length of the route,
+      $\theta$ is the threshold of probability of failure.%
+    }
+    \Function{\ExtendRoute}{$\mathcal{H}, l$}
+      \If{$L\leq 0$}
+        \State \Return $H$
+      \EndIf
+      \State $D\gets \CreateOnionLayer[\theta]$
+      \State $H\gets D\concat \DeBEenc[\mpk, D, H]$
+      \State \Return $\ExtendRoute[H, L-1, \theta]$
+    \EndFunction
+  \end{algorithmic}
 
   \vspace{0.3em}
 
