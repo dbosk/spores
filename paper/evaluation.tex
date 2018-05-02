@@ -130,12 +130,18 @@ Considering that most onion routing solutions use a statically defined message s
 \subsection{File transfer time} % (fold)
 \label{sub:file_transfer}
 
+\newcommand{\fsize}{\ensuremath{s_f}}
+
+To assess the efficiency of \name, we did several file exchanges with fixed parameters and a random file size $\fsize\in [5\text{MB}, 500\text{MB}]$. 
+By performing 20 experiments using the parameters described in \ref{ssub:experimental_parameters}, we obtained traces for 200 file exchanges.
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.9\columnwidth]{figures/transfer_time_vs_size.pdf}
 
 \caption{\label{fig:transfer_time_vs_size}Files' transfer time as a function of their size, along with a log-linear regression of the same data.}
+
+
 \end{figure}
 
 
