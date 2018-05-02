@@ -86,14 +86,10 @@ Hence, each point in figure~\ref{fig:nodes_per_layer_vs_theta} is the average of
 each point in figure~\ref{fig:nodes_per_layer_vs_theta} is the availability rate over 200 routes.
 
 
-
-
-% \subsection{Devices' predictions of the user behavior} % (fold)
-% \label{sub:devices_predictions_of_the_user_behavior}
-
-% Adios, section
-
-%\commentAL{Should evaluate the inference of the model given only the observable sequence. Also show that $P[O_{t+1} | S_t] \simeq P[O_{t+i} | S_t]$}
+\paragraph*{File exchange}
+In section~\ref{sub:file_transfer}, we fix the routes' creation parameters: $\theta=10^-3$, $L=3$.
+The number of users is set to 20, and the number of file exchange per experiment to 10.
+We use a constant file chunk size of 512kB, a constant header size of 100kB, and a constant bandwidth per link of 128kB/s.
 
 \subsection{Predictive Onion Routes creation} % (fold)
 \label{sub:predictive_onion_routes_creation}
@@ -133,6 +129,7 @@ Considering that most onion routing solutions use a statically defined message s
 
 \subsection{File transfer time} % (fold)
 \label{sub:file_transfer}
+
 
 \begin{figure}[t]
 \centering
