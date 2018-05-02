@@ -30,7 +30,7 @@ To implement our  probabilistic
 predictive onion routing mechanism, \name defined two different algorithms to
 receive, send messages among users' \squad. For instance,
 if Alice wants to send a message \(m\) to Bob, Bob uses the
-\([Recv]\) algorithm (See \cref{SPORRecv}) to create a probabilistic onion route \(H_{Bob}\) from
+\([Recv]\) algorithm (See \cref{SPORFwd}) to create a probabilistic onion route \(H_{Bob}\) from
  a set of rendez-vous point to its own devices from its \squad --- all the hops on the route are 
 chosen by Bob uniformly at random from its RPS (\view).
  \([Recv]\) returns the \(H_{Bob}\).
@@ -49,7 +49,7 @@ Fig.~\ref{fig:file-exchange}~\ding{182}).
 
 Once Alice get the \(H_{Bob}\), Alice uses \([Send]\) at some
 later time to send the message to Bob using any of her devices from
-its \squad (See \cref{SPORSend}). First, \([Send]\) extends the route
+its \squad (See \cref{SPORFwd}). First, \([Send]\) extends the route
 \(H_{Bob}\) with some hops of Alice's choosing (uniformly randomly
 chosen). Second, \([Send]\) extracts from the onion the first
 layer, which contained the overall
@@ -61,11 +61,11 @@ in sequence the different layer with the current node’s private key.
 The end of the route is reached when special value \(H_{Bob} = \top\) is
 encountered. Consequently the ciphered message \(c_m\) is then stored
 in the disk of the local node through the \([Store]\) sub function 
-(\cref{SPORRecv}).
+(\cref{SPORFwd}).
 
 %The special value \(H = \top\) indicated the end of the route, thus \(c_m\) 
 %    is intended for the local node and \(c_m\) is instead sent to disk using 
-%    \(\Store\) (\cref{SPORRecv}).% 
+%    \(\Store\) (\cref{SPORFwd}).% 
 
 
 %The SPOR.Forward algorithm forwards m down the route H, obtained by
@@ -92,33 +92,8 @@ in the disk of the local node through the \([Store]\) sub function
 \NewAlgorithm{\ExtendRoute}{ExtendRoute}
 \NewAlgorithm{\CreateOnionLayer}{CreateOnionLayer}
 
-    % \Require{%
-    %   $H$ is a header of the form \(D\concat H'\) or \(D\concat \top\), where 
-    %   \(D\) is a set of device addresses.
-    %   $\pk_D$ is the public key of device set $D$.
-    % }
 
 \begin{figure}
-
-% <<<<<<< HEAD
-%   \framebox{\begin{minipage}{0.96\linewidth}
-% =======
-%       \State $H\gets \ExtendRoute[H_\rdv, L, \theta]$
-%       \State $D\concat C_H\gets H_\rdv$
-%       \For{$d\in D$}
-%         \Comment{Uniformly randomly chosen}
-%         \If{$d\method \Fwd[C_H, m] \neq \bot$}
-%           \State \Return $\top$
-%         \EndIf
-%       \EndFor
-%       \State \Return $\bot$
-%     \EndFunction
-%   \end{algorithmic}
-%   %\end{minipage}}
-
-%   % \vspace{0.3em}
-%   % %\framebox{\begin{minipage}{0.96\linewidth}
-% >>>>>>> 028fcc4225628a4b1d8b1b48a64b7975d11021ab
 \framebox{\begin{minipage}{0.96\linewidth}
   \begin{algorithmic}[1]
 \scriptsize
@@ -159,28 +134,25 @@ in the disk of the local node through the \([Store]\) sub function
     \Require{%
       $D$ is the set of alternative recipient devices.
     }
-    \Function{[\Recv]}{$D$}
+    \Function{\Recv}{$D$}
       \State $H_\rdv\gets \ExtendRoute[D\concat \top, L, \theta]$
       \State \Return $H_\rdv$
         \Comment{Give to sender out-of-bound.}
     \EndFunction
   \end{algorithmic}
-  \end{minipage}}
-  \caption{\label{SPORRecv}%
-\scriptsize
-    The \(\SPOR[\Recv]\) algorithm prepares the recipient for receiving a file.
-  }
-\end{figure}
-
-\begin{figure}
-  \framebox{\begin{minipage}{0.96\linewidth}
+  %\end{minipage}}
+%   \caption{\label{SPORFwd}%
+% \scriptsize
+%     The \(\Recv\) algorithm prepares the recipient for receiving a file.
+%   }
+  %\framebox{\begin{minipage}{0.96\linewidth}
   \begin{algorithmic}
 \scriptsize
     \Require{%
       $m$ is the message to be sent,
       $H$ is the onion-route given by the recipient.
     }
-    \Function{[\Send]}{$H,m$}
+    \Function{\Send}{$H,m$}
       \State $H\gets \ExtendRoute[H, L, \theta]$
       \State $D\concat C_H\gets H_\rdv$
       \For{$d\in D$}
@@ -192,19 +164,16 @@ in the disk of the local node through the \([Store]\) sub function
       \State \Return $\bot$
     \EndFunction
   \end{algorithmic}
-  \end{minipage}}
-  \caption{\label{SPORSend}%
-    \scriptsize
-    The \(\SPOR[\Send]\) algorithm 
-  }
-\end{figure}
-
-\begin{figure}
-  \framebox{\begin{minipage}{0.96\linewidth}
+  %\end{minipage}}
+  % \caption{\label{SPORFwd}%
+  %   \scriptsize
+  %   The \(\Recv\), \(\Send\) and \(\Fwd\) algorithms.
+  % }
+ % \framebox{\begin{minipage}{0.96\linewidth}
   \begin{algorithmic}
 \scriptsize
     \Require{$\sk$ is the private key-pair of the current node.}
-    \Function{\SPOR[\Fwd]}{$C_H, m$}
+    \Function{\Fwd}{$C_H, m$}
       \State $H\gets \DeBEdec[\mpk, \sk, C_H]$
       \If{$H = \bot$}
         \State \Return $\bot$
@@ -232,7 +201,8 @@ in the disk of the local node through the \([Store]\) sub function
   \end{algorithmic}
   \end{minipage}}
   \caption{\label{SPORFwd}%
-    The \(\SPOR[\Fwd]\) algorithm forwards \(m\) down the route \(H\).%
+    \scriptsize
+    The \(\Recv\) (prepares the recipient for receiving a file), \(\Send\) and \(\Fwd\) (forwards \(m\) down the route \(H\)) algorithms.
   }
 \end{figure}
 
