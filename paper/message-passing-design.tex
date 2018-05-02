@@ -260,14 +260,13 @@ $l = (L-1)/2$ & Number of layers (excluding $\LRV$) created by each end of the r
 
 % subsubsection exchanging_a_file (end)
 \newcommand{\messagesize}{\ensuremath{s_m}}
-\newcommand{\filesize}{\ensuremath{s_{fc}}
+\newcommand{\filesize}{\ensuremath{s_{fc}}}
 \newcommand{\headersize}{\ensuremath{s_{\mathcal{H}}}}
 
 Once Alice get the \Hforward, she can start sending her file $f$ to Bob. 
 To do so, she chunks it to pieces, and iteratively send the chunks to Bob, that replies with an acknowledgment (ACK) for that chunk.
 Once all chunks have been acknowledged, Alice sends an empty message to Bob, signifying transfer termination.
 
-\commentAL{Is it good?}
 In \name, whole messages, headers and file chunks are considered having a fixed size.
 In reality, the message size \messagesize is indeed fixed to prevent \name from message size analysis attacks,
 but the header size \headersize is variable, depending on the number of layers and the number of devices per layer.
