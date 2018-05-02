@@ -181,7 +181,7 @@ in the disk of the local node through the \([Store]\) sub function
       $H$ is the onion-route given by the recipient.
     }
     \Function{[\Send]}{$H,m$}
-      \State $H\gets \ExtendRoute[H_\rdv, L, \theta]$
+      \State $H\gets \ExtendRoute[H, L, \theta]$
       \State $D\concat C_H\gets H_\rdv$
       \For{$d\in D$}
         \Comment{Uniformly randomly chosen}
@@ -203,7 +203,7 @@ in the disk of the local node through the \([Store]\) sub function
   \framebox{\begin{minipage}{0.96\linewidth}
   \begin{algorithmic}
 \scriptsize
-    \Require{$\pk, \sk$ is the public--private key-pair of the node.}
+    \Require{$\sk$ is the private key-pair of the current node.}
     \Function{\SPOR[\Fwd]}{$C_H, m$}
       \State $H\gets \DeBEdec[\mpk, \sk, C_H]$
       \If{$H = \bot$}
@@ -232,11 +232,7 @@ in the disk of the local node through the \([Store]\) sub function
   \end{algorithmic}
   \end{minipage}}
   \caption{\label{SPORFwd}%
-    The \(\SPOR[\Fwd]\) algorithm forwards \(m\) down the route \(H\), obtained 
-    by decrypting \(C_H\) with the node's associated private key.
-    The special value \(H = \top\) indicated the end of the route, thus \(c_m\) 
-    is intended for the local node and \(c_m\) is instead sent to disk using 
-    \(\Store\) (\cref{SPORRecv}).%
+    The \(\SPOR[\Fwd]\) algorithm forwards \(m\) down the route \(H\).%
   }
 \end{figure}
 
