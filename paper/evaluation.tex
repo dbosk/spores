@@ -77,14 +77,14 @@ For that reason, they used different parameter sets.
 
 
 \paragraph*{PORs creation}
-Figures \ref{fig:nodes_per_layer_vs_theta} and \ref{fig:success_rate_vs_t} come from the same data, with 10 experiments per set of settings.
+Figure \ref{fig:success_rate_vs_t} come from the same data, with 10 experiments per set of settings.
 $\theta$, the threshold of the probability that all nodes fail at once (cf. \ref{ssub:building_routes}), takes the following values: $[0.1, 0.01, 0.001, 0.0001]$.
 $L$, the number of layers constituting a route, takes the following values: $[3, 5, 7]$.
 The time since route establishment goes from 1 to 10 with  unit step.
 It is measured in time periods $T$, the interval at which users change the connection state of their devices.
 An experiment consisted in $L*5$ users, where we randomly picked pairs of users to compute 20 routes.
-Hence, each point in figure~\ref{fig:nodes_per_layer_vs_theta} is the average of 3000 layers size; 
-each point in figure~\ref{fig:nodes_per_layer_vs_theta} is the availability rate over 200 routes.
+Hence, each point on the top of figure~\ref{fig:nodes_per_layer_vs_theta} is the average of 3000 layers size; 
+each point on the bottom is the availability rate over 200 routes.
 
 
 \paragraph*{File exchange}
@@ -95,21 +95,17 @@ We use a constant file chunk size of 512kB, a constant header size of 100kB, and
 \subsection{Predictive Onion Routes creation} % (fold)
 \label{sub:predictive_onion_routes_creation}
 
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=0.7\columnwidth]{figures/nodes_per_layer_vs_theta.pdf}
-\caption{\label{fig:nodes_per_layer_vs_theta}Number of nodes per layer of POR as a function of the parameter $\theta$ (the maximal probability that all nodes in a layer fail at once). The number of nodes logarithmically decreases as we relax the $\theta$ constraint.}
-\end{figure}
-
-We first measure the influence of the parameter $\theta$ on the number of nodes per layer in figure~\ref{fig:nodes_per_layer_vs_theta}, by displaying average and standard deviation of the number of nodes for $\theta=[10^{-4}, 10^{-3}, 10^{-2}, 10^{-1}]$ (the other experiment parameters are listed in section~\ref{ssub:experimental_parameters}).
+We first measure the influence of the parameter $\theta$ on the number of nodes per layer on the top of figure~\ref{fig:success_rate_vs_t}, by displaying average and standard deviation of the number of nodes for $\theta=[10^{-4}, 10^{-3}, 10^{-2}, 10^{-1}]$ (the other experiment parameters are listed in section~\ref{ssub:experimental_parameters}).
 As we can see, the number of devices per layer logarithmically decreases as we relax the constraint on the layer's availability.
 The mean number of devices per layer lies between 2 and 6.
 Still, the number of nodes per layer is very variable: at $\theta=10^{-4}$, values range from 2 to 11, with a standard deviation of 1.44. 
 
 \begin{figure}[t]
+\centering
+\includegraphics[width=0.7\columnwidth]{figures/nodes_per_layer_vs_theta.pdf}
+\vspace{2ex}
 \includegraphics[width=0.9\columnwidth]{figures/success_rate_vs_t.pdf}
-\caption{\label{fig:success_rate_vs_t}Availability rate of routes as a function of the time since the route establishment, for several values of the parameters $\theta$ (the maximal probability that all nodes in a layer fail at once) and $L$ (the number of layers in the route).}
+\caption{\label{fig:success_rate_vs_t}On top: Number of nodes per layer of POR as a function of the parameter $\theta$ (the maximal probability that all nodes in a layer fail at once). The number of nodes logarithmically decreases as we relax the $\theta$ constraint. On bottom: Availability rate of routes as a function of the time since the route establishment, for several values of the parameters $\theta$ (the maximal probability that all nodes in a layer fail at once) and $L$ (the number of layers in the route).}
 \end{figure}
 
 We now study the influence of the parameters on the future availability of the routes in figure~\ref{fig:success_rate_vs_t}.
