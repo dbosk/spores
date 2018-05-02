@@ -100,7 +100,26 @@ in the disk of the local node through the \([Store]\) sub function
 
 \begin{figure}
 
-  \framebox{\begin{minipage}{0.96\linewidth}
+% <<<<<<< HEAD
+%   \framebox{\begin{minipage}{0.96\linewidth}
+% =======
+%       \State $H\gets \ExtendRoute[H_\rdv, L, \theta]$
+%       \State $D\concat C_H\gets H_\rdv$
+%       \For{$d\in D$}
+%         \Comment{Uniformly randomly chosen}
+%         \If{$d\method \Fwd[C_H, m] \neq \bot$}
+%           \State \Return $\top$
+%         \EndIf
+%       \EndFor
+%       \State \Return $\bot$
+%     \EndFunction
+%   \end{algorithmic}
+%   %\end{minipage}}
+
+%   % \vspace{0.3em}
+%   % %\framebox{\begin{minipage}{0.96\linewidth}
+% >>>>>>> 028fcc4225628a4b1d8b1b48a64b7975d11021ab
+\framebox{\begin{minipage}{0.96\linewidth}
   \begin{algorithmic}[1]
 \scriptsize
     \Function{\ExtendRoute}{$H, L$}
