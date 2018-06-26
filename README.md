@@ -1,5 +1,4 @@
-# SPORES: Stateless Predictive Onion Routing for E-Squads, or,
-# private Cloud via your own devices instead of someone else's computer
+# SPORES: Stateless Predictive Onion Routing for E-Squads, or, private Cloud via your own devices instead of someone else's computer
 
 It's common nowadays to use a third party, e.g.\ the Cloud (i.e. someone else's 
 computer), as an intermediate to share files. For instance, it's common to 
