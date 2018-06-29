@@ -1,3 +1,4 @@
+% -*- tex-main-file: "contents.tex" compile-command: "pdflatex p2p-private-cloud.tex" ispell-dictionary: "american" -*-
 % What's the problem?
 % Why is it a problem? Research gap left by other approaches?
 % Why is it important? Why care?
@@ -7,16 +8,19 @@
 %
 %abstract
 %problem/topic
-This paper proposes a novel fully-decentralized privacy-preserving file sharing service that eschews any third-party storage or any centralized bootstrapping service.
+This paper proposes a novel private file sharing service tat avoids any third-party storage or centralized bootstrapping service.
 %research gap
-Cloud-based file-sharing systems such as Dropbox require trust in the service provider and can be monitored, even when their data is encrypted. Private peer-to-peer (P2P) solutions are either particularly inefficient, or must rely on a fixed set of trusted servers for bootstrapping purposes, which limit their level of protection. % We are interested in minimizing the trust needed in other systems and preserving the users' privacy in terms of data and metadata, what they share with whom and when.
+Our solution, which adopts a fully decentralized design, overcomes the limitations of cloud file-sharing systems such as Dropbox, which require trust in the service provider and can be monitored, even when their data is encrypted. Our proposal also goes beyond existing private peer-to-peer (P2P) solutions that are either particularly inefficient, or must rely on a fixed set of trusted servers for bootstrapping purposes, which limits their level of protection. % We are interested in minimizing the trust needed in other systems and preserving the users' privacy in terms of data and metadata, what they share with whom and when.
 %why now
 % Nowadays, many people use multiple devices and it has thus become possible to benefit from P2P technology for one's own devices alone, thereby reducing one's exposure to security and privacy threats from third parties.
 %approach
-In this paper, we demonstrate that an efficient and strongly private fully-decentralized data-sharing solution is possible. Our proposal combines onion routing with probabilistic node selection, informed by peer sampling and Hidden Markov Model predictions for node availability.
+In this paper, we demonstrate that a fully-decentralized data-sharing solution that is  both efficient and strongly private is possible.
+\commentFT{Trying to highlight POR, as likely to be catch people's attention, and contribute to the paper's long-term interest.} At the core of our proposal lies a novel probabilistic onion routing protocol called POR, which exploits decentralized peer sampling, and a probabilistic model of node availability. \commentFT{Sharing node availability information freely could potentially disclose private information. We might want to discuss this risk somewhere in the paper.}
+% Our proposal combines onion routing with probabilistic node selection, informed by peer sampling and Hidden Markov Model predictions for node availability.
 %findings/contributions:
-Our solution benefits from sender-receiver anonymity properties provided by onion routing. %% to protect user privacy in decentralized file sharing.
-We show that even a relatively naive prediction model suffices to share files despite the unreliable availability of individual nodes. %% The same model can potentially be applied for better-informed churn handling in other p2p systems. In the case of onion routing systems for anonymity, 
-Our solution allows the system to include unreliable nodes, without dedicated relays, %take advantage of locality, 
+The resulting solution is fully decentralized, provides sender-receiver anonymity, and can deliver competitive performance in spite of unreliable nodes. %% to protect user privacy in decentralized file sharing.
+% We show that even a relatively naive prediction model suffices to share files despite the unreliable availability of individual nodes. %% The same model can potentially be applied for better-informed churn handling in other p2p systems. In the case of onion routing systems for anonymity,
+\commentFT{Using transient to avoid repeating unreliable.}
+This design makes it possible to exploit transient nodes, without dedicated relays, %take advantage of locality, 
 neither of which is currently the case in TOR.
 
