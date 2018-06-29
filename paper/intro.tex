@@ -1,27 +1,36 @@
+% -*- tex-main-file: "contents.tex" compile-command: "pdflatex p2p-private-cloud.tex" ispell-dictionary: "american" -*-
+
 \section{Introduction}
 
 % What's the problem?
-Following Mark Weiser's vision, we are nowadays
-experiencing a new era of cooperation and interactions between humans.
-The exponential proliferation of connected devices is
-drastically impacting human experience and enhancing human
-exchanges~\cite{Dearman:2008, Oh:2017, Sohn:2008,Harper08}. This evolution has opened new areas of research such as
-\textit{proxemics} applied to ubiquitous computing
-\cite{Marquardt:2011}. When evolving in their social space, users can today rely on
-multiple kinds of computing devices that form a \textit{personal squad} of connected entities, or \squad as we shall call them in the remainder of the
-paper. Helped by their \squad, users
-have come to expect ever higher levels of connectivity and interaction
-possibilities. For instance, as users bring
+
+Fulfilling Mark Weiser's vision, we now rely on a increasing number of personal digital devices for many everyday tasks. These devices form a \textit{personal squad} of connected entities (or \emph{\squad} as we shall call them in the remainder of the
+paper), that users rely on for their everyday interactions with the material and digital world, and with their fellow humans.
+The growing importance of these \squad{}s is profoundly modifying how we live~\cite{Dearman:2008, Oh:2017, Sohn:2008,Harper08}, and has opened new areas of research such as \textit{proxemics}, the study of proximity-based interactions in a world of ubiquitous computing
+\cite{Marquardt:2011}.
+%% we are nowadays
+%% experiencing a new era of cooperation and interactions between humans.
+%% The exponential proliferation of connected devices is
+%% drastically impacting human experience and enhancing human
+%% exchanges~\cite{Dearman:2008, Oh:2017, Sohn:2008,Harper08}. This evolution has opened new areas of research such as
+%% \textit{proxemics} applied to ubiquitous computing
+%% \cite{Marquardt:2011}. 
+%% When evolving in their social space, users can today rely on
+%% multiple kinds of computing devices that form a \textit{personal squad} of connected entities, or \squad as we shall call them in the remainder of the
+%% paper.
+Supported by their \squad, users
+have come to expect always-on connectivity, along with advanced interaction
+capabilities. For instance, as users bring
 their devices close to one another, they expect to be able to initiate cross-device
 interactions \textit{in situ} in order to share digital content
-\cite{Oh:2017} between devices of their own \squad or with those of other users' \squad{}s. More broadly, users expect to share digital content,
+\cite{Oh:2017} between devices of their own \squad or with those of other users' \squad{}s. More broadly, users want to be able to share digital content seamlessly,
 wherever the content, its sender, or its recipient might be located, from one
-arbitrary device to another in a seamless manner~\cite{Dearman:2008}, as they
-would have done in the old days with an USB key or with an email. 
+arbitrary device to another~\cite{Dearman:2008}, as they
+would have a few years ago with an USB key or an email. 
 
 This thirst for seamless sharing explains the rise and ongoing popularity
 of personal sharing platforms such as Dropbox, Google Docs,
-OneDrive, Amazon Drive, etc. These solutions are able to share data between any device, any user, almost
+OneDrive, Amazon Drive, etc. These solutions allow users to share data between any device, with anyone, almost
 anytime, anywhere. They achieve this feat by relying heavily on
 \emph{remote cloud services}, which have now become a key enabler of ubiquitous ecosystems. 
 % argument: cloud -> danger, 
@@ -51,23 +60,22 @@ confidentiality guaranties they can expect. In practice, user data hosted in the
 consent, either by cloud providers or third parties.
 
 Although data encryption is often proposed as a first line of defense for cloud-hosted data, it is unfortunately  insufficient~\cite{granick_2017, HooffLZZ15, HarnikPS10}. Metadata such as a user'
-location and activity can be still tracked, including the access
-control history revealing what each user shared with whom and when. 
+location and activity can still be tracked, including access
+control histories, thus revealing what each user shared with whom and when. 
 %  because it does not protect meta-data information
-This turns out to be a critical limitation, as famously emphasized by a former NSA and CIA director: "We kill people based on metadata.''~\cite{NaughtonTheGuardian2016} 
-User devices become tracking and/or monitoring \squad{}s that turn out
-to be the best spy over users. 
+The exposure of metadata seriously weakens user privacy, as famously emphasized by a former NSA and CIA director: "\emph{We kill people based on metadata.}''~\cite{NaughtonTheGuardian2016} 
+In this model, user devices, masquerading as allies, get turned into tracking and/or monitoring \squad{}s, and serve as highly efficient spies over their owners. 
 
-Constructing a system that provides fully anonymous content sharing is highly
-challenging. The last two decades have witnessed many attempts at building privacy preserving and anonymous P2P data-sharing
+Constructing a system that provides fully anonymous content sharing while avoiding the above pitfalls is unfortunately highly
+challenging. The last two decades have witnessed many attempts at building privacy-preserving and anonymous P2P data-sharing
 networks~\cite{Clarke:2001,Gnunet2002,Freedman:2002,Nambiar:2006,Rennhard:2002}.
 These solutions typically leverage \emph{onion
  routing}~\cite{Chaum:1981}, with some improvements to perform node
  discovery in a distributed manner, a step that is otherwise
 centralized in traditional onion routing schemes. However, because of the high
-churn typically experienced by P2P networks, the performance of these systems is
-discouraging~\cite{LeBlond:2013}; churn causes routes to be frequently
-reconstructed, which is very expensive. By contrast, Tor
+churn typically experienced by P2P networks, the performance of these systems has been
+discouraging~\cite{LeBlond:2013}; churn causes routes to disappear and be
+reconstructed frequently, which is particularly costly. By contrast, Tor
 \cite{Dingledine:2004}, one of the most popular anonymous networks,
 trades lower anonymity guaranties for a much better performance. Tor's lower protection arises from
 a partially centralized design that hinges on a set of \emph{directory
@@ -77,24 +85,24 @@ routes.
 In this paper, we demonstrate how good performance can be reconciled
 with strong privacy protection in data-sharing systems. We present
 \name{}, a novel fully decentralized, autonomous,
-
 % approach that provides a 
 and self-organizing file sharing service between the \squad{}s of different users that preserves user privacy
-in terms of both data \emph{and} metadata. Our proposal hinges on two
-key ideas: \emph{First},  the recent advances of smartphones and other
-mobile devices enable e-squads and it has thus
-become possible to benefit from P2P technology for one's own devices
+in terms of both data \emph{and} metadata. \commentFT{Moving to 3 ideas, to highlight proxemics in its own right} Our proposal hinges on three
+key ideas: \emph{First}, the emergence of \emph{\squad{}s}, the set of connected devices owned and used by one user, 
+%% the recent advances of smartphones and other
+%% mobile devices enable e-squads and it has thus
+%% become possible to
+makes it possible to apply P2P technology to one's own devices
 alone, thereby reducing one's exposure to security and privacy threats
-from third parties. Relatedly, we consider proxemics relationships as a key enabler to initiate file
-transfers. Close distance among users enable them to share
+from third parties. \emph{Second}, we consider \emph{proxemics relationships} as a key enabler to initiate file
+transfers. Physical proximity allow users to share
 routing information out-of-band, e.g. from their
-\squad. In contrast to state-of-the-art P2P systems, users agree in \name out-of-band to share a file, but
-do not keep it available for anyone else in the future. \emph{Second}, we
-rely on distributed machine learning techniques to predict the future
+\squad. \commentFT{I did not get what 'from their \squad' mean.} In contrast to state-of-the-art P2P systems, users agree in \name out-of-band to share a file, but
+do not keep it available for anyone else in the future. \emph{Third}, we
+exploit distributed machine learning techniques to predict the future
 availability of user devices, and use this ability to implement a
-\emph{probabilistic predictive onion routing} mechanism. The
-predictive nature of our routing, exploited in a stateless way, allows us to overcome the inherent
-fragility of pure P2P data-sharing schemes. 
+\emph{probabilistic predictive onion routing} (POR) mechanism. The
+predictive nature of our routing, exploited in a stateless way, allows us to overcome the inherent fragility of pure P2P data-sharing schemes. 
 
 %% In this paper, we introduce \name{}, a novel approach to perform a decentralized, autonomous,
 %% and self-organizing file sharing among users' devices while preserving the users’ privacy
