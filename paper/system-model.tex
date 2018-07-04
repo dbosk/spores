@@ -9,32 +9,59 @@ Thus, the devices from an \squad only know the mapping from devices to users for
 the \squad they belong to.
 We also assume that users can exchange some limited amounts of data 
 out-of-band, \ie through some other channel than the network just mentioned (\eg 
-using \ac{NFC}).
+using \ac{NFC} or QR codes).
+
+%system model: explain e-squad, contrast with cloud
+
+%adversary model: remove provider, compensate, results in same as in sphinxOR/Tor?  friends?
+
+%properties: cam/lys: correctness, integrity, security (wrap, indistinguishability) - do not want friends to learn 1) which devices are ours 2)  their availability (assumption: RPS, not lookup)
+
+We first describe a simple model of data sharing via cloud storage to
+highlight desirable privacy properties and then map them to our provider-less
+setting. We then add privacy properties and adversary models for onion
+routing to cover network traffic analysis.
 
 \paragraph*{In the cloud setting} if Alice wants to share a file with
 Bob, she picks up and pushes one of her files, from one of her devices, to the cloud
-provider, to make it available to Bob that will thereafter get it from
-one of its devices. The use of the cloud provider, as a third party,
+provider, to make it available to Bob to download to
+one of his devices. The use of the cloud provider, as a third party,
 provides two main privacy properties, which we have to consider when
 changing the setting to that of \ac{P2P}~\cite{DevilInMetadata}:
 \begin{itemize}
-\item Alice and Bob are the only ones who learn 
+\item Alice and Bob are the only ones \sonja{narrow down to users?} who learn 
 about Alice sharing a file with Bob, except for the cloud provider.
 \item Alice and Bob learn nothing about each others' devices, \ie 
-they cannot map any device as belonging to each other, except for the
-cloud provider that learn it.
+they cannot map any device as belonging to each other or draw
+inferences from their behavior. The cloud
+provider, however, can learn this. \sonja{expand to other users?}
 \end{itemize} 
 
-\paragraph*{In the \name setting} when changing from the cloud setting
-to \ac{P2P}, we want to keep the privacy that Alice and Bob already
-enjoyed through the cloud provider, and go a step further by removing 
-the cloud provider that may act as a spy. However, this increased privacy
-should not be done to the benefit of the user's friends that may
-become the most powerful potential attackers, and act
-as an adversary type of friends.
-In this context, in \name, we want to protect users from friendly
-surveillance~\cite{FriendlySurveillance} in an honest-but-curious setting.
+\paragraph*{In the \ac{P2P} setting} we want to keep the privacy that
+Alice and Bob already enjoyed thanks to the cloud provider functioning
+as a gatekeeper toward each other and other users. We go a step
+further by removing the cloud provider that may draw inferences from
+metadata even when the data itself is encrypted. Removing the provider
+also removes the gatekeeping which needs to be compensated for to
+protect users from friendly surveillance~\cite{FriendlySurveillance}
+by peers (other \name users including Alice and Bob)\sonja{removed: in
+  an honest-but-curious setting}. We give the definitions for the
+security and privacy properties of \name in Section~\ref{security-discussion}. 
 
-However, we will not consider a global network adversary, only subsets of colluding 
-parties. We know that it is notoriously difficult to achieve security against a global 
-network adversary~\cite{SystemsForAnonymousCommunication}.
+\paragraph*{In the \name setting} we combine the requirements from
+the \ac{P2P} setting with those from onion routing for anonymity.
+Camenisch and Lysianskaya \cite{} define security properties for onion
+routing: correctness, integrity, security (wrap resistance,
+indistinguishability). These properties cover the concerns about
+revealing to others that Alice shares a file with Bob in the first
+place. In \name, we additionally derive the property of
+device-unlinkability from the \ac{P2P} requirements, meaning that
+using \name does not reveal the \squad a device belongs to nor the
+owner and can thus not infer anything about a user's behavior such as
+being online.
+
+\paragraph*{Adversary model} we share the model by Tor \cite{} and
+Sphinx \cite{}: the adversary has complete control over some part of
+the network as well as some of the nodes. We not consider a passive
+global network adversary, against which it is notoriously difficult to
+achieve security~\cite{SystemsForAnonymousCommunication}.
