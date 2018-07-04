@@ -1,6 +1,43 @@
 \section{Sphinxes: the Sphinx header format Extended for Sets of nodes}%
 \label{Sphinxes}
 
-\Textcite{Sphinx} designed \iac{UC} secure message format for mixes based on 
-the formal definitions of \textcite{CLOnionRouting}.
+\Textcite{Sphinx} designed \iac{UC} secure message format for mixes.
+Since it is \ac{UC} secure, it provably implements an ideal onion routing 
+functionality.
+\Ie, it provides bitwise unlinkability on the forward route, hides the path 
+length, makes replies indistinguishable from forward messages and resists 
+tagging attacks.
+It is also compact with only 224 bytes of header for a five-hop path with 
+128-bit security.
+Sphinx only provides one node per onion layer, in this section we extend Sphinx 
+to Sphinxes, which allows for multiple nodes per onion layer.
+
+\subsection{The Sphinx header format}
+
+\NewVariable{\sk}{sk}
+\NewVariable{\pk}{pk}
+
+Each node \(n\) in the system has a public-key pair: private key \(\sk_n\in 
+  \ZZ_q^*\) and public key \(\pk_n = g^{\sk_n}\in G\), where \(g\) generates a 
+group \(G\) of prime order \(q\).
+
+The Sphinx header is a triple \((\alpha_1, \beta_1, \gamma_1)\), where 
+\(\alpha_1\) is \iac{DHKE} exponent (\(g^x\)), \(\beta_1\) is the encrypted 
+routing data and \(\gamma_1\) is \iac{MAC} for \(\beta_1\).
+The payload data, \(\delta\), is treated separately from the header.
+
+The first node in the path, with keys \((\pk_1, \sk_1)\), will compute the 
+shared secret \(s_1 = \alpha_1^{\sk_1}\), \ie complete the \ac{DHKE} round.
+Since \(\pk_1\) is an authenticated key, the sender can be sure that only this 
+particular node can process the first layer of the onion.
+
+The derived shared secret \(s_1\) is then used to derive various keys.
+One of them is the key for the \ac{MAC} (\(gamma_1\)) to verify the integrity 
+of the header (\(\beta_1\)).
+If \(\beta_1\) is correct, another key is derived from \(s_1\) to decrypt 
+\(\beta_1\).
+
+\subsection{The Sphinxes extension}
+
+\dots
 
