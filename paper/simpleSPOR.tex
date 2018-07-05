@@ -1,0 +1,143 @@
+\onecolumn
+\section{Simple SPOR, differences to TOR}
+\begin{verbatim}
+Names: source S, destination D, intermediate node (set) I, rendezvous point R, file f, secret symmetric key k_s, threshold t,  a node's public key for ANOBE k_p_j
+
+Simple Tor:
+1) S: get I from directory
+2) set up circuit (via key agreements with each I_i)
+3) send/receive in circuit via onion (constructed by encrypting packet for each layer, next hop outermost)
+
+Simple SPOR:
+
+out of band:
+1) S tells D: want to send f, metadata(f)
+2) D tells S: here's the onion_D(R_D) (path from R_D to D)
+Onion(R_D, Onion(I_1, Onion(I_2, Onion(D, payload))))
+3) agreement on k_s to encrypt f
+
+To construct an onion:
+
+1)  get I from random peer sampling (request until P(all nodes in set I_i down)<t)
+2)  get keys for all nodes in I
+3) for each I_i, encrypt for all nodes in I_i, using k_p_j
+3) for each I_i, choose 1 node (at random) to send to
+
+File sharing:
+1) out of band communication
+2) S creates onion for path from R_S to S:
+Onion(R_S, Onion(I_1, Onion(I_2, Onion(S, payload))))
+
+3) S creates onion for path to R_D, thus path from S to D
+
+Onion(S, Onion(I_1, Onion(I_2, Onion(R_D, Onion(I_1, Onion(I_2, Onion(D, payload)))))))
+
+4) S uses 3) to send payload 2) (path R_S to S) to D 
+
+5) S sends enc_k_s(f) to D, as payload in 3)
+
+6) D creates onion for path from D to R_S, thus path from D to S
+
+Onion(D, Onion(I_1, Onion(I_2, Onion(R_S, Onion(I_1, Onion(I_2, Onion(S, payload)))))))
+
+7) D sends acknowledgment to S along (as payload in) 5) upon receipt of f
+
+
+Web browsing:
+
+1) last node before web server W (exit node) is treated as R_S
+
+2) S creates onion for path from exit to S
+Onion(R_S, Onion(I_1, Onion(I_2, Onion(S, payload))))
+
+3) S creates onion for path from S to W via exit
+Onion(S, Onion(I_1, Onion(I_2, Onion(R_S, Onion(W, payload)))))
+
+4) S sends 2) along (as payload in) 3), with http request for server
+
+Note: need to figure out how Tor sends both return onion and request, then do the same here.
+
+5) R_S forwards http request to W, via http(s)/TCP
+
+6) W responds to R_S
+
+7) R_S forwards response to S as payload to 2). (R_S keeps 2) as W is not part of SPOR) 
+
+Assumptions/questions:
+- choice of t, based on what? Will be informed by performance analysis.
+
+- set of peers for RPS, all peers in the world or possible restrictions. Restrictions possible by FilteredView but loss of security (more predictable, vulnerable to Sibyl)
+
+- RPS gives ID(=address?), public key (ANOBE), probability of availability. Note: take into account Sibyl attacks. Probility of availability currently average, but could be different [1], etc. Problem with public key by RPS is what authentication we can achieve. \Eg 
+can Mallory change the public key corresponding to some other node's 
+address and thus man-in-the-middle that node? I think this is also 
+reduced to the RPS we use.
+
+- metadata(f) is size, digest. Note: possibly only digest.[2]
+
+- only one ack upon whole file receipt, time-outs for retry at S and D. [2]
+
+- time-outs derived from file size, availability? Adrien: This is a problem I want to address. When does S starts resending chunks that it already shared? This has a great impact on the network cost of the overall file exchange.
+
+- TCP between hops (S to I_1 ... to D). Reason: joint probability for loss too high for UDP and maybe we want the chunk size larger than UDP can handle in one package.
+
+- web browsing not stateless at exit node, even possible
+
+- ANOBE encrypts for all, non-recipients get nonsense. But here we only encrypt for set of nodes in I_i. Note: current plan to use Sphinx and modify it to allow sets of nodes (encryption from ANOBE)
+
+
+Comparison between Tor and SPOR:
+- SPOR file sharing similar to Tor hidden service
+- Tor web browsing similar to Spor
+- Tor stateful (circuits), SPOR stateless
+- SPOR layers are sets of nodes, Tor layers are single nodes.
+- SPOR allows for parallelism (bottlenecks only at S and D). Whereas Tor bottlenecks at the node in the circuit with the lowest 
+bandwidth.
+- Tor infrastracture, SPOR decentralized
+- SPOR allows any node intor relay directory. Anyone can enter. Then they receive different ranks based on "good behaviour". They also monitor the nodes and kick out suspicious nodes.
+- SPOR chooses routes informed by availability prediction to minimize churn (prevention)
+- SPOR can do local repairs (future work?) to cope with churn (detection, response, recovery). Already now: if node not available, choose another from the set to send to. Problem in current version if node is available but then crashes. [3]
+- SPOR can limit location, e.g. within a country? Would help with availability and uniform distribution of chosen nodes again due to lack of a-priori differences in availability in same time zone.
+- Tor sender anonymity, SPOR file sharing sender-receiver anonymity (ID of device, not user as there's out-of-band communication), but the more fair analogy is probably with hidden services, where there should be sender-receiver anonymity also in Tor. Only sender anonymity when SPOR is used for web browsing.
+
+
+
+[1] Adrien: Using a vector introduces discrete time, which I would prefer to avoid.
+And our prediction model won't produce significantly different results
+for P(online at t+1) and P(online at T+infinity). I was thus thinking of
+using only P(online at t+1) as a general "P(online in the future)"
+predictor. A better prediction model would be future work (not our
+point: just plug your own prediction model).
+
+[2]
+Daniel: We could let the digest be the digest of each chunk. Then we get the ordering of the chunks as well. (\Ie the metadata is equivalent to a torrent file.) Then the ack could be a bitmap of which chunks are received. This is good for efficiency but opens up for attacks. However, the damage of this is not as bad as for mixes (or Tor), since the retransmission will *probably* not take the same route.
+Adrien: We take inspiration from BitTorrent. They chunk files in fixed-size
+pieces, make a SHA1 hash of each piece, and a hash of the previous
+hashes. This is all we need to share. We can even share it in-band,
+during your point 4) in file-sharing. Thus, we only need to exchange a
+file identifier out of band.
+
+[3] from Daniel's mail. (remark by Sonja: I don't know what the original v. current versions are)
+Our local repairs are more limited when we have onion_D for acks. Then 
+acks must be handled on a S--D basis.
+
+Consider node I_i successfully transfers the chunk to I_{i+1}. Now 
+I_{i+1} crashes before transferring the chunk to I_{i+2}. I_i cannot 
+detect this, it must be detected by and solved by S and D.
+
+With the original design I_i would detect this and resend the chunk to 
+I_{i+1}'. In this case, I_i would also resend the chunk if I_{i+1} 
+crashed after *successfully* transferring the chunk to I_{i+2}. So D 
+would end up with receiving two copies of the chunk.
+
+I still think that the original design is better from a privacy 
+perspective as it hides S a bit more. The new design makes S and D more 
+visible as any retransmission will force them to take action.
+
+Adrien: We do handle repair. If I_{i} is down, there was a t (parameter)
+probability that it would happen. This shouldn't last long, since t lies
+around 10^-3. We don't change the route once it's created; it is crafted
+for reliability from the ground up.
+
+
+\end{verbatim}
