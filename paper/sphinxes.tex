@@ -86,3 +86,11 @@ Then \(C_i = c_i^{(1)}\concat \dotsb\concat c_i^{(m)}\) is the concatenation of
 ciphertexts \(c_i^{(j)} = \Enc[_{s_i^{(j)}}][s_i]\), where \(\Enc\) is 
 \iac{SKE} algorithm and each ciphertext contains the shared secret \(s_i\) 
 encrypted under the individual keys \(s_i^{(j)}\). 
+
+When a node receives this new header, it will compute \(s_i^{(j)}\gets 
+  \alpha_i^{\sk_i^{(j)}}\).
+Then, it will try to decrypt each ciphertext component \(c_i^{(k)}\) of \(C_i\) 
+to get \(\hat s_i\).
+If \iac{MAC} key that successfully verifies \(\beta_i\) using \(\gamma_i\) can 
+be derived from \(\hat s_i\), then the node knows that \(\hat s_i = s_i\).
+
