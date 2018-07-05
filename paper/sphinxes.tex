@@ -44,9 +44,14 @@ The derived shared secret \(s_1\) is then used to derive various keys.
 One of them is the key for the \ac{MAC} (\(gamma_1\)) to verify the integrity 
 of the header (\(\beta_1\)).
 If \(\beta_1\) is correct, another key is derived from \(s_1\) to decrypt 
-\(\beta_1\) (padded with zeroes to keep the length constant) to get 
-\(d_2\concat \gamma_2\concat \beta_2\), where \(d_2\) is the address of the 
-second node in the path.
+\(\beta_1\) to get \(d_2\concat \gamma_2\concat \beta_2\), where \(d_2\) is the 
+address of the second node in the path.
+
+We note that \(\beta_i\) is encrypted using a stream cipher.
+Thus we can append zeroes before decryption to keep the ciphertext length 
+constant.
+Since we append \emph{before} decryption, those appended zeroes will look 
+completely random to the next node, thus the position on the path is hidden.
 
 Finally, \(\alpha_1\) is blinded into \(\alpha_2\) with a key derived from 
 \(s_1\).
