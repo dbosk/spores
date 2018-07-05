@@ -7,7 +7,7 @@
 
 \newcommand{\annote}[3]{{%
 		\colorbox{#3}{\bfseries\sffamily\footnotesize\textcolor{white}{#2}}
-		\color{#3}
+		\color{#3}\footnotesize
 		% \ifthenelse{\equal{#1}{}}{[\scshape #2]}{
 		$\blacktriangleright$\textit{#1}$\blacktriangleleft$}
 }
@@ -36,6 +36,7 @@
 \newcommand{\commentAL}[1]{\annote{#1}{AL}{blue}}
 \newcommand{\david}[1]{\annote{#1}{David}{red}}
 \newcommand{\commentFT}[1]{\annote{#1}{FT}{brown}}
+\newcommand{\changeFT}[1]{\change{#1}{FT}{brown}}
 \newcommand{\sonja}[1]{\annote{#1}{Sonja}{violet}}
 
 %% Uncomment for final version
