@@ -12,8 +12,17 @@ It is also compact with only 224 bytes of header for a five-hop path with
 128-bit security.
 Sphinx only provides one node per onion layer, in this section we extend Sphinx 
 to Sphinxes, which allows for multiple nodes per onion layer.
+(See \cref{fig:OR-POR}.)
 
-\subsection{Overview of the Sphinx header format}
+\begin{figure}
+  \includegraphics[width=\linewidth]{figures/OR-POR.png}
+  \caption{\label{fig:OR-POR}%
+    Illustration of the conceptual difference to traditional onion routing and 
+    mixing.
+  }
+\end{figure}
+
+\subsubsection{Overview of the Sphinx header format}
 
 We will now give an overview of the Sphinx header format.
 The idea is not to give a detailed description of Sphinx, but to to give the 
