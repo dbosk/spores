@@ -1,4 +1,4 @@
-\section{Sphinxes: the Sphinx header format Extended for Sets of nodes}%
+\subsection{Sphinxes: the Sphinx header format Extended for Sets of nodes}%
 \label{Sphinxes}
 
 \Textcite{Sphinx} designed \iac{UC} secure message format for mixes, called 
@@ -70,7 +70,7 @@ address \(d_2\).
 When node \(n\) discovers \(d_{n+1} = *\) it knows that the message is intended 
 for itself and thus stops the forwarding.
 
-\subsection{The Sphinxes extension for sets of nodes}
+\subsubsection{The Sphinxes extension for sets of nodes}
 
 \NewAlgorithm{\Enc}{Enc}
 
@@ -102,4 +102,8 @@ Then, it will try to decrypt each ciphertext component \(c_i^{(k)}\) of \(C_i\)
 to get \(\hat s_i\).
 If \iac{MAC} key that successfully verifies \(\beta_i\) using \(\gamma_i\) can 
 be derived from \(\hat s_i\), then the node knows that \(\hat s_i = s_i\).
+
+
+\subsubsection{Sphinxes algorithms}
+
 
