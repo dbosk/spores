@@ -13,18 +13,26 @@ It is also compact with only 224 bytes of header for a five-hop path with
 Sphinx only provides one node per onion layer, in this section we extend Sphinx 
 to Sphinxes, which allows for multiple nodes per onion layer.
 
-\subsection{The Sphinx header format}
+\subsection{Overview of the Sphinx header format}
+
+We will now give an overview of the Sphinx header format.
+The idea is not to give a detailed description of Sphinx, but to to give the 
+reader enough understanding of Sphinx to understand the changes we make to 
+achieve Sphinxes.
+For a more detailed understanding of Sphinx, we refer the reader to the 
+excellent description in the original Sphinx paper~\cite{Sphinx}.
 
 \NewVariable{\sk}{sk}
 \NewVariable{\pk}{pk}
 
-Each node \(n\) in the system has a public-key pair: private key \(\sk_n\in 
-  \ZZ_q^*\) and public key \(\pk_n = g^{\sk_n}\in G\), where \(g\) generates a 
-group \(G\) of prime order \(q\).
+Each node \(n\) in the system has a long-term public-key pair: private key 
+\(\sk_n\in \ZZ_q^*\) and public key \(\pk_n = g^{\sk_n}\in G\), where \(g\) 
+generates a group \(G\) of prime order \(q\).
 
-The Sphinx header is a triple \((\alpha_1, \beta_1, \gamma_1)\), where 
-\(\alpha_1\) is \iac{DHKE} exponent (\(g^x\)), \(\beta_1\) is the encrypted 
-routing data and \(\gamma_1\) is \iac{MAC} for \(\beta_1\).
+The Sphinx header (for the first node) is a triple \((\alpha_1, \beta_1, 
+  \gamma_1)\), where \(\alpha_1\) is \iac{DHKE} exponent (\(g^x\), where \(x\) 
+is a short-term secret chosen randomly for each header), \(\beta_1\) is the 
+encrypted routing data and \(\gamma_1\) is \iac{MAC} for \(\beta_1\).
 The payload data, \(\delta\), is treated separately from the header.
 
 The first node in the path, with keys \((\pk_1, \sk_1)\), will compute the 
@@ -36,7 +44,17 @@ The derived shared secret \(s_1\) is then used to derive various keys.
 One of them is the key for the \ac{MAC} (\(gamma_1\)) to verify the integrity 
 of the header (\(\beta_1\)).
 If \(\beta_1\) is correct, another key is derived from \(s_1\) to decrypt 
-\(\beta_1\).
+\(\beta_1\) (padded with zeroes to keep the length constant) to get 
+\(d_2\concat \gamma_2\concat \beta_2\), where \(d_2\) is the address of the 
+second node in the path.
+
+Finally, \(\alpha_1\) is blinded into \(\alpha_2\) with a key derived from 
+\(s_1\).
+Then the triple \((\alpha_2, \beta_2, \gamma_2)\) are sent to the node with 
+address \(d_2\).
+
+When node \(n\) discovers \(d_{n+1} = *\) it knows that the message is intended 
+for itself and thus stops the forwarding.
 
 \subsection{The Sphinxes extension}
 
