@@ -61,7 +61,28 @@ address \(d_2\).
 When node \(n\) discovers \(d_{n+1} = *\) it knows that the message is intended 
 for itself and thus stops the forwarding.
 
-\subsection{The Sphinxes extension}
+\subsection{The Sphinxes extension for sets of nodes}
 
-\dots
+\NewAlgorithm{\Enc}{Enc}
 
+We will now extend Sphinx: instead of providing only \(d_{i+1}\) in 
+\(\beta_i\), we will have a set \(\{d_{i+1}^{(0)}, \dotsc, d_{i+1}^{(m)}\}\) of 
+\(m\) alternative next nodes.
+This means that all \(m\) nodes must be able to compute the same shared secret 
+\(s_{i+1}\).
+We do this by adding one layer of indirection.
+
+In Sphinx we denoted the public key for layer \(i\) as \(\pk_i\).
+Since we have \(m\) alternative nodes with different keys, let us denote them 
+by \(\pk_i^{(1)}, \dotsc, \pk_i^{(m)}\).
+
+We extend the header to a quadruple \((\alpha_i, C_i, \beta_i, \gamma_i)\), 
+where \(\alpha_i, \beta_i, \gamma_i\) are the same as before.
+We let the shared secret \(s_i\) be chosen uniformly randomly instead of being 
+computed as \(\alpha_i^{\sk_i}\).
+We now compute one shared secret per alternative node, \ie \(s_i^{(j)} = 
+  \alpha_i^{\sk_i^{(j)}}\) for \(1\leq j\leq m\).
+Then \(C_i = c_i^{(1)}\concat \dotsb\concat c_i^{(m)}\) is the concatenation of 
+ciphertexts \(c_i^{(j)} = \Enc[_{s_i^{(j)}}][s_i]\), where \(\Enc\) is 
+\iac{SKE} algorithm and each ciphertext contains the shared secret \(s_i\) 
+encrypted under the individual keys \(s_i^{(j)}\). 
