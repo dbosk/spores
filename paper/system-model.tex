@@ -1,12 +1,14 @@
+% -*- tex-main-file: "contents.tex" compile-command: "pdflatex -halt-on-error p2p-private-cloud.tex > /dev/null" ispell-dictionary: "american" -*-
+
 \section{System model, adversary model and desired privacy properties}%
 \label{system-model}
 
-\name is a distributed system made of users' devices. 
-Each device can communicate with any other device that it knows the
-address for (\eg using the Internet). All devices belonging to one user
- know which other devices belong to the same user, \ie the \squad.
-Thus, the devices from an \squad only know the mapping from devices to users for the devices in 
-the \squad they belong to.
+\name provides a private and fully decentralized file sharing service by exploiting 
+%% is a distributed system made of
+users' devices. 
+We assume any two devices can communicate with one another as soon as one knows the address of the other (\eg using the Internet, \changeFT{possibly extended with NAT traversal techniques}). The devices owned by the same user (this user's \squad) know of each other.
+%Thus, the devices from an \squad only know the mapping from devices to users for the devices in 
+% the \squad they belong to.
 We also assume that users can exchange some limited amounts of data 
 out-of-band, \ie through some other channel than the network just mentioned (\eg 
 using \ac{NFC} or QR codes).
@@ -17,41 +19,60 @@ using \ac{NFC} or QR codes).
 
 %properties: cam/lys: correctness, integrity, security (wrap, indistinguishability) - do not want friends to learn 1) which devices are ours 2)  their availability (assumption: RPS, not lookup)
 
-We first describe a simple model of data sharing via cloud storage to
-highlight desirable privacy properties and then map them to our provider-less
-setting. We then add privacy properties and adversary models for onion
-routing to cover network traffic analysis.
+In the following, we first describe \changeFT{how file sharing typically occurs when users rely on a cloud storage provider. We use this simple use case}
+%a simple model of data sharing via cloud storage
+to
+highlight some of the desirable privacy properties of a file sharing service, before mapping them into our \changeFT{fully decentralized (a.k.a P2P)}
+context. 
+We finally consider the additional privacy properties required to protect users from  network traffic analysis, which we propose to address through onion
+routing, and detail our adversary model. \commentFT{I wasn't sure how to position onion routing: to me it is more a solution than a problem specification, and since we are describing what we want here (spec./problem space) I wasn't sure how much to highlight onion routing (solution space).} \commentFT{Terminology: Do we use both `fully decentralized' and `P2P', or do we favor one over the other?}
 
-\paragraph*{In the cloud setting} if Alice wants to share a file with
-Bob, she picks up and pushes one of her files, from one of her devices, to the cloud
-provider, to make it available to Bob to download to
-one of his devices. The use of the cloud provider, as a third party,
-provides two main privacy properties, which we have to consider when
-changing the setting to that of \ac{P2P}~\cite{DevilInMetadata}:
+% We then add privacy properties and adversary models for onion
+% routing to cover network traffic analysis.
+
+\subsection{File sharing through a cloud storage provider}
+\commentFT{Moving to subsections, to better highlight structure}
+
+When sharing a file with Bob through a cloud provider, Alice only needs to upload this file from one of her devices to the cloud, and \changeFT{share a link to this file with Bob}. Bob in turn can download this file through the transmitted link onto one of his devices.
+
+The use of the cloud provider, as a third party,
+provides two main privacy properties, which we \changeFT{should preserve} when
+moving to a \ac{P2P}~\cite{DevilInMetadata} setting:
 \begin{itemize}
-\item Alice and Bob are the only ones \sonja{narrow down to users?} who learn 
-about Alice sharing a file with Bob, except for the cloud provider.
-\item Alice and Bob learn nothing about each others' devices, \ie 
-they cannot map any device as belonging to each other or draw
-inferences from their behavior. The cloud
-provider, however, can learn this. \sonja{expand to other users?}
+\item Except for the cloud provider, Alice and Bob are the only \changeFT{users} who learn 
+about Alice sharing a file with Bob. \sonja{narrow down to users?} \commentFT{Changed to users: we could also use entities/participants}
+\item
+  The composition and behavior of Alice and Bob's \squad remain hidden to each other, and to other users. I.e. Alice does not learn which devices Bob owns or uses, let alone how Bob uses them, and reciprocally. 
+%%   Alice and Bob learn nothing about each others' devices, \ie 
+%% they cannot map any device as belonging to each other or draw
+%% inferences from their behavior.
+The cloud provider, however, \changeFT{knows this information}. \sonja{expand to other users?} \commentFT{Done}
 \end{itemize} 
 
-\paragraph*{In the \ac{P2P} setting} we want to keep the privacy that
-Alice and Bob already enjoyed thanks to the cloud provider functioning
-as a gatekeeper toward each other and other users. We go a step
-further by removing the cloud provider that may draw inferences from
-metadata even when the data itself is encrypted. Removing the provider
-also removes the gatekeeping which needs to be compensated for to
-protect users from friendly surveillance~\cite{FriendlySurveillance}
-by peers (other \name users including Alice and Bob)\sonja{removed: in
-  an honest-but-curious setting}. We give the definitions for the
-security and privacy properties of \name in Section~\ref{security-discussion}. 
+\subsection{Moving to a P2P environment}
+A private P2P file sharing solution should retain
+%% We want to keep
+the privacy that
+Alice and Bob already enjoy when a cloud provider functions
+as a gatekeeper towards each other and other users.
+\changeFT{Eschewing a cloud provider, as we propose to do, removes the privacy risks associated with a central brokering entity,}
+% We go a step further by removing the cloud provider that may draw inferences from metadata even when the data itself is encrypted.
+%Unfortunately, removing the cloud provider
+\changeFT{but} also removes the gatekeeping a cloud provider provides, \changeFT{and exposes} users to friendly surveillance~\cite{FriendlySurveillance}
+by other peers (other \name users including Alice and Bob). \sonja{removed: in
+  an honest-but-curious setting}
+\commentFT{Removed, as did not fit with the flow, but probably needed somewhere: `We give the definitions for the
+security and privacy properties of \name in Section~\ref{security-discussion}.'} \changeFT{In particular other users might collude to observe some of the traffic, and gain knowledge regarding Alice's and Bob's interactions, the devices they own, and how they use them.}
 
-\paragraph*{In the \name setting} we combine the requirements from
-the \ac{P2P} setting with those from onion routing for anonymity.
-Camenisch and Lysianskaya \cite{} define security properties for onion
-routing: correctness, integrity, security (wrap resistance,
+%\subsection{Protecting against network traffic analysis in \name}
+\subsection{The privacy properties and adversary model of \name}
+
+Friendly surveillance can be mitigated by ensuring security properties typically associated with onion routing \cite{[Camenisch and Lysianskaya]}{}: 
+% We combine the requirements from
+% the \ac{P2P} setting with those from onion routing for anonymity.
+% Camenisch and Lysianskaya \cite{} define security properties for onion
+% routing:
+correctness, integrity, security (wrap resistance,
 indistinguishability). These properties cover the concerns about
 revealing to others that Alice shares a file with Bob in the first
 place. In \name, we additionally derive the property of
@@ -60,7 +81,7 @@ using \name does not reveal the \squad a device belongs to nor the
 owner and can thus not infer anything about a user's behavior such as
 being online.
 
-\paragraph*{Adversary model} we share the model by Tor \cite{} and
+\paragraph*{Adversary model} To assess our approach, we use the adversary model assumed by by Tor \cite{} and
 Sphinx \cite{}: the adversary has complete control over some part of
 the network as well as some of the nodes. We not consider a passive
 global network adversary, against which it is notoriously difficult to
