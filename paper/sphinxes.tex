@@ -74,9 +74,9 @@ for itself and thus stops the forwarding.
 
 \NewAlgorithm{\Enc}{Enc}
 
-We will now extend Sphinx: instead of providing only \(d_{i+1}\) in 
-\(\beta_i\), we will have a set \(\{d_{i+1}^{(0)}, \dotsc, d_{i+1}^{(m)}\}\) of 
-\(m\) alternative next nodes.
+We will now extend Sphinx to do \ac{POR}: instead of providing only \(d_{i+1}\) 
+in \(\beta_i\), we will have a set \(\{d_{i+1}^{(0)}, \dotsc, d_{i+1}^{(m)}\}\) 
+of \(m\) alternative next nodes.
 This means that all \(m\) nodes must be able to compute the same shared secret 
 \(s_{i+1}\).
 We do this by adding one layer of indirection.
@@ -104,7 +104,7 @@ If \iac{MAC} key that successfully verifies \(\beta_i\) using \(\gamma_i\) can
 be derived from \(\hat s_i\), then the node knows that \(\hat s_i = s_i\).
 
 
-\subsubsection{Sphinxes algorithms}
+\subsubsection{Sphinxes algorithms and \acf*{POR}}
 
 \NewScheme{\Sphinxes}{Sphxs}
 \NewAlgorithm{\CreateHeader}{\Sphinxes[CreateHeader]}
@@ -114,8 +114,9 @@ be derived from \(\hat s_i\), then the node knows that \(\hat s_i = s_i\).
 
 Sphinxes provides the following algorithms:
 \begin{itemize}
-  \item \(\CreateHeader\) \dots
-  \item \(\CreateFwd\) \dots
-  \item \(\CreateRe\) \dots
-  \item \(\Process\) \dots
+  \item \(\CreateHeader\) \dots~\cite[\S 3.2]{Sphinx}.
+  \item \(\CreateFwd\) \dots~\cite[\S 3.3]{Sphinx}.
+  \item \(\CreateRe\) \dots~\cite[\S 3.4]{Sphinx}.
+  \item \(\Process\) \dots~\cite[\S 3.6, \S 3.7]{Sphinx}.
 \end{itemize}
+
