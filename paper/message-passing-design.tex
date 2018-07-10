@@ -1,3 +1,5 @@
+% -*- tex-main-file: "contents.tex" compile-command: "pdflatex -halt-on-error p2p-private-cloud.tex > /dev/null" ispell-dictionary: "american" -*-
+
 \NewScheme{\SPOR}{SPOR}
 
 \subsection{Message Passing through Predictive Onion Routes (PORs)}
@@ -6,7 +8,7 @@
 \NewAlgorithm{\Send}{Send}
 \NewAlgorithm{\Fwd}{Forward}
 \NewAlgorithm{\Recv}{Receive}
-\NewVariable{\rdv}{rdv}
+\NewVariable{\rdv}{\mathit{rdv}}
 
 In contrast to Tor~\cite{Tor} that provides only one address per hop
 in the route, \name provides for each layer of the onion several
@@ -97,11 +99,88 @@ its\squad.
 \NewAlgorithm{\CreateOnionLayer}{CreateOnionLayer}
 
 
-\begin{figure}
+
+\NewAlgorithm{\Dec}{Dec}
+\NewVariable{\sk}{sk}
+
+\begin{figure}[tbh]
+  \framebox{\begin{minipage}{0.96\linewidth}
+  \begin{algorithmic}[1]
+    \footnotesize
+    %\scriptsize
+    \Require{%
+      $D$ is the set of alternative recipient devices.
+    }
+    \Function{\Recv}{$D$}
+      \State $H_\rdv\gets \ExtendRoute[D\concat \changeBisFT{\DeBEenc[\mpk, D, \top]}, L, \theta]$
+      \State \Return $H_\rdv$
+        \Comment{Give to sender out-of-bound.}
+    \EndFunction
+    \vspace{0.3em}
+    \Require{%
+      $m$, the message, and
+      $H_\rdv$, the onion route to the recipient
+    }
+    \Function{\Send}{$H_\rdv,m$}
+      \State $H\gets \ExtendRoute[H_\rdv, L, \theta]$
+      \State $D\concat C_H\gets H$  \changeBisFT{\Comment{Grabbing first hop}}
+      \For{$d\in D$}
+        \Comment{Uniformly randomly chosen}
+        % FT10Jul18: \Fwd is now an asynchronous RPS, so no return value
+        \State \changeBisFT{$d\method \Fwd[C_H, m]$ \Comment{Asynchronous RPC}}
+        %\If{$d\method \Fwd[C_H, m] \neq \bot$}
+        %  \State \Return $\top$
+        %\EndIf
+      \EndFor
+      %\State \Return $\bot$
+    \EndFunction
+    \vspace{0.3em}
+    \Require{$\sk$ is the private key-pair of the current node.}
+    \Function{\Fwd}{$C_H, m$}
+      \State $H\gets \DeBEdec[\mpk, \sk, C_H]$
+      % FT10Jul18: the \bot and \top return values do not seem to be
+      % used, so dropping them
+      \If{\changeBisFT{$H = \top$}}
+        \changeBisFT{\Comment{End of the route, the current node $\in D$}}
+        \State \changeBisFT{$\Store[m]$}
+      \Else
+        \State $\{d_i\}\concat C_H'\gets H$ \changeBisFT{\Comment{Grabbing next hop}}
+        %\If{$C_H' = \top$}
+        %  \State \Return $\Store[m]$
+        %\EndIf
+        \For{$d\in \{d_i\}$}
+          \Comment{Uniformly randomly chosen}
+          % FT10Jul18: \Fwd is now an asynchronous RPS, so no return value
+          \State \changeBisFT{$d\method \Fwd[C_H, m]$ \Comment{Asynchronous RPC}}
+          %\If{$d\method \Fwd[C_H, m] \neq \bot$}
+          %  \State \Return $\top$
+          %\EndIf
+        \EndFor
+      \EndIf
+%      \State \Return $\bot$
+    \EndFunction
+    \Function{\Store}{$m$}
+      \State $\changeBisFT{m_{\mathrm{clear}}}\gets \DeBEdec[\mpk, \sk, \changeBisFT{m}]$
+      %% \If{$m = \bot$}
+      %%   \State \Return $\bot$
+      %% \EndIf
+      \State Store $\changeBisFT{m_{\mathrm{clear}}}$ to disk.
+%      \State \Return %$\top$
+    \EndFunction
+  \end{algorithmic}
+  \end{minipage}}
+  \caption{\label{SPORFwd}%
+    \scriptsize
+    The \(\Recv\) (prepares the recipient for receiving a file), \(\Send\) and \(\Fwd\) (forwards \(m\) down the route \(H\)) algorithms.
+  }
+\end{figure}
+
+\begin{figure}[tbh]
 \framebox{\begin{minipage}{0.96\linewidth}
   \begin{algorithmic}[1]
-\scriptsize
-    \Function{\ExtendRoute}{$H, L$}
+\footnotesize
+%\scriptsize
+    \Function{\ExtendRoute}{$H, L, \theta$}
       \If{$L\leq 0$}
         \State \Return $H$
       \EndIf
@@ -124,89 +203,6 @@ its\squad.
   \caption{\label{ExtendRoute}%
     \scriptsize
     The \(\ExtendRoute\) algorithm extends a route \(H\)
-  }
-\end{figure}
-
-
-\NewAlgorithm{\Dec}{Dec}
-\NewVariable{\sk}{sk}
-
-\begin{figure}
-  \framebox{\begin{minipage}{0.96\linewidth}
-  \begin{algorithmic}
-\scriptsize
-    \Require{%
-      $D$ is the set of alternative recipient devices.
-    }
-    \Function{\Recv}{$D$}
-      \State $H_\rdv\gets \ExtendRoute[D\concat \top, L, \theta]$
-      \State \Return $H_\rdv$
-        \Comment{Give to sender out-of-bound.}
-    \EndFunction
-  \end{algorithmic}
-  %\end{minipage}}
-%   \caption{\label{SPORFwd}%
-% \scriptsize
-%     The \(\Recv\) algorithm prepares the recipient for receiving a file.
-%   }
-  %\framebox{\begin{minipage}{0.96\linewidth}
-  \begin{algorithmic}
-\scriptsize
-    \Require{%
-      $m$ is the message to be sent,
-      $H$ is the onion-route given by the recipient.
-    }
-    \Function{\Send}{$H,m$}
-      \State $H\gets \ExtendRoute[H, L, \theta]$
-      \State $D\concat C_H\gets H_\rdv$
-      \For{$d\in D$}
-        \Comment{Uniformly randomly chosen}
-        \If{$d\method \Fwd[C_H, m] \neq \bot$}
-          \State \Return $\top$
-        \EndIf
-      \EndFor
-      \State \Return $\bot$
-    \EndFunction
-  \end{algorithmic}
-  %\end{minipage}}
-  % \caption{\label{SPORFwd}%
-  %   \scriptsize
-  %   The \(\Recv\), \(\Send\) and \(\Fwd\) algorithms.
-  % }
- % \framebox{\begin{minipage}{0.96\linewidth}
-  \begin{algorithmic}
-\scriptsize
-    \Require{$\sk$ is the private key-pair of the current node.}
-    \Function{\Fwd}{$C_H, m$}
-      \State $H\gets \DeBEdec[\mpk, \sk, C_H]$
-      \If{$H = \bot$}
-        \State \Return $\bot$
-      \EndIf
-      \State $\{d_i\}\concat C_H'\gets H$
-      \If{$C_H' = \top$}
-        \State \Return $\Store[m]$
-      \EndIf
-      \For{$d\in \{d_i\}$}
-        \Comment{Uniformly randomly chosen}
-        \If{$d\method \Fwd[C_H', m] \neq \bot$}
-          \State \Return $\top$
-        \EndIf
-      \EndFor
-      \State \Return $\bot$
-    \EndFunction
-    \Function{\Store}{$m$}
-      \State $m\gets \DeBEdec[\mpk, \sk, c_m]$
-      \If{$m = \bot$}
-        \State \Return $\bot$
-      \EndIf
-      \State Store $m$ to disk.
-      \State \Return $\top$
-    \EndFunction
-  \end{algorithmic}
-  \end{minipage}}
-  \caption{\label{SPORFwd}%
-    \scriptsize
-    The \(\Recv\) (prepares the recipient for receiving a file), \(\Send\) and \(\Fwd\) (forwards \(m\) down the route \(H\)) algorithms.
   }
 \end{figure}
 
