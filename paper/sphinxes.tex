@@ -110,13 +110,63 @@ be derived from \(\hat s_i\), then the node knows that \(\hat s_i = s_i\).
 \NewAlgorithm{\CreateHeader}{\Sphinxes[CreateHeader]}
 \NewAlgorithm{\CreateFwd}{\Sphinxes[CreateFwd]}
 \NewAlgorithm{\CreateRe}{\Sphinxes[CreateReply]}
+\NewAlgorithm{\WrapRe}{\Sphinxes[WrapReply]}
 \NewAlgorithm{\Process}{\Sphinxes[Process]}
 
 Sphinxes provides the following algorithms:
 \begin{itemize}
-  \item \(\CreateHeader\) \dots~\cite[\S 3.2]{Sphinx}.
-  \item \(\CreateFwd\) \dots~\cite[\S 3.3]{Sphinx}.
-  \item \(\CreateRe\) \dots~\cite[\S 3.4]{Sphinx}.
-  \item \(\Process\) \dots~\cite[\S 3.6, \S 3.7]{Sphinx}.
+  \item \(\CreateHeader\) creates a header, this is a modification of that of 
+    Sphinx~\cite[\S 3.2]{Sphinx};
+  \item \(\CreateFwd\) creates a forward message, this is identical to that of 
+    Sphinx~\cite[\S 3.3]{Sphinx};
+  \item \(\CreateRe\) creates a single-use reply block, it is the same as in 
+    Sphinx~\cite[\S 3.4]{Sphinx} except that it also outputs the necessary keys 
+    to wrap it;
+  \item \(\WrapRe\) is used to wrap a given single-use reply block; finally
+  \item \(\Process\) is the algorithm for processing incoming messages, the 
+    processing is identical to Sphinx~\cite[\S 3.6, \S 3.7]{Sphinx} but uses a 
+    different interface.
 \end{itemize}
+
+\NewAlgorithm{\ExtendRoute}{ExtendRoute}
+\NewAlgorithm{\CreateOnionLayer}{CreateOnionLayer}
+
+\begin{figure}
+  \framebox{\begin{minipage}{0.96\linewidth}
+  \begin{algorithmic}[1]
+    \Require{%
+      $H$ is a header of the form \(D\concat H'\) or \(D\concat \top\), where 
+      \(D\) is a set of device addresses.
+      $\pk_D$ is the public key of device set $D$.
+      $L$ is the length of the route,
+      $\theta$ is the threshold of probability of failure.%
+    }
+    \Function{\ExtendRoute}{$H, L, \theta$}
+      \If{$L\leq 0$}
+        \State \Return $H$
+      \EndIf
+      \State $D\gets \CreateOnionLayer[\theta]$
+      \State $H\gets D\concat \DeBEenc[\mpk, D, H]$
+      \State \Return $\ExtendRoute[H, L-1, \theta]$
+    \EndFunction
+
+    \Function{\CreateOnionLayer}{$\theta$}
+      \State $(d, \pk_d, p_d)\gets \GetRandomPeer$
+      \State $D\gets \{(d, \pk_d, p_d)\}$
+      \While{$\prod_{d\in D} p_d > \theta$}
+        \State $(d, \pk_d, p_d)\gets \GetRandomPeer$
+        \State $D\gets D\cup \{(d, \pk_d, p_d)\}$
+      \EndWhile
+      \State \Return $D$
+    \EndFunction
+  \end{algorithmic}
+  \end{minipage}}
+  \caption{\label{ExtendRoute}%
+    The \(\ExtendRoute\) algorithm extends a route \(H\) with \(L\) hops and 
+    failure threshold of \(\theta\) for each hop in the route.
+    Thus the probability of failure for the extension is \(1 - (1 - \theta)^L\).
+    The function \(\GetRandomPeer\) is any random peer-sampling algorithm.
+  }
+\end{figure}
+
 

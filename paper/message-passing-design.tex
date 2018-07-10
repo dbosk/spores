@@ -1,83 +1,33 @@
+\NewScheme{\SPOR}
+
 \subsection{\Acfp*{SPOR}}%
 \label{sec:message_passing}
-
-We now describe a protocol \ac{SPOR}, which uses the \ac{POR} of Sphinxes to 
-transfer large messages from a source to a destination.
 
 \NewAlgorithm{\Send}{Send}
 \NewAlgorithm{\Fwd}{Forward}
 \NewAlgorithm{\Recv}{Receive}
 \NewVariable{\rdv}{rdv}
 
-We have the Stateless Predictive Onion Routing scheme, \POR, which provides 
-probabilistically onion-routed message passing.
-Instead of providing only one address per hop in the route (as in \eg 
-Tor~\cite{Tor}), \(\POR\) provides several alternatives for the next hop 
-depending on their probability of being online.
-To do this, \(\POR\) provides stateless algorithms for the onion-routing.
+We now describe a protocol \ac{SPOR}, which uses the \ac{POR} of Sphinxes to 
+transfer large messages from a source to a destination.
+We provide the following algorithms:
+\begin{itemize}
+  \item \(\SPOR[\Send]\) (\cref{SPORSend}).
+  \item \(\SPOR[\Fwd]\) (\cref{SPORFwd}).
+  \item \(\SPOR[\Recv]\) (\cref{SPORRecv}).
+\end{itemize}
 
-\(\POR\) provides three algorithms: \(\POR[\Send]\) (\cref{SPORSend}), 
-\(\POR[\Fwd]\) (\cref{SPORFwd}) and \(\POR[\Recv]\) (\cref{SPORRecv}).
-Say Alice wants to send a message \(m\) to Bob.
-Bob uses \(\POR[\Recv]\) to create a probabilistic onion route \(H_\rdv\) from 
-a rendez-vous point to his own device swarm --- all the hops on the route are 
-chosen by Bob uniformly at random.
-Bob gives \(H_\rdv\) to Alice using an out-of-band channel, \eg using his phone.
-Alice uses \(\POR[\Send]\) at some later time to send the message to Bob using 
-any of her devices.
-\(\POR[\Send]\) extends the route \(H_\rdv\) with some hops of Alice's choosing 
-(uniformly randomly chosen), then starts to forward the message (using 
-\(\POR[\Fwd]\)) through the hops on the route to Bob.
-This process is illustrated in \cref{fig:file-exchange}.
-
-\begin{figure}
-  \includegraphics[width=\linewidth]{figures/file_exchange_v2.pdf}
-  \caption{\label{fig:file-exchange}%
-    A schematic of Alice and Bob sending a message using \(\POR\).
-  }
-\end{figure}
-
-\NewAlgorithm{\ExtendRoute}{ExtendRoute}
-\NewAlgorithm{\CreateOnionLayer}{CreateOnionLayer}
-
-\begin{figure}
-
-  \framebox{\begin{minipage}{0.96\linewidth}
-  \begin{algorithmic}[1]
-    \Require{%
-      $H$ is a header of the form \(D\concat H'\) or \(D\concat \top\), where 
-      \(D\) is a set of device addresses.
-      $\pk_D$ is the public key of device set $D$.
-      $L$ is the length of the route,
-      $\theta$ is the threshold of probability of failure.%
-    }
-    \Function{\ExtendRoute}{$H, L, \theta$}
-      \If{$L\leq 0$}
-        \State \Return $H$
-      \EndIf
-      \State $D\gets \CreateOnionLayer[\theta]$
-      \State $H\gets D\concat \DeBEenc[\mpk, D, H]$
-      \State \Return $\ExtendRoute[H, L-1, \theta]$
-    \EndFunction
-
-    \Function{\CreateOnionLayer}{$\theta$}
-      \State $(d, \pk_d, p_d)\gets \GetRandomPeer$
-      \State $D\gets \{(d, \pk_d, p_d)\}$
-      \While{$\prod_{d\in D} p_d > \theta$}
-        \State $(d, \pk_d, p_d)\gets \GetRandomPeer$
-        \State $D\gets D\cup \{(d, \pk_d, p_d)\}$
-      \EndWhile
-      \State \Return $D$
-    \EndFunction
-  \end{algorithmic}
-  \end{minipage}}
-  \caption{\label{ExtendRoute}%
-    The \(\ExtendRoute\) algorithm extends a route \(H\) with \(L\) hops and 
-    failure threshold of \(\theta\) for each hop in the route.
-    Thus the probability of failure for the extension is \(1 - (1 - \theta)^L\).
-    The function \(\GetRandomPeer\) is any random peer-sampling algorithm.
-  }
-\end{figure}
+Say that Alice wants to send a message \(m\) to Bob.
+Bob runs the \(\SPOR[\Recv]\) algorithm and Alice runs the \(\SPOR[\Send]\) 
+algorithm.
+Bob (\ie \(\SPOR[\Recv]\)) creates a reply header using \(\CreateRe\) and gives 
+the output to Alice (\ie \(\SPOR[\Send]\)) out-of-band.
+At a later point, Alice creates a forward header using \(\CreateFwd\), attaches 
+the message \(m\) as payload and sends the package to the first node, \ie 
+invokes the \(\SPOR[\Fwd]\) algorithm on the first node (\eg as a remote 
+procedure call).
+The node will then process the package and in turn forward the package to the 
+next node, if itself is not the final destination.
 
 \NewAlgorithm{\Store}{Store}
 \NewAlgorithm{\Dec}{Dec}
@@ -170,6 +120,32 @@ This process is illustrated in \cref{fig:file-exchange}.
     The special value \(H = \top\) indicated the end of the route, thus \(c_m\) 
     is intended for the local node and \(c_m\) is instead sent to disk using 
     \(\Store\).%
+  }
+\end{figure}
+
+\subsection{\Acf*{SPORES}}
+
+\dots
+
+To create a probabilistic onion route \(H_\rdv\) from a rendez-vous point to 
+his own device swarm --- all the hops on the route are chosen by Bob uniformly 
+at random.
+Bob gives \(H_\rdv\) to Alice using an out-of-band channel, \eg using his phone.
+Alice uses \(\SPOR[\Send]\) at some later time to send the message to Bob using 
+any of her devices.
+\(\SPOR[\Send]\) extends the route \(H_\rdv\) with some hops of Alice's 
+choosing (uniformly randomly chosen), then starts to forward the message (using 
+\(\SPOR[\Fwd]\)) through the hops on the route to Bob.
+This process is illustrated in \cref{fig:file-exchange}.
+
+\begin{figure}
+  \includegraphics[width=\linewidth]{figures/file_exchange_v2.pdf}
+  \caption{\label{fig:file-exchange}%
+    A schematic of Alice and Bob sending a message using \(\SPORES\).
+    \ding{1} illustrates the layer of the headers that Alice and Bob create.
+    In \ding{2}, Alice and Bob exchange the headers out-of-band.
+    In \ding{3}, Alice and Bob use two \ac{SPOR} routes, one for messages and 
+    one for acknowledgements.
   }
 \end{figure}
 
