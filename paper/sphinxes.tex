@@ -193,32 +193,28 @@ The \(\CreateHeader\) algorithm is based on that of Sphinx~\cite[\S
 3.2]{Sphinx}.
 
 \Cref{fig:CreateHeader} summarizes the algorithm.
+\(w_L\) is the maximum width of a layer, \ie alternative nodes.
+\(w_H\) is the header width:
+layer nodes' ciphertexts and addresses ($2w_L\kappa$),
+address of next node ($\kappa$),
+\ac{MAC} ($\kappa$).
 
 We reveal the maximum number of alternatives per layer.
 But we do this in ordinary \ac{OR} too, since there is only one node per layer.
 
 First we generate all the needed keys.
 
-\begin{figure}
+\begin{figure*}
   \framebox{\begin{minipage}{0.96\linewidth}
   \begin{algorithmic}[1]
-    \Require{%
-      $I\in \bin^\kappa$ is an identifier.
-      $L = \{N_0, \dotsc, N_\nu\}$ such that $N_i, N_j\subset \N$, $N_i\cap N_j 
-      = \emptyset\}$ for $i\neq j$, and $\nu+1 = |L| \leq r$.
-      $N_\nu$ is the destination.
-    }
     \Function{\CreateHeader}{$I, L$}
       \State $w_L\gets \max_{N\in L} |N|$
-      \Comment{Maximum width of a layer, \ie alternative nodes.}
+      \Comment{Layer width}
       \State $w_H\gets (2w_L+2)$
-      \Comment{Header width:
-        layer nodes' ciphertexts and addresses ($2w_L\kappa$),
-        address of next node ($\kappa$),
-        \ac{MAC} ($\kappa$).}
+      \Comment{Header width}
       \State $(\alpha_0, s_0, C_0, b_0), \dotsc, (\alpha_\nu, s_\nu, C_\nu, 
       b_\nu)\gets \ComputeKeys[L, w_L]$
-      \State $\phi_1, \dotsc, \phi_\nu\gets \ComputePadding[\{s_1, \dotsc, 
+      \State $\phi_0, \dotsc, \phi_\nu\gets \ComputePadding[\{s_0, \dotsc, 
       s_\nu\}, w_H]$
       \State $\alpha \gets \alpha_\nu$
       \State $C\gets C_\nu$
@@ -229,40 +225,44 @@ First we generate all the needed keys.
         \prg(\hash_\prg(s_\nu)_{[0..(2w_L(r-\nu)+3)\kappa-1]}\right\}\concat 
       \phi_\nu$
       \Comment{$\beta_\nu$}
-      \State $\gamma \gets $
+      \State $\gamma \gets \mac(\hash_\mac(s_\nu), \beta)$
       \Comment{$\gamma_\nu$}
       \For{$\nu-1\leq i\leq 1$}
         \State $(\alpha, C, \beta, \gamma) \gets
           \WrapHeader[i, (\alpha, \beta, \gamma), \alpha_i, s_i, C_i, N_{i+1}, 
           w_L]$
       \EndFor
+      \State \Return $(\alpha, C, \beta, \gamma)$
     \EndFunction
 
     \Function{\WrapHeader}{$i, (\alpha_{i+1}, \beta_{i+1}, \gamma_{i+1}), 
       \alpha_i, s_i, C_i, N_{i+1}, w_L$}
-      \If{$i < 1$}
+      \If{$i < 0$}
         \Return $\bot$
       \EndIf
       \State $\beta_i \gets \{N_{i+1}, \concat \gamma_{i+1}\concat 
       (\beta_{i+1})_{[0..(w_L r-1)\kappa -1]}\}$
       \State $\gamma_i \gets \mac(\hash_\mac(s_i), \beta_i)$
-      \Return $i-1, (\alpha_i, C_i, \beta_i, \gamma_i)$
+      \State \Return $i-1, (\alpha_i, C_i, \beta_i, \gamma_i)$
     \EndFunction
   \end{algorithmic}
   \end{minipage}}
   \caption{\label{fig:CreateHeader}%
     \dots
+      $I\in \bin^\kappa$ is an identifier.
+      $L = \{N_0, \dotsc, N_\nu\}$ such that $N_i, N_j\subset \N$, $N_i\cap N_j 
+      = \emptyset\}$ for $i\neq j$, and $\nu+1 = |L| \leq r$.
+      $N_\nu$ is the destination.
   }
-\end{figure}
+\end{figure*}
 
-\begin{figure}
+\begin{figure*}
   \framebox{\begin{minipage}{0.96\linewidth}
   \begin{algorithmic}[1]
-    \Function{\ComputeKeys}{$L = \{L_1, \dotsc, L_l\}, w_L$}
+    \Function{\ComputeKeys}{$L = \{L_0, \dotsc, L_l\}, w_L$}
       \State $\sk\rgets \ZZ_q^*, \pk\gets g^\sk$
       \State $\alpha_0\gets \pk$
       \State $s_0\rgets \bin^\kappa$
-      \Comment{Differs from Sphinx.}
       \For{$1\leq i\leq |N_0|$}
         \State $s_0^{(i)}\gets \pk_{n_i}^\sk$, where $n_i\in |N_0|$.
         \State $c_0^{(i)}\gets \Enc[_{s_0^{(i)}}][s_0]$
@@ -272,12 +272,10 @@ First we generate all the needed keys.
       \EndFor
       \State $C_0\gets (c_0^{(1)}, \dotsc, c_0^{(w)})$
       \State $b_0\gets \hash_\blind(\alpha_0, s_0)$
-      \Comment{Same as Sphinx.}
       \For{$1\leq i < \nu$}
         \State Compute $(\alpha_i, C_i, \beta_i, \gamma_i)$ as follows.
         \State $\alpha_i = \pk^{b_{i-1}}$
         \State $s_i\rgets \bin^\kappa$
-        \Comment{Differs from Sphinx.}
         \For{$1\leq j\leq |N_i|$}
           \State $s_i^{(j)}\gets \pk_{n_j}^\sk$, where $n_j\in |N_i|$.
           \State $c_i^{(j)}\gets \Enc[_{s_i^{(j)}}][s_i]$
@@ -286,7 +284,6 @@ First we generate all the needed keys.
           \State $c_0^{(i)}\rgets \bin^\kappa$
         \EndFor
         \State $C_i\gets (c_i^{(1)}, \dotsc, c_i^{(w)})$
-        \Comment{Same as Sphinx.}
         \State $b_i\gets \hash_\blind(\alpha_i, s_i)$
       \EndFor
       \State \Return $(\alpha_0, s_0, C_0, b_0), \dotsc, (\alpha_\nu, s_\nu, 
@@ -297,25 +294,25 @@ First we generate all the needed keys.
   \caption{\label{fig:SphinxesKeys}%
     \dots
   }
-\end{figure}
+\end{figure*}
 
-\begin{figure}
+\begin{figure*}
   \framebox{\begin{minipage}{0.96\linewidth}
   \begin{algorithmic}[1]
-    \Function{\ComputePadding}{$\{s_1, \dotsc, s_\nu\}, w_H$}
-      \State $\phi_1\gets \epsilon$
+    \Function{\ComputePadding}{$\{s_0, \dotsc, s_\nu\}, w_H$}
+      \State $\phi_0\gets \epsilon$
       \Comment{$\epsilon$ is the empty string.}
-      \For{$2\leq i\leq \nu$}
+      \For{$1\leq i\leq \nu$}
         \State $\phi_i = \{ \phi_{i-1}\concat 0_{w_H} \} \oplus
-          \{ \prg(\hash_\prg(s_{i-1}))_{[(w_H(r-i+1)+3)\kappa..(w_H 
+          \{ \prg(\hash_\prg(s_{i-1}))_{[(w_H(r-i)+3)\kappa..(w_H 
             r+3)\kappa-1]} \}$
       \EndFor
-      \State \Return $\phi_1, \dotsc, \phi_\nu$
+      \State \Return $\phi_0, \dotsc, \phi_\nu$
     \EndFunction
   \end{algorithmic}
   \end{minipage}}
   \caption{\label{fig:SphinxesPadding}%
     \dots
   }
-\end{figure}
+\end{figure*}
 
