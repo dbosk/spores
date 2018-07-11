@@ -21,18 +21,18 @@ We provide the following algorithms:
 Say that Alice wants to send a message \(m\) to Bob.
 Bob runs the \(\SPOR[\Recv]\) algorithm and Alice runs the \(\SPOR[\Send]\) 
 algorithm.
-Bob (\ie \(\SPOR[\Recv]\)) creates a reply header using \(\CreateRe\) and gives 
-the output to Alice (\ie \(\SPOR[\Send]\)) out-of-band.
-At a later point, Alice creates a forward header using \(\CreateFwd\), attaches 
-the message \(m\) as payload and sends the package to the first node, \ie 
-invokes the \(\SPOR[\Fwd]\) algorithm on the first node (\eg as a remote 
-procedure call).
+Bob (\ie \(\SPOR[\Recv]\)) creates a reply header using \(\CreateHeader\) and 
+gives the output to Alice (\ie \(\SPOR[\Send]\)) out-of-band.
+At a later point, Alice extends the route using \(\WrapHeader\), attaches the 
+message \(m\) as payload (\(\AttachPayload\)) and sends the package to the 
+first node, \ie invokes the \(\SPOR[\Fwd]\) algorithm on the first node.
 The node will then process the package and in turn forward the package to the 
 next node, if itself is not the final destination.
 
 \NewAlgorithm{\Store}{Store}
 \NewAlgorithm{\Dec}{Dec}
 \NewVariable{\sk}{sk}
+\NewAlgorithm{\ExtendRoute}{ExtendRoute}
 
 \begin{figure}
   \framebox{\begin{minipage}{0.96\linewidth}
@@ -142,7 +142,7 @@ This process is illustrated in \cref{fig:file-exchange}.
 \begin{figure}
   \includegraphics[width=\linewidth]{figures/file_exchange_v2.pdf}
   \caption{\label{fig:file-exchange}%
-    A schematic of Alice and Bob sending a message using \(\SPORES\).
+    A schematic of Alice and Bob sending a message using \name.
     \ding{1} illustrates the layer of the headers that Alice and Bob create.
     In \ding{2}, Alice and Bob exchange the headers out-of-band.
     In \ding{3}, Alice and Bob use two \ac{SPOR} routes, one for messages and 
