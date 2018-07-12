@@ -130,14 +130,16 @@ Sphinxes provides the following algorithms:
 \end{itemize}
 
 \NewVariable{\G}{\mathcal{G}}
-\NewVariable{\mac}{\mu}
-\NewVariable{\prg}{\rho}
-\NewVariable{\prp}{\pi}
+\NewVariable*{\mac}{\mu}
+\NewVariable*{\prg}{\rho}
+\NewVariable*{\prp}{\pi}
 \NewVariable{\hash}{h}
 %\NewVariable{\tag}{\tau}
 \NewVariable{\blind}{b}
 \NewVariable{\N}{\mathcal{N}}
 \NewVariable{\D}{\mathcal{D}}
+\NewVariable*{\nullnode}{\varepsilon}
+\NewVariable{\rdvnode}{*}
 
 We will synchronize our detailed descriptions with that of 
 Sphinx~\cite{Sphinx}, hence we will use the following notation:
@@ -182,7 +184,12 @@ Sphinx~\cite{Sphinx}, hence we will use the following notation:
     free, see~\cite{Sphinx} for details.
     We could do the same adoption, but we do not need that for the purposes of 
     this paper.)
-    We let \(*\in \N\) be the special identifier of the null node.
+    We have two special node identifiers:
+    \(\nullnode\in \N\) is the null-node identifier, indicating an empty 
+    address.
+    \(\rdvnode\in \N\) is the rendezvous-node identifier, indicating that the 
+    current node is a rendezvous node and that the payload is \iac{POR} route 
+    to forward.
 
   \item \(0_x\) denotes \(x\) zeroes.
     \(s_{[a..b]}\) denotes all bits from the \(a\)th bit to the \(b\)th of the 
