@@ -210,8 +210,9 @@ But we do this in ordinary \ac{OR} too, since there is only one node per layer.
 
 First we generate all the needed keys.
 
-\begin{figure*}
+\begin{figure}
   \framebox{\begin{minipage}{0.96\linewidth}
+  \footnotesize
   \begin{algorithmic}[1]
     \Function{\CreateHeader}{$I, L$}
       \State $w_L\gets \max_{N\in L} |N|$
@@ -260,10 +261,11 @@ First we generate all the needed keys.
       = \emptyset\}$ for $i\neq j$, and $\nu+1 = |L| \leq r$.
       $N_\nu$ is the destination.
   }
-\end{figure*}
+\end{figure}
 
-\begin{figure*}
+\begin{figure}
   \framebox{\begin{minipage}{0.96\linewidth}
+  \footnotesize
   \begin{algorithmic}[1]
     \Function{\ComputeKeys}{$L = \{L_0, \dotsc, L_l\}, w_L$}
       \State $\sk\rgets \ZZ_q^*, \pk\gets g^\sk$
@@ -300,10 +302,11 @@ First we generate all the needed keys.
   \caption{\label{fig:SphinxesKeys}%
     \dots
   }
-\end{figure*}
+\end{figure}
 
-\begin{figure*}
+\begin{figure}
   \framebox{\begin{minipage}{0.96\linewidth}
+  \footnotesize
   \begin{algorithmic}[1]
     \Function{\ComputePadding}{$\{s_0, \dotsc, s_\nu\}, w_H$}
       \State $\phi_0\gets \epsilon$
@@ -320,5 +323,5 @@ First we generate all the needed keys.
   \caption{\label{fig:SphinxesPadding}%
     \dots
   }
-\end{figure*}
+\end{figure}
 
