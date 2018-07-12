@@ -114,13 +114,16 @@ be derived from \(\hat s_i\), then the node knows that \(\hat s_i = s_i\).
 
 Sphinxes provides the following algorithms:
 \begin{itemize}
-  \item \(\CreateHeader\) creates a header, this is a modification of that of 
-    Sphinx~\cite[\S 3.2, \S 3.4]{Sphinx}.
-  \item \(\WrapHeader\) is used to wrap a given single-use reply block given 
-    the proper keys.
-  \item \(\AttachPayload\) attaches a payload to the header, \ie makes it 
-    sendable.
+  \item \(\CreateHeader\) creates an extendible header.
+    It outputs a header with space left for a few layers and the needed keys to 
+    add additional layers.
+
+  \item \(\WrapHeader\) is used to wrap a given header using the proper keys.
+
+  \item \(\AttachPayload\) attaches a payload to the header using the proper 
+    keys.
     This is what Sphinx~\cite[\S 3.3]{Sphinx} calls a forward message.
+
   \item \(\Process\) is the algorithm for processing incoming messages, the 
     processing is identical to Sphinx~\cite[\S 3.6, \S 3.7]{Sphinx} but uses a 
     different interface.
@@ -186,11 +189,14 @@ Sphinx~\cite{Sphinx}, hence we will use the following notation:
     bit string \(s\).
 \end{itemize}
 
+\paragraph*{The \(\CreateHeader\) algorithm}
+
 \NewAlgorithm{\ComputeKeys}{ComputeKeys}
 \NewAlgorithm{\ComputePadding}{ComputePadding}
 
-The \(\CreateHeader\) algorithm is based on that of Sphinx~\cite[\S 
-3.2]{Sphinx}.
+This algorithm creates a header for \iac{POR}.
+It takes as input a unique identifier \(I\in \bin^\kappa\) and a set of layers 
+\(L = \{N_0, \dotsc, N_\nu\}\) such that \(\nu+1\leq r\).
 
 \Cref{fig:CreateHeader} summarizes the algorithm.
 \(w_L\) is the maximum width of a layer, \ie alternative nodes.
