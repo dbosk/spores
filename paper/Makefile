@@ -7,7 +7,6 @@ SRC+= 		system-model.tex
 
 SRC+= 		sphinxes.tex
 SRC+=		design.tex
-SRC+= 		building-blocks.tex 
 SRC+= 		squad-overlay-design.tex 
 SRC+=		global-overlay-design.tex
 SRC+= 		message-passing-design.tex
