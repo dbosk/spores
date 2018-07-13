@@ -266,53 +266,6 @@ We then construct the ciphertexts
     s_\nu\right).
 \end{align*}
 and pad them to \(w_L\kappa\) bits with uniformly random bits.
-These computations are summarized in \cref{fig:SphinxesKeys}.
-\commentDaniel{We can probably comment out the figure.}
-
-\begin{figure}
-  \framebox{\begin{minipage}{0.96\linewidth}
-  \footnotesize
-  \begin{algorithmic}[1]
-    \Function{\ComputeKeys}{$L = \{L_0, \dotsc, L_l\}, w_L$}
-      \State $\sk\rgets \ZZ_q^*, \pk\gets g^\sk$
-      \State $\alpha_0\gets \pk$
-      \State $s_0\rgets \bin^\kappa$
-      \For{$1\leq i\leq |N_0|$}
-        \State $s_0^{(i)}\gets \pk_{n_i}^\sk$, where $n_i\in |N_0|$.
-        \State $c_0^{(i)}\gets \Enc[_{s_0^{(i)}}][s_0]$
-      \EndFor
-      \For{$|N_0|+1\leq i\leq w_L$}
-        \State $c_0^{(i)}\rgets \bin^\kappa$
-      \EndFor
-      \State $C_0\gets (c_0^{(1)}, \dotsc, c_0^{(w)})$
-      \State $b_0\gets \hash_\blind(\alpha_0, s_0)$
-      \For{$1\leq i < \nu$}
-        \State Compute $(\alpha_i, C_i, \beta_i, \gamma_i)$ as follows.
-        \State $\alpha_i = \pk^{b_{i-1}}$
-        \State $s_i\rgets \bin^\kappa$
-        \For{$1\leq j\leq |N_i|$}
-          \State $s_i^{(j)}\gets \pk_{n_j}^\sk$, where $n_j\in |N_i|$.
-          \State $c_i^{(j)}\gets \Enc[_{s_i^{(j)}}][s_i]$
-        \EndFor
-        \For{$|N_i|+1\leq i\leq w_L$}
-          \State $c_0^{(i)}\rgets \bin^\kappa$
-        \EndFor
-        \State $C_i\gets (c_i^{(1)}, \dotsc, c_i^{(w)})$
-        \State $b_i\gets \hash_\blind(\alpha_i, s_i)$
-      \EndFor
-      \State \Return $(\alpha_0, s_0, C_0, b_0), \dotsc, (\alpha_\nu, s_\nu, 
-      C_\nu, b_\nu)$
-    \EndFunction
-  \end{algorithmic}
-  \end{minipage}}
-  \caption{\label{fig:SphinxesKeys}%
-    A function computing the keys for all nodes on all layers of a route.
-    \(L = \{L_i\}_i\) is the set of layers and each \(L_i\) is a set of the 
-    nodes on that layer.
-    \(w_L = \max_{L_i\in L} |L_i|\) is the maximum layer width, \ie the number 
-    of nodes in the layer with most nodes.
-  }
-\end{figure}
 
 Next we need to compute the padding \(\phi_i\) for each layer \(i\).
 We must do this is to predict the padding introduced at each layer so that we 
@@ -324,32 +277,6 @@ Then, for layers \(1\leq i\leq \nu\), we get
   \phi_i\gets \left\{\phi_{i-1}\concat 0_{w_H\kappa}\right\}\oplus \\
   \left\{\prg\left(\hash_\prg\left(s_{i-1}\right)\right)_{[(w_H(r-i)+3)\kappa..(2r+3)\kappa-1]}\right\}.
 \end{multline*}
-These computations are summarized in \cref{fig:SphinxesPadding}.
-\commentDaniel{We can probably remove the figure.}
-
-\begin{figure}
-  \framebox{\begin{minipage}{0.96\linewidth}
-  \footnotesize
-  \begin{algorithmic}[1]
-    \Function{\ComputePadding}{$\{s_0, \dotsc, s_\nu\}, w_H$}
-      \State $\phi_0\gets \epsilon$
-      \Comment{$\epsilon$ is the empty string.}
-      \For{$1\leq i\leq \nu$}
-        \State $\phi_i = \{ \phi_{i-1}\concat 0_{w_H} \} \oplus
-          \{ \prg(\hash_\prg(s_{i-1}))_{[(w_H(r-i)+3)\kappa..(w_H 
-            r+3)\kappa-1]} \}$
-      \EndFor
-      \State \Return $\phi_0, \dotsc, \phi_\nu$
-    \EndFunction
-  \end{algorithmic}
-  \end{minipage}}
-  \caption{\label{fig:SphinxesPadding}%
-    A function computing the needed padding.
-    \(\{s_i\}_i\) is the set of keys for the layers.
-    \(w_H\) is the width of the header at each layer, \ie everything that must 
-    be removed and compensated by padding.
-  }
-\end{figure}
 
 Next we will use the above computations to compute the mix headers \(M_i = 
   (\alpha_i, \beta_i, \gamma_i)\).
@@ -363,47 +290,6 @@ We let \(\beta_{\nu+1} = I\concat 0_{(w_H r-1)\kappa}\), then, for \(\nu\leq
     (\beta_{i+1})_{[0..(w_H r-1)\kappa-1]}\right\}, \\
   \gamma_i &\gets \mac\left( \hash_\mac\left(s_i\right), \beta_i \right).
 \end{align*}
-The algorithm \(\CreateHeader\) is summarized in \cref{fig:CreateHeader}.
-\commentDaniel{We can probably remove the figure.}
-
-\begin{figure}
-  \framebox{\begin{minipage}{0.96\linewidth}
-  \footnotesize
-  \begin{algorithmic}[1]
-    \Function{\CreateHeader}{$I, L = \{L_i\}_i, w_L$}
-      \State $w_H\gets (2w_L+1)$
-      \State $(\alpha_0, s_0, C_0, b_0), \dotsc, (\alpha_\nu, s_\nu, C_\nu, 
-      b_\nu)\gets \ComputeKeys[L, w_L]$
-      \State $\phi_0, \dotsc, \phi_\nu\gets \ComputePadding[\{s_0, \dotsc, 
-      s_\nu\}, w_H]$
-      \State $\alpha \gets \alpha_\nu$
-      \State $C\gets C_\nu$
-      \State $\beta \gets
-        \left\{\left\{L_\nu\concat
-            I\concat
-            0_{(2w_L(r-\nu)+2)\kappa}\right\} \oplus
-          \prg(\hash_\prg(s_\nu)_{[0..(2w_L(r-\nu)+3)\kappa-1]}\right\}\concat 
-        \phi_\nu$
-      \Comment{$\beta_\nu$}
-      \State $\gamma \gets \mac(\hash_\mac(s_\nu), \beta)$
-      \Comment{$\gamma_\nu$}
-      \For{$\nu-1\leq i\leq 0$}
-          \State $\beta_i \gets \{L_{i+1}, \concat \gamma_{i+1}\concat 
-          (\beta_{i+1})_{[0..(w_L r-1)\kappa -1]}\}$
-          \State $\gamma_i \gets \mac(\hash_\mac(s_i), \beta_i)$
-      \EndFor
-      \State \Return $(\alpha, C, \beta, \gamma), \{s_0, \dotsc, s_\nu\}$
-    \EndFunction
-  \end{algorithmic}
-  \end{minipage}}
-  \caption{\label{fig:CreateHeader}%
-    \dots
-      $I\in \bin^\kappa$ is an identifier.
-      $L = \{L_0, \dotsc, L_\nu\}$ such that $L_i, L_j\subset \N$, $L_i\cap L_j 
-      = \emptyset\}$ for $i\neq j$, and $\nu+1 = |L| \leq r$.
-      $L_\nu$ is the destination.
-  }
-\end{figure}
 
 \paragraph*{The \(\CreateFwd\) algorithm}
 
