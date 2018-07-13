@@ -21,13 +21,19 @@ We provide the following algorithms:
 Say that Alice wants to send a message \(m\) to Bob.
 Bob runs the \(\SPOR[\Recv]\) algorithm and Alice runs the \(\SPOR[\Send]\) 
 algorithm.
-Bob (\ie \(\SPOR[\Recv]\)) creates a reply header using \(\CreateHeader\) and 
+Bob (\ie \(\SPOR[\Recv]\)) creates a reply header using \(\CreateReply\) and 
 gives the output to Alice (\ie \(\SPOR[\Send]\)) out-of-band.
-At a later point, Alice extends the route using \(\WrapHeader\), attaches the 
-message \(m\) as payload (\(\AttachPayload\)) and sends the package to the 
-first node, \ie invokes the \(\SPOR[\Fwd]\) algorithm on the first node.
-The node will then process the package and in turn forward the package to the 
-next node, if itself is not the final destination.
+At a later point, Alice attaches a message \(m\) to the reply header (using 
+\(\AttachPayload\), creates a forward header using \(\CreateFwd\) and attaches 
+the reply header as payload (\(\AttachPayload\)) to the forward header.
+Then she send this packet to the first node, \ie invokes the \(\SPOR[\Fwd]\) 
+algorithm on the first node.
+The node will then process the header and in turn forward the packet to the 
+next node.
+When a node receives a packet where the nodes of the next layer is 
+\(\{\rdvnode\}\), it will parse they payload as a packet to be forwarded.
+When a node receives a packet where the nodes of the next layer is 
+\(\{\nullnode\}\), then it knows that it is the intended recipient.
 
 \NewAlgorithm{\Store}{Store}
 \NewAlgorithm{\Dec}{Dec}

@@ -108,17 +108,18 @@ be derived from \(\hat s_i\), then the node knows that \(\hat s_i = s_i\).
 
 \NewScheme{\Sphinxes}{POR}
 \NewAlgorithm{\CreateHeader}{\Sphinxes[CreateHeader]}
-\NewAlgorithm{\WrapHeader}{\Sphinxes[WrapHeader]}
+\NewAlgorithm{\CreateReply}{\Sphinxes[CreateReply]}
+\NewAlgorithm{\CreateFwd}{\Sphinxes[CreateForward]}
 \NewAlgorithm{\AttachPayload}{\Sphinxes[AttachPayload]}
 \NewAlgorithm{\Process}{\Sphinxes[Process]}
 
 Sphinxes provides the following algorithms:
 \begin{itemize}
-  \item \(\CreateHeader\) creates an extendible header.
-    It outputs a header with space left for a few layers and the needed keys to 
-    add additional layers.
+  \item \(\CreateHeader\) creates a header.
 
-  \item \(\WrapHeader\) is used to wrap a given header using the proper keys.
+  \item \(\CreateReply\) constructs a header to be used for replies.
+
+  \item \(\CreateFwd\) constructs a header to be used for forward messages.
 
   \item \(\AttachPayload\) attaches a payload to the header using the proper 
     keys.
@@ -135,6 +136,7 @@ Sphinxes provides the following algorithms:
 \NewVariable*{\prp}{\pi}
 \NewVariable{\hash}{h}
 %\NewVariable{\tag}{\tau}
+\NewVariable{\secret}{s}
 \NewVariable{\blind}{b}
 \NewVariable{\N}{\mathcal{N}}
 \NewVariable{\D}{\mathcal{D}}
@@ -202,73 +204,77 @@ Sphinx~\cite{Sphinx}, hence we will use the following notation:
 \NewAlgorithm{\ComputePadding}{ComputePadding}
 
 This algorithm creates a header for \iac{POR}.
-It takes as input a unique identifier \(I\in \bin^\kappa\) and a set of layers 
-\(L = \{N_0, \dotsc, N_\nu\}\) such that \(\nu+1\leq r\).
+It is identical to that of Sphinx~\cite[\S 3.2]{Sphinx} except that we use a 
+set of addresses and keys for each layer instead of only one address and key.
+Also, we do not distinguish between addresses of destinations and routers.
 
-\Cref{fig:CreateHeader} summarizes the algorithm.
-\(w_L\) is the maximum width of a layer, \ie alternative nodes.
-\(w_H\) is the header width:
-layer nodes' ciphertexts and addresses ($2w_L\kappa$),
-address of next node ($\kappa$),
-\ac{MAC} ($\kappa$).
+The algorithm takes as input a unique identifier \(I\in \bin^\kappa\) and a set 
+of layers \(L = \{L_0, \dotsc, L_\nu\}\) such that \(\nu+1\leq r\).
+The last layer, \(L_\nu\), should be either \(\{\nullnode\}\) or 
+\(\{\rdvnode\}\) to terminate the routing.
 
-We reveal the maximum number of alternatives per layer.
-But we do this in ordinary \ac{OR} too, since there is only one node per layer.
+We let \(w_L = \max_{N\in L}|N|\) be the maximum width of a layer, \ie the 
+number of alternative nodes in the layer with the most alternative nodes.
+We let \(w_H = 2w_L+1\) be the header width:
+each layer must accommodate the layer nodes' ciphertexts and addresses, \ie  
+\(2w_L\) elements of \(\kappa\) bits,
+and the \ac{MAC}, \ie one element of \(\kappa\) bits.
+(Note that we reveal the maximum number of alternatives per layer, but this is 
+no different from ordinary \ac{OR} where there is a constant one node per 
+layer.)
 
 First we generate all the needed keys.
-
-\begin{figure}
-  \framebox{\begin{minipage}{0.96\linewidth}
-  \footnotesize
-  \begin{algorithmic}[1]
-    \Function{\CreateHeader}{$I, L$}
-      \State $w_L\gets \max_{N\in L} |N|$
-      \Comment{Layer width}
-      \State $w_H\gets (2w_L+2)$
-      \Comment{Header width}
-      \State $(\alpha_0, s_0, C_0, b_0), \dotsc, (\alpha_\nu, s_\nu, C_\nu, 
-      b_\nu)\gets \ComputeKeys[L, w_L]$
-      \State $\phi_0, \dotsc, \phi_\nu\gets \ComputePadding[\{s_0, \dotsc, 
-      s_\nu\}, w_H]$
-      \State $\alpha \gets \alpha_\nu$
-      \State $C\gets C_\nu$
-      \State $\beta \gets
-      \left\{\left\{N_\nu\concat
-          I\concat
-          0_{(2w_L(r-\nu)+2)\kappa}\right\} \oplus
-        \prg(\hash_\prg(s_\nu)_{[0..(2w_L(r-\nu)+3)\kappa-1]}\right\}\concat 
-      \phi_\nu$
-      \Comment{$\beta_\nu$}
-      \State $\gamma \gets \mac(\hash_\mac(s_\nu), \beta)$
-      \Comment{$\gamma_\nu$}
-      \For{$\nu-1\leq i\leq 1$}
-        \State $(\alpha, C, \beta, \gamma) \gets
-          \WrapHeader[i, (\alpha, \beta, \gamma), \alpha_i, s_i, C_i, N_{i+1}, 
-          w_L]$
-      \EndFor
-      \State \Return $(\alpha, C, \beta, \gamma)$
-    \EndFunction
-
-    \Function{\WrapHeader}{$i, (\alpha_{i+1}, \beta_{i+1}, \gamma_{i+1}), 
-      \alpha_i, s_i, C_i, N_{i+1}, w_L$}
-      \If{$i < 0$}
-        \Return $\bot$
-      \EndIf
-      \State $\beta_i \gets \{N_{i+1}, \concat \gamma_{i+1}\concat 
-      (\beta_{i+1})_{[0..(w_L r-1)\kappa -1]}\}$
-      \State $\gamma_i \gets \mac(\hash_\mac(s_i), \beta_i)$
-      \State \Return $i-1, (\alpha_i, C_i, \beta_i, \gamma_i)$
-    \EndFunction
-  \end{algorithmic}
-  \end{minipage}}
-  \caption{\label{fig:CreateHeader}%
-    \dots
-      $I\in \bin^\kappa$ is an identifier.
-      $L = \{N_0, \dotsc, N_\nu\}$ such that $N_i, N_j\subset \N$, $N_i\cap N_j 
-      = \emptyset\}$ for $i\neq j$, and $\nu+1 = |L| \leq r$.
-      $N_\nu$ is the destination.
-  }
-\end{figure}
+We compute \(\nu+1\) tuples
+\begin{align*}
+  \alpha_0 &\gets g^\sk,
+  & \secret_0 &\gets \bin^\kappa,
+  & \blind_0 &\gets \hash_\blind(\alpha_0, \secret_0) \\
+  \alpha_1 &\gets g^{\sk\blind_0},
+  & \secret_1 &\gets \bin^\kappa,
+  & \blind_1 &\gets \hash_\blind(\alpha_1, \secret_1) \\
+  &\vdots &&\vdots && \vdots \\
+  \alpha_\nu &\gets g^{\sk \blind_0\dotsb \blind_{\nu-1}},
+  & \secret_\nu &\gets \bin^\kappa,
+  & \blind_\nu &\gets \hash_\blind(\alpha_\nu, s_\nu).
+\end{align*}
+In addition, we compute
+\begin{align*}
+  \secret_0^{(0)} &\gets \pk_{n_0^{(0)}}^\sk,
+  & \dotsc, &
+  & \secret_0^{(|L_0|-1)} &\gets \pk_{n_0^{(|L_0|-1)}}^\sk \\
+  \secret_1^{(0)} &\gets \pk_{n_1^{(0)}}^{\sk \blind_0},
+  & \dotsc, &
+  & \secret_1^{(|L_1|-1)} &\gets \pk_{n_1^{(|L_1|-1)}}^{\sk \blind_0} \\
+  & \vdots &&& \vdots \\
+  \secret_\nu^{(0)} &\gets \pk_{n_\nu^{(0)}}^{\sk \blind_0\dotsb 
+    \blind_{\nu-1}},
+  & \dotsc, &
+  & \secret_\nu^{(|L_\nu|-1)} &\gets \pk_{n_\nu^{(|L_\nu|-1)}}^{\sk 
+    \blind_0\dotsb \blind_{\nu-1}}.
+\end{align*}
+We note that a node \(n_i^{(j)}\) can compute \(s_i^{(j)}\) since \[
+  s_i^{(j)} = \pk_{n_i^{(j)}}^{\sk \blind_0\dotsb \blind_{i-1}} = 
+  \alpha_i^{\sk_{n_i^{(j)}}}.
+\]
+We then construct the ciphertexts
+\begin{align*}
+  C_0 &= \prp'\left(\hash_{\prp'}\left(s_0^{(0)}\right), s_0\right)
+  \concat \dotsb
+  \concat \prp'\left(\hash_{\prp'}\left(s_0^{(|L_0|-1)}\right), s_0\right) \\
+  C_1 &= \prp'\left(\hash_{\prp'}\left(s_1^{(0)}\right), s_1\right)
+  \concat \dotsb
+  \concat \prp'\left(\hash_{\prp'}\left(s_1^{(|L_1|-1)}\right), s_1\right) \\
+  & \vdots \\
+  C_\nu &= \prp'\left(\hash_{\prp'}\left(s_\nu^{(0)}\right), s_\nu\right)
+  \concat \dotsb
+  \concat \prp'\left(\hash_{\prp'}\left(s_\nu^{(|L_\nu|-1)}\right) 
+    s_\nu\right).
+\end{align*}
+and pad them to equal length with uniformly random bits, \ie length \(w_L = 
+  \max_{i\in \{0, \dotsc, \nu\}} |C_i|\), where \(|C_i|\) denotes the length in 
+bits (each ciphertext is \(\kappa\) bits).
+These computations are summarized in \cref{fig:SphinxesKeys}.
+\commentDaniel{We can probably comment out the figure.}
 
 \begin{figure}
   \framebox{\begin{minipage}{0.96\linewidth}
@@ -307,9 +313,26 @@ First we generate all the needed keys.
   \end{algorithmic}
   \end{minipage}}
   \caption{\label{fig:SphinxesKeys}%
-    \dots
+    A function computing the keys for all nodes on all layers of a route.
+    \(L = \{L_i\}_i\) is the set of layers and each \(L_i\) is a set of the 
+    nodes on that layer.
+    \(w_L = \max_{L_i\in L} |L_i|\) is the maximum layer width, \ie the number 
+    of nodes in the layer with most nodes.
   }
 \end{figure}
+
+Next we need to compute the padding \(\phi_i\) for each layer \(i\).
+We must do this is to predict the padding introduced at each layer so that we 
+can compute the correct \acp{MAC} (\(\gamma_i\)).
+The padding for the outmost layer (layer 0) is the empty string, thus \(\phi_0 
+  \gets \epsilon\).
+Then, for layers \(1\leq i\leq \nu\), we get
+\begin{multline*}
+  \phi_i\gets \left\{\phi_{i-1}\concat 0_{w_H\kappa}\right\}\oplus \\
+  \left\{\prg\left(\hash_\prg\left(s_{i-1}\right)\right)_{[(w_H(r-i)+3)\kappa..(2r+3)\kappa-1]}\right\}.
+\end{multline*}
+These computations are summarized in \cref{fig:SphinxesPadding}.
+\commentDaniel{We can probably remove the figure.}
 
 \begin{figure}
   \framebox{\begin{minipage}{0.96\linewidth}
@@ -328,7 +351,82 @@ First we generate all the needed keys.
   \end{algorithmic}
   \end{minipage}}
   \caption{\label{fig:SphinxesPadding}%
-    \dots
+    A function computing the needed padding.
+    \(\{s_i\}_i\) is the set of keys for the layers.
+    \(w_H\) is the width of the header at each layer, \ie everything that must 
+    be removed and compensated by padding.
   }
 \end{figure}
 
+Next we will use the above computations to compute the mix headers \(M_i = 
+  (\alpha_i, \beta_i, \gamma_i)\).
+\(\alpha_i\) was computed above, so we will compute \(\beta_i\) and 
+\(\gamma_i\).
+We must compute \(\beta_i\) in reverse order.
+We let \(\beta_{\nu+1} = I\concat 0_{(w_H r-1)\kappa}\), then, for \(\nu\leq 
+  i\leq 0\), we let
+\begin{align*}
+  \beta_i &\gets \left\{L_{i+1}\concat \gamma_{i+1}\concat 
+    (\beta_{i+1})_{[0..(w_H r-1)\kappa-1]}\right\}, \\
+  \gamma_i &\gets \mac\left( \hash_\mac\left(s_i\right), \beta_i \right).
+\end{align*}
+The algorithm \(\CreateHeader\) is summarized in \cref{fig:CreateHeader}.
+\commentDaniel{We can probably remove the figure.}
+
+\begin{figure}
+  \framebox{\begin{minipage}{0.96\linewidth}
+  \footnotesize
+  \begin{algorithmic}[1]
+    \Function{\CreateHeader}{$I, L = \{L_i\}_i$}
+      \State $w_L\gets \max_{L_i\in L} |L_i|$
+      \Comment{Layer width}
+      \State $w_H\gets (2w_L+1)$
+      \Comment{Header width}
+      \State $(\alpha_0, s_0, C_0, b_0), \dotsc, (\alpha_\nu, s_\nu, C_\nu, 
+      b_\nu)\gets \ComputeKeys[L, w_L]$
+      \State $\phi_0, \dotsc, \phi_\nu\gets \ComputePadding[\{s_0, \dotsc, 
+      s_\nu\}, w_H]$
+      \State $\alpha \gets \alpha_\nu$
+      \State $C\gets C_\nu$
+      \State $\beta \gets
+        \left\{\left\{L_\nu\concat
+            I\concat
+            0_{(2w_L(r-\nu)+2)\kappa}\right\} \oplus
+          \prg(\hash_\prg(s_\nu)_{[0..(2w_L(r-\nu)+3)\kappa-1]}\right\}\concat 
+        \phi_\nu$
+      \Comment{$\beta_\nu$}
+      \State $\gamma \gets \mac(\hash_\mac(s_\nu), \beta)$
+      \Comment{$\gamma_\nu$}
+      \For{$\nu-1\leq i\leq 0$}
+          \State $\beta_i \gets \{L_{i+1}, \concat \gamma_{i+1}\concat 
+          (\beta_{i+1})_{[0..(w_L r-1)\kappa -1]}\}$
+          \State $\gamma_i \gets \mac(\hash_\mac(s_i), \beta_i)$
+      \EndFor
+      \State \Return $(\alpha, C, \beta, \gamma), \{s_0, \dotsc, s_\nu\}$
+    \EndFunction
+  \end{algorithmic}
+  \end{minipage}}
+  \caption{\label{fig:CreateHeader}%
+    \dots
+      $I\in \bin^\kappa$ is an identifier.
+      $L = \{L_0, \dotsc, L_\nu\}$ such that $L_i, L_j\subset \N$, $L_i\cap L_j 
+      = \emptyset\}$ for $i\neq j$, and $\nu+1 = |L| \leq r$.
+      $L_\nu$ is the destination.
+  }
+\end{figure}
+
+\paragraph*{The \(\CreateReply\) algorithm}
+
+\dots
+
+\paragraph*{The \(\CreateFwd\) algorithm}
+
+\dots
+
+\paragraph*{The \(\AttachPayload\) algorithm}
+
+\dots
+
+\paragraph*{The \(\Process\) algorithm}
+
+\dots
