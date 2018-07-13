@@ -147,8 +147,10 @@ Sphinx~\cite{Sphinx}, hence we will use the following notation:
   \item \(\kappa\) is the security parameter.
     The adversary must thus do about \(2^\kappa\) work to break the security.
 
-  \item \(r\) is the maximum number of nodes (\ie equivalent to the number of 
-    layers) that a message will traverse before reaching its destination.
+  \item \(r\) is the maximum number of layers (hops, nodes) that a message will 
+    traverse before reaching its destination.
+    Further, let \(w_L\) be the maximum width of a layer, \ie the maximum 
+    number of alternative nodes on a layer.
 
   \item \(\G\) is a prime-order cyclic group satisfying the \ac{DH} assumption.
 
@@ -211,15 +213,12 @@ of layers \(L = \{L_0, \dotsc, L_\nu\}\) such that \(\nu+1\leq r\).
 The last layer, \(L_\nu\), should be either \(\{\nullnode\}\) or 
 \(\{\rdvnode\}\) to terminate the routing.
 
-We let \(w_L = \max_{N\in L}|N|\) be the maximum width of a layer, \ie the 
-number of alternative nodes in the layer with the most alternative nodes.
+Remember that \(w_L\) is the maximum width of a layer, \ie the number of 
+alternative nodes in the layer.
 We let \(w_H = 2w_L+1\) be the header width:
 each layer must accommodate the layer nodes' ciphertexts and addresses, \ie  
 \(2w_L\) elements of \(\kappa\) bits,
 and the \ac{MAC}, \ie one element of \(\kappa\) bits.
-(Note that we reveal the maximum number of alternatives per layer, but this is 
-no different from ordinary \ac{OR} where there is a constant one node per 
-layer.)
 
 First we generate all the needed keys.
 We compute \(\nu+1\) tuples
@@ -268,9 +267,7 @@ We then construct the ciphertexts
   \concat \prp'\left(\hash_{\prp'}\left(s_\nu^{(|L_\nu|-1)}\right) 
     s_\nu\right).
 \end{align*}
-and pad them to equal length with uniformly random bits, \ie length \(w_L = 
-  \max_{i\in \{0, \dotsc, \nu\}} |C_i|\), where \(|C_i|\) denotes the length in 
-bits (each ciphertext is \(\kappa\) bits).
+and pad them to \(w_L\kappa\) bits with uniformly random bits.
 These computations are summarized in \cref{fig:SphinxesKeys}.
 \commentDaniel{We can probably comment out the figure.}
 
@@ -375,11 +372,8 @@ The algorithm \(\CreateHeader\) is summarized in \cref{fig:CreateHeader}.
   \framebox{\begin{minipage}{0.96\linewidth}
   \footnotesize
   \begin{algorithmic}[1]
-    \Function{\CreateHeader}{$I, L = \{L_i\}_i$}
-      \State $w_L\gets \max_{L_i\in L} |L_i|$
-      \Comment{Layer width}
+    \Function{\CreateHeader}{$I, L = \{L_i\}_i, w_L$}
       \State $w_H\gets (2w_L+1)$
-      \Comment{Header width}
       \State $(\alpha_0, s_0, C_0, b_0), \dotsc, (\alpha_\nu, s_\nu, C_\nu, 
       b_\nu)\gets \ComputeKeys[L, w_L]$
       \State $\phi_0, \dotsc, \phi_\nu\gets \ComputePadding[\{s_0, \dotsc, 
