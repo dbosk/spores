@@ -143,5 +143,9 @@ This means that no device knows both ends of the route unless they collude.
   Since they formalize and idealize ordinary OR we need to see that our changes 
   still work.}
 
-\commentDaniel{If Bob wraps Alice's route, then Alice can use \(g^x\) to track 
-  Bob.}
+\commentDaniel{Retransmission is not captured in the CL OR-model, that's fine 
+  since packets are dropped.
+  We must capture the behaviour that if the adversary interrupts transmission, 
+  we will try to send to another node.
+  We can probably fix this by outputting all nodes in the next layer in the 
+  ideal model.}
