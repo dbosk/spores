@@ -108,26 +108,24 @@ be derived from \(\hat s_i\), then the node knows that \(\hat s_i = s_i\).
 
 \NewScheme{\Sphinxes}{POR}
 \NewAlgorithm{\CreateHeader}{\Sphinxes[CreateHeader]}
-\NewAlgorithm{\CreateReply}{\Sphinxes[CreateReply]}
 \NewAlgorithm{\CreateFwd}{\Sphinxes[CreateForward]}
-\NewAlgorithm{\AttachPayload}{\Sphinxes[AttachPayload]}
-\NewAlgorithm{\Process}{\Sphinxes[Process]}
+\NewAlgorithm{\CreateReply}{\Sphinxes[CreateReply]}
+\NewAlgorithm{\UseReply}{\Sphinxes[UseReply]}
+\NewAlgorithm{\ProcessHeader}{\Sphinxes[ProcessHeader]}
 
 Sphinxes provides the following algorithms:
 \begin{itemize}
   \item \(\CreateHeader\) creates a header.
 
-  \item \(\CreateReply\) constructs a header to be used for replies.
-
   \item \(\CreateFwd\) constructs a header to be used for forward messages.
 
-  \item \(\AttachPayload\) attaches a payload to the header using the proper 
-    keys.
-    This is what Sphinx~\cite[\S 3.3]{Sphinx} calls a forward message.
+  \item \(\CreateReply\) constructs a header to be used for replies.
 
-  \item \(\Process\) is the algorithm for processing incoming messages, the 
-    processing is identical to Sphinx~\cite[\S 3.6, \S 3.7]{Sphinx} but uses a 
-    different interface.
+  \item \(\UseReply\) takes a reply header and attaches a message.
+
+  \item \(\ProcessHeader\) is the algorithm for processing incoming messages, 
+    the processing is identical to Sphinx~\cite[\S 3.6, \S 3.7]{Sphinx} but 
+    uses a different interface.
 \end{itemize}
 
 \NewVariable{\G}{\mathcal{G}}
@@ -415,18 +413,51 @@ The algorithm \(\CreateHeader\) is summarized in \cref{fig:CreateHeader}.
   }
 \end{figure}
 
-\paragraph*{The \(\CreateReply\) algorithm}
-
-\dots
-
 \paragraph*{The \(\CreateFwd\) algorithm}
 
-\dots
+This algorithm computes a forward header with a message to be delivered to the 
+destination.
+It takes as input a sequence, \(L = \{L_0, \dotsc, L_\nu\}\), of node sets, 
+such that \(\nu+1\leq r\) and \(L_\nu\) is either \(\{\nullnode\}\) or 
+\(\{\rdvnode\}\), and a message \(m\).
+(\Ie \(L_{\nu-1}\) is the final destination.)
 
-\paragraph*{The \(\AttachPayload\) algorithm}
+It first runs \(\CreateHeader\) with \(I = 0_\kappa\) to compute a mix header 
+\(M_0\) and the keys \(s_i\) for each layer \(i\).
+Then, for \(\nu\leq i\leq 0\), it will compute
+\begin{equation*}
+  \delta_i = \prp\left(
+    \hash_\prp\left(s_i\right),
+    \delta_{i+1}\right),
+\end{equation*}
+where \(\delta_{\nu+1}\) is the message \(m\).
 
-\dots
+\paragraph*{The \(\CreateReply\) algorithm}
 
-\paragraph*{The \(\Process\) algorithm}
+This algorithm prepares a header that can be used for anonymous replies.
+It takes as input a sequence, \(L = \{L_0, \dotsc, L_\nu\}\), of node sets, 
+such that \(\nu+1\leq r\), \(L_\nu\) is either \(\{\nullnode\}\) or 
+\(\{\rdvnode\}\) and \(L_{\nu-1}\) is the set of own addresses.
+
+It first runs \(\CreateHeader\) with \(I\rgets \bin^\kappa\) to compute a mix 
+header \(M_0\) and the keys \(s_i\) for each layer \(i\).
+It chooses uniformly randomly a key \(\tilde k\rgets \bin^\kappa\).
+Finally, it returns
+\(I\),
+the tuple of keys \((\tilde k, \hash_\prp(s_0), \dotsc, \hash_\prp(s_\nu))\),
+and \((L_0, M_0, \tilde k)\).
+
+The tuple of keys must be stored in a local table indexed by \(I\).
+The tuple \((L_0, M_0, \tilde k)\) should be given to the sender who wants to 
+use the anonymous reply.
+
+\paragraph*{The \(\UseReply\) algorithm}
+
+This algorithm takes a reply header \((L_0, M_0, \tilde k)\) and a message 
+\(m\) as input.
+It then returns \((M_0, \prp(\tilde k, m))\) which should be sent to any node 
+in \(L_0\).
+
+\paragraph*{The \(\ProcessHeader\) algorithm}
 
 \dots

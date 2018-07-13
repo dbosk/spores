@@ -24,8 +24,8 @@ algorithm.
 Bob (\ie \(\SPOR[\Recv]\)) creates a reply header using \(\CreateReply\) and 
 gives the output to Alice (\ie \(\SPOR[\Send]\)) out-of-band.
 At a later point, Alice attaches a message \(m\) to the reply header (using 
-\(\AttachPayload\), creates a forward header using \(\CreateFwd\) and attaches 
-the reply header as payload (\(\AttachPayload\)) to the forward header.
+\(\UseReply\), creates a forward header using \(\CreateFwd\) with the prepared 
+reply header as payload.
 Then she send this packet to the first node, \ie invokes the \(\SPOR[\Fwd]\) 
 algorithm on the first node.
 The node will then process the header and in turn forward the packet to the 
