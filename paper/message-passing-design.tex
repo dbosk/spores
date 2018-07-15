@@ -1,39 +1,32 @@
 \NewScheme{\SPOR}{SPOR}
-\NewScheme{\POR}{POR}
 
 \subsection{\Acfp*{SPOR}}%
 \label{sec:message_passing}
 
-\NewAlgorithm{\Send}{Send}
-\NewAlgorithm{\Fwd}{Forward}
-\NewAlgorithm{\Recv}{Receive}
-\NewVariable{\rdv}{rdv}
-
-We now describe a protocol \ac{SPOR}, which uses Sphinxes to transfer large 
-messages from a source to a destination.
-We provide the following algorithms:
-\begin{itemize}
-  \item \(\SPOR[\Send]\) (\cref{SPORSend}).
-  \item \(\SPOR[\Fwd]\) (\cref{SPORFwd}).
-  \item \(\SPOR[\Recv]\) (\cref{SPORRecv}).
-\end{itemize}
-
 Say that Alice wants to send a message \(m\) to Bob.
-Bob runs the \(\SPOR[\Recv]\) algorithm and Alice runs the \(\SPOR[\Send]\) 
-algorithm.
-Bob (\ie \(\SPOR[\Recv]\)) creates a reply header using \(\CreateReply\) and 
-gives the output to Alice (\ie \(\SPOR[\Send]\)) out-of-band.
-At a later point, Alice attaches a message \(m\) to the reply header (using 
+Bob creates a reply header using \(\CreateReply\) and gives the output to Alice 
+over an out-of-band channel.
+We assume that \(m\) is either unavailable when the channel is used or too 
+large to successfully send over the channel directly.
+At a later point, Alice attaches a message \(m\) to the reply header using 
 \(\UseReply\), creates a forward header using \(\CreateFwd\) with the prepared 
 reply header as payload.
-Then she send this packet to the first node, \ie invokes the \(\SPOR[\Fwd]\) 
-algorithm on the first node.
+Then she sends this packet to the first node, which processes it using 
+\(\ProcessHeader\).
 The node will then process the header and in turn forward the packet to the 
 next node.
-When a node receives a packet where the nodes of the next layer is 
-\(\{\rdvnode\}\), it will parse they payload as a packet to be forwarded.
-When a node receives a packet where the nodes of the next layer is 
-\(\{\nullnode\}\), then it knows that it is the intended recipient.
+At some point the message will reach Alice who identifies the message as the 
+one expected to come from Bob.
+In this section we will focus on how Alice and Bob choose the nodes that they 
+provide to \(\CreateReply\) and \(\CreateFwd\).
+
+There are many uses of Sphinxes, many criteria that can be used to select the 
+nodes in each layer.
+We will focus on maximizing availability when routing in a network with high 
+churn.
+But one could equally well select nodes to maximize, \eg, bandwidth.
+We now describe a protocol, \ac{SPOR}, which uses Sphinxes to transfer messages 
+from a source to a destination over a network of nodes with high churn.
 
 \NewAlgorithm{\Store}{Store}
 \NewAlgorithm{\Dec}{Dec}
