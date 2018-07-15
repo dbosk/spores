@@ -17,126 +17,9 @@ The node will then process the header and in turn forward the packet to the
 next node.
 At some point the message will reach Alice who identifies the message as the 
 one expected to come from Bob.
-In this section we will focus on how Alice and Bob choose the nodes that they 
-provide to \(\CreateReply\) and \(\CreateFwd\).
-
-There are many uses of Sphinxes, many criteria that can be used to select the 
-nodes in each layer.
-We will focus on maximizing availability when routing in a network with high 
-churn.
-But one could equally well select nodes to maximize, \eg, bandwidth.
-We now describe a protocol, \ac{SPOR}, which uses Sphinxes to transfer messages 
-from a source to a destination over a network of nodes with high churn.
-
-\NewAlgorithm{\Store}{Store}
-\NewAlgorithm{\Dec}{Dec}
-\NewVariable{\sk}{sk}
-\NewAlgorithm{\ExtendRoute}{ExtendRoute}
-
-\begin{figure}
-  \framebox{\begin{minipage}{0.96\linewidth}
-  \begin{algorithmic}
-    \Require{%
-      $D$ is the set of alternative recipient devices.
-    }
-    \Function{\POR[\Recv]}{$D$}
-      \State $H_\rdv\gets \ExtendRoute[D\concat \top, L, \theta]$
-      \State \Return $H_\rdv$
-        \Comment{Give to sender out-of-bound.}
-    \EndFunction
-  \end{algorithmic}
-  \end{minipage}}
-  \caption{\label{SPORRecv}%
-    The \(\POR[\Recv]\) algorithm prepares the recipient for receiving a file.
-    It creates a probabilistic onion-route from a rendez-vous point to its own 
-    devices and returns the route to the sender.
-  }
-\end{figure}
-
-\begin{figure}
-  \framebox{\begin{minipage}{0.96\linewidth}
-  \begin{algorithmic}
-    \Require{%
-      $m$ is the message to be sent,
-      $H_\rdv$ is the onion-route given by the recipient.
-    }
-    \Function{\POR[\Send]}{$H_\rdv, m$}
-      \State $H\gets \ExtendRoute[H_\rdv, L, \theta]$
-      \State $D\concat C_H\gets H_\rdv$
-      \For{$d\in D$}
-        \Comment{Uniformly randomly chosen}
-        \If{$d\method \Fwd[C_H, m] \neq \bot$}
-          \State \Return $\top$
-        \EndIf
-      \EndFor
-      \State \Return $\bot$
-    \EndFunction
-  \end{algorithmic}
-  \end{minipage}}
-  \caption{\label{SPORSend}%
-    The \(\POR[\Send]\) algorithm extends the route \(H_\rdv\) (using 
-    \(\ExtendRoute\), \cref{ExtendRoute}) and sends the message \(m\) down the 
-    extended route using the \(\POR[\Fwd]\) algorithm (\cref{SPORFwd}).
-    The first node of \(H_\rdv\) is the rendez-vous point selected by the 
-    recipient.
-  }
-\end{figure}
-
-\begin{figure}
-  \framebox{\begin{minipage}{0.96\linewidth}
-  \begin{algorithmic}
-    \Require{$\pk, \sk$ is the public--private key-pair of the node.}
-    \Function{\POR[\Fwd]}{$C_H, m$}
-      \State $H\gets \DeBEdec[\mpk, \sk, C_H]$
-      \If{$H = \bot$}
-        \State \Return $\bot$
-      \EndIf
-      \State $\{d_i\}\concat C_H'\gets H$
-      \If{$C_H' = \top$}
-        \State \Return $\Store[m]$
-      \EndIf
-      \For{$d\in \{d_i\}$}
-        \Comment{Uniformly randomly chosen}
-        \If{$d\method \Fwd[C_H', m] \neq \bot$}
-          \State \Return $\top$
-        \EndIf
-      \EndFor
-      \State \Return $\bot$
-    \EndFunction
-
-    \Function{\Store}{$m$}
-      \State $m\gets \DeBEdec[\mpk, \sk, c_m]$
-      \If{$m = \bot$}
-        \State \Return $\bot$
-      \EndIf
-      \State Store $m$ to disk.
-      \State \Return $\top$
-    \EndFunction
-  \end{algorithmic}
-  \end{minipage}}
-  \caption{\label{SPORFwd}%
-    The \(\POR[\Fwd]\) algorithm forwards \(m\) down the route \(H\), obtained 
-    by decrypting \(C_H\) with the node's associated private key.
-    The special value \(H = \top\) indicated the end of the route, thus \(c_m\) 
-    is intended for the local node and \(c_m\) is instead sent to disk using 
-    \(\Store\).%
-  }
-\end{figure}
-
-\subsection{\Acf*{SPORES}}
-
-\dots
-
-To create a probabilistic onion route \(H_\rdv\) from a rendez-vous point to 
-his own device swarm --- all the hops on the route are chosen by Bob uniformly 
-at random.
-Bob gives \(H_\rdv\) to Alice using an out-of-band channel, \eg using his phone.
-Alice uses \(\SPOR[\Send]\) at some later time to send the message to Bob using 
-any of her devices.
-\(\SPOR[\Send]\) extends the route \(H_\rdv\) with some hops of Alice's 
-choosing (uniformly randomly chosen), then starts to forward the message (using 
-\(\SPOR[\Fwd]\)) through the hops on the route to Bob.
-This process is illustrated in \cref{fig:file-exchange}.
+(This process is illustrated in \cref{fig:file-exchange}.)
+Now we will focus on how Alice and Bob choose the nodes that they provide to 
+\(\CreateReply\) and \(\CreateFwd\).
 
 \begin{figure}
   \includegraphics[width=\linewidth]{figures/file_exchange_v2.pdf}
@@ -149,3 +32,33 @@ This process is illustrated in \cref{fig:file-exchange}.
   }
 \end{figure}
 
+There are many uses of Sphinxes, many criteria that can be used to select the 
+nodes in each layer.
+We will focus on maximizing availability when routing in a network with high 
+churn, but one could equally well select nodes to maximize, \eg, bandwidth.
+We now describe a protocol, \ac{SPOR}, which uses Sphinxes to transfer messages 
+from a source to a destination over a network of nodes with high churn.
+
+\commentDaniel{We should describe how to do this selection using a prediction 
+  oracle, then we provide a prediction oracle later.}
+
+\subsection{\Acf*{SPORES}}
+
+Above we made the usual assumption that Alice and Bob are represented by one 
+device each.
+Nowadays this is not the case: they both have multiple devices.
+This means that Bob can receive Alice's message \(m\) on several alternative 
+devices.
+This might not be that problematic, so we will modify our scenario slightly:
+The message \(m\) that Alice wants to send to Bob is too large to successfully 
+pass every layer of the route.
+\Eg each device goes offline and back online every \(t\) time units, the 
+bandwidth is \(w\) size units per time unit and the message is \(l\) size 
+units; if \(l\geq t w\), then the message \(m\) can never be delivered as any 
+device will go offline before relaying it to the next node.
+The natural solution is to split \(m\) into \(n\) parts, \(m_0, \dotsc, m_n\), 
+where \(l/n\leq w t\).
+The problem now is that \(m_i\) and \(m_j\) (\(i\neq j\)) might end up on 
+different devices.
+
+\commentDaniel{We should discuss this problem and outline our solution.}
