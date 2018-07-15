@@ -338,4 +338,44 @@ in \(L_0\).
 
 \paragraph*{The \(\ProcessHeader\) algorithm}
 
-\dots
+\NewVariable{\ProcessMessage}{ProcessMessage}
+
+The algorithm takes as input a header \((M, \delta)\), where \(M = (\alpha, C, 
+  \beta, \gamma)\in \G^*\times (\bin^\kappa)^{w_L} \times \bin^{(w_H 
+    r+1)\kappa}\times bin^\kappa\times \bin^{l_\prp}\), and an auxiliary 
+function \(\ProcessMessage\) which processes messages destined to itself.
+Let \(\sk\) be the node's private key.
+
+First, it computes the key \(s_i^{(j)}\gets \alpha^\sk\).
+Then it trial-and-error decrypts every \(c_k\) in \(C = c_0\concat 
+  \dotsb\concat c_{w_L-1}\) (\(0\leq k< w_L\)) to \(\hat s_i\gets \prp^{\prime 
+    -1}\left(s_i^{(j)}, c_k\right)\).
+If \(\gamma = \mac\left(\hat s_i, \beta\right)\), then \(\hat s_i = s_i\) is 
+correct.
+If the \ac{MAC} does not verify correctly for any key, then the algorithm 
+aborts.
+
+If the \ac{MAC} computed correctly, compute \(t\gets \hash_\tau(s_i)\).
+If \(t\) is already in the table of seen packets, drop the packet.
+Otherwise, add \(t\) to the table and decrypt \(\beta\):
+\begin{equation*}
+  L'\concat C'\concat \gamma'\concat \beta'\gets \{\beta\concat 0_{w_H 
+    \kappa}\}
+  \oplus \prg(\hash_\prg(s_i))
+\end{equation*}
+
+If \(L' = \{\nullnode\}\), the packet is addressed to the current node.
+Parse the first \(\kappa\) bits of \(\beta'\) as an identifier \(I\).
+Pass \((I, \delta)\) to the \(\ProcessMessage\) algorithm.
+
+If \(L' = \{\rdvnode\}\), the packet payload contains another Sphinxes packet 
+to be forwarded.
+Decrypt the payload \(\delta\) to get the mix packet \((M', \delta')\gets 
+  \prp^{-1}(\hash_\prp(s_i), \delta)\).
+Run the \(\ProcessHeader\) algorithm with \((M', \delta')\) and 
+\(\ProcessMessage\) as input.
+
+Otherwise. \(\beta'\) should be forwarded to \(L'\).
+Compute the blinding factor \(b\gets \hash_\blind(\alpha, s_i)\) and let 
+\(\alpha'\gets \alpha^b\).
+Send \((\alpha', C', \beta', \gamma')\) to \(L'\).
