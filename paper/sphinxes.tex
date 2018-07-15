@@ -283,10 +283,10 @@ Next we will use the above computations to compute the mix headers \(M_i =
 \(\alpha_i\) was computed above, so we will compute \(\beta_i\) and 
 \(\gamma_i\).
 We must compute \(\beta_i\) in reverse order.
-We let \(\beta_{\nu+1} = I\concat 0_{(w_H r-1)\kappa}\), then, for \(\nu\leq 
-  i\leq 0\), we let
+We let \(\beta_{\nu} = I\concat 0_{(w_H r-1)\kappa}\), then, for \(\nu < i\leq 
+  0\), we let
 \begin{align*}
-  \beta_i &\gets \left\{L_{i+1}\concat \gamma_{i+1}\concat 
+  \beta_i &\gets \left\{L_{i+1}\concat C_{i+1}\concat \gamma_{i+1}\concat 
     (\beta_{i+1})_{[0..(w_H r-1)\kappa-1]}\right\}, \\
   \gamma_i &\gets \mac\left( \hash_\mac\left(s_i\right), \beta_i \right).
 \end{align*}
