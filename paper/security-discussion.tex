@@ -3,7 +3,32 @@
 
 \paragraph*{Security of Sphinxes}
 
-\dots
+There are two changes that we have made that must be analysed.
+We changed the key agreement from a pure \ac{DHKE}, \ie based on the \ac{DH} 
+assumption, to one containing an indirection.
+We also changed from the classical \ac{OR} of a fixed path with one node per 
+layer to \ac{POR} with several nodes per layer.
+
+The confidentiality of the key previously rested entirely on the \ac{DH} 
+assumption (\(\alpha\) in the header).
+Now it also rests on the security of the \ac{PRP} \(\prp'\) (\(C\) in the 
+header).
+The integrity is still reduced to the security of the \ac{MAC} \(\mac\) 
+(\(\gamma\) in the header).
+
+The second change is that we use several nodes per layer as opposed to only 
+one.
+The proofs of Sphinx rests on the results of \textcite{CLOnionRouting}, which 
+are results for ordinary \ac{OR} with only one node per layer.
+As long as we output all the nodes in the next layer, the proofs should not 
+change.
+We note that this is actually quite natural as a malicious adversary can drop 
+any incoming traffic to a router and wait for the timeout and retransmission to 
+the next node.
+As such, the adversary can learn all nodes in the layer.
+
+With these arguments, we believe that Sphinxes inherits the \ac{UC} security 
+properties of Sphinx, however, this should be formally analysed.
 
 \paragraph*{Security of \acs*{SPOR}}
 
