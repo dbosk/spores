@@ -1,5 +1,25 @@
-\subsection{The \squad Overlay} 
+\subsection{\Acf*{SPORES}}
 \label{sec:squad_overlay}
+
+Above we made the usual assumption that Alice and Bob are represented by one 
+device each.
+Nowadays this is not the case: they both have multiple devices.
+This means that Bob can receive Alice's message \(m\) on several alternative 
+devices.
+This might not be that problematic, so we will modify our scenario slightly:
+The message \(m\) that Alice wants to send to Bob is too large to successfully 
+pass every layer of the route.
+\Eg each device goes offline and back online every \(t\) time units, the 
+bandwidth is \(w\) size units per time unit and the message is \(l\) size 
+units; if \(l\geq t w\), then the message \(m\) can never be delivered as any 
+device will go offline before relaying it to the next node.
+The natural solution is to split \(m\) into \(n\) parts, \(m_0, \dotsc, m_n\), 
+where \(l/n\leq w t\).
+The problem now is that \(m_i\) and \(m_j\) (\(i\neq j\)) might end up on 
+different devices.
+
+\commentDaniel{We should discuss this problem and outline our solution.}
+\commentDaniel{We must edit what's below, it's as before.}
 
 At the root of \name is predictive routing, based on the concept of Probabilistic Onion Routes (POR).
 To create PORs, as a device's availability strongly depends on the activity of its owner,
