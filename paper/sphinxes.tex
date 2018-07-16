@@ -159,10 +159,16 @@ Sphinx~\cite{Sphinx}, hence we will use the following notation:
     It can be instantiated as any block cipher in counter mode.
 
   \item \(\prp\colon \bin^\kappa\times \bin^{l_\prp} \to \bin^{l_\prp}\) is 
-    \iac{PRP}.
+    \iac{PRP} used to encrypt the payload data.
+    \(l_\prp\) is the maximum length of the payload.
+    (Shorter payloads are assumed to be properly padded.)
 
-  \item \(\hash_\mac, \hash_\prg, \hash_\prp\) are all distinct hash functions 
-    of the form \(\bin^\kappa\to \bin^\kappa\).
+  \item \(\prp'\colon \bin^\kappa\times \bin^\kappa\times \bin^\kappa\) is 
+    another \ac{PRP}.
+    It is used to encapsulate keys.
+
+  \item \(\hash_\mac, \hash_\prg, \hash_\prp. \hash_{\prp'}\) are all distinct 
+    hash functions of the form \(\bin^\kappa\to \bin^\kappa\).
     They are used as key-derivation functions.
 
   \item \(\hash_\tau\colon \G^*\to \bin^{2\kappa}\) is used to identify 
