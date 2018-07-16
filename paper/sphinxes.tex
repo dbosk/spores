@@ -32,9 +32,6 @@ achieve Sphinxes.
 For a more detailed understanding of Sphinx, we refer the reader to the 
 excellent description in the original Sphinx paper~\cite{Sphinx}.
 
-\NewVariable{\sk}{x}
-\NewVariable{\pk}{X}
-
 Each node \(n\) in the system has a long-term public-key pair: private key 
 \(\sk_n\in \ZZ_q^*\) and public key \(\pk_n = g^{\sk_n}\in G\), where \(g\) 
 generates a group \(G\) of prime order \(q\).
@@ -73,8 +70,6 @@ for itself and thus stops the forwarding.
 
 \subsubsection{The Sphinxes extension for sets of nodes}
 
-\NewAlgorithm{\Enc}{Enc}
-
 We will now extend Sphinx to do \ac{POR}: instead of providing only \(d_{i+1}\) 
 in \(\beta_i\), we will have a set \(\{d_{i+1}^{(0)}, \dotsc, d_{i+1}^{(m)}\}\) 
 of \(m\) alternative next nodes.
@@ -107,13 +102,6 @@ be derived from \(\hat s_i\), then the node knows that \(\hat s_i = s_i\).
 
 \subsubsection{Sphinxes algorithms and \acf*{POR}}
 
-\NewScheme{\Sphinxes}{Sphinxes}
-\NewAlgorithm{\CreateHeader}{\Sphinxes[CreateHeader]}
-\NewAlgorithm{\CreateFwd}{\Sphinxes[CreateForward]}
-\NewAlgorithm{\CreateReply}{\Sphinxes[CreateReply]}
-\NewAlgorithm{\UseReply}{\Sphinxes[UseReply]}
-\NewAlgorithm{\ProcessHeader}{\Sphinxes[ProcessHeader]}
-
 Sphinxes provides the following algorithms:
 \begin{itemize}
   \item \(\CreateHeader\) creates a header.
@@ -126,19 +114,6 @@ Sphinxes provides the following algorithms:
 
   \item \(\ProcessHeader\) is the algorithm for processing incoming messages.
 \end{itemize}
-
-\NewVariable{\G}{\mathcal{G}}
-\NewVariable*{\mac}{\mu}
-\NewVariable*{\prg}{\rho}
-\NewVariable*{\prp}{\pi}
-\NewVariable{\hash}{h}
-%\NewVariable{\tag}{\tau}
-\NewVariable{\secret}{s}
-\NewVariable{\blind}{b}
-\NewVariable{\N}{\mathcal{N}}
-\NewVariable{\D}{\mathcal{D}}
-\NewVariable*{\nullnode}{\varepsilon}
-\NewVariable{\rdvnode}{*}
 
 We will synchronize our detailed descriptions with that of 
 Sphinx~\cite{Sphinx}, hence we will use the following notation:
@@ -203,9 +178,6 @@ Sphinx~\cite{Sphinx}, hence we will use the following notation:
 \end{itemize}
 
 \paragraph*{The \(\CreateHeader\) algorithm}
-
-\NewAlgorithm{\ComputeKeys}{ComputeKeys}
-\NewAlgorithm{\ComputePadding}{ComputePadding}
 
 This algorithm creates a header for \iac{POR}.
 It is identical to that of Sphinx~\cite[\S 3.2]{Sphinx} except that we use a 
@@ -343,8 +315,6 @@ It then returns \((M_0, \prp(\tilde k, m))\) which should be sent to any node
 in \(L_0\).
 
 \paragraph*{The \(\ProcessHeader\) algorithm}
-
-\NewVariable{\ProcessMessage}{ProcessMessage}
 
 The algorithm takes as input a header \((M, \delta)\), where \(M = (\alpha, C, 
   \beta, \gamma)\in \G^*\times (\bin^\kappa)^{w_L} \times \bin^{(w_H 

@@ -101,6 +101,34 @@
 \newcommand{\Squad}{E-squad\xspace}
 \newcommand{\Squads}{E-squads\xspace}
 
+% sphinxes.tex
+\NewVariable{\sk}{x}
+\NewVariable{\pk}{X}
+\NewAlgorithm{\Enc}{Enc}
+\NewScheme{\Sphinxes}{Sphinxes}
+\NewAlgorithm{\CreateHeader}{\Sphinxes[CreateHeader]}
+\NewAlgorithm{\CreateFwd}{\Sphinxes[CreateForward]}
+\NewAlgorithm{\CreateReply}{\Sphinxes[CreateReply]}
+\NewAlgorithm{\UseReply}{\Sphinxes[UseReply]}
+\NewAlgorithm{\ProcessHeader}{\Sphinxes[ProcessHeader]}
+\NewVariable{\G}{\mathcal{G}}
+\NewVariable*{\mac}{\mu}
+\NewVariable*{\prg}{\rho}
+\NewVariable*{\prp}{\pi}
+\NewVariable{\hash}{h}
+%\NewVariable{\tag}{\tau}
+\NewVariable{\secret}{s}
+\NewVariable{\blind}{b}
+\NewVariable*{\N}{\mathcal{N}}
+\NewVariable*{\D}{\mathcal{D}}
+\NewVariable*{\nullnode}{\varepsilon}
+\NewVariable{\rdvnode}{*}
+\NewAlgorithm{\ComputeKeys}{ComputeKeys}
+\NewAlgorithm{\ComputePadding}{ComputePadding}
+\NewVariable{\ProcessMessage}{ProcessMessage}
+
+
+
 \usepackage{breqn}
 
 \usepackage{import} % for pdf+latex
