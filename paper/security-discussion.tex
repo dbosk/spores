@@ -1,14 +1,22 @@
 \section{Security Discussion}%
 \label{security-discussion}
 
+\paragraph*{Security of Sphinxes}
+
+\dots
+
+\paragraph*{Security of \acs*{SPOR}}
+
 Alice wants to prevent Bob from learning which are her devices (as defined in 
 \cref{system-model}).
-Bob is allowed to infer the behaviour of devices in the global set, % Global Device Retinue, 
+Bob is allowed to infer the behaviour of devices in the global set,
+% Global Device Retinue, 
 but a file transfer from Alice should not give Bob any information about which 
 devices are Alice's.
 
 Bob constructs \iac{SPOR} route that he gives to Alice.
-This means that Alice does not learn any of Bob's destination devices.
+Due to the properties that Sphinxes inherits from Sphinx, this means that Alice 
+does not learn any of Bob's destination devices.
 When Alice starts sending the message, she will not connect directly to the 
 device at the head of the route, since that might be Bob's device.
 Alice will construct her own \ac{SPOR} route.
@@ -50,8 +58,8 @@ If we choose \(\Enc*\) as a universal re-encryption~\cite{UniversalReencryption}
 scheme (possibly composed with the deniable, authenticated encryption above), 
 then we could also provide bitwise unlinkability for the message between hops on 
 the route.
-(We would also need to modify \(\SPOR[\Fwd]\), \cref{SPORFwd}, to perform the 
-re-encryption of \(m\) before forwarding the message to the next hop.)
+%(We would also need to modify \(\SPOR[\Fwd]\), \cref{SPORFwd}, to perform the 
+%re-encryption of \(m\) before forwarding the message to the next hop.)
 Without universal re-encryption, the message \(m\) itself remains constant 
 throughout the route and thus constitutes a tag for tracking.
 As long as \emph{at least one node on the route is honest}, \ie actually 
