@@ -5,12 +5,11 @@ SRC+=		contents.tex abstract.tex
 SRC+= 		intro.tex
 SRC+= 		system-model.tex
 
-SRC+= 		sphinxes.tex
 SRC+=		design.tex
-SRC+= 		squad-overlay-design.tex 
+SRC+= 		sphinxes.tex
 SRC+=		global-overlay-design.tex
-SRC+= 		message-passing-design.tex
-SRC+=		file-exchange-design.tex
+SRC+= 		squad-overlay-design.tex 
+#SRC+=		file-exchange-design.tex
 
 SRC+= 		security-discussion.tex
 SRC+= 		evaluation.tex
