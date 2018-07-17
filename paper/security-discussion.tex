@@ -102,8 +102,8 @@ Additionally, since Alice and Bob choose a new key for every file, we have
 forward secrecy between files.
 \Eg an adversary who compromises either Alice or Bob cannot determine what Alice 
 sent to Bob, unless it is an ongoing transfer.
-\\
-%\subsection{Limitations}%
+
+\paragraph*{Limitations}%
 \label{security-limitations}
 
 Many attacks against anonymous communications systems target the peer sampling 
@@ -170,18 +170,6 @@ This means that no device knows both ends of the route unless they collude.
 % position of individual nodes.
 % This approach would probably be the easiest, but would probably not provide all 
 % the properties from Sphinx (\eg resistance to active tagging attacks).
-
-\commentDaniel{We need to prove that our POR still fulfil the CL definition of 
-  OR.
-  Since they formalize and idealize ordinary OR we need to see that our changes 
-  still work.}
-
-\commentDaniel{Retransmission is not captured in the CL OR-model, that's fine 
-  since packets are dropped.
-  We must capture the behaviour that if the adversary interrupts transmission, 
-  we will try to send to another node.
-  We can probably fix this by outputting all nodes in the next layer in the 
-  ideal model.}
 
 \sonja{Failure, exception handling, such as reordered chunks, chunks
   on different devices, squad devices going offline during transfer}
