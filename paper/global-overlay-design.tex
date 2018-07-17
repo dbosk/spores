@@ -1,5 +1,48 @@
-\subsection{The Global Overlay}
+\NewScheme{\SPOR}{SPOR}
+
+\subsection{\Acfp*{SPOR}}%
 \label{sec:global_overlay}
+\label{sec:message_passing}
+
+Say that Alice wants to send a message \(m\) to Bob.
+Bob creates a reply header using \(\CreateReply\) and gives the output to Alice 
+over an out-of-band channel.
+We assume that \(m\) is either unavailable when the channel is used or too 
+large to successfully send over the channel directly.
+At a later point, Alice attaches a message \(m\) to the reply header using 
+\(\UseReply\), creates a forward header using \(\CreateFwd\) with the prepared 
+reply header as payload.
+Then she sends this packet to the first node, which processes it using 
+\(\ProcessHeader\).
+The node will then process the header and in turn forward the packet to the 
+next node.
+At some point the message will reach Alice who identifies the message as the 
+one expected to come from Bob.
+(This process is illustrated in \cref{fig:file-exchange}.)
+Now we will focus on how Alice and Bob choose the nodes that they provide to 
+\(\CreateReply\) and \(\CreateFwd\).
+
+\begin{figure}
+  \includegraphics[width=\linewidth]{figures/file_exchange_v2.pdf}
+  \caption{\label{fig:file-exchange}%
+    A schematic of Alice and Bob sending a message using \name.
+    \ding{1} illustrates the layer of the headers that Alice and Bob create.
+    In \ding{2}, Alice and Bob exchange the headers out-of-band.
+    In \ding{3}, Alice and Bob use two \ac{SPOR} routes, one for messages and 
+    one for acknowledgements.
+  }
+\end{figure}
+
+There are many uses of Sphinxes, many criteria that can be used to select the 
+nodes in each layer.
+We will focus on maximizing availability when routing in a network with high 
+churn, but one could equally well select nodes to maximize, \eg, bandwidth.
+We now describe a protocol, \ac{SPOR}, which uses Sphinxes to transfer messages 
+from a source to a destination over a network of nodes with high churn.
+
+\commentDaniel{We should describe how to do this selection using a prediction 
+  oracle, then we provide a prediction oracle later.}
+\commentDaniel{The stuff below is just as before, it must be edited.}
 
 \newcommand{\viewsize}{\ensuremath{l_{\text{view}}\xspace}}
 \newcommand{\view}{\ensuremath{\mathcal{V}_{\text{RPS}}\xspace}}
