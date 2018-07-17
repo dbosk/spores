@@ -39,18 +39,22 @@ Bob is allowed to infer the behaviour of devices in the global set,
 but a file transfer from Alice should not give Bob any information about which 
 devices are Alice's.
 
-Bob constructs \iac{SPOR} route that he gives to Alice.
+Bob constructs a Sphinxes route that he gives to Alice.
 Due to the properties that Sphinxes inherits from Sphinx, this means that Alice 
 does not learn any of Bob's destination devices.
 When Alice starts sending the message, she will not connect directly to the 
-device at the head of the route, since that might be Bob's device.
-Alice will construct her own \ac{SPOR} route.
+device at the head of the route, since that device might be under Bob's 
+control.
+Instead, Alice will construct her own Sphinxes route.
 Thus Alice's devices are hidden from Bob's observation and vice versa.
-If we assume that Alice and Bob can sample their nodes uniformly randomly from 
-the \emph{entire} global set of devices %Global Device Retinue 
-(we will return to this assumption 
-below), then their probability of successful attack is proportional to their 
-size in the network, \ie \(\frac{|D_i|}{|D|}\), for \(i\in \{a,b\}\).
+This assumes that Alice and Bob can sample their nodes uniformly randomly from 
+the \emph{entire} global set of devices.
+If this is true, the probability of successful attack is proportional to the 
+adversary's size in the network, \ie \(\frac{|D_i|}{|D|}\).
+The adversary must be present on each layer and be selected on the first layer 
+(which is lower-bounded by \(\frac{1}{w_L}\)) --- since after that the 
+adversary can select its own nodes in the next layer instead of uniformly at 
+random.
 
 Alice and Bob also want to prevent Carol and David to learn that Alice sent a 
 message to Bob (as defined in \cref{system-model}).
