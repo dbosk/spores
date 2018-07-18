@@ -19,6 +19,7 @@
 \usepackage{xfrac}
 \usepackage{xparse}
 \usepackage{xspace}
+\usepackage[inline]{enumitem}
 
 \usepackage[all]{foreign}
 \renewcommand{\foreignfullfont}{}
@@ -60,6 +61,8 @@
 \declaretheorem[numbered=unless unique,style=exercise]{question}
 \declaretheorem[numbered=unless unique,style=solution]{solution}
 
+\usepackage[sets]{cryptocode}
+
 \usepackage[natbib,style=ieee]{biblatex}
 \usepackage[capitalize]{cleveref}
 \usepackage{bibsp}
@@ -74,14 +77,22 @@
 \addbibresource{p2p-private-cloud.bib}
 \addbibresource{adrien.bib}
 
+\DeclareAcronym{OR}{%
+  short = {OR},
+  long = {Onion Routing},
+}
+\DeclareAcronym{POR}{%
+  short = {POR},
+  long = {Probabilistic Onion Routing},
+}
 \DeclareAcronym{SPOR}{%
   short = {SPOR},
-  long = {Stateless Predictive Onion Routing},
+  long = {Stateless Predictive Probabilistic Onion Routing},
   short-format = \scshape
 }
 \DeclareAcronym{SPORES}{%
   short = {SPORES},
-  long = {Stateless Predictive Onion Routing for E-Squads},
+  long = {\it Stateless Predictive Onion Routing for E-Squads},
   short-format = \scshape
 }
 
@@ -90,6 +101,34 @@
 \newcommand{\squads}{e-squads\xspace}
 \newcommand{\Squad}{E-squad\xspace}
 \newcommand{\Squads}{E-squads\xspace}
+
+% sphinxes.tex
+\NewVariable{\sk}{x}
+\NewVariable{\pk}{X}
+\NewAlgorithm{\Enc}{Enc}
+\NewScheme{\Sphinxes}{Sphinxes}
+\NewAlgorithm{\CreateHeader}{\Sphinxes[CreateHeader]}
+\NewAlgorithm{\CreateFwd}{\Sphinxes[CreateForward]}
+\NewAlgorithm{\CreateReply}{\Sphinxes[CreateReply]}
+\NewAlgorithm{\UseReply}{\Sphinxes[UseReply]}
+\NewAlgorithm{\ProcessHeader}{\Sphinxes[ProcessHeader]}
+\NewVariable{\G}{\mathcal{G}}
+\NewVariable*{\mac}{\mu}
+\NewVariable*{\prg}{\rho}
+\NewVariable*{\prp}{\pi}
+\NewVariable{\hash}{h}
+%\NewVariable{\tag}{\tau}
+\NewVariable{\secret}{s}
+\NewVariable{\blind}{b}
+\NewVariable*{\N}{\mathcal{N}}
+\NewVariable*{\D}{\mathcal{D}}
+\NewVariable*{\nullnode}{\varepsilon}
+\NewVariable{\rdvnode}{*}
+\NewAlgorithm{\ComputeKeys}{ComputeKeys}
+\NewAlgorithm{\ComputePadding}{ComputePadding}
+\NewVariable{\ProcessMessage}{ProcessMessage}
+
+
 
 \usepackage{breqn}
 

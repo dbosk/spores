@@ -1,23 +1,60 @@
 \section{Security Discussion}%
 \label{security-discussion}
 
+\paragraph*{Security of Sphinxes}
+
+There are two changes that we have made that must be analysed.
+We changed the key agreement from a pure \ac{DHKE}, \ie based on the \ac{DH} 
+assumption, to one containing an indirection.
+We also changed from the classical \ac{OR} of a fixed path with one node per 
+layer to \ac{POR} with several nodes per layer.
+
+The confidentiality of the key previously rested entirely on the \ac{DH} 
+assumption (\(\alpha\) in the header).
+Now it also rests on the security of the \ac{PRP} \(\prp'\) (\(C\) in the 
+header).
+The integrity is still reduced to the security of the \ac{MAC} \(\mac\) 
+(\(\gamma\) in the header).
+
+The second change is that we use several nodes per layer as opposed to only 
+one.
+The proofs of Sphinx rests on the results of \textcite{CLOnionRouting}, which 
+are results for ordinary \ac{OR} with only one node per layer.
+As long as we output all the nodes in the next layer, the proofs should not 
+change.
+We note that this is actually quite natural as a malicious adversary can drop 
+any incoming traffic to a router and wait for the timeout and retransmission to 
+the next node.
+As such, the adversary can learn all nodes in the layer.
+
+With these arguments, we believe that Sphinxes inherits the \ac{UC} security 
+properties of Sphinx, however, this should be formally analysed.
+
+\paragraph*{Security of \acs*{SPOR}}
+
 Alice wants to prevent Bob from learning which are her devices (as defined in 
 \cref{system-model}).
-Bob is allowed to infer the behaviour of devices in the global set, % Global Device Retinue, 
+Bob is allowed to infer the behaviour of devices in the global set,
+% Global Device Retinue, 
 but a file transfer from Alice should not give Bob any information about which 
 devices are Alice's.
 
-Bob constructs \iac{SPOR} route that he gives to Alice.
-This means that Alice does not learn any of Bob's destination devices.
+Bob constructs a Sphinxes route that he gives to Alice.
+Due to the properties that Sphinxes inherits from Sphinx, this means that Alice 
+does not learn any of Bob's destination devices.
 When Alice starts sending the message, she will not connect directly to the 
-device at the head of the route, since that might be Bob's device.
-Alice will construct her own \ac{SPOR} route.
+device at the head of the route, since that device might be under Bob's 
+control.
+Instead, Alice will construct her own Sphinxes route.
 Thus Alice's devices are hidden from Bob's observation and vice versa.
-If we assume that Alice and Bob can sample their nodes uniformly randomly from 
-the \emph{entire} global set of devices %Global Device Retinue 
-(we will return to this assumption 
-below), then their probability of successful attack is proportional to their 
-size in the network, \ie \(\frac{|D_i|}{|D|}\), for \(i\in \{a,b\}\).
+This assumes that Alice and Bob can sample their nodes uniformly randomly from 
+the \emph{entire} global set of devices.
+If this is true, the probability of successful attack is proportional to the 
+adversary's size in the network, \ie \(\frac{|D_i|}{|D|}\).
+The adversary must be present on each layer and be selected on the first layer 
+(which is lower-bounded by \(\frac{1}{w_L}\)) --- since after that the 
+adversary can select its own nodes in the next layer instead of uniformly at 
+random.
 
 Alice and Bob also want to prevent Carol and David to learn that Alice sent a 
 message to Bob (as defined in \cref{system-model}).
@@ -27,14 +64,14 @@ global set %Global Device Retinue
 If all devices on the route belong to Carol and David, then they can, of course, 
 learn that Alice sent a message to Bob.
 How well they can do if they do not control the entire route, depends on the 
-choice of the encryption scheme \(\Enc*\), used to encrypt the message \(m\) 
-(see \cref{sec:file_exchange}).
+choice of the encryption scheme \(\Enc*\), used to encrypt the message \(m\). 
+%(see \cref{sec:file_exchange}).
 
 What makes sense is to choose at least an authenticated encryption 
 scheme~\cite{AuthEncryption}.
 (We could also choose a deniable encryption scheme~\cite{DeniableEncryption}, 
-\eg the one by \textcite{OTPKX} which is both deniable and authenticated and 
-provides \ac{DEN-SS}.)
+\eg \cite{OTPKX} which is authenticated and provides deniability under
+surveillance-state attacks.) %is both deniable and authenticated and  provides \ac{DEN-SS}.)
 This would give confidentiality (or deniability) and integrity for the message, 
 but if the first and the last node belong to Carol and David, they can infer 
 that Alice sent a message to Bob.
@@ -50,8 +87,8 @@ If we choose \(\Enc*\) as a universal re-encryption~\cite{UniversalReencryption}
 scheme (possibly composed with the deniable, authenticated encryption above), 
 then we could also provide bitwise unlinkability for the message between hops on 
 the route.
-(We would also need to modify \(\SPOR[\Fwd]\), \cref{SPORFwd}, to perform the 
-re-encryption of \(m\) before forwarding the message to the next hop.)
+%(We would also need to modify \(\SPOR[\Fwd]\), \cref{SPORFwd}, to perform the 
+%re-encryption of \(m\) before forwarding the message to the next hop.)
 Without universal re-encryption, the message \(m\) itself remains constant 
 throughout the route and thus constitutes a tag for tracking.
 As long as \emph{at least one node on the route is honest}, \ie actually 
@@ -70,7 +107,7 @@ forward secrecy between files.
 \Eg an adversary who compromises either Alice or Bob cannot determine what Alice 
 sent to Bob, unless it is an ongoing transfer.
 
-\subsection{Limitations}%
+\paragraph*{Limitations}%
 \label{security-limitations}
 
 Many attacks against anonymous communications systems target the peer sampling 
@@ -101,23 +138,50 @@ the source.
 But these advantages will only postpone the success of the attack, eventually 
 even our protocol must resend.
 
-\subsection{Future Work}
+Finally, we would also need the random peer sampling to be privacy preserving.
+Consider the following scenario.
+Alice requests a set of peers, say \(\{d_1, \dotsc, d_n\}\).
+If \(d_i\) interacts in each sampling operation resulting in \(d_i\) being in 
+the sample, then \(d_i\) can generate a new public key \(\pk_d^{(j)}\) for each 
+sample \(j\).
+This means that, if Alice sampled \(d_i\), she knows the public key 
+\(\pk_i^{(j)}\), and if \(d_i\) knows it is included in Alice's sample, then it 
+will also know a route belongs to Alice whenever \(\pk_i^{(j)}\) is used to 
+encrypt the header.
+\Ie every node on Alice's route would know that Alice is either the source or 
+the destination.
+When running the protocol, Alice only creates one part of the route and Bob 
+creates the other.
+This means that no device knows both ends of the route unless they collude.
 
-One thing that we can directly improve is the header.
-We see two alternative paths for improving the header.
-First, we might be able to adapt the Sphinx~\cite{Sphinx} cryptographic packet 
-format to the routing of \(\SPOR\).
-Then we could achieve the properties of Sphinx, \eg preventing the last node to 
-learn the destination, and enjoy provable security.
+% \subsection{Future Work}
 
-The second approach would be to use the technique by \textcite{PPACinPubFS}.
-They adapt \(\ANOBE\) in such a way that its ciphertexts decrypt to different 
-things for different recipients.
-This way we could have one ciphertext encrypted for all the alternative nodes 
---- across layers.
-Then the ciphertext would decrypt to different plaintexts for nodes on different 
-layers in the route.
-This would hide the path length (constant-size ciphertexts by padding) and the 
-position of individual nodes.
-This approach would probably be the easiest, but would probably not provide all 
-the properties from Sphinx (\eg resistance to active tagging attacks).
+% One part that we can directly improve is the header.
+% We see two alternative paths for improving the header.
+% First, we might be able to adapt the Sphinx~\cite{Sphinx} cryptographic packet 
+% format to the routing of \(\SPOR\).
+% Then we could achieve the properties of Sphinx, \eg preventing the last node to 
+% learn the destination, and enjoy provable security.
+
+% The second approach would be to use the technique by \textcite{PPACinPubFS}.
+% They adapt \(\ANOBE\) in such a way that its ciphertexts decrypt to different 
+% things for different recipients.
+% This way we could have one ciphertext encrypted for all the alternative nodes 
+% --- across layers.
+% Then the ciphertext would decrypt to different plaintexts for nodes on different 
+% layers in the route.
+% This would hide the path length (constant-size ciphertexts by padding) and the 
+% position of individual nodes.
+% This approach would probably be the easiest, but would probably not provide all 
+% the properties from Sphinx (\eg resistance to active tagging attacks).
+
+\sonja{Failure, exception handling, such as reordered chunks, chunks
+  on different devices, squad devices going offline during transfer}
+
+\section{Alternatives}%
+\label{Alternatives}
+
+\subsection{Stateful \name}
+\subsection{Beyond file exchange} web browsing, hidden services,
+interaction and collaboration.
+\subsection{Other predictions} time of day? 

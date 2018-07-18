@@ -1,8 +1,45 @@
-\section{Design of the \name file exchange system}
+\section{Design of the \name file transfer system}%
 \label{design}
-This section presents the \name protocol in detail.
+\sonja{will frame and structure (A) squad overlay (prediction) (B)
+  global overlay (RPS) (C) sphinxes (incl.\ sphinx, onion routing in
+  general) (D) SPOR and SPORES (E) encryption (hybrid, payload, header)
+  if not included earlier (F) out-of-band}
+\commentDaniel{I suggest the following structure:
+  (A) Sphinxes
+  (B) SPOR (global overlay)
+  (C) SPORES (local overlay).
+  My original idea was to make Sphinxes its own section before the design 
+  section instead of a subsection in the design section.}
+\sonja{remove/update references to building blocks, POR}
+\commentDaniel{I removed the building blocks subsection entirely.}
+
+This section presents the different parts of the system in detail.
+We align the presentation of the system with the taxonomy of 
+\textcite{RoutingSurveyAnonymousProtocols}.
+They categorize anonymous communication protocols using the following 
+categories:
+\begin{description}
+  \item[Network structure]
+    This describes the characteristics of the anonymous relays, the connections 
+    between them and the underlying topology.
+
+  \item[Routing information]
+    This describes the network information available to entities deciding on 
+    the route of an anonymous connection.
+
+  \item[Communication model]
+    This describes the entities that make the routing decisions and how they 
+    make these decisions.
+\end{description}
+
+We first describe Sphinxes, which is an adaptation of the Sphinx~\cite{Sphinx} 
+mix-header format.
+This affects very few parts of the taxonomy above.
+
 Our goal is to enable private and reliable file exchange between users participating in the system, by using their respective devices only.
-When Alice and Bob, two users of our system, want to exchange a file $f$ through \name; they start by sharing some information out-of-band, e.g. from their smartphones.
+When Alice and Bob, two users of our system, want to exchange a file $f$ 
+through \name; they start by sharing some information out-of-band, \eg from 
+their smartphones.
 More precisely, they exchange metadata on $f$, encryption keys, and agree upon a Predictive Onion Route (POR).
 PORs are our adaptation of onion routes, allowing secret communication between two entities despite the unreliability of the nodes that relay their messages.
 From there on, Alice and Bob add the POR information to the headers of their subsequent file exchange messages, such that the file transfer remains secret to anyone but them.
@@ -38,25 +75,30 @@ From there on, Alice and Bob add the POR information to the headers of their sub
 
 \begin{figure}[t]
 \centering
-\def\svgwidth{\columnwidth}
+\def\svgwidth{0.8\columnwidth}
 %\input{outline.pdf_tex}
 \import{figures/}{outline.pdf_tex}
 %\includegraphics[width=0.9\columnwidth]{figures/outline.pdf}
 \caption{\label{fig:outline}Outline of \name's components. Users squads of devices are circled in gray. From top to bottom: a user's devices collaborate through the Squad Overlay; online devices globally share information about them to random peers; using the two above overlays allows for the creation or Predictive Onion Routes (PORs) between sets of devices; secure file exchange between users is enabled by PORs.}
 \end{figure}
 
-The privacy objectives of our system require encryption primitives that we first detail in section~\ref{BuildingBlocks}. The other constituents of \name are depicted in figure~\ref{fig:outline}.
+The privacy objectives of our system require encryption primitives that we 
+first detail in \cref{BuildingBlocks}. The other constituents of \name are 
+depicted in \cref{fig:outline}.
 On top, the devices of each user are circled in gray, and form a user's device squad. The squad online members communicate among themselves: they exchange files and messages information, and cooperate to predict the user's future behavior. 
-This first protocol is called the \emph{Squad Overlay} and will be discussed in section~\ref{sec:squad_overlay}.
+This first protocol is called the \emph{Squad Overlay} and will be discussed in 
+\cref{sec:squad_overlay}.
 %On top we see that each user's devices (shown as clouds) communicate with one another through a dissemination protocol---coined the \emph{squad overlay}---that will be discussed in section~\ref{sec:squad_overlay}. 
-Below, we see all devices connected in a random graph: each device gives information about itself to random nodes when it is online. 
-This \emph{Global Overlay} will be covered in section~\ref{sec:global_overlay}.
-The information brought by these overlays allows devices to securely and reliably exchange messages between users by creating PORs, thus enabling file exchange between users, as will be explained in section~\ref{sec:message_passing}.
+Below, we see all devices connected in a random graph: each device gives 
+information about itself to random nodes when it is online. This \emph{Global 
+  Overlay} will be covered in \cref{sec:global_overlay}.
+The information brought by these overlays allows devices to securely and 
+reliably exchange messages between users by creating PORs, thus enabling file 
+exchange between users, as will be explained in \cref{sec:message_passing}.
 %Given this message passing protocol, users can privately exchange files, as shown in the bottom of the figure. We will cover this ultimate goal in section~\ref{sec:file_exchange}.
 
 
-\include*{building-blocks}
-\include*{squad-overlay-design}
+\include*{sphinxes}
 \include*{global-overlay-design}
-\include*{message-passing-design}
+\include*{squad-overlay-design}
 %\include*{file-exchange-design}
