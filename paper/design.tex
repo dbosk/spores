@@ -13,7 +13,29 @@
 \sonja{remove/update references to building blocks, POR}
 \commentDaniel{I removed the building blocks subsection entirely.}
 
-This section presents the \name protocol in detail.
+This section presents the different parts of the system in detail.
+We align the presentation of the system with the taxonomy of 
+\textcite{RoutingSurveyAnonymousProtocols}.
+They categorize anonymous communication protocols using the following 
+categories:
+\begin{description}
+  \item[Network structure]
+    This describes the characteristics of the anonymous relays, the connections 
+    between them and the underlying topology.
+
+  \item[Routing information]
+    This describes the network information available to entities deciding on 
+    the route of an anonymous connection.
+
+  \item[Communication model]
+    This describes the entities that make the routing decisions and how they 
+    make these decisions.
+\end{description}
+
+We first describe Sphinxes, which is an adaptation of the Sphinx~\cite{Sphinx} 
+mix-header format.
+This affects very few parts of the taxonomy above.
+
 Our goal is to enable private and reliable file exchange between users participating in the system, by using their respective devices only.
 When Alice and Bob, two users of our system, want to exchange a file $f$ 
 through \name; they start by sharing some information out-of-band, \eg from 
