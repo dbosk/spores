@@ -1,8 +1,9 @@
 \NewScheme{\SPOR}{SPOR}
 
-\subsection{\Acfp*{SPOR}}%
-\label{sec:global_overlay}
-\label{sec:message_passing}
+\subsection{\Acf*{SPOR}}%
+\label{SPOR}%
+\label{sec:global_overlay}%
+\label{sec:message_passing}%
 
 Say that Alice wants to send a message \(m\) to Bob.
 Bob creates a reply header using \(\CreateReply\) and gives the output to Alice 
@@ -26,9 +27,9 @@ Now we will focus on how Alice and Bob choose the nodes that they provide to
   \includegraphics[width=\linewidth]{figures/file_exchange_v2.pdf}
   \caption{\label{fig:file-exchange}%
     A schematic of Alice and Bob sending a message using \name.
-    \ding{1} illustrates the layer of the headers that Alice and Bob create.
-    In \ding{2}, Alice and Bob exchange the headers out-of-band.
-    In \ding{3}, Alice and Bob use two \ac{SPOR} routes, one for messages and 
+    \ding{182} illustrates the layer of the headers that Alice and Bob create.
+    In \ding{183}, Alice and Bob exchange the headers out-of-band.
+    In \ding{184}, Alice and Bob use two \ac{SPOR} routes, one for messages and 
     one for acknowledgements.
   }
 \end{figure}
@@ -40,6 +41,18 @@ churn, but one could equally well select nodes to maximize, \eg, bandwidth.
 We now describe a protocol, \ac{SPOR}, which uses Sphinxes to transfer messages 
 from a source to a destination over a network of nodes with high churn.
 
+\NewAlgorithm{\GetRandomPeer}{GetRandomPeer}
+
+We assume that there is an algorithm \(\GetRandomPeer\) which returns one 
+uniformly randomly selected node.
+Each such node includes
+\begin{itemize}
+  \item the node's identifier (address), \(d\);
+  \item the node's public key, \(\pk_d\);
+  \item the node's probability of being online in the near future, \(p_d = 
+      \Pr\left(d \in O_{t+1} | S_t\right)\).
+\end{itemize}
+
 \commentDaniel{We should describe how to do this selection using a prediction 
   oracle, then we provide a prediction oracle later.}
 \commentDaniel{The stuff below is just as before, it must be edited.}
@@ -50,7 +63,7 @@ from a source to a destination over a network of nodes with high churn.
 
 To create PORs, devices need to know the address, encryption key, and probability of remaining available of some nodes in the system, to pick them as relays on the route.
 
-To reach this goal, we employ Random Peer Sampling (RPS) \cite{Voulgaris_Gavidia_van_Steen_2005,Jelasity_Voulgaris_Guerraoui_Kermarrec_van_Steen_2007}.
+To reach this goal, we employ Random Peer Sampling (RPS)~\cite{Voulgaris_Gavidia_van_Steen_2005,Jelasity_Voulgaris_Guerraoui_Kermarrec_van_Steen_2007}.
 Essentially, each node maintains a view \view containing \viewsize other devices' descriptors. 
 This view is periodically updated as follows: a device $d$ pops the oldest descriptor $d'$ from its view, then swaps a predefined number of $l$ elements from \view with $d'$.
 Both devices add a descriptor for themselves to the view exchange.
@@ -61,22 +74,11 @@ secondly, offline nodes get removed from one's view fairly fast---we can say tha
 
 \NewVariable{\pk}{pk}
 
-In \name, an RPS descriptor for device $d$ is constituted of the following information:
-\begin{itemize}
-  \item Its address: $d$;
-  \item Its public key: \(\pk_d\);
-  \item Its probability of being online in the near future, as provided by the Squad Overlay: $p_d=P\left[d \in O_{t+1} | S_t\right]$.
-\end{itemize}
-
-Devices now have all the information they need to establish reliable PORs.
-
 % \commentDaniel{%
 %   What is the probability distribution of the peer sample that we get?
 %   Will it be close to uniformly random?
 %   I need this for the security analysis.%
 % }
-
-% \NewAlgorithm{\GetRandomPeer}{GetRandomPeer}
 
 % Every time a device is online, it participates in the random peer sampling 
 % protocol.

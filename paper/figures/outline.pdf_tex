@@ -54,7 +54,7 @@
     \put(0,0){\includegraphics[width=\unitlength,page=2]{outline.pdf}}%
     \put(-0.00225,0.46084871){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\ref{sec:global_overlay}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=3]{outline.pdf}}%
-    \put(-0.00224999,0.19312222){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\ref{sec:message_passing}}}}%
+    \put(-0.00224999,0.19312222){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\ref{sec:file_exchange}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=4]{outline.pdf}}%
   \end{picture}%
 \endgroup%
