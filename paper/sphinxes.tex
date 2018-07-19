@@ -357,4 +357,5 @@ Compute the blinding factor \(b\gets \hash_\blind(\alpha, s_i)\) and let
 Choose a node \(n\rgets L'\) uniformly at random.
 Send \((\alpha', C', \beta', \gamma')\) to \(n\).
 If sending to \(n\) fails, choose another node from \(L'\) uniformly at random.
-If all nodes in \(L'\) fails, the algorithm fails.
+If all nodes in \(L'\) fails, the algorithm drops the packet and silently 
+fails.
