@@ -13,6 +13,8 @@ It is also compact with only 224 bytes of header for a five-hop path with
 Sphinx only provides one node per onion layer, in this section we extend Sphinx 
 to Sphinxes, which allows for multiple nodes per onion layer.
 (See \cref{fig:OR-POR}.)
+As such, Sphinxes could be described as a bounded random-walk protocol, \ie the 
+each node selects the next node from a set restricted by the source.
 
 \begin{figure}
   \includegraphics[width=\linewidth]{figures/OR-POR.png}

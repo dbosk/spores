@@ -32,7 +32,7 @@ network of unreliable nodes while also achieving privacy.
     Outline of \name's components. Users squads of devices are circled in gray. 
     From top to bottom: a user's devices collaborate through the Squad Overlay 
     (\cref{sec:squad_overlay}); online devices globally share information about 
-    them to random peers (\cref{sec:global_overlay}); using the two above 
+    them to random peers (\cref{sec:SPOR}); using the two above 
     overlays allows for the creation of \ac{SPOR} between sets of devices. 
     These protocols enables secure file transfer between users 
     (\cref{SPORES}).}
@@ -86,9 +86,11 @@ We first describe Sphinxes (\cref{Sphinxes}), which is an adaptation of the
 Sphinx~\cite{Sphinx} mix-header format.
 This means that we inherit some properties from Sphinx and due to being only a 
 header format, it only imposes some restrictions in the above categories.
-Sphinxes provides, just as Sphinx, source-routed (communication model), 
-unidirectional (network structure), message-based (performance) communication.
-As such, it relies on a flat routing-topology (network structure) with fair 
+Sphinxes provides, just as Sphinx, unidirectional (network structure), 
+message-based (performance) communication.
+But unlike Sphinx, Sphinxes is hybrid source-hop-by-hop routed (communication 
+model),
+Sphinxes relies on a flat routing-topology (network structure) with fair 
 scheduling (communication model) --- as all packets are indistinguishable they 
 must be processed on a first-in-first-out basis.
 Sphinxes also introduces some probability to the node selection, but this is 
@@ -119,21 +121,19 @@ As \ac{SPOR} is designed, it selects nodes uniformly among all the nodes
 (communication model, node selection) that the source of random nodes provides.
 Thus, ultimately, these also depends on the source of random nodes.
 
-Finally, we describe the complete \ac{SPORES} protocol (\cref{SPORES}).
-\Ac{SPORES} adds an e-squad protocol to \ac{SPOR}.
-This protocol provides provides each device in the e-squad of a user with 
-prediction of its own and the other devices' availability.
-This availability can then be used by the devices in the e-squad to participate 
-as nodes for the routing of \ac{SPOR}, \ie making it \iac{P2P} system (network 
-structure).
+A device's availability depends on its user's behaviour, hence the device must 
+predict this behaviour.
+This is best done jointly between the user's all devices.
+In \cref{sec:squad_overlay}, we describe a protocol which allows the devices to 
+compute their own availability prediction function based on the observations by 
+all other devices.
 
-\Ac{SPORES} also allows the e-squad to act as one autonomous system, rather 
-than several.
-In particular, the devices will exchange information so that one device can 
-receive an expected message on the behalf of another device, \eg while it is 
-offline.
+Finally, we describe the complete \ac{SPORES} protocol (\cref{SPORES}), which 
+allows the device squad to act as an autonomous system.
+In particular, we introduce a protocol which allows transferring larger 
+messages by fragmentation and reassembly across the devices in the squad.
 
 \include*{sphinxes}
-\include*{global-overlay-design}
+\include*{spor}
 \include*{squad-overlay-design}
 \include*{file-exchange-design}

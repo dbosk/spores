@@ -7,7 +7,7 @@ SRC+= 		system-model.tex
 
 SRC+=		design.tex
 SRC+= 		sphinxes.tex
-SRC+=		global-overlay-design.tex
+SRC+=		spor.tex
 SRC+= 		squad-overlay-design.tex 
 #SRC+=		file-exchange-design.tex
 
