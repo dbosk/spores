@@ -1,44 +1,18 @@
-\subsection{\Acf*{SPORES}}%
-\label{SPORES}
+\subsection{Predicting device availability}
 \label{sec:squad_overlay}
 
-So far, we have treated the case where Alice sends \emph{one} message to Bob in 
-\emph{one} round and any one of Bob's devices receives it.
-Now we will consider a slightly different scenario.
-Consider that the message \(m\) that Alice wants to send to Bob is too large to 
-successfully pass every layer of the route.
-\Eg each device goes offline and back online every \(t\) time units, the 
-bandwidth is \(w\) size units per time unit and the message is \(l\) size 
-units; if \(l\geq t w\), then the message \(m\) can never be delivered as any 
-device will go offline before relaying it to the next node.
-The natural solution is to split \(m\) into \(n\) parts, \(m_0, \dotsc, m_n\), 
-where \(l/n\leq w t\).
-The problem now is that \(m_i\) and \(m_j\) (\(i\neq j\)) might end up on 
-different devices.
-In this section we describe two things:
-first, the protocol run by the devices in Alice's and Bob's device squads to 
-compute the function \(\avail\);
-second, the protocol for reassembling a split message where the parts are 
-received by different devices.
+A device's availability depends on its user.
+To predict a device's availability, we must predict its user's behaviour.
+A device, belonging to an \squad, can only predict its probability to stay 
+online in the near future if it has global knowledge of the user behaviour over 
+the other devices of the user's \squad.
+We will now describe a protocol which is run by the devices in the squad which 
+allows each device to compute the availability prediction function, \(\avail\).
 
-\subsubsection{Computing the availability function}
-
-\dots
-
-\subsubsection{Reassembly across the e-squad}
-
-\dots
+\commentDaniel{I leave it to Adrien to write this up.
+  The old stuff is commented out below.}
 
 \endinput
-
-\commentDaniel{The stuff below is Adrien's old stuff.}
-
-At the root of \name is predictive routing, based on the concept of Probabilistic Onion Routes (POR).
-To create PORs, as a device's availability strongly depends on the activity of its owner,
- a user's devices (her \squad) must predict the future behavior of their owner. 
-However, one device, belonging to an \squad, can only predict its probability to stay online in the near future
-if it has a global knowledge of the user behavior over the other devices of the \squad it belongs to.
-To reach this aim, \name relies on a overlay, named thereafter the \squad overlay, to share the user's behavior among devices of its \squad.
 
 %By sharing information among themselves, a user's devices (her \emph{squad}) can model her behavior.
 
