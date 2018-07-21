@@ -53,44 +53,18 @@ one uniformly randomly selected node, where.
 The \(\GetRandomNode\) algorithm can be instantiated using \eg
 Octopus~\cite{Octopus}.
 But even a solution like Tor's authoritative directory servers would work,
+We will treat \(\avail_d\) in \cref{SPORES}.
 
-\commentDaniel{We should describe how to do this selection using a prediction 
-  oracle, then we provide a prediction oracle later.}
-\commentDaniel{The stuff below is just as before, it must be edited.}
-
-\newcommand{\viewsize}{\ensuremath{l_{\text{view}}\xspace}}
-\newcommand{\view}{\ensuremath{\mathcal{V}_{\text{RPS}}\xspace}}
-\NewAlgorithm{\GetRandomNode}{\text{random descriptor from }\view}
-
-To create PORs, devices need to know the address, encryption key, and probability of remaining available of some nodes in the system, to pick them as relays on the route.
-
-To reach this goal, we employ Random Peer Sampling (RPS)~\cite{Voulgaris_Gavidia_van_Steen_2005,Jelasity_Voulgaris_Guerraoui_Kermarrec_van_Steen_2007}.
-Essentially, each node maintains a view \view containing \viewsize other devices' descriptors. 
-This view is periodically updated as follows: a device $d$ pops the oldest descriptor $d'$ from its view, then swaps a predefined number of $l$ elements from \view with $d'$.
-Both devices add a descriptor for themselves to the view exchange.
-If $d'$ was offline, its descriptor is simply removed from the $d$'s view, but \view is otherwise not updated.
-
-This allows for two things: firstly, each device's view contains a constantly changing random sample of the whole set of devices;
-secondly, offline nodes get removed from one's view fairly fast---we can say that a \view contains \emph{mostly} descriptors of online devices.
-
-\NewVariable{\pk}{pk}
-
-% \commentDaniel{%
-%   What is the probability distribution of the peer sample that we get?
-%   Will it be close to uniformly random?
-%   I need this for the security analysis.%
-% }
-
-% Every time a device is online, it participates in the random peer sampling 
-% protocol.
-% If a device is sampled it provides the following information:
-% \begin{itemize}
-%   \item its address, $@_d$;
-%   \item its public key, \(\pk_d\);
-%   \item the probability of being online, $p_d=P\left[d \in O_{t+1} | S_t\right] $.
-% \end{itemize}
-% We will denote this by the following algorithm $(@_d, \pk_d, p_d)\gets 
-%   \GetRandomNode$, which will be used below.
-% The probability of being online, \(p_d\), is inferred as above 
-% (\ref{sub:a_model_of_the_user_s_behavior}).
+When Bob runs \(\CreateReply\) (or Alice runs \(\CreateFwd\)) he must supply a 
+set of nodes for each layer of the route, \(L = \{L_0, \dotsc, L_\nu\}\), where 
+\(|L_i| \leq w_L\) for \(0\leq i\leq \nu\).
+The set \(L_\nu\) contains only one or more of Bob's devices.
+For the other layers, \(L_i\) for \(i < \nu\), Bob will do the following:
+Bob queries \(\GetRandomNode\) \((\nu-1)\cdot w_L\) times to get enough nodes 
+to fill all remaining layers.
+Bob will distribute these nodes across all layers \(L_i\) to maximize \(\min_i 
+  \avail_{L_i}(t)\), where \(\avail_{L_i}(t) = 1-\prod_{l\in L_i} 
+  (1-\avail_l(t))\).
+This means that Bob minimizes the risk of a layer (\ie all nodes in a layer) 
+being unavailable.
 
