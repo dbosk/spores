@@ -121,19 +121,17 @@ As \ac{SPOR} is designed, it selects nodes uniformly among all the nodes
 (communication model, node selection) that the source of random nodes provides.
 Thus, ultimately, these also depends on the source of random nodes.
 
-Finally, we describe the complete \ac{SPORES} protocol (\cref{SPORES}).
-\Ac{SPORES} adds an e-squad protocol to \ac{SPOR}.
-This protocol provides provides each device in the e-squad of a user with 
-prediction of its own and the other devices' availability.
-This availability can then be used by the devices in the e-squad to participate 
-as nodes for the routing of \ac{SPOR}, \ie making it \iac{P2P} system (network 
-structure).
+A device's availability depends on its user's behaviour, hence the device must 
+predict this behaviour.
+This is best done jointly between the user's all devices.
+In \cref{sec:squad_overlay}, we describe a protocol which allows the devices to 
+compute their own availability prediction function based on the observations by 
+all other devices.
 
-\Ac{SPORES} also allows the e-squad to act as one autonomous system, rather 
-than several.
-In particular, the devices will exchange information so that one device can 
-receive an expected message on the behalf of another device, \eg while it is 
-offline.
+Finally, we describe the complete \ac{SPORES} protocol (\cref{SPORES}), which 
+allows the device squad to act as an autonomous system.
+In particular, we introduce a protocol which allows transferring larger 
+messages by fragmentation and reassembly across the devices in the squad.
 
 \include*{sphinxes}
 \include*{spor}
