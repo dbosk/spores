@@ -86,9 +86,11 @@ We first describe Sphinxes (\cref{Sphinxes}), which is an adaptation of the
 Sphinx~\cite{Sphinx} mix-header format.
 This means that we inherit some properties from Sphinx and due to being only a 
 header format, it only imposes some restrictions in the above categories.
-Sphinxes provides, just as Sphinx, source-routed (communication model), 
-unidirectional (network structure), message-based (performance) communication.
-As such, it relies on a flat routing-topology (network structure) with fair 
+Sphinxes provides, just as Sphinx, unidirectional (network structure), 
+message-based (performance) communication.
+But unlike Sphinx, Sphinxes is hybrid source-hop-by-hop routed (communication 
+model),
+Sphinxes relies on a flat routing-topology (network structure) with fair 
 scheduling (communication model) --- as all packets are indistinguishable they 
 must be processed on a first-in-first-out basis.
 Sphinxes also introduces some probability to the node selection, but this is 
