@@ -41,17 +41,18 @@ churn, but one could equally well select nodes to maximize, \eg, bandwidth.
 We now describe a protocol, \ac{SPOR}, which uses Sphinxes to transfer messages 
 from a source to a destination over a network of nodes with high churn.
 
-\NewAlgorithm{\GetRandomPeer}{GetRandomPeer}
-
-We assume that there is an algorithm \(\GetRandomPeer\) which returns one 
-uniformly randomly selected node.
-Each such node includes
+\((d, \pk_d, \avail_d)\gets \GetRandomNode\): We assume that there is an 
+algorithm \(\GetRandomNode\) which returns a tuple \((d, \pk_d, \avail_d)\) of 
+one uniformly randomly selected node, where.
 \begin{itemize}
-  \item the node's identifier (address), \(d\);
-  \item the node's public key, \(\pk_d\);
-  \item the node's probability of being online in the near future, \(p_d = 
-      \Pr\left(d \in O_{t+1} | S_t\right)\).
+  \item \(d\) is the node's identifier (address);
+  \item \(\pk_d\) is the node's public key;
+  \item \(\avail_d(t)\) is the node's probability of being online as a function 
+    of time.
 \end{itemize}
+The \(\GetRandomNode\) algorithm can be instantiated using \eg
+Octopus~\cite{Octopus}.
+But even a solution like Tor's authoritative directory servers would work,
 
 \commentDaniel{We should describe how to do this selection using a prediction 
   oracle, then we provide a prediction oracle later.}
@@ -59,7 +60,7 @@ Each such node includes
 
 \newcommand{\viewsize}{\ensuremath{l_{\text{view}}\xspace}}
 \newcommand{\view}{\ensuremath{\mathcal{V}_{\text{RPS}}\xspace}}
-\NewAlgorithm{\GetRandomPeer}{\text{random descriptor from }\view}
+\NewAlgorithm{\GetRandomNode}{\text{random descriptor from }\view}
 
 To create PORs, devices need to know the address, encryption key, and probability of remaining available of some nodes in the system, to pick them as relays on the route.
 
@@ -89,7 +90,7 @@ secondly, offline nodes get removed from one's view fairly fast---we can say tha
 %   \item the probability of being online, $p_d=P\left[d \in O_{t+1} | S_t\right] $.
 % \end{itemize}
 % We will denote this by the following algorithm $(@_d, \pk_d, p_d)\gets 
-%   \GetRandomPeer$, which will be used below.
+%   \GetRandomNode$, which will be used below.
 % The probability of being online, \(p_d\), is inferred as above 
 % (\ref{sub:a_model_of_the_user_s_behavior}).
 
