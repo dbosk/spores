@@ -9,7 +9,7 @@ SRC+=		design.tex
 SRC+= 		sphinxes.tex
 SRC+=		spor.tex
 SRC+= 		squad-overlay-design.tex 
-#SRC+=		file-exchange-design.tex
+SRC+=		file-exchange-design.tex
 
 SRC+= 		security-discussion.tex
 SRC+= 		evaluation.tex
