@@ -19,13 +19,13 @@ The node will then process the header and in turn forward the packet to the
 next node.
 At some point the message will reach Alice who identifies the message as the 
 one expected to come from Bob.
-(This process is illustrated in \cref{fig:file-exchange}.)
+(This process is illustrated in \cref{fig:file-transfer}.)
 Now we will focus on how Alice and Bob choose the nodes that they provide to 
 \(\CreateReply\) and \(\CreateFwd\).
 
 \begin{figure}
-  \includegraphics[width=\linewidth]{figures/file_exchange_v2.pdf}
-  \caption{\label{fig:file-exchange}%
+  \includegraphics[width=\linewidth]{figures/file_transfer_v2.pdf}
+  \caption{\label{fig:file-transfer}%
     A schematic of Alice and Bob sending a message using \name.
     \ding{182} illustrates the layer of the headers that Alice and Bob create.
     In \ding{183}, Alice and Bob exchange the headers out-of-band.
