@@ -10,13 +10,14 @@ Consider that the message \(m\) that Alice wants to send to Bob is too large to
 successfully pass every layer of the route.
 \Eg each device goes offline and back online every \(t\) time units, the 
 bandwidth is \(w\) size units per time unit and the message is \(l\) size 
-units; if \(l\geq t w\), then the message \(m\) can never be delivered as any 
+units; if \(l > t w\), then the message \(m\) can never be delivered as any 
 device will go offline before relaying it to the next node.
 The natural solution is to split \(m\) into \(n\) parts, \(m_0, \dotsc, m_n\), 
-where \(l/n\leq w t\).
+where \(l/n\leq t w\).
 The problem now is that \(m_i\) and \(m_j\) (\(i\neq j\)) might end up on 
 different devices.
-In this section we describe a protocol for reassembling a split message where 
-the parts are received by different devices of the e-squad.
+In this section we describe a file-transfer protocol for splitting a large 
+message, sending the fragments using \ac{SPOR} and reassemble them --- even if 
+the fragments are received by different devices of the squad.
 
 \commentDaniel{I leave it to Adrien, for now, to write this up.}
