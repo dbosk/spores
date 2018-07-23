@@ -41,6 +41,37 @@ properties of Sphinx, however, this should be formally analysed.
 
 \paragraph*{Security of \acs*{SPOR}}
 
+The onion route provides unlinkability between Alice and Bob as long as the 
+message passes at least one honest node on the route.
+This means that any adversary, say Eve,  must ensure that the message passes 
+through an adversarial node on each layer.
+The probability of successful attack is proportional to Eve's size in the 
+network, \ie \(f_A = \frac{|D_A|}{|D|}\).
+\commentDaniel{Check that we still use the \(D_i\) notation for the devices in 
+  \(i\)'s squad.}
+If we assume that \(\GetRandomNode\) returns nodes with close to the uniform 
+distribution, then the \(\nu w_L\) nodes selected will contain \(f_A \nu w_L\) 
+nodes controlled by Eve.
+If \(f_A \nu w_L < \nu\), then Eve cannot be present on every layer of the 
+route.
+Considering how \ac{SPOR} distributed the \(\nu w_L\) selected nodes, Eve's 
+best strategy is to have high-availability nodes --- assume that 
+\(\avail_{D_E}(t) = 1\) for all Eve's devices \(D_E\).
+This way, Eve's devices will be distributed evenly across all layers.
+To succeed, Eve must be chosen in the first layer, the probability of which 
+will be \(\frac{f_A}{w_L}\).
+If one of her devices is chosen in the first layer, then she can choose one of 
+her own devices in the next layer.
+Since she is present on every layer, she can ensure she relays the message all 
+the way to Bob.
+
+However, Eve can only be certain that she has relayed the message from Alice to 
+Bob if \(\nu = r\), \ie she receives the message from Alice, relays it \(r-1\) 
+times and lastly sends it to Bob.
+If \(\nu < r\) though, then, due to the indistinguishability and unlinkability 
+properties of Sphinxes (inherited from Sphinx), Eve cannot know for certain if 
+Alice is the first node and Bob is the last node.
+
 \commentDaniel{This must be updated.}
 \commentDaniel{What is the probability of success of the adversary, assuming 
   \(\GetRandomNode\) returns nodes with uniform probability?
