@@ -1,4 +1,6 @@
 % -*- tex-main-file: "contents.tex" compile-command: "pdflatex -halt-on-error p2p-private-cloud.tex > /dev/null" ispell-dictionary: "american" -*-
+%!TEX root = p2p-private-cloud.tex
+
 
 \section{System model, adversary model and desired privacy properties}%
 \label{system-model}
@@ -22,7 +24,7 @@ using \ac{NFC} or QR codes).
 In the following, we first describe \changeFT{how file sharing typically occurs when users rely on a cloud storage provider. We use this simple use case}
 %a simple model of data sharing via cloud storage
 to
-highlight some of the desirable privacy properties of a file sharing service, before mapping them into our \changeFT{fully decentralized (a.k.a P2P)}
+highlight some of the desirable privacy properties of a file sharing service, before mapping them into our \changeFT{fully decentralized (a.k.a. P2P)}
 context. 
 We finally consider the additional privacy properties required to protect users from  network traffic analysis, which we propose to address through onion
 routing, and detail our adversary model. \commentFT{I wasn't sure how to position onion routing: to me it is more a solution than a problem specification, and since we are describing what we want here (spec./problem space) I wasn't sure how much to highlight onion routing (solution space).} \commentFT{Terminology: Do we use both `fully decentralized' and `P2P', or do we favor one over the other?}
@@ -40,7 +42,7 @@ provides two main privacy properties, which we \changeFT{should preserve} when
 moving to a \ac{P2P}~\cite{DevilInMetadata} setting:
 \begin{itemize}
 \item Except for the cloud provider, Alice and Bob are the only \changeFT{users} who learn 
-about Alice sharing a file with Bob. \sonja{narrow down to users?} \commentFT{Changed to users: we could also use entities/participants}
+about Alice sharing a file with Bob; \sonja{narrow down to users?} \commentFT{Changed to users: we could also use entities/participants}
 \item
   The composition and behavior of Alice and Bob's \squad remain hidden to each other, and to other users. I.e. Alice does not learn which devices Bob owns or uses, let alone how Bob uses them, and reciprocally. 
 %%   Alice and Bob learn nothing about each others' devices, \ie 
@@ -78,12 +80,12 @@ indistinguishability). These properties cover the concerns about
 revealing to others that Alice shares a file with Bob in the first
 place. In \name, we additionally derive the property of
 device-unlinkability from the \ac{P2P} requirements, meaning that
-using \name does not reveal the \squad a device belongs to nor the
-owner and can thus not infer anything about a user's behavior such as
-being online.
+using \name does not reveal the \squad a device belongs to nor its
+owner. \changeAL{Thus, no information on the user's behavior (e.g. being online) can be infered through \name.} 
+%and can thus not infer anything about a user's behavior such as being online.
 
-\paragraph*{Adversary model} To assess our approach, we use the adversary model assumed by by Tor \cite{} and
-Sphinx \cite{}: the adversary has complete control over some part of
-the network as well as some of the nodes. We not consider a passive
+\paragraph*{Adversary model} To assess our approach, we use the adversary model assumed by Tor~\cite{Tor} and
+Sphinx~\cite{Sphinx}: the adversary has complete control over some part of
+the network as well as some of the nodes. We do not consider a passive
 global network adversary, against which it is notoriously difficult to
 achieve security~\cite{SystemsForAnonymousCommunication}.
