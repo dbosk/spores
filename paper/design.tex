@@ -107,6 +107,7 @@ or not.
 Just as Sphinx, it can be used in many different settings.
 
 Next, we describe the \ac{SPOR} protocol (\cref{SPOR}).
+\commentAL{A lot of description here, should only come in Section~\ref{sec:squad_overlay}}
 This focuses on the node selection, \ie adds node selection on top of Sphinxes.
 %The \ac{SPOR} protocol assumes a source of random nodes, %\eg through \ac{RPS}~\cite[\eg][]{} or \iac{DHT} based scheme~\cite[\eg][]{}.
 The SPOR protocol assumes that each node knows a random subset of the system's participants at all time (\eg through Random-Peer-Sampling \cite{Jelasity_Voulgaris_Guerraoui_Kermarrec_van_Steen_2007}).
@@ -123,8 +124,8 @@ As \ac{SPOR} is designed, it selects nodes uniformly among all the nodes
 (communication model, node selection) that the source of random nodes provides.
 Thus, ultimately, these also depends on the source of random nodes.
 
-A device's availability depends on its user's behaviour, hence the device must 
-predict this behaviour.
+A device's availability depends on its user's behavior, hence the device must 
+predict this behavior.
 This is best done jointly between the user's all devices.
 In \cref{sec:squad_overlay}, we describe a protocol which allows the devices to 
 compute their own availability prediction function based on the observations by 
@@ -137,5 +138,10 @@ messages by fragmentation and reassembly across the devices in the squad.
 
 \include*{sphinxes}
 \include*{spor}
+\commentAL{What I want to do from here:
+(1) The squad overlay, where a user's devices exchange behavioral information;
+(2) Predicting a device's availability;
+(3) What is at the moment III-B SPOR: global overlay (one-liner: ``we use a RPS service'') and nodes selection per layer etc.;
+(4) File exchange.}
 \include*{squad-overlay-design}
 \include*{file-transfer-design}
