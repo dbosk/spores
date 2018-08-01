@@ -65,11 +65,11 @@ While the user acts, $S$ keeps growing, and the Markov chain must be recomputed:
 In this case, $\forall X' \in S, P\left[X \rightarrow X'\right] = 0 \implies P_d = 0$.
 
 To counter this possibility, we propose a fallback:
-when the current state $X=x$ is new, we compute a naive probability $Pf_d$ that $d$ stays online, given only $d$'s previous state:
+when the current state $X=x$ is new, we compute a naive probability $P'_d$ that $d$ stays online, given only $d$'s previous state:
 
-$$ Pf_d = \frac{\left| \left\{ X_i \in \mathcal{X}_{d\text{ online}}, X_{i+1} \in \mathcal{X}_{d\text{ online}} \right\}_{i \in \left[0, |S| - 1\right]} \right|}{\left| \left\{ X_i \in \mathcal{X}_{d\text{ online}} \right\}_{i \in \left[0, |S| - 1\right]} \right|} $$
+$$ P'_d = \frac{\left| \left\{ X_i \in \mathcal{X}_{d\text{ online}}, X_{i+1} \in \mathcal{X}_{d\text{ online}} \right\}_{i \in \left[0, |S| - 1\right]} \right|}{\left| \left\{ X_i \in \mathcal{X}_{d\text{ online}} \right\}_{i \in \left[0, |S| - 1\right]} \right|} $$
 
-$Pf_d$ is an estimator of $d$'s average probability of being online two turns in a row. It will also be used as a baseline in the evaluation.
+$P'd$ will be advertised in spite of $P_d$. It will also be used as a baseline in the evaluation.
 
 \subsection{Probabilistic Onion Routes}
 \label{ssec:por}
