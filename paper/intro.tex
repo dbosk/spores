@@ -1,4 +1,5 @@
 % -*- tex-main-file: "contents.tex" compile-command: "pdflatex p2p-private-cloud.tex" ispell-dictionary: "american" -*-
+%!TEX root = p2p-private-cloud.tex
 
 \section{Introduction}
 
@@ -89,20 +90,21 @@ with strong privacy protection in data-sharing systems. We present
 % approach that provides a 
 and self-organizing file sharing service between the \squad{}s of different users that preserves user privacy
 in terms of both data \emph{and} metadata. \commentFT{Moving to 3 ideas, to highlight proxemics in its own right} Our proposal hinges on three
-key ideas: \emph{First}, the emergence of \emph{\squad{}s}, the set of connected devices owned and used by one user, 
+key ideas: \emph{Firstly}, the emergence of \emph{\squad{}s}, the set of connected devices owned and used by one user, 
 %% the recent advances of smartphones and other
 %% mobile devices enable e-squads and it has thus
 %% become possible to
 makes it possible to apply P2P technology to one's own devices
 alone, thereby reducing one's exposure to security and privacy threats
-from third parties. \emph{Second}, we consider \emph{proxemics relationships} as a key enabler to initiate file
+from third parties. \emph{Secondly}, we consider \emph{proxemics relationships} as a key enabler to initiate file
 transfers. Physical proximity allow users to share
-routing information out-of-band, e.g. from their
-\squad. \commentFT{I did not get what 'from their \squad' mean.} In contrast to state-of-the-art P2P systems, users agree in \name out-of-band to share a file, but
-do not keep it available for anyone else in the future. \emph{Third}, we
+routing information out-of-band.
+%, e.g. from their \squad. \commentFT{I did not get what 'from their \squad' mean.} 
+In contrast to state-of-the-art P2P systems, users of \name agree out-of-band to share a file, but
+do not keep it available for anyone else in the future. \emph{Thirdly}, we
 exploit distributed machine learning techniques to predict the future
 availability of user devices, and use this ability to implement a
-\emph{probabilistic predictive onion routing} (POR) mechanism. The
+\emph{probabilistic predictive onion routing} mechanism. The
 predictive nature of our routing, exploited in a stateless way, allows us to overcome the inherent fragility of pure P2P data-sharing schemes. 
 
 %% In this paper, we introduce \name{}, a novel approach to perform a decentralized, autonomous,
@@ -125,7 +127,7 @@ Our contributions are as follows:
 and self-organizing file sharing service among users based on a novel
 concept named Probabilistic Onion Routes (POR), which combines onion routing with
 probabilistic node selection, informed by random peer sampling and
-Hidden Markov Model predictions for node availability. 
+Hidden Markov Model predictions for node availability;
 \item  We have demonstrated the successfulness of our approach. Even
   suboptimal prediction results in successful file transfer with high
   probability. 
@@ -133,9 +135,9 @@ Hidden Markov Model predictions for node availability.
 
 In the following, in Section~\ref{system-model}, we introduce the
 adversary model and the desired privacy properties of \name. Section~\ref{design}
-introduces the design of our proposed solution. Section~\ref{Performance}
-evaluates the proposed approach. In Section~\ref{security-discussion}, we lead a security discussion
-about advantages, and shortcomings of our approach.
+introduces the design of our proposed solution. In Section~\ref{security-discussion}, we lead a security discussion
+about advantages and shortcomings of our approach. Section~\ref{Performance}
+evaluates \name. 
 Finally, Section~\ref{conclusion} discusses future work and conclusions.
 % Cashmere: resilient anonymous routing.
 % Route fingerprinting in anonymous communications.
