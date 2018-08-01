@@ -20,10 +20,10 @@ participating in the system, by using their respective devices only.
 When Alice and Bob, two users of our system, want to exchange a file \(f\) 
 through \name; they start by sharing some information out-of-band, \eg from 
 their smartphones.
-More precisely, they exchange metadata on \(f\), encryption keys, and exchange 
-use-once reply mix-headers.
-They use these reply headers to transfer the file contents of \(f\) over a 
-network of unreliable nodes while also achieving privacy.
+More precisely, they exchange metadata on \(f\), encryption keys, and 
+\changeAL{routing information that they will use to transfer the file's content over \name's network of unreliable nodes.}
+%use-once reply mix-headers.
+%They use these reply headers to transfer the file contents of \(f\) over a network of unreliable nodes while also achieving privacy.
 
 \begin{figure}[t]
   \centering
@@ -47,36 +47,36 @@ They categorize anonymous communication protocols using the following
 categories (see~\cite[Table 1]{RoutingSurveyAnonymousProtocols}):
 \begin{description}
   \item[Network structure]
-    This describes the characteristics of the anonymous relays, the connections 
+    describes the characteristics of the \changeAL{network nodes}, the connections 
     between them and the underlying topology.
     The subcategories are
     \begin{enumerate*}
       \item network topology,
       \item connection type (direction, synchronization),
-      \item symmetry (node roles, node topology for routing, decentralization).
+      \item symmetry (node roles, node topology for routing, decentralization);
     \end{enumerate*}
 
   \item[Routing information]
-    This describes the network information available to entities deciding on 
-    the route of an anonymous connection.
+    describes the network information available to entities deciding on 
+    the route of an anonymous file exchange.
     The subcategories are
     \begin{enumerate*}
       \item network view necessary for making routing decisions,
-      \item triggers for routing information updates.
+      \item triggers for routing information updates;
     \end{enumerate*}
 
   \item[Communication model]
-    This describes the entities that make the routing decisions and how they 
+    describes the entities that make the routing decisions and how they 
     make these decisions.
     The subcategories are
     \begin{enumerate*}
       \item routing type (who selects nodes per route),
       \item scheduling (traffic prioritization),
-      \item node selection (determinism, selection set, selection probability).
+      \item node selection (determinism, selection set, selection probability);
     \end{enumerate*}
 
   \item[Performance]
-    This describes things like latency and communication mode.
+    describes things like latency and communication mode.
     The subcategories are
     \begin{enumerate*}
       \item protocol latency,
@@ -108,8 +108,8 @@ Just as Sphinx, it can be used in many different settings.
 
 Next, we describe the \ac{SPOR} protocol (\cref{SPOR}).
 This focuses on the node selection, \ie adds node selection on top of Sphinxes.
-The \ac{SPOR} protocol assumes a source of random nodes, \eg through 
-\ac{RPS}~\cite[\eg][]{} or \iac{DHT} based scheme~\cite[\eg][]{}.
+%The \ac{SPOR} protocol assumes a source of random nodes, %\eg through \ac{RPS}~\cite[\eg][]{} or \iac{DHT} based scheme~\cite[\eg][]{}.
+The SPOR protocol assumes that each node knows a random subset of the system's participants at all time (\eg through Random-Peer-Sampling \cite{Jelasity_Voulgaris_Guerraoui_Kermarrec_van_Steen_2007}).
 Each node must be associated with a public key and some availability 
 prediction.
 \Ac{SPOR} selects nodes for a route uniformly randomly and uses the 
