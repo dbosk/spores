@@ -1,5 +1,9 @@
 %!TEX root = p2p-private-cloud.tex
 
+\newcommand\fileid{\ensuremath{ID_{\text{f}}}}
+\newcommand\sendingdevice{\ensuremath{d^{(s)}_f}}
+\newcommand\recdevice{\ensuremath{d^{(r)}_f}}
+
 \subsection{The \squad overlay}
 \label{sec:squad_overlay}
 
@@ -16,8 +20,8 @@ the recipients answer with any information that they believe the sender does not
 The exchanged data forms a sequence, ordered by timestamp, populated by three types of information:
 \begin{itemize}
 	\item \texttt{CONNECTED<$d, t_{step}$>}: Sent by device $d$ when it is used by its user at time step\footnote{As far as devices connections are concerned, time is discretized: we consider that each interaction lasts the same time.} $t_{step}$. $d$ is otherwise considered offline at this time. Devices use this information to predict their probability of remaining online, as presented in section~\ref{ssec:device_availability};
-	\item \texttt{SENDING<$d, ID_{file}$>}: When the user decides to send a file located on a device $d$, $d$ informs its peers of this fact, and joins the file ID $ID_{file}$. Squad members will use this information to forward acknowledgments from the remote to $d$;
-	\item \texttt{RECEIVING<$d, ID_{file}$>}: Reciprocally, when the user starts receiving a file onto a device $d$, $d$ informs its peers of this fact, and joins the file ID $ID_{file}$. Squad members will use this information to forward the file's content from the remote to $d$.
+	\item \texttt{SENDING<\sendingdevice, \fileid>}: When the user decides to send a file $f$ located on a device \sendingdevice, \sendingdevice informs its peers of this fact, and joins the file ID \fileid. Squad members will use this information to forward acknowledgments from the remote to \sendingdevice;
+	\item \texttt{RECEIVING<\recdevice, \fileid>}: Reciprocally, when the user starts receiving a file $f$ onto a device \recdevice, \recdevice informs its peers of this fact, and joins the file ID \fileid. Squad members will use this information to forward the file's content from the remote to \recdevice.
 \end{itemize}
 
 Given this information dissemination and history reconciliation mechanism, each \squad member knows the full sequence $S$ at all time with an overwhelming probability, even in the face of churn.
@@ -88,7 +92,7 @@ $P'd$ will be advertised in spite of $P_d$. It will also be used as a baseline i
 \label{sssec:global_overlay}
 
 Devices need to know the address of SPORES participants in order to craft PORs.
-To this end, we employ a Random Peer Sampling service~\cite{Jelasity_Voulgaris_Guerraoui_Kermarrec_van_Steen_2007} among all nodes in SPORES. \commentAL{TODO: cite \cite{Jesi_Montresor_van_Steen_2010} or else for \textbf{secure} RPS}.
+To this end, we employ a Random Peer Sampling service~\cite{Jelasity_Voulgaris_Guerraoui_Kermarrec_van_Steen_2007} among all nodes in SPORES. \commentAL{TODO: cite \cite{Jesi_Montresor_van_Steen_2010} for \textbf{secure} RPS}.
 It is a gossip protocol that allows each participant to keep a fixed-size \emph{random} subset of other nodes' descriptor (that we will call the \emph{view}). 
 The view is constantly evolving, as queries are periodically issued between nodes to exchange descriptors between their respective views.
 Finally, offline nodes are quickly evicted from devices' views.
@@ -117,8 +121,8 @@ In SPORES, a descriptor for $d$ contains the following information:
 \newcommand\filesize{\ensuremath{s_f}\xspace}
 \newcommand\chunksize{\ensuremath{s_{\text{chunk}}}\xspace}
 \newcommand\nchunks{\ensuremath{n_{\text{chunks}}}\xspace}
-\newcommand\hashchunk{\ensuremath{\mathcal{H}_{\text{chunk}}}\xspace}
-\newcommand\hashfile{\ensuremath{\mathcal{H}}\xspace}
+\newcommand\hashchunk{\ensuremath{h_{\text{chunk}}}\xspace}
+\newcommand\hashfile{\ensuremath{h}\xspace}
 
 We have seen how participants of \name could craft routes to secretly exchange messages.
 We now apply this feature to reliably exchange files between two users.
@@ -133,7 +137,40 @@ In BitTorrent, .torrent files are publicly available on the Web.
 They contain $\finfo = \left(\filesize, \nchunks, \left[\hashchunk\right]_{\text{chunk} \in f}, \hashfile\right)$, 
 along with network information to reach uploaders of $f$ (e.g. the tracker's address).
 Anyone can download a .torrent file and start receiving the file associated to it.
-In \name, we want file exchanges to remain private: these metadata are exchanged out-of-band.
 
-\paragraph{Out-of-band initialization} 
-When Alice wishes to send a file to Bob, she 
+In \name, we want file exchanges to remain private: these metadata are exchanged out-of-band.
+In addition, in \name, each file is associated with a random ID \fileid, that is part of \finfo.
+
+\paragraph*{Out-of-band initialization} 
+When Alice wishes to send a file $f$ to Bob, she compute \finfo, 
+plus one reply header per chunk, and sends the whole to Bob.
+Still out-of-band, Bob replies with one forward header per chunk.
+
+Alice and Bob now have everything they need to start transferring $f$ in-band.
+
+\newcommand\bitfield{\ensuremath{bf_f}}
+\paragraph*{Chunks and bitfields}
+Alice's file $f$ is located on one of her devices, \sendingdevice. 
+Each chunk $c_i \in f$ is uploaded to Bob through a unique route $\mathcal{H}_{c_i}$.
+When $d_f$ is online, it periodically sends chunks of $f$ to Bob until $f$ is entirely uploaded.
+
+Bob receives $f$ on a device \recdevice. 
+When one of his devices receives a chunk $c_i$ for $f$, it fetches the proper recipient \recdevice by looking into the \squad overlay sequence
+for the line \texttt{RECEIVING<\sendingdevice, \fileid>} and forwards the file chunk to \recdevice.
+Upon reception of the chunk, \recdevice verifies its integrity by computing its SHA1 hash $h_{c_i}$ and comparing it to $\finfo.h_{c_i}$.
+If the chunk is valid, \recdevice updates its \emph{bitfield} \bitfield: this bit-array of size \nchunks is initialized with 0;
+every time Bob successfully receives a chunk $c_i$, \recdevice sets the bit $\bitfield[i]$.
+To acknowledge the chunk's reception, \recdevice sends \bitfield back to Alice, through a unique route $\mathcal{H}'_{c_i}$.
+
+Reciprocally, acknowledgments can arrive to Alice on any on her devices, while only \sendingdevice can process it.
+When one of Alice's devices receive Bob's bitfield \bitfield, 
+it forwards \bitfield to \sendingdevice by looking for the line \texttt{RECEIVING<\sendingdevice, \fileid>} in the \squad overlay's sequence.
+Upon reception of a bitfield \bitfield, \recdevice updates its knowledge of Bob's unreceived chunks of $f$,
+and sends a chunk to Bob among the ones that were not already acknowledged by Bob.
+
+\commentAL{This is a shitty scheduler. Should I mention it? Rephrase?}
+Messages in \name might arrive in a wrong order or fail. 
+It is not unlikely that the file exchange stops before its transfer is done.
+As a solution, \sendingdevice will restart periodically sending all chunks that were not acknowledged by Bob if the transfer hangs.
+This solution ensures liveness by increasing network traffic (some chunks might be received several times), as will be seen in the evaluation.
+It nevertheless allows reliable file transfer among a network of poorly connected nodes in a private manner.
