@@ -1,8 +1,8 @@
 %!TEX root = p2p-private-cloud.tex
 
-\newcommand\fileid{\ensuremath{ID_{\text{f}}}}
-\newcommand\sendingdevice{\ensuremath{d^{(s)}_f}}
-\newcommand\recdevice{\ensuremath{d^{(r)}_f}}
+\newcommand\fileid{\ensuremath{ID_{\text{f}}}\xspace}
+\newcommand\sendingdevice{\ensuremath{d^{(s)}_f}\xspace}
+\newcommand\recdevice{\ensuremath{d^{(r)}_f}\xspace}
 
 \subsection{The \squad overlay}
 \label{sec:squad_overlay}
@@ -139,38 +139,38 @@ along with network information to reach uploaders of $f$ (e.g. the tracker's add
 Anyone can download a .torrent file and start receiving the file associated to it.
 
 In \name, we want file exchanges to remain private: these metadata are exchanged out-of-band.
-In addition, in \name, each file is associated with a random ID \fileid, that is part of \finfo.
+In addition, each file is associated with a random \fileid, that is part of \finfo.
 
 \paragraph*{Out-of-band initialization} 
-When Alice wishes to send a file $f$ to Bob, she compute \finfo, 
+When Alice wishes to send a file $f$ to Bob, she computes \finfo, 
 plus one reply header per chunk, and sends the whole to Bob.
 Still out-of-band, Bob replies with one forward header per chunk.
 
 Alice and Bob now have everything they need to start transferring $f$ in-band.
 
-\newcommand\bitfield{\ensuremath{bf_f}}
+\newcommand\bitfield{\ensuremath{bf_f}\xspace}
 \paragraph*{Chunks and bitfields}
 Alice's file $f$ is located on one of her devices, \sendingdevice. 
 Each chunk $c_i \in f$ is uploaded to Bob through a unique route $\mathcal{H}_{c_i}$.
 When $d_f$ is online, it periodically sends chunks of $f$ to Bob until $f$ is entirely uploaded.
 
-Bob receives $f$ on a device \recdevice. 
-When one of his devices receives a chunk $c_i$ for $f$, it fetches the proper recipient \recdevice by looking into the \squad overlay sequence
-for the line \texttt{RECEIVING<\sendingdevice, \fileid>} and forwards the file chunk to \recdevice.
+Bob receives $f$ on a device \recdevice, but a chunk $c_i$ for $f$ might arrive on any of his devices. 
+This device then fetches the address of the proper recipient \recdevice by looking for the line \texttt{RECEIVING<\recdevice, \fileid>} in its squad sequence, 
+and forwards the file chunk to \recdevice.
 Upon reception of the chunk, \recdevice verifies its integrity by computing its SHA1 hash $h_{c_i}$ and comparing it to $\finfo.h_{c_i}$.
 If the chunk is valid, \recdevice updates its \emph{bitfield} \bitfield: this bit-array of size \nchunks is initialized with 0;
 every time Bob successfully receives a chunk $c_i$, \recdevice sets the bit $\bitfield[i]$.
 To acknowledge the chunk's reception, \recdevice sends \bitfield back to Alice, through a unique route $\mathcal{H}'_{c_i}$.
 
 Reciprocally, acknowledgments can arrive to Alice on any on her devices, while only \sendingdevice can process it.
-When one of Alice's devices receive Bob's bitfield \bitfield, 
-it forwards \bitfield to \sendingdevice by looking for the line \texttt{RECEIVING<\sendingdevice, \fileid>} in the \squad overlay's sequence.
+When one of Alice's devices receives Bob's bitfield \bitfield, 
+it forwards \bitfield to \sendingdevice by getting its address on the line \texttt{RECEIVING<\sendingdevice, \fileid>} of the \squad overlay's sequence.
 Upon reception of a bitfield \bitfield, \recdevice updates its knowledge of Bob's unreceived chunks of $f$,
-and sends a chunk to Bob among the ones that were not already acknowledged by Bob.
+and sends a chunk to Bob among the ones that were not already acknowledged by Bob, unless the file has been entirely received.
 
 \commentAL{This is a shitty scheduler. Should I mention it? Rephrase? You have a citation to propose instead?}
-Messages in \name might arrive in a wrong order or fail. 
-It is not unlikely that the file exchange stops before its transfer is done.
-As a solution, \sendingdevice will restart periodically sending all chunks that were not acknowledged by Bob if the transfer hangs.
+Messages in \name might arrive in a wrong order or fail:
+it is not unlikely that the file exchange stops before its transfer is done.
+As a solution, if the transfer hangs, \sendingdevice will restart periodically sending chunks that were not acknowledged by Bob.
 This solution ensures liveness over network efficiency (some chunks might be received several times), as will be seen in the evaluation.
 It nevertheless allows reliable file transfer among a network of poorly connected nodes in a private manner.
