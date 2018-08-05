@@ -12,8 +12,7 @@
   (C) SPORES (local overlay).
   My original idea was to make Sphinxes its own section before the design 
   section instead of a subsection in the design section.}
-\sonja{remove/update references to building blocks, POR}
-\commentDaniel{I removed the building blocks subsection entirely.}
+
 
 Our goal is to enable private and reliable file exchange between users 
 participating in the system, by using their respective devices only.
@@ -21,7 +20,13 @@ When Alice and Bob, two users of our system, want to exchange a file \(f\)
 through \name; they start by sharing some information out-of-band, \eg from 
 their smartphones.
 More precisely, they exchange metadata on \(f\), encryption keys, and 
-\changeAL{routing information that they will use to transfer the file's content over \name's network of unreliable nodes.}
+\changeAL{routing information that they will use to transfer the
+  file's content over \name's network of unreliable nodes.}
+\sonja{here comes more of a solution overview and reference to the outline
+  figure.}
+
+Figure \cref{fig:outline} shows the components needed to obtain this
+routing information.  
 %use-once reply mix-headers.
 %They use these reply headers to transfer the file contents of \(f\) over a network of unreliable nodes while also achieving privacy.
 
@@ -31,19 +36,35 @@ More precisely, they exchange metadata on \(f\), encryption keys, and
   \import{figures/}{outline.pdf_tex}
   \caption{\label{fig:outline}%
     %\commentDaniel{We must adapt this figure to the text.}%
-    Outline of \name's components. Users squads of devices are circled in gray. 
+    Outline of \name's components. Users' squads of devices are circled in gray. 
     From top to bottom: a user's devices collaborate through the Squad Overlay 
     (\cref{sec:squad_overlay}); online devices globally share information about 
-    them to random peers (\cref{sec:SPOR}); using the two above 
-    overlays allows for the creation of \ac{SPOR} between sets of devices. 
-    These protocols enables secure file transfer between users 
-    (\cref{SPORES}).}
+    them with random peers (\cref{sec:SPOR}); using the two 
+    overlays above allows for the creation of routes (\ac{SPOR}) between sets of devices. 
+    These protocols enable secure file transfer between users 
+    (\cref{sec:sphinxes}).}
 \end{figure}
 
-This section presents the different parts of the system in detail.
+After the initial, out-of-band setup, file transfer happens along
+onion routes but with the following \name modifications:
+
+\sonja{might need different naming, and deciding about predictive and probabilistic}
+\begin{description}
+\item [Stateless.] There is no mandatory circuit creation, the file transfer can be
+  done in a stateless way. 
+\item [Predictive.] The choice of nodes included in the onion routing
+  layers is based on a predictive model for availability, disseminated
+  according to Figure~\cref{fig:outline}, and queried by random peer sampling.
+\item [Probabilistic.] Instead of source routes with one node per onion layer, each
+  layer consists of a set of nodes and although the source route still
+  determines the sequence of layers, the actual node used for the next
+  hop of forwarding is selected from the set in an ad-hoc way.
+\end{description} 
+
+This rest of this section presents the different parts of the system in detail.
 We align the presentation of the system with the taxonomy of 
 \textcite{RoutingSurveyAnonymousProtocols}.
-They categorize anonymous communication protocols using the following 
+They classify anonymous communication protocols using the following 
 categories (see~\cite[Table 1]{RoutingSurveyAnonymousProtocols}):
 \begin{description}
   \item[Network structure]
