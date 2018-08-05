@@ -7,14 +7,16 @@
 \label{sec:SPOR}%
 \label{sec:message_passing}%
 
+\commentAL{I would like to merge that with \ref{ssec:por}.}
+
 Say that Alice wants to send a message \(m\) to Bob.
 Bob creates a reply header using \(\CreateReply\) and gives the output to Alice 
 over an out-of-band channel.
 %We assume that \(m\) is either unavailable when the channel is used or too large to be successfully sent over the channel directly.
 At a later point, Alice attaches a message \(m\) to the reply header using 
 \(\UseReply\), creates a forward header using \(\CreateFwd\) with the prepared 
-reply header as payload.
-Then she sends this packet to the first node, which processes it using 
+reply header as parameter.
+\commentAL{Unclear: she sends? Then it reaches Alice?} Then she sends this packet to the first node, which processes it using 
 \(\ProcessHeader\).
 The node will then process the header and in turn forward the packet to the 
 next node.
@@ -34,6 +36,7 @@ Now we will focus on how Alice and Bob choose the nodes that they provide to
     one for acknowledgements.
   }
 \end{figure}
+
 
 There are many uses of Sphinxes, many criteria that can be used to select the 
 nodes in each layer.

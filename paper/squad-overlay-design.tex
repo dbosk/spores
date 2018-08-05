@@ -112,3 +112,28 @@ In SPORES, a descriptor for $d$ contains the following information:
 
 \subsection{SPORES: file exchange through probabilistic onion routes}
 \label{ssec:spores_file_exchange_through_probabilistic_onion_routes}
+
+\newcommand\finfo{\ensuremath{\mathcal{I}_f}}
+\newcommand\filesize{\ensuremath{s_f}\xspace}
+\newcommand\chunksize{\ensuremath{s_{\text{chunk}}}\xspace}
+\newcommand\nchunks{\ensuremath{n_{\text{chunks}}}\xspace}
+\newcommand\hashchunk{\ensuremath{\mathcal{H}_{\text{chunk}}}\xspace}
+\newcommand\hashfile{\ensuremath{\mathcal{H}}\xspace}
+
+We have seen how participants of \name could craft routes to secretly exchange messages.
+We now apply this feature to reliably exchange files between two users.
+
+Our file transfer protocol is loosely based on BitTorrent \cite{bt_bep3}: 
+at initialization, a file $f$ of size \filesize is first cut into chunks of constant size \chunksize by its uploader,
+resulting in $\nchunks = \lceil \filesize / \chunksize \rceil$ chunks.
+A SHA1 hash \hashchunk is computed for each chunk, plus another SHA1 hash \hashfile of the chunks hashes ; that will serve error detection. 
+
+
+In BitTorrent, .torrent files are publicly available on the Web.
+They contain $\finfo = \left(\filesize, \nchunks, \left[\hashchunk\right]_{\text{chunk} \in f}, \hashfile\right)$, 
+along with network information to reach uploaders of $f$ (e.g. the tracker's address).
+Anyone can download a .torrent file and start receiving the file associated to it.
+In \name, we want file exchanges to remain private: these metadata are exchanged out-of-band.
+
+\paragraph{Out-of-band initialization} 
+When Alice wishes to send a file to Bob, she 
