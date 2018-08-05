@@ -49,23 +49,31 @@ where the state $X_i$ represents the availability of the user's devices at time 
 The state space $\mathcal{X}$ is the set of possible combinations of the devices' connection.
 
 Given the \squad sequence of connections $S = X_1, \dots, X_i, X_{i+1}, \dots$,
-we can compute the probability of transition from a state $x_1$ to $x_2$ by counting the number of times $x_2$ is seen right after $x_1$ in $S$:
+we can compute the probability of transition from a state $X_i=x$ to $X_{i+1}=x'$ by counting\footnote{%
+	Because we work with low-probability events observed with a small amount of data, there is a possibility that an event never occurs in $S$. 
+	To counter that, we apply additive smoothing while computing probabilities. 
+	We left this engineering optimization out of the demonstration for clarity.
+} the number of times $x'$ is seen right after $x$ in $S$:
 
-$$P\left[x_1 \rightarrow x_2\right] = \frac{\left| \left\{ X_i = x_1, X_{i+1} = x_2 \right\}_{i \in \left[0, |S| - 1\right]} \right|}{|S| - 1} $$
+\begin{align*}
+P\left[X_{i+1}=x' \mid X_i=x \right] &= P\left[x \rightarrow x' \right] \\&= \frac{\left| \left\{ X_i = x, X_{i+1} = x' \right\}_{i \in \left[0, |S| - 1\right]} \right|}{\left| \left\{ X_i = x \right\}_{i \in \left[0, |S| - 1\right]} \right|}
+\end{align*}
 
-Each device knows the current state $X=x$ of the Markov chain.
+Each device knows the current state $X_i=x$ of the Markov chain.
 To predict its probability $P_d$ of remaining online in the next round, 
 a device $d$ simply adds the probabilities that the user switches to a state where $d$ is online next.
 Consider $\mathcal{X}_{d\text{ online}} \subset \mathcal{X}$ the set of states where $d$ is online. Then:
 
-$$ P_d = P\left[d\text{ online next turn} \mid X=x\right] = \sum\limits_{x' \in \mathcal{X}_{d\text{ online}}} P\left[ x \rightarrow x'\right]$$
+\begin{align*}
+P_d & = P\left[d\text{ online at }X_{i+1} \mid X_i=x\right] \\ & = \sum\limits_{x' \in \mathcal{X}_{d\text{ online}}} P\left[ X_{i+1}=x' \mid X_i=x \right]
+\end{align*}
 
 There is a caveat, though.
-While the user acts, $S$ keeps growing, and the Markov chain must be recomputed: their is a probability that the current state $X$ has never been seen before.
-In this case, $\forall X' \in S, P\left[X \rightarrow X'\right] = 0 \implies P_d = 0$.
+While the user acts, $S$ keeps growing, and the Markov chain must be recomputed: there is a probability that the current state $X=x$ has never been seen before.
+In this case, $\forall x' \in \mathcal{X}, P\left[x \rightarrow x'\right]$ is undefined.
 
 To counter this possibility, we propose a fallback:
-when the current state $X=x$ is new, we compute a naive probability $P'_d$ that $d$ stays online, given only $d$'s previous state:
+when the current state is new, we compute a $P'_d$, an estimator of $d$'s average probability of staying online two turns in a row:
 
 $$ P'_d = \frac{\left| \left\{ X_i \in \mathcal{X}_{d\text{ online}}, X_{i+1} \in \mathcal{X}_{d\text{ online}} \right\}_{i \in \left[0, |S| - 1\right]} \right|}{\left| \left\{ X_i \in \mathcal{X}_{d\text{ online}} \right\}_{i \in \left[0, |S| - 1\right]} \right|} $$
 
