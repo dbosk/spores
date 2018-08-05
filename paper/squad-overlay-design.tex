@@ -172,5 +172,5 @@ and sends a chunk to Bob among the ones that were not already acknowledged by Bo
 Messages in \name might arrive in a wrong order or fail. 
 It is not unlikely that the file exchange stops before its transfer is done.
 As a solution, \sendingdevice will restart periodically sending all chunks that were not acknowledged by Bob if the transfer hangs.
-This solution ensures liveness by increasing network traffic (some chunks might be received several times), as will be seen in the evaluation.
+This solution ensures liveness over network efficiency (some chunks might be received several times), as will be seen in the evaluation.
 It nevertheless allows reliable file transfer among a network of poorly connected nodes in a private manner.
