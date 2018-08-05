@@ -1,8 +1,16 @@
+%!TEX root = p2p-private-cloud.tex
+
 \section{Performance evaluation}%
 \label{Performance}
 
-In the following, we present the evaluation results of \name. 
-We first give precisions on the evaluation testbed and parameters in section~\ref{sub:evaluation_testbed}, before evaluating the PORs creation  in section~\ref{sub:predictive_onion_routes_creation}, to conclude with an overall evaluation of the file transfer performance in section~\ref{sub:file_transfer}.
+To evaluate our protocol, we built a prototype of \name that implements all the features previously described but the encryption processes (Sphinxes).
+It consists of 5400 lines of Go code.
+The users and their behavior (i.e. devices usage and file exchange decisions), on their part, are simulated. 
+Each device is a Docker container that ships the same \name code, and communicates with its peers via TCP connections.
+To allow for realistic simulations (embodying more than 10 users), we distribute the experiments over 5 machines (one with an Intel Xeon E5-2660 CPU (32 cores) and 128GB of RAM, and four having an Intel Xeon E5420 CPU (8 cores) and 32GB of RAM), such that each \squad always resides on the same machine.
+All peers are connected to the same Docker overlay network, and are thus reachable from any other device.
+
+In the following, we first give precisions on the evaluation testbed and parameters in section~\ref{sub:evaluation_testbed}, before evaluating the PORs creation in section~\ref{sub:predictive_onion_routes_creation}, to conclude with an overall evaluation of the file transfer performance in section~\ref{sub:file_transfer}.
 
 \subsection{Evaluation testbed} % (fold)
 \label{sub:evaluation_testbed}
@@ -10,62 +18,95 @@ We first give precisions on the evaluation testbed and parameters in section~\re
 \subsubsection{Simulating user behavior} % (fold)
 \label{ssub:simulating_user_behavior}
 
+\newcommand\tuser{\ensuremath{t_{\text{user}}}}
+\newcommand\ndevices{\ensuremath{n_{\text{devices}}}}
 
 To evaluate \name, we take interest in users owning a variable amount of devices of different types, and frequently switching among them.
 To the best of our knowledge, there exists no real-world dataset of the devices connection times of such a user.
-We have thus implemented an evaluation testbed where each user's behavior is simulated  according to the following properties:
+On our testbed, each user's behavior is therefore simulated, according to the following rules:
 \begin{itemize}
-	\item The user owns a variable amount of devices. We consider the following device types: mobile (e.g. tablet, phone), portable (laptop), fixed (workstation, home computer) and server (such as a NAS, Raspberry Pi or rented appliance);
-	\item She can travel between different locations, say her home, her workplace and and outside;
-	\item She makes a different use of her devices depending on her location: her home computer will only be accessed at home, while her phone can be accessed everywhere (though she tends to use it the most at home, for instance).
+  \item The user owns a variable amount of devices. We consider the following device types: mobile (e.g. tablet, phone), portable (laptop), fixed (workstation, home computer) and server (such as a NAS, Raspberry Pi or rented appliance);
+  \item The user always owns a phone;
+	\item The user can travel between different locations;
+	\item The user makes a different use of her devices depending on her location and device type: 
+  her home computer will only be accessed at home, while her phone can be accessed everywhere (though she might tend to use it at home more than at work);
+  \item The user's action are discretized: every action lasts the same amount of time \tuser.
 \end{itemize}
 
-We thus model each user with a Hidden Markov Model, as presented in section~\ref{sub:a_model_of_the_user_s_behavior}.
-We keep the different possible locations $\mathcal{L}$ to $N=3$ and the state transition matrix $A$ to a fixed value (cf figure~\ref{fig:hmm}).
-The number and types of devices per user, along with the matrix of emission probabilities $B$, is determined randomly according to the following rules.
+Towards this goal, we model each user as a discrete time Hidden Markov Model (HMM) of order one. 
+The hidden process $S=S_1, \dots, S_i, \dots$ represents the user's movements from one location from another, 
+taken from the set of possible locations $\mathcal{S}$.
+In our case, there are several independent observation processes (one per device), 
+that form the observation sequence $O= O_1, \dots, O_i, \dots$.
+$O_i[j]=1$ (resp. 0) means that the user's device $d_j$ was online (resp. offline) at time step $t_i$.
 
-A user always has a phone, plus a random number of 2 to 9 devices whose type is decided by a weighted random choice: each device has 30\% chances of being either mobile, portable, or fixed, and only 10\% probability of being a server.
-$B_{*, d}$, the probability that device $d$ is used in each location, depends on $d$'s device type: 
+A HMM of order one is such that the current state $S_i$ (at time $t_i$) only depends on the previous one $S_{i-1}$ (at time $t_{i-1}$).
+The observation at time $t_i$ ($O_i$) only depends on the current state $S_i$.
+
+%locations, constituted of a set of $N$ potential locations (e.g. home, work or outside), $N$ being a user-defined parameter.
+
+
+%We thus model each user with a Hidden Markov Model, as presented in section~\ref{sub:a_model_of_the_user_s_behavior}.
+In detail, we applied the following rules to our models: 
 \begin{itemize}
-	\item for each location, every mobile device $d_m$ has a random but high probability of being online: $\forall l \in \mathcal{L}, B_{l, d_m} \in [0.6, 1]$;
-	\item a portable device $d_p$ has a much lower probability of being used: $\forall l \in \mathcal{L}, B_{l, d_p} \in [0.2, 0.8]$; 
-	\item a fixed appliance $d_f$ has a non-zero probability of usage in only one location: $\exists l \in \mathcal{L}, B_{l, d_f} \in [0.4, 0.8] \text{ and } \forall l' \neq l, B_{l', d_f} = 0$;
-	\item a server $d_s$ has a very high probability of working, whatever the user's location: $\exists p \in [0.9, 1], \forall l \in \mathcal{L}, B{l, d_s} = p$.
-\end{itemize} 
+  \item There are three possible locations $\mathcal{S}=\left\{\text{Home}, \text{Outside}, \text{Work}\right\}$.
+  Each user has transition probabilities from one place to another;
+  one cannot go from work to home without transitionning outside and vice-versa;
+  \item A user always has a phone, plus a random number of 2 to 9 devices which types are decided by a weighted random choice: each device has 30\% chances of being either mobile, portable, or fixed, and only 10\% probability of being a server;
+  \item For each user, device, and location, the probability that a device be used at a location is picked at uniform random according to the following rules:
+  \begin{itemize}
+    \item \emph{Mobiles} can be accessed everywhere with a probability of 60 to 100\%;
+    \item \emph{Portables} can be accessed everywhere with a probability of 20 to 80\%;
+    \item \emph{Fixed} appliances can only be accessed from one single place (never outside) with a probability of 30 to 90\%;
+    \item \emph{Servers} have a constant availability rate between 90 and 100\%.
+  \end{itemize}
+\end{itemize}
+
+% we keep the different possible locations $\mathcal{L}$ to $N=3$ and the state transition matrix $A$ to a fixed value (cf figure~\ref{fig:hmm}).
+% The number and types of devices per user, along with the matrix of emission probabilities $B$, is determined randomly according to the following rules.
+
+% A user always has a phone, plus a random number of 2 to 9 devices whose type is decided by a weighted random choice: each device has 30\% chances of being either mobile, portable, or fixed, and only 10\% probability of being a server.
+% $B_{*, d}$, the probability that device $d$ is used in each location, depends on $d$'s device type: 
+% \begin{itemize}
+% 	\item for each location, every mobile device $d_m$ has a random but high probability of being online: $\forall l \in \mathcal{L}, B_{l, d_m} \in [0.6, 1]$;
+% 	\item a portable device $d_p$ has a much lower probability of being used: $\forall l \in \mathcal{L}, B_{l, d_p} \in [0.2, 0.8]$; 
+% 	\item a fixed appliance $d_f$ has a non-zero probability of usage in only one location: $\exists l \in \mathcal{L}, B_{l, d_f} \in [0.4, 0.8] \text{ and } \forall l' \neq l, B_{l', d_f} = 0$;
+% 	\item a server $d_s$ has a very high probability of working, whatever the user's location: $\exists p \in [0.9, 1], \forall l \in \mathcal{L}, B{l, d_s} = p$.
+% \end{itemize} 
 
 \begin{figure}[t]
 \centering
 \vspace{-1em}
 \footnotesize
 \centering
-$$A =
-\kbordermatrix{
-      & W   & O   & H   \cr
-    W & 0.6 & 0.4 & 0   \cr
-    O & 0.2 & 0.6 & 0.2 \cr
-    H & 0   & 0.4 & 0.6 \\[0.3em]
-}, \;
-B = 
-\kbordermatrix{
-      & W     & O   & H   \cr
-    p & 0.7 & 0.6 & 0.8 \cr
-    w & 0.7 & 0   & 0   \cr
-    h & 0   & 0   & 0.7 \cr
-    l & 0.2 & 0.4 & 0.6 \\[0.3em]
-}$$
+% $$A =
+% \kbordermatrix{
+%       & W   & O   & H   \cr
+%     W & 0.6 & 0.4 & 0   \cr
+%     O & 0.2 & 0.6 & 0.2 \cr
+%     H & 0   & 0.4 & 0.6 \\[0.3em]
+% }, \;
+% B = 
+% \kbordermatrix{
+%       & W     & O   & H   \cr
+%     p & 0.7 & 0.6 & 0.8 \cr
+%     w & 0.7 & 0   & 0   \cr
+%     h & 0   & 0   & 0.7 \cr
+%     l & 0.2 & 0.4 & 0.6 \\[0.3em]
+%}$$
 
-%\includegraphics[width=0.65\columnwidth]{figures/hmm.pdf}
-%\vspace{2ex}
+\includegraphics[width=0.65\columnwidth]{figures/hmm.pdf}
+\vspace{2ex}
 \includegraphics[width=0.9\columnwidth]{figures/sample_usage.pdf}
 
-\caption{\label{fig:hmm} Example Hidden Markov Model (HMM) of a user's behavior: on top are the HMM parametersand on the bottom is a sample output from the model.}
+\caption{\label{fig:hmm} Example Hidden Markov Model (HMM) of a user's behavior. On top: visual representation of the model, with transition probabilities between locations and device usage probabilities at each location. On the bottom: Sample output from the HMM, with the initial of the location across time on the x-axis, the initial of each device on the y-axis, and their state across time (gray means online).}
 \end{figure}
 
-HMMs being generative probabilistic models, they allow the generation of observation sequence $O$ given the parameters of the model $\lambda_N$.
-Figure~\ref{fig:hmm} shows a possible outcome of the creation of a user's HMM $\lambda_N$ along with a sample observation sequence $O$ output from the model $\lambda_N$.
+HMMs being generative probabilistic models, they allow the generation of observation sequences given the parameters of the model.
+Figure~\ref{fig:hmm} shows a possible user's model along with a sample observation sequence $O$ generated from it.
 
-Each round lasts $T=10s$ and users start at different times. 
-This way, even though the round period is fixed, devices enter and leave the system at different points in the continuous time.
+Even though each user's behavior is discretized, they start at different times. 
+This way, even though the time step \tuser is fixed, devices enter and leave the system at different points in the continuous time.
 
 
 \subsubsection{Experimental parameters} % (fold)

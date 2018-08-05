@@ -24,15 +24,15 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.70000001"
-     inkscape:cx="380.98065"
-     inkscape:cy="541.56719"
+     inkscape:zoom="0.98994951"
+     inkscape:cx="87.152951"
+     inkscape:cy="572.89606"
      inkscape:document-units="px"
      inkscape:current-layer="g4367"
      showgrid="false"
      inkscape:window-width="1920"
-     inkscape:window-height="1173"
-     inkscape:window-x="1920"
+     inkscape:window-height="1053"
+     inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1" />
   <defs
@@ -260,7 +260,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -1103,7 +1103,7 @@
            id="tspan4410"
            x="173.08383"
            y="39.846714"
-           style="stroke-linecap:butt;stroke-linejoin:round">0.67</tspan></text>
+           style="stroke-linecap:butt;stroke-linejoin:round">0.6</tspan></text>
       <text
          sodipodi:linespacing="125%"
          id="text4412"
@@ -1115,7 +1115,7 @@
            x="175.08383"
            id="tspan4414"
            sodipodi:role="line"
-           style="stroke-linecap:butt;stroke-linejoin:round">0.67</tspan></text>
+           style="stroke-linecap:butt;stroke-linejoin:round">0.6</tspan></text>
       <text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5px;line-height:125%;font-family:'Times New Roman';-inkscape-font-specification:'Times New Roman, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -1127,7 +1127,7 @@
            id="tspan4418"
            x="370.87323"
            y="90.334038"
-           style="stroke-linecap:butt;stroke-linejoin:round">0.33</tspan><tspan
+           style="stroke-linecap:butt;stroke-linejoin:round">0.6</tspan><tspan
            sodipodi:role="line"
            x="370.87323"
            y="105.95904"
@@ -1144,7 +1144,7 @@
            id="tspan4424"
            x="203.34778"
            y="83.80867"
-           style="stroke-linecap:butt;stroke-linejoin:round">0.33</tspan></text>
+           style="stroke-linecap:butt;stroke-linejoin:round">0.2</tspan></text>
       <text
          sodipodi:linespacing="125%"
          id="text4426"
@@ -1156,7 +1156,7 @@
            x="203.34778"
            id="tspan4428"
            sodipodi:role="line"
-           style="stroke-linecap:butt;stroke-linejoin:round">0.33</tspan></text>
+           style="stroke-linecap:butt;stroke-linejoin:round">0.2</tspan></text>
       <text
          sodipodi:linespacing="125%"
          id="text4430"
@@ -1168,7 +1168,7 @@
            x="203.34778"
            id="tspan4432"
            sodipodi:role="line"
-           style="stroke-linecap:butt;stroke-linejoin:round">0.33</tspan></text>
+           style="stroke-linecap:butt;stroke-linejoin:round">0.4</tspan></text>
       <text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5px;line-height:125%;font-family:'Times New Roman';-inkscape-font-specification:'Times New Roman, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -1180,7 +1180,7 @@
            id="tspan4436"
            x="203.34778"
            y="191.80867"
-           style="stroke-linecap:butt;stroke-linejoin:round">0.33</tspan></text>
+           style="stroke-linecap:butt;stroke-linejoin:round">0.4</tspan></text>
       <path
          transform="matrix(1.1065929,0,0,1.2706947,-38.415701,-45.271999)"
          d="m 71.888672,73.427734 0,48.863286 96.705078,0 0,-48.863286 -96.705078,0 z"
