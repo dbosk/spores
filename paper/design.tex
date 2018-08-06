@@ -17,11 +17,14 @@
 Our goal is to enable private and reliable file exchange between users 
 participating in the system, by using their respective devices only.
 When Alice and Bob, two users of our system, want to exchange a file \(f\) 
-through \name; they start by sharing some information out-of-band, \eg from 
+through \name, they start by sharing some information out-of-band, \eg from 
 their smartphones.
-More precisely, they exchange metadata on \(f\), encryption keys, and 
+More precisely, they exchange metadata on \(f\), encryption keys, and
+some of
 \changeAL{routing information that they will use to transfer the
-  file's content over \name's network of unreliable nodes.}
+  file's content over \name's network of unreliable nodes.} Namely,
+the recipient provides a \emph{rendezvous point} for the sender to
+initiate the file transfer.
 \sonja{here comes more of a solution overview and reference to the outline
   figure.}
 
@@ -59,6 +62,16 @@ onion routes but with the following \name modifications:
   layer consists of a set of nodes and although the source route still
   determines the sequence of layers, the actual node used for the next
   hop of forwarding is selected from the set in an ad-hoc way.
+\item[Onion Routing.] Put simply, in onion routing, the sender creates
+  a source route and 
+  encapsulates the payload and next-hop information in layers (by
+  encryption), that are \emph{peeled} (decrypted) one by one along the
+  route. By virtue of these layers, the forwarding nodes on the
+  route do not know where on the route they are and thus whether they
+  have received a packet directly from the sender or some other
+  intermediate node. We base our format for layering and peeling on
+  Sphinx~\cite{Sphinx}, with some modification to allow for the
+  changes above, described in \cref{Sphinxes}.
 \end{description} 
 
 This rest of this section presents the different parts of the system in detail.
