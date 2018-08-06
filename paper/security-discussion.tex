@@ -10,6 +10,18 @@
   source~\cite{RoutingSurveyAnonymousProtocols}.
   Our protocol is a \enquote{bounded} random walk, \ie within limits.}
 
+We base our solution on Sphinx, which, when used for onion routing, has been proved to satisfy the
+properties given in ~cite{CLOnionRouting} that were shown to result
+in a UC-secure onion-routing scheme. We thus primarily need to ensure that 
+\begin{enumerate*} \item our extension to Sphinxes preserves these
+  properties, \item the availability information introduced and
+  disseminated to deal with churn satisfies the device-unlinkability
+  property we defined in~\cref{system-model}, and that \item the node
+  selection does not introduce any advantage for the
+  adversary. \end{enumerate*} In terms of general system robustness, a
+stateless routing protocol needs to handle packet re-ordering and
+network failures (links or nodes). 
+
 \paragraph*{Security of Sphinxes}
 
 There are two changes that we have made that must be analysed.
@@ -107,14 +119,17 @@ encrypt the header.
 \Ie every node on Alice's route would know that Alice is either the source or 
 the destination.
 
-\sonja{Failure, exception handling, such as reordered chunks, chunks
-  on different devices, squad devices going offline during transfer}
-\commentDaniel{Reordered chunks is not a problem, we handle that.}
+\paragraph*{Robustness}
 
-\section{Alternatives}%
-\label{Alternatives}
+Stateless routing can result in re-ordered chunks or packets, and
+chunks received on different devices of a user's squad. From
+Sphinx, we inherit IDs for packets that we we include in the
+out-of-band metadata on the file to be exchanged, as an ordered list,
+that is used to re-order chunks if need be. The squad overlay handles
+inter-squad device coordination. Liveness despite the possibility of squad devices going offline during
+transfer or other node or link failures is ensured by acknowledgments
+and timeouts as detailed in ~\cref{sec:squad_overlay}.
 
-\subsection{Stateful \name}
-\subsection{Beyond file exchange} web browsing, hidden services,
-interaction and collaboration.
-\subsection{Other predictions} time of day? 
+
+
+
