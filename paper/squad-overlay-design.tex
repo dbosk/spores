@@ -91,9 +91,13 @@ $P'd$ will be advertised in spite of $P_d$. It will also be used as a baseline i
 \subsubsection{The global overlay}
 \label{sssec:global_overlay}
 
+\newcommand\rpsview{\ensuremath{\mathcal{V}}\xspace}
+\newcommand\desc{\ensuremath{{\mathtt{desc}}}\xspace}
+
+
 Devices need to know the address of SPORES participants in order to craft PORs.
 To this end, we employ a Random Peer Sampling service~\cite{Jelasity_Voulgaris_Guerraoui_Kermarrec_van_Steen_2007} among all nodes in SPORES. \commentAL{TODO: cite \cite{Jesi_Montresor_van_Steen_2010} for \textbf{secure} RPS}.
-It is a gossip protocol that allows each participant to keep a fixed-size \emph{random} subset of other nodes' descriptor (that we will call the \emph{view}). 
+It is a gossip protocol that allows each participant to keep a fixed-size \emph{random} subset of other nodes' descriptor (that we will call the \emph{view} \rpsview). 
 The view is constantly evolving, as queries are periodically issued between nodes to exchange descriptors between their respective views.
 Finally, offline nodes are quickly evicted from devices' views.
 
@@ -101,7 +105,7 @@ The randomness of the views must be guaranteed:
 a node that would be present in views too often would become a bottleneck, and could monitor a bigger portion of the network.
 It will be evaluated in section~\commentAL{TODO}.
 
-In SPORES, a descriptor for $d$ contains the following information:
+In SPORES, a descriptor $\desc_d$ describing device $d$ contains the following information:
 \begin{itemize}
   \item \(d\) is the node's identifier (address);
   \item \(\pk_d\) is the node's public key;
@@ -112,6 +116,23 @@ In SPORES, a descriptor for $d$ contains the following information:
 \subsubsection{Routes creation}
 \label{sssec:routes_creation}
 
+\newcommand\layer{\ensuremath{{\mathcal{L}}}\xspace}
+\newcommand\Poff{\ensuremath{P_{\text{off}}}\xspace}
+
+Routes are created via Sphinxes, as described in section~\ref{SPOR}.
+Each layer \layer constituting the route is created by the same \CreateLayer\xspace function.
+
+In \name, we wish to maximize the availability of the route.
+Therefore, each layer \layer is created so as to reach the availability threshold $\theta$, a parameter chosen by the user.
+Note that Sphinxes is agnostic to this use-case: one could want to maximize other characteristics, e.g. the layer's expected bandwidth.
+
+\CreateLayer\xspace iteratively adds random descriptors from the RPS's view \rpsview to the current layer \layer, until the layer's probability of being offline, $\Poff^\layer$, falls below the availability threshold $\theta$:
+
+$$ \Poff^\layer = \sum\limits_{d \in \layer}\desc_d.P_d $$
+
+Recall that each layer in Sphinxes has a constant number of nodes $w_\layer$, that is a Sphinxes parameter.
+If $w_\layer$ is reached before $\Poff^\layer < \theta$, then we early abort \CreateLayer.
+On the other hand, if $|\layer| < w_\layer$, we pad the layer with blank descriptors, such that the header always weighs the same size.
 
 
 \subsection{SPORES: file exchange through probabilistic onion routes}
