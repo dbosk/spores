@@ -128,7 +128,8 @@ Sphinx~\cite{Sphinx}, hence we will use the following notation:
 
   \item \(r\) is the maximum number of layers (hops, nodes) that a message will 
     traverse before reaching its destination.
-    Further, let \(w_L\) be the maximum width of a layer, \ie the maximum 
+  % I spent minutes looking for w_L: it deserves its bullet!
+  \item \(w_L\) is the maximum width of a layer, \ie the maximum 
     number of alternative nodes on a layer.
 
   \item \(\G\) is a prime-order cyclic group satisfying the \ac{DH} assumption.
@@ -202,7 +203,7 @@ each layer must accommodate the layer nodes' ciphertexts and addresses, \ie
 and the \ac{MAC}, \ie one element of \(\kappa\) bits.
 
 First we generate all the needed keys.
-We compute \(\nu+1\) tuples
+We compute \(\nu+1\) tuples:
 \begin{align*}
   \alpha_0 &\gets g^\sk,
   & \secret_0 &\gets \bin^\kappa,
@@ -215,7 +216,7 @@ We compute \(\nu+1\) tuples
   & \secret_\nu &\gets \bin^\kappa,
   & \blind_\nu &\gets \hash_\blind(\alpha_\nu, s_\nu).
 \end{align*}
-In addition, we compute
+In addition, we compute:
 \begin{align*}
   \secret_0^{(0)} &\gets \pk_{n_0^{(0)}}^\sk,
   & \dotsc, &
@@ -234,7 +235,7 @@ We note that a node \(n_i^{(j)}\) can compute \(s_i^{(j)}\) since \[
   s_i^{(j)} = \pk_{n_i^{(j)}}^{\sk \blind_0\dotsb \blind_{i-1}} = 
   \alpha_i^{\sk_{n_i^{(j)}}}.
 \]
-We then construct the ciphertexts
+We then construct the ciphertexts:
 \begin{align*}
   C_0 &= \prp'\left(\hash_{\prp'}\left(s_0^{(0)}\right), s_0\right)
   \concat \dotsb
@@ -246,12 +247,12 @@ We then construct the ciphertexts
   C_\nu &= \prp'\left(\hash_{\prp'}\left(s_\nu^{(0)}\right), s_\nu\right)
   \concat \dotsb
   \concat \prp'\left(\hash_{\prp'}\left(s_\nu^{(|L_\nu|-1)}\right) 
-    s_\nu\right).
+    s_\nu\right),
 \end{align*}
 and pad them to \(w_L\kappa\) bits with uniformly random bits.
 
 Next we need to compute the padding \(\phi_i\) for each layer \(i\).
-We must do this is to predict the padding introduced at each layer so that we 
+We must do this to predict the padding introduced at each layer so that we 
 can compute the correct \acp{MAC} (\(\gamma_i\)).
 The padding for the outmost layer (layer 0) is the empty string, thus \(\phi_0 
   \gets \epsilon\).
