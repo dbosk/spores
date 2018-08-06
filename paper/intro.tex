@@ -124,21 +124,29 @@ predictive nature of our routing, exploited in a stateless way, allows us to ove
 Our contributions are as follows: 
 \begin{itemize}
 \item We have designed \name, a novel fully decentralized, autonomous,
-and self-organizing file sharing service among users based on a novel
-concept named Probabilistic Onion Routes (POR), which combines onion routing with
+and self-organizing file transfer service among users based on a novel
+concept named Stateless Probabilistic Onion Routes (SPOR), which combines onion routing with
 probabilistic node selection, informed by random peer sampling and
-Hidden Markov Model predictions for node availability;
-\item  We have demonstrated the successfulness of our approach. Even
+predictions for node availability;
+\item We have extended Sphinx~\cite{Sphinx}, a compact and secure
+  message header format for mixnets, to allow for sets of nodes
+  instead of single nodes for onion routing layers, resulting in a
+  hybrid between source routing and ad-hoc node  selection that can
+  deal with unreliable nodes;
+\item  We have demonstrated the feasibility of our approach without
+  third-party storage, both in terms of security and performance . Even
   suboptimal prediction results in successful file transfer with high
   probability. 
 \end{itemize}
 
 In the following, in Section~\ref{system-model}, we introduce the
-adversary model and the desired privacy properties of \name. Section~\ref{design}
-introduces the design of our proposed solution. In Section~\ref{security-discussion}, we lead a security discussion
-about advantages and shortcomings of our approach. Section~\ref{Performance}
-evaluates \name. 
-Finally, Section~\ref{conclusion} discusses future work and conclusions.
+system and adversary models as well as the desired security and privacy properties of \name. Section~\ref{design}
+introduces the design of our proposed solution. In
+Sections~\ref{security-discussion} and ~\ref{Performance},
+respectively, we evaluate the security and performance of our
+approach. We set \name into context with related work in
+Section~\ref{related-work} and conclude with Section~\ref{conclusion}.
+
 % Cashmere: resilient anonymous routing.
 % Route fingerprinting in anonymous communications.
 % Bridging and fingerprinting:
