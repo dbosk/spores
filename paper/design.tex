@@ -20,18 +20,14 @@ When Alice and Bob, two users of our system, want to exchange a file \(f\)
 through \name, they start by sharing some information out-of-band, \eg from 
 their smartphones.
 More precisely, they exchange metadata on \(f\), encryption keys, and
-some of
-\changeAL{routing information that they will use to transfer the
-  file's content over \name's network of unreliable nodes.} Namely,
-the recipient provides a \emph{rendezvous point} for the sender to
-initiate the file transfer.
-\sonja{here comes more of a solution overview and reference to the outline
-  figure.}
+some use-once reply mix-headers.
+They use these reply headers to transfer the file contents of \(f\) over a 
+network of unreliable nodes while also achieving privacy.
 
+\sonja{Here comes more of a solution overview and reference to the outline
+  figure.}
 Figure~\ref{fig:outline} shows the components needed to obtain this
 routing information.  
-%use-once reply mix-headers.
-%They use these reply headers to transfer the file contents of \(f\) over a network of unreliable nodes while also achieving privacy.
 
 \begin{figure}[t]
   \centering
@@ -81,8 +77,8 @@ They classify anonymous communication protocols using the following
 categories (see~\cite[Table 1]{RoutingSurveyAnonymousProtocols}):
 \begin{description}
   \item[Network structure]
-    describes the characteristics of the \changeAL{network nodes}, the connections 
-    between them and the underlying topology.
+    describes the characteristics of the network nodes, the connections between 
+    them and the underlying topology.
     The subcategories are
     \begin{enumerate*}
       \item network topology,
