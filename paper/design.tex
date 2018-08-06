@@ -1,3 +1,5 @@
+%!TEX root = p2p-private-cloud.tex
+
 \section{Design of the \name file transfer system}%
 \label{design}
 \sonja{will frame and structure (A) squad overlay (prediction) (B)
@@ -10,71 +12,105 @@
   (C) SPORES (local overlay).
   My original idea was to make Sphinxes its own section before the design 
   section instead of a subsection in the design section.}
-\sonja{remove/update references to building blocks, POR}
-\commentDaniel{I removed the building blocks subsection entirely.}
+
 
 Our goal is to enable private and reliable file exchange between users 
 participating in the system, by using their respective devices only.
 When Alice and Bob, two users of our system, want to exchange a file \(f\) 
-through \name; they start by sharing some information out-of-band, \eg from 
+through \name, they start by sharing some information out-of-band, \eg from 
 their smartphones.
-More precisely, they exchange metadata on \(f\), encryption keys, and exchange 
-use-once reply mix-headers.
-They use these reply headers to transfer the file contents of \(f\) over a 
-network of unreliable nodes while also achieving privacy.
+More precisely, they exchange metadata on \(f\), encryption keys, and
+some of
+\changeAL{routing information that they will use to transfer the
+  file's content over \name's network of unreliable nodes.} Namely,
+the recipient provides a \emph{rendezvous point} for the sender to
+initiate the file transfer.
+\sonja{here comes more of a solution overview and reference to the outline
+  figure.}
+
+Figure \cref{fig:outline} shows the components needed to obtain this
+routing information.  
+%use-once reply mix-headers.
+%They use these reply headers to transfer the file contents of \(f\) over a network of unreliable nodes while also achieving privacy.
 
 \begin{figure}[t]
   \centering
   \def\svgwidth{0.8\columnwidth}
   \import{figures/}{outline.pdf_tex}
   \caption{\label{fig:outline}%
-    \commentDaniel{We must adapt this figure to the text.}
-    Outline of \name's components. Users squads of devices are circled in gray. 
+    %\commentDaniel{We must adapt this figure to the text.}%
+    Outline of \name's components. Users' squads of devices are circled in gray. 
     From top to bottom: a user's devices collaborate through the Squad Overlay 
     (\cref{sec:squad_overlay}); online devices globally share information about 
-    them to random peers (\cref{sec:SPOR}); using the two above 
-    overlays allows for the creation of \ac{SPOR} between sets of devices. 
-    These protocols enables secure file transfer between users 
-    (\cref{SPORES}).}
+    them with random peers (\cref{sec:SPOR}); using the two 
+    overlays above allows for the creation of routes (\ac{SPOR}) between sets of devices. 
+    These protocols enable secure file transfer between users 
+    (\cref{sec:sphinxes}).}
 \end{figure}
 
-This section presents the different parts of the system in detail.
+After the initial, out-of-band setup, file transfer happens along
+onion routes but with the following \name modifications:
+
+\sonja{might need different naming, and deciding about predictive and probabilistic}
+\begin{description}
+\item [Stateless.] There is no mandatory circuit creation, the file transfer can be
+  done in a stateless way. 
+\item [Predictive.] The choice of nodes included in the onion routing
+  layers is based on a predictive model for availability, disseminated
+  according to Figure~\cref{fig:outline}, and queried by random peer sampling.
+\item [Probabilistic.] Instead of source routes with one node per onion layer, each
+  layer consists of a set of nodes and although the source route still
+  determines the sequence of layers, the actual node used for the next
+  hop of forwarding is selected from the set in an ad-hoc way.
+\item[Onion Routing.] Put simply, in onion routing, the sender creates
+  a source route and 
+  encapsulates the payload and next-hop information in layers (by
+  encryption), that are \emph{peeled} (decrypted) one by one along the
+  route. By virtue of these layers, the forwarding nodes on the
+  route do not know where on the route they are and thus whether they
+  have received a packet directly from the sender or some other
+  intermediate node. We base our format for layering and peeling on
+  Sphinx~\cite{Sphinx}, with some modification to allow for the
+  changes above, described in \cref{Sphinxes}.
+\end{description} 
+
+This rest of this section presents the different parts of the system in detail.
 We align the presentation of the system with the taxonomy of 
 \textcite{RoutingSurveyAnonymousProtocols}.
-They categorize anonymous communication protocols using the following 
+They classify anonymous communication protocols using the following 
 categories (see~\cite[Table 1]{RoutingSurveyAnonymousProtocols}):
 \begin{description}
   \item[Network structure]
-    This describes the characteristics of the anonymous relays, the connections 
+    describes the characteristics of the \changeAL{network nodes}, the connections 
     between them and the underlying topology.
     The subcategories are
     \begin{enumerate*}
       \item network topology,
       \item connection type (direction, synchronization),
-      \item symmetry (node roles, node topology for routing, decentralization).
+      \item symmetry (node roles, node topology for routing, decentralization);
     \end{enumerate*}
 
   \item[Routing information]
-    This describes the network information available to entities deciding on 
-    the route of an anonymous connection.
+    describes the network information available to entities deciding on 
+    the route of an anonymous file exchange.
     The subcategories are
     \begin{enumerate*}
       \item network view necessary for making routing decisions,
-      \item triggers for routing information updates.
+      \item triggers for routing information updates;
     \end{enumerate*}
 
   \item[Communication model]
-    This describes the entities that make the routing decisions and how they 
+    describes the entities that make the routing decisions and how they 
     make these decisions.
     The subcategories are
     \begin{enumerate*}
       \item routing type (who selects nodes per route),
       \item scheduling (traffic prioritization),
-      \item node selection (determinism, selection set, selection probability).
+      \item node selection (determinism, selection set, selection probability);
     \end{enumerate*}
 
   \item[Performance]
-    This describes things like latency and communication mode.
+    describes things like latency and communication mode.
     The subcategories are
     \begin{enumerate*}
       \item protocol latency,
@@ -105,6 +141,7 @@ or not.
 Just as Sphinx, it can be used in many different settings.
 
 Next, we describe the \ac{SPOR} protocol (\cref{SPOR}).
+\commentAL{A lot of description here, should only come in Section~\ref{sec:squad_overlay}}
 This focuses on the node selection, \ie adds node selection on top of Sphinxes.
 The \ac{SPOR} protocol assumes a source of random nodes, \eg through 
 \ac{RPS}~\cite[\eg][]{BrahmsRPS} or \iac{DHT} based 
@@ -122,8 +159,8 @@ As \ac{SPOR} is designed, it selects nodes uniformly among all the nodes
 (communication model, node selection) that the source of random nodes provides.
 Thus, ultimately, these also depends on the source of random nodes.
 
-A device's availability depends on its user's behaviour, hence the device must 
-predict this behaviour.
+A device's availability depends on its user's behavior, hence the device must 
+predict this behavior.
 This is best done jointly between the user's all devices.
 In \cref{sec:squad_overlay}, we describe a protocol which allows the devices to 
 compute their own availability prediction function based on the observations by 
@@ -136,5 +173,10 @@ messages by fragmentation and reassembly across the devices in the squad.
 
 \include*{sphinxes}
 \include*{spor}
+\commentAL{What I want to do from here:
+(1) The squad overlay, where a user's devices exchange behavioral information;
+(2) Predicting a device's availability;
+(3) What is at the moment III-B SPOR: global overlay (one-liner: ``we use a RPS service'') and nodes selection per layer etc.;
+(4) File exchange.}
 \include*{squad-overlay-design}
-\include*{file-transfer-design}
+%\include*{file-transfer-design}

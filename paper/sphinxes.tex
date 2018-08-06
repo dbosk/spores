@@ -1,3 +1,5 @@
+%!TEX root = p2p-private-cloud.tex
+
 \subsection{Sphinxes: the Sphinx header format Extended for Sets of nodes}%
 \label{Sphinxes}
 
@@ -5,7 +7,7 @@
 Sphinx.
 Since it is \ac{UC} secure, it provably implements an ideal onion routing 
 functionality.
-\Ie, it provides bitwise unlinkability on the forward route, hides the path 
+\Ie, it provides bitwise unlinkability on the forward route \commentAL{Routes must be defined before that point}, hides the path 
 length, makes replies indistinguishable from forward messages and resists 
 tagging attacks.
 It is also compact with only 224 bytes of header for a five-hop path with 
@@ -28,7 +30,7 @@ each node selects the next node from a set restricted by the source.
 \subsubsection{Overview of the Sphinx header format}
 
 We will now give an overview of the Sphinx header format.
-The idea is not to give a detailed description of Sphinx, but to to give the 
+The idea is not to give a detailed description of Sphinx, but to give the 
 reader enough understanding of Sphinx to understand the changes we make to 
 achieve Sphinxes.
 For a more detailed understanding of Sphinx, we refer the reader to the 
