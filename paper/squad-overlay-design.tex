@@ -12,8 +12,8 @@ The goal is twofold:
 devices need information on the user to predict their future availability, 
 and they must know which device is responsible for which file exchange to route messages to their recipient in the \squad.
 
-To achieve this goal, we adapt the Cascade protocol~\cite{luxey:cascade} to suit our needs. 
-Using Cascade, participating nodes gossip in a push-pull manner: 
+To achieve this goal, we adapt the Sprinkler protocol, proposed by Luxey et al.~\cite{luxey:hal-01704172}, to suit our needs. 
+Using Sprinkler, participating nodes gossip in a push-pull manner: 
 when a node has new information, it sends it to a fixed-size random subset of its peers; 
 the recipients answer with any information that they believe the sender does not know about, thus reconciling their history.
 
@@ -24,7 +24,7 @@ The exchanged data forms a sequence, ordered by timestamp, populated by three ty
 	\item \texttt{RECEIVING<\recdevice, \fileid>}: Reciprocally, when the user starts receiving a file $f$ onto a device \recdevice, \recdevice informs its peers of this fact, and joins the file ID \fileid. Squad members will use this information to forward the file's content from the remote to \recdevice.
 \end{itemize}
 
-Given this information dissemination and history reconciliation mechanism, each \squad member knows the full sequence $S$ at all time with an overwhelming probability, even in the face of churn.
+Given this information dissemination and history reconciliation mechanism, each \squad member knows the full sequence $S$ at all time with an overwhelming probability, even in the face of churn~\cite{luxey:cascade}.
 
 \subsection{Predicting a device's availability}
 \label{ssec:device_availability}
