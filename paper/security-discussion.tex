@@ -1,14 +1,27 @@
 \section{Security Discussion}%
 \label{security-discussion}
 
-\sonja{will add some framing about us composing and modifying parts that
-  have security proofs for their original and individual versions and needing to evaluate the resulting schemes}
+%\sonja{will add some framing about us composing and modifying parts that
+%  have security proofs for their original and individual versions and needing to evaluate the resulting s%chemes}
 
 \commentDaniel{Predecessor attacks: random walk protocols has the problem that 
   the adversary can see the initiator (statistically) more often than the other 
   nodes, and can thus identify the 
   source~\cite{RoutingSurveyAnonymousProtocols}.
   Our protocol is a \enquote{bounded} random walk, \ie within limits.}
+
+We base our solution on Sphinx~\cite{Sphinx}, which, when used for
+onion routing, has been proved to satisfy the properties given
+in~\cite{CLOnionRouting} that were shown to result in a UC-secure
+onion-routing scheme. We thus primarily need to ensure that
+\begin{enumerate*} \item our extension to Sphinxes preserves these
+  properties, \item the availability information introduced and
+  disseminated to deal with churn satisfies the device-unlinkability
+  property we defined in~\cref{system-model}, and that \item the
+  resulting node selection does not introduce any advantage for the
+  adversary. \end{enumerate*} In terms of general system robustness, a
+stateless routing protocol needs to handle packet re-ordering and
+network failures (links or nodes).
 
 \paragraph*{Security of Sphinxes}
 
@@ -27,8 +40,9 @@ The integrity is still reduced to the security of the \ac{MAC} \(\mac\)
 
 The second change is that we use several nodes per layer as opposed to only 
 one.
-The proofs of Sphinx rests on the results of \textcite{CLOnionRouting}, which 
+The proofs of Sphinx rest on the results of \textcite{CLOnionRouting}, which 
 are results for ordinary \ac{OR} with only one node per layer.
+\sonja{Daniel is working on sketching a proof/rephrasing the following.}
 As long as we output all the nodes in the next layer, the proofs should not 
 change.
 We note that this is actually quite natural as a malicious adversary can drop 
@@ -39,120 +53,47 @@ As such, the adversary can learn all nodes in the layer.
 With these arguments, we believe that Sphinxes inherits the \ac{UC} security 
 properties of Sphinx, however, this should be formally analysed.
 
-\paragraph*{Security of \acs*{SPOR}}
+\paragraph*{Security of \acs*{SPOR}, node selection}
 
-\commentDaniel{This must be updated.}
-\commentDaniel{What is the probability of success of the adversary, assuming 
-  \(\GetRandomNode\) returns nodes with uniform probability?
-  We bias the distribution over the layers by using \(\avail\).}
+\sonja{will motivate using the survey/taxonomy}
+The onion route provides unlinkability between Alice and Bob as long as the 
+message passes at least one honest node on the route.
+This means that any adversary, say Eve,  must ensure that the message passes 
+through an adversarial node on each layer.
+The probability of successful attack is proportional to Eve's size in the 
+network, \ie \(f_A = \frac{|D_A|}{|D|}\).
+\commentDaniel{Check that we still use the \(D_i\) notation for the devices in 
+  \(i\)'s squad.}
+If we assume that \(\GetRandomNode\) returns nodes with close to the uniform 
+distribution, then the \(\nu w_L\) nodes selected will contain \(f_A \nu w_L\) 
+nodes controlled by Eve.
+If \(f_A \nu w_L < \nu\), then Eve cannot be present on every layer of the 
+route.
+Considering how \ac{SPOR} distributed the \(\nu w_L\) selected nodes, Eve's 
+best strategy is to have high-availability nodes --- assume that 
+\(\avail_{D_E}(t) = 1\) for all Eve's devices \(D_E\).
+This way, Eve's devices will be distributed evenly across all layers.
+To succeed, Eve must be chosen in the first layer, the probability of which 
+will be \(\frac{f_A}{w_L}\).
+If one of her devices is chosen in the first layer, then she can choose one of 
+her own devices in the next layer.
+Since she is present on every layer, she can ensure she relays the message all 
+the way to Bob. \sonja{compare the chance of being present on every
+  layer AND chosen in the first layer to regular onion routing where she
+  needs to be the (sole) node on each layer. Are we doing
+  better/worse/the same?}
 
-Alice wants to prevent Bob from learning which are her devices (as defined in 
-\cref{system-model}).
-Bob is allowed to infer the behaviour of devices in the global set,
-% Global Device Retinue, 
-but a file transfer from Alice should not give Bob any information about which 
-devices are Alice's.
+However, Eve can only be certain that she has relayed the message from Alice to 
+Bob if \(\nu = r\), \ie she receives the message from Alice, relays it \(r-1\) 
+times and lastly sends it to Bob.
+If \(\nu < r\) though, then, due to the indistinguishability and unlinkability 
+properties of Sphinxes (inherited from Sphinx), Eve cannot know for certain if 
+Alice is the first node and Bob is the last node. \sonja{but what can
+  she learn/guess?}
 
-Bob constructs a Sphinxes route that he gives to Alice.
-Due to the properties that Sphinxes inherits from Sphinx, this means that Alice 
-does not learn any of Bob's destination devices.
-When Alice starts sending the message, she will not connect directly to the 
-device at the head of the route, since that device might be under Bob's 
-control.
-Instead, Alice will construct her own Sphinxes route.
-Thus Alice's devices are hidden from Bob's observation and vice versa.
-This assumes that Alice and Bob can sample their nodes uniformly randomly from 
-the \emph{entire} global set of devices.
-If this is true, the probability of successful attack is proportional to the 
-adversary's size in the network, \ie \(\frac{|D_i|}{|D|}\).
-The adversary must be present on each layer and be selected on the first layer 
-(which is lower-bounded by \(\frac{1}{w_L}\)) --- since after that the 
-adversary can select its own nodes in the next layer instead of uniformly at 
-random.
 
-Alice and Bob also want to prevent Carol and David to learn that Alice sent a 
-message to Bob (as defined in \cref{system-model}).
-Alice and Bob construct their \ac{SPOR} route by including devices from the 
-global set %Global Device Retinue
-, which also includes devices from Carol and David.
-If all devices on the route belong to Carol and David, then they can, of course, 
-learn that Alice sent a message to Bob.
-How well they can do if they do not control the entire route, depends on the 
-choice of the encryption scheme \(\Enc*\), used to encrypt the message \(m\). 
-%(see \cref{sec:file_transfer}).
-
-What makes sense is to choose at least an authenticated encryption 
-scheme~\cite{AuthEncryption}.
-(We could also choose a deniable encryption scheme~\cite{DeniableEncryption}, 
-\eg~\cite{OTPKX} which is authenticated and provides deniability under
-surveillance-state attacks.) %is both deniable and authenticated and  provides \ac{DEN-SS}.)
-This would give confidentiality (or deniability) and integrity for the message, 
-but if the first and the last node belong to Carol and David, they can infer 
-that Alice sent a message to Bob.
-Note that as our in-package header is designed, each node on the route can infer 
-its position on the route \emph{relative to the destination}.
-(We discuss how to remedy this below.)
-None of the nodes can know if the previous node is the originator or not, unless 
-they collude with the previous node.
-The last node, however, can know for sure that the next hop is the destination, 
-but not who it belongs to.
-
-If we choose \(\Enc*\) as a universal re-encryption~\cite{UniversalReencryption} 
-scheme (possibly composed with the deniable, authenticated encryption above), 
-then we could also provide bitwise unlinkability for the message between hops on 
-the route.
-%(We would also need to modify \(\SPOR[\Fwd]\), \cref{SPORFwd}, to perform the 
-%re-encryption of \(m\) before forwarding the message to the next hop.)
-Without universal re-encryption, the message \(m\) itself remains constant 
-throughout the route and thus constitutes a tag for tracking.
-As long as \emph{at least one node on the route is honest}, \ie actually 
-performs the re-encryption --- there is no incentive for them to do this, as 
-neither Alice nor Bob can detect cheating without talking directly to each other 
-to compare the ciphertexts --- then the link between Alice and Bob is broken.
-This means that Carol and David must control all nodes on the route to link 
-Alice's transfer to Bob.
-As above, if we assume uniformly random peer sampling, then Carol and David's 
-success probability is proportional to their joint size in the network.
-
-This means that under the assumption of uniformly random peer sampling, we 
-achieve the properties we outlined in \cref{system-model}.
-Additionally, since Alice and Bob choose a new key for every file, we have 
-forward secrecy between files.
-\Eg an adversary who compromises either Alice or Bob cannot determine what Alice 
-sent to Bob, unless it is an ongoing transfer.
-
-\paragraph*{Limitations}%
-\label{security-limitations}
-
-Many attacks against anonymous communications systems target the peer sampling 
-mechanism, \eg~\cite{%
-  RouteFingerprinting,%
-  EpistemicAttacksOnRouteSelection,%
-}.
-So, even if our system is secure in theory, it will not be secure in practice 
-unless the random peer sampling algorithm returns peers chosen uniformly 
-randomly from the entire global set. %Global Device Retinue.
-
-To prevent attacks on the random peer sampling, some systems have employed 
-techniques to detect colluding nodes, \eg~\cite{%
-  SecurePeerSampling,%
-  MorphMix,%
-}.
-However, as is the case of~\cite{MorphMix}, these can be 
-broken~\cite{BreakingMorphMix}.
-
-There are also other types of attacks, \eg denial of service attacks that can 
-lead to the adversary learning more from the system~\cite{DenialOfSecurity}.
-It is difficult to say to what extent our system might be vulnerable to this 
-type of attack without a deeper analysis.
-Unfortunately this is outside the scope of this study.
-However, we hypothesize that our stateless and redundant design might have some 
-advantages, \eg no control messages sent back from where the error happened to 
-the source.
-But these advantages will only postpone the success of the attack, eventually 
-even our protocol must resend.
-
-Finally, we would also need the random peer sampling to be privacy preserving.
+Finally, we must point out that the \(\GetRandomNode\) algorithm must be 
+privacy preserving.
 Consider the following scenario.
 Alice requests a set of peers, say \(\{d_1, \dotsc, d_n\}\).
 If \(d_i\) interacts in each sampling operation resulting in \(d_i\) being in 
@@ -162,40 +103,48 @@ This means that, if Alice sampled \(d_i\), she knows the public key
 \(\pk_i^{(j)}\), and if \(d_i\) knows it is included in Alice's sample, then it 
 will also know a route belongs to Alice whenever \(\pk_i^{(j)}\) is used to 
 encrypt the header.
+(This follows from the fact that Sphinxes is source-routed.)
 \Ie every node on Alice's route would know that Alice is either the source or 
 the destination.
-When running the protocol, Alice only creates one part of the route and Bob 
-creates the other.
-This means that no device knows both ends of the route unless they collude.
 
-% \subsection{Future Work}
+\paragraph*{Robustness}
 
-% One part that we can directly improve is the header.
-% We see two alternative paths for improving the header.
-% First, we might be able to adapt the Sphinx~\cite{Sphinx} cryptographic packet 
-% format to the routing of \(\SPOR\).
-% Then we could achieve the properties of Sphinx, \eg preventing the last node to 
-% learn the destination, and enjoy provable security.
+Stateless routing can result in re-ordered chunks or packets, and
+chunks received on different devices of a user's squad. From Sphinx,
+we inherit IDs for packets that we we include in the out-of-band
+metadata on the file to be exchanged, as an ordered list, that is used
+to re-order chunks if need be. The squad overlay handles inter-squad
+device coordination. Liveness despite the possibility of squad devices
+going offline during transfer or other node or link failures is
+ensured by acknowledgments and timeouts as detailed in
+~\cref{sec:squad_overlay}.
 
-% The second approach would be to use the technique by \textcite{PPACinPubFS}.
-% They adapt \(\ANOBE\) in such a way that its ciphertexts decrypt to different 
-% things for different recipients.
-% This way we could have one ciphertext encrypted for all the alternative nodes 
-% --- across layers.
-% Then the ciphertext would decrypt to different plaintexts for nodes on different 
-% layers in the route.
-% This would hide the path length (constant-size ciphertexts by padding) and the 
-% position of individual nodes.
-% This approach would probably be the easiest, but would probably not provide all 
-% the properties from Sphinx (\eg resistance to active tagging attacks).
 
-\sonja{Failure, exception handling, such as reordered chunks, chunks
-  on different devices, squad devices going offline during transfer}
+\paragraph*{Extended adversary model}%
+\label{security-limitations}
 
-\section{Alternatives}%
-\label{Alternatives}
+A global, passive, network-observing adversary can of course do
+statistical disclosure attacks to eventually learn who communicates
+with whom~\cite{StatisticalDisclosureAttacks}. \sonja{Daniel: the
+  reference seems to be missing}  There are also denial
+of service attacks that can lead to the adversary learning more from
+the system~\cite{DenialOfSecurity}.  As mentioned in
+\cref{system-model}, we share the adversary model with Tor and Sphinx
+and thus exclude a global passive adversary. Our focus is on
+protecting Alice and Bob from each other and from others who also
+participate as nodes in the network, not on protecting them from
+surveillance. Nevertheless, we offer some reflections on such an
+adversary. We hypothesize that our stateless and redundant design
+might yield some advantages over traditional onion routing. For
+example, no control messages are sent back to the source if the
+adversary has introduced an error.  \sonja{``But these advantages will
+  only postpone the success of the attack, eventually even our
+  protocol must resend.'' why?}  \commentDaniel{We should look into
+  this denial of security.} We would also like to point out that
+vulnerability to a global passive attacker is not inherent in Sphinx
+or Sphinxes, but can be caused by the way they are applied, \ie the
+traffic sent. If performance and resource consumption were not an
+issue, batched and well-timed message or file transfer by all nodes
+would render traffic analysis pointless.
 
-\subsection{Stateful \name}
-\subsection{Beyond file exchange} web browsing, hidden services,
-interaction and collaboration.
-\subsection{Other predictions} time of day? 
+
