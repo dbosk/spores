@@ -7,14 +7,15 @@
 Sphinx.
 Since it is \ac{UC} secure, it provably implements an ideal onion routing 
 functionality.
-\Ie, it provides bitwise unlinkability on the forward route \commentAL{Routes must be defined before that point}, hides the path 
+\Ie, it provides bitwise unlinkability on the forward route, hides the path 
 length, makes replies indistinguishable from forward messages and resists 
 tagging attacks.
 It is also compact with only 224 bytes of header for a five-hop path with 
 128-bit security.
-Sphinx only provides one node per onion layer, in this section we extend Sphinx 
+Sphinx only provides one node per onion layer; in this section we extend Sphinx 
 to Sphinxes, which allows for multiple nodes per onion layer.
 (See \cref{fig:OR-POR}.)
+% AL: Bounded random-walk....
 As such, Sphinxes could be described as a bounded random-walk protocol, \ie the 
 each node selects the next node from a set restricted by the source.
 
@@ -51,22 +52,22 @@ shared secret \(s_1 = \alpha_1^{\sk_1}\), \ie complete the \ac{DHKE} round.
 Since \(\pk_1\) is an authenticated key, the sender can be sure that only this 
 particular node can process the first layer of the onion.
 
-The derived shared secret \(s_1\) is then used to derive various keys.
-One of them is the key for the \ac{MAC} (\(gamma_1\)) to verify the integrity 
+The shared secret \(s_1\) is then used to derive various keys.
+One of them is the key for the \ac{MAC} (\(\gamma_1\)) to verify the integrity 
 of the header (\(\beta_1\)).
 If \(\beta_1\) is correct, another key is derived from \(s_1\) to decrypt 
 \(\beta_1\) to get \(d_2\concat \gamma_2\concat \beta_2\), where \(d_2\) is the 
 address of the second node in the path.
 
 We note that \(\beta_i\) is encrypted using a stream cipher.
-Thus we can append zeroes before decryption to keep the ciphertext length 
+Thus we can append zeros before decryption to keep the ciphertext length 
 constant.
-Since we append \emph{before} decryption, those appended zeroes will look 
+Since we append \emph{before} decryption, those appended zeros will look 
 completely random to the next node, thus the position on the path is hidden.
 
 Finally, \(\alpha_1\) is blinded into \(\alpha_2\) with a key derived from 
 \(s_1\).
-Then the triple \((\alpha_2, \beta_2, \gamma_2)\) are sent to the node with 
+Then the triple \((\alpha_2, \beta_2, \gamma_2)\) is sent to the node with 
 address \(d_2\).
 
 When node \(n\) discovers \(d_{n+1} = *\) it knows that the message is intended 
@@ -75,7 +76,7 @@ for itself and thus stops the forwarding.
 \subsubsection{The Sphinxes extension for sets of nodes}
 
 We will now extend Sphinx to do \ac{POR}: instead of providing only \(d_{i+1}\) 
-in \(\beta_i\), we will have a set \(\{d_{i+1}^{(0)}, \dotsc, d_{i+1}^{(m)}\}\) 
+in \(\beta_i\), we will have a set \(\{d_{i+1}^{(1)}, \dotsc, d_{i+1}^{(m)}\}\) 
 of \(m\) alternative next nodes.
 This means that all \(m\) nodes must be able to compute the same shared secret 
 \(s_{i+1}\).
