@@ -28,8 +28,15 @@ does
 not compromise security. Another
 consideration is the nature of the traffic in this scenario and the
 limits of protection against statistical inference. 
-%On a related note, it would be interesting to adapt the
-%Sphinx~\cite{Sphinx} cryptographic packet format to the routing of \name as a step toward provable security.
+
+Although we presented a stateless solution, mainly to handle churn in
+a file transfer scenario, \name does not preclude a stateful alternative. 
+Other applications such as web browsing, interaction and
+collaboration or other kind of hidden services might benefit from a stateful, circuit-based approach
+like with traditional onion routing. Prediction of device availability
+could support different goals, for example time of day for delayed
+file transfer for resource optimization. 
+
 
 %
 % \commentAL{To rewrite as real paragraphs} Future work and prospects:
