@@ -123,14 +123,22 @@ predictive nature of our routing, exploited in a stateless way, allows us to ove
 
 Our contributions are as follows: 
 \begin{itemize}
-\item We have designed \name, a novel fully decentralized, autonomous,
-and self-organizing file sharing service among users based on a novel
-concept named Probabilistic Onion Routes (POR), which combines onion routing with
-probabilistic node selection, informed by random peer sampling and
-Hidden Markov Model predictions for node availability;
-\item  We have demonstrated the successfulness of our approach. Even
-  suboptimal prediction results in successful file transfer with high
-  probability. 
+  \item We provide the Sphinxes mix-header format which extends 
+    Sphinx~\cite{Sphinx} to a source-routed limited random-walk protocol --- 
+    \ie each layer of the onion route contains several alternative next nodes.
+
+  \item We provide the \ac{SPOR} node selection strategy which, given a secure 
+    \ac{RPS} protocol and availability estimates, selects nodes to populate the 
+    layers of Sphinxes to maximize the availability of the route --- this 
+    yields reliable routes even with low-availability nodes.
+
+  \item We provide a protocol for a device swarm to estimate the availabilities 
+    of its own devices.
+    These availabilities can then be used with \ac{SPOR}.
+    \commentDaniel{We should add some more details, maybe.}
+
+  \item We use \ac{SPOR} to design \name: a novel, fully decentralized, 
+    autonomous and self-organizing file transfer service among users.
 \end{itemize}
 
 In the following, in Section~\ref{system-model}, we introduce the
