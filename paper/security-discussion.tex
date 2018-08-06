@@ -1,8 +1,8 @@
 \section{Security Discussion}%
 \label{security-discussion}
 
-\sonja{will add some framing about us composing and modifying parts that
-  have security proofs for their original and individual versions and needing to evaluate the resulting schemes}
+%\sonja{will add some framing about us composing and modifying parts that
+%  have security proofs for their original and individual versions and needing to evaluate the resulting s%chemes}
 
 \commentDaniel{Predecessor attacks: random walk protocols has the problem that 
   the adversary can see the initiator (statistically) more often than the other 
@@ -10,17 +10,18 @@
   source~\cite{RoutingSurveyAnonymousProtocols}.
   Our protocol is a \enquote{bounded} random walk, \ie within limits.}
 
-We base our solution on Sphinx, which, when used for onion routing, has been proved to satisfy the
-properties given in ~cite{CLOnionRouting} that were shown to result
-in a UC-secure onion-routing scheme. We thus primarily need to ensure that 
+We base our solution on Sphinx~\cite{Sphinx}, which, when used for
+onion routing, has been proved to satisfy the properties given
+in~\cite{CLOnionRouting} that were shown to result in a UC-secure
+onion-routing scheme. We thus primarily need to ensure that
 \begin{enumerate*} \item our extension to Sphinxes preserves these
   properties, \item the availability information introduced and
   disseminated to deal with churn satisfies the device-unlinkability
-  property we defined in~\cref{system-model}, and that \item the node
-  selection does not introduce any advantage for the
+  property we defined in~\cref{system-model}, and that \item the
+  resulting node selection does not introduce any advantage for the
   adversary. \end{enumerate*} In terms of general system robustness, a
 stateless routing protocol needs to handle packet re-ordering and
-network failures (links or nodes). 
+network failures (links or nodes).
 
 \paragraph*{Security of Sphinxes}
 
@@ -39,8 +40,9 @@ The integrity is still reduced to the security of the \ac{MAC} \(\mac\)
 
 The second change is that we use several nodes per layer as opposed to only 
 one.
-The proofs of Sphinx rests on the results of \textcite{CLOnionRouting}, which 
+The proofs of Sphinx rest on the results of \textcite{CLOnionRouting}, which 
 are results for ordinary \ac{OR} with only one node per layer.
+\sonja{Daniel is working on sketching a proof/rephrasing the following.}
 As long as we output all the nodes in the next layer, the proofs should not 
 change.
 We note that this is actually quite natural as a malicious adversary can drop 
@@ -51,8 +53,9 @@ As such, the adversary can learn all nodes in the layer.
 With these arguments, we believe that Sphinxes inherits the \ac{UC} security 
 properties of Sphinx, however, this should be formally analysed.
 
-\paragraph*{Security of \acs*{SPOR}}
+\paragraph*{Security of \acs*{SPOR}, node selection}
 
+\sonja{will motivate using the survey/taxonomy}
 The onion route provides unlinkability between Alice and Bob as long as the 
 message passes at least one honest node on the route.
 This means that any adversary, say Eve,  must ensure that the message passes 
@@ -75,34 +78,19 @@ will be \(\frac{f_A}{w_L}\).
 If one of her devices is chosen in the first layer, then she can choose one of 
 her own devices in the next layer.
 Since she is present on every layer, she can ensure she relays the message all 
-the way to Bob.
+the way to Bob. \sonja{compare the chance of being present on every
+  layer AND chosen in the first layer to regular onion routing where she
+  needs to be the (sole) node on each layer. Are we doing
+  better/worse/the same?}
 
 However, Eve can only be certain that she has relayed the message from Alice to 
 Bob if \(\nu = r\), \ie she receives the message from Alice, relays it \(r-1\) 
 times and lastly sends it to Bob.
 If \(\nu < r\) though, then, due to the indistinguishability and unlinkability 
 properties of Sphinxes (inherited from Sphinx), Eve cannot know for certain if 
-Alice is the first node and Bob is the last node.
+Alice is the first node and Bob is the last node. \sonja{but what can
+  she learn/guess?}
 
-\paragraph*{Limitations}%
-\label{security-limitations}
-
-A global, passive, network-observing adversary can of course do statistical 
-disclosure attacks to eventually learn who communicates with 
-whom~\cite{StatisticalDisclosureAttacks}.
-There are also denial of service attacks that can lead to the adversary 
-learning more from the system~\cite{DenialOfSecurity}.
-It is difficult to say to what extent our system might be vulnerable to this 
-type of attack without a deeper analysis.
-Such an analysis is out of scope of this analysis, here our focus is to protect 
-Alice and Bob from each other and their friends who also participate as nodes 
-in the network, not to protect them from \eg the \ac{NSA}.
-However, we hypothesize that our stateless and redundant design might yield 
-some advantages, \eg no control messages sent from where the adversary have 
-introduced an error back to the source.
-But these advantages will only postpone the success of the attack, eventually 
-even our protocol must resend.
-\commentDaniel{We should look into this denial of security.}
 
 Finally, we must point out that the \(\GetRandomNode\) algorithm must be 
 privacy preserving.
@@ -122,14 +110,41 @@ the destination.
 \paragraph*{Robustness}
 
 Stateless routing can result in re-ordered chunks or packets, and
-chunks received on different devices of a user's squad. From
-Sphinx, we inherit IDs for packets that we we include in the
-out-of-band metadata on the file to be exchanged, as an ordered list,
-that is used to re-order chunks if need be. The squad overlay handles
-inter-squad device coordination. Liveness despite the possibility of squad devices going offline during
-transfer or other node or link failures is ensured by acknowledgments
-and timeouts as detailed in ~\cref{sec:squad_overlay}.
+chunks received on different devices of a user's squad. From Sphinx,
+we inherit IDs for packets that we we include in the out-of-band
+metadata on the file to be exchanged, as an ordered list, that is used
+to re-order chunks if need be. The squad overlay handles inter-squad
+device coordination. Liveness despite the possibility of squad devices
+going offline during transfer or other node or link failures is
+ensured by acknowledgments and timeouts as detailed in
+~\cref{sec:squad_overlay}.
 
 
+\paragraph*{Extended adversary model}%
+\label{security-limitations}
+
+A global, passive, network-observing adversary can of course do
+statistical disclosure attacks to eventually learn who communicates
+with whom~\cite{StatisticalDisclosureAttacks}. \sonja{Daniel: the
+  reference seems to be missing}  There are also denial
+of service attacks that can lead to the adversary learning more from
+the system~\cite{DenialOfSecurity}.  As mentioned in
+\cref{system-model}, we share the adversary model with Tor and Sphinx
+and thus exclude a global passive adversary. Our focus is on
+protecting Alice and Bob from each other and from others who also
+participate as nodes in the network, not on protecting them from
+surveillance. Nevertheless, we offer some reflections on such an
+adversary. We hypothesize that our stateless and redundant design
+might yield some advantages over traditional onion routing. For
+example, no control messages are sent back to the source if the
+adversary has introduced an error.  \sonja{``But these advantages will
+  only postpone the success of the attack, eventually even our
+  protocol must resend.'' why?}  \commentDaniel{We should look into
+  this denial of security.} We would also like to point out that
+vulnerability to a global passive attacker is not inherent in Sphinx
+or Sphinxes, but can be caused by the way they are applied, \ie the
+traffic sent. If performance and resource consumption were not an
+issue, batched and well-timed message or file transfer by all nodes
+would render traffic analysis pointless.
 
 
