@@ -1,8 +1,5 @@
 %!TEX root = p2p-private-cloud.tex
 
-\newcommand\fileid{\ensuremath{ID_{\text{f}}}\xspace}
-\newcommand\sendingdevice{\ensuremath{d^{(s)}_f}\xspace}
-\newcommand\recdevice{\ensuremath{d^{(r)}_f}\xspace}
 
 \subsection{The \squad overlay}
 \label{sec:squad_overlay}
@@ -89,10 +86,6 @@ $P'd$ will be advertised in spite of $P_d$. It will also be used as a baseline i
 \subsubsection{The global overlay}
 \label{sssec:global_overlay}
 
-\newcommand\rpsview{\ensuremath{\mathcal{V}}\xspace}
-\newcommand\desc{\ensuremath{{\mathtt{desc}}}\xspace}
-
-
 Devices need to know the address of SPORES participants in order to craft PORs.
 To this end, we employ a Random Peer Sampling service~\cite{Jelasity_Voulgaris_Guerraoui_Kermarrec_van_Steen_2007} among all nodes in SPORES. \commentAL{TODO: cite \cite{Jesi_Montresor_van_Steen_2010} for \textbf{secure} RPS}.
 It is a gossip protocol that allows each participant to keep a fixed-size \emph{random} subset of other nodes' descriptor (that we will call the \emph{view} \rpsview). 
@@ -114,9 +107,6 @@ In SPORES, a descriptor $\desc_d$ describing device $d$ contains the following i
 \subsubsection{Routes creation}
 \label{sssec:routes_creation}
 
-%\newcommand\layer{\ensuremath{{\mathcal{L}}}\xspace}
-\newcommand\layer{L\xspace}
-\newcommand\Poff{\ensuremath{P_{\text{off}}}\xspace}
 
 Routes are created via Sphinxes, as described in section~\ref{SPOR}.
 Each layer \layer constituting the route is created by the same \CreateLayer\xspace function.
@@ -140,12 +130,6 @@ On the other hand, if $|\layer| < w_\layer$, we pad the layer with blank descrip
 \subsection{SPORES: file exchange through probabilistic onion routes}
 \label{ssec:spores_file_exchange_through_probabilistic_onion_routes}
 
-\newcommand\finfo{\ensuremath{\mathcal{I}_f}}
-\newcommand\filesize{\ensuremath{s_f}\xspace}
-\newcommand\chunksize{\ensuremath{s_{\text{chunk}}}\xspace}
-\newcommand\nchunks{\ensuremath{n_{\text{chunks}}}\xspace}
-\newcommand\hashchunk{\ensuremath{h_{\text{chunk}}}\xspace}
-\newcommand\hashfile{h\xspace}
 
 We have seen how participants of \name could craft routes to secretly exchange messages.
 We now apply this feature to reliably exchange files between two users.
@@ -171,8 +155,6 @@ Still out-of-band, Bob replies with one forward header per chunk.
 
 Alice and Bob now have everything they need to start transferring $f$ in-band.
 
-\newcommand\bitfield{\ensuremath{bf_f}\xspace}
-\newcommand\tupload{\ensuremath{t_{\text{upload}}}\xspace}
 
 \paragraph*{Chunks and bitfields}
 Alice's file $f$ is located on one of her devices, \sendingdevice. 
