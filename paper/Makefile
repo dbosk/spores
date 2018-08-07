@@ -17,8 +17,8 @@ SRC+= 		related.tex
 SRC+=		conclusion.tex
 
 DEPENDS+= 	bibsp.sty meta.bib osn.bib anon.bib be.bib crypto.bib p2p.bib
-DEPENDS+= 	otrmsg.bib ac.bib
-DEPENDS+= 	adrien.bib
+DEPENDS+= 	otrmsg.bib ac.bib privacy.bib
+DEPENDS+= 	adrien.bib p2p-private-cloud.bib
 DEPENDS+=	figures/*.pdf
 
 p2p-private-cloud.pdf: p2p-private-cloud.tex preamble.tex revision_macros.tex
