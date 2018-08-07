@@ -10,18 +10,22 @@
   source~\cite{RoutingSurveyAnonymousProtocols}.
   Our protocol is a \enquote{bounded} random walk, \ie within limits.}
 
-We base our solution on Sphinx~\cite{Sphinx}, which, when used for
-onion routing, has been proved to satisfy the properties given
-in~\cite{CLOnionRouting} that were shown to result in a UC-secure
-onion-routing scheme. We thus primarily need to ensure that
-\begin{enumerate*} \item our extension to Sphinxes preserves these
-  properties, \item the availability information introduced and
-  disseminated to deal with churn satisfies the device-unlinkability
-  property we defined in~\cref{system-model}, and that \item the
-  resulting node selection does not introduce any advantage for the
-  adversary. \end{enumerate*} In terms of general system robustness, a
-stateless routing protocol needs to handle packet re-ordering and
-network failures (links or nodes).
+The \ac{SPORES} system is composed of several parts, each of which requires its 
+own security analysis.
+We thus primarily need to ensure that
+\begin{enumerate*}
+\item Sphinxes (\cref{Sphinxes}) preserves the properties of 
+  \textcite{CLOnionRouting} and \textcite{Sphinx} yielding \ac{UC}-secure 
+  \ac{OR};
+\item the node selection (\ac{SPOR}, \cref{SPOR}) does not introduce any 
+  advantage for the adversary;
+\item the availability information introduced and disseminated to deal with 
+  churn satisfies the device-unlinkability property we defined in 
+  \cref{system-model}; and that
+\item the composed protocol (\ac{SPORES}, \cref{SPORES}) provides the desired 
+  security properties defined in \cref{system-model}, \ie
+  privacy and robustness (packet re-ordering and drops).
+\end{enumerate*}
 
 \paragraph*{Security of Sphinxes}
 
