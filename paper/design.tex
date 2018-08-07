@@ -26,23 +26,25 @@ some use-once reply mix-headers.
 They use these reply headers to transfer the file contents of \(f\) over a 
 network of unreliable nodes while also achieving privacy.
 
-% Figure~\ref{fig:outline} shows the components needed to obtain the
-% routing information for the headers.  
+%% Figure~\ref{fig:outline} shows the components needed to obtain the
+%% routing information for the headers.  
 
-% \begin{figure}[t]
-%   \centering
-%   \def\svgwidth{0.8\columnwidth}
-%   \import{figures/}{outline_figure_only.pdf_tex}
-%   \caption{\label{fig:outline}%
-%     %\commentDaniel{We must adapt this figure to the text.}%
-%     Outline of \name's components. Users' squads of devices are circled in gray. 
-%     From top to bottom: a user's devices collaborate through the Squad Overlay 
-%     (\cref{sec:squad_overlay}); online devices globally share information about 
-%     them with random peers (\cref{ssec:device_availability}); using the two 
-%     overlays above allows for the creation of routes (\ac{SPOR}) between sets of devices. 
-%     These protocols enable secure file transfer between users 
-%     (\cref{ssec:por}).}
-% \end{figure}
+\begin{figure}[t]
+  \centering
+  \def\svgwidth{0.8\columnwidth}
+  %  \import{figures/}{outline_figure_only.pdf_tex}
+    \includegraphics[width=\columnwidth]{figures/OverviewSPORES_cropped}
+  \caption{\label{fig:outline}%
+    %\commentDaniel{We must adapt this figure to the text.}%
+    %% Outline of \name's components. Users' squads of devices are circled in gray. 
+    %% From top to bottom: a user's devices collaborate through the Squad Overlay 
+    %% (\cref{sec:squad_overlay}); online devices globally share information about 
+    %% them with random peers (\cref{ssec:device_availability}); using the two 
+    %% overlays above allows for the creation of routes (\ac{SPOR}) between sets of devices. 
+    %% These protocols enable secure file transfer between users 
+    %% (\cref{ssec:por}).
+    \protect\commentFT{TODO by Francois: describe figure}}
+\end{figure}
 
 After the initial, out-of-band setup, file transfer happens along
 onion routes but with the following features:
