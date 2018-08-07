@@ -17,17 +17,17 @@ the recipients answer with any information that they believe the sender does not
 The exchanged data forms a sequence, ordered by timestamp, populated by three types of information:
 \begin{itemize}
 	\item \texttt{CONNECTED<$d, t_{step}$>}: Sent by device $d$ when it is used by its user at time step\footnote{As far as devices connections are concerned, time is discretized: we consider that each interaction lasts the same time.} $t_{step}$. $d$ is otherwise considered offline at this time. Devices use this information to predict their probability of remaining online, as presented in section~\ref{ssec:device_availability};
-	\item \texttt{SENDING<\sendingdevice, \fileid>}: When the user decides to send a file $f$ located on a device \sendingdevice, \sendingdevice informs its peers of this fact, and joins the file ID \fileid. Squad members will use this information to forward acknowledgments from the remote to \sendingdevice;
-	\item \texttt{RECEIVING<\recdevice, \fileid>}: Reciprocally, when the user starts receiving a file $f$ onto a device \recdevice, \recdevice informs its peers of this fact, and joins the file ID \fileid. Squad members will use this information to forward the file's content from the remote to \recdevice.
+	\item \texttt{SENDING<\sendingdevice, \fileid>}: When the user decides to send a file $f$ located on a device \sendingdevice, \sendingdevice informs its peers of this fact, and joins the file ID \fileid. \Squad members will use this information to forward acknowledgments from the recipient to \sendingdevice;
+	\item \texttt{RECEIVING<\recdevice, \fileid>}: Reciprocally, when the user starts receiving a file $f$ onto a device \recdevice, \recdevice informs its peers of this fact, and joins the file ID \fileid. \Squad members will use this information to forward the file's content from the sender to \recdevice.
 \end{itemize}
 
-Given this information dissemination and history reconciliation mechanism, each \squad member knows the full sequence $S$ at all time with an overwhelming probability, even in the face of churn~\cite{luxey:cascade}.
+Given this information dissemination and history reconciliation mechanism, each \squad member knows the full sequence $S$ at all times with an overwhelming probability, even in the face of churn~\cite{luxey:cascade}.
 
 \subsection{Predicting a device's availability}
 \label{ssec:device_availability}
 
 The predictive nature of \name lies in the fact that each participating device publicly advertises its probability of being connected in the near future. 
-This information is used when any node needs to create a Probabilistic Onion Route (POR), as will be shown in the next subsection~\ref{ssec:por}.
+This information is used when any node needs to create a Stateless Predictive Probabilistic Onion Route (\SPOR), as will be shown in the next subsection~\ref{ssec:por}.
 
 As described earlier, \squad members know the connection times of all the user's devices, given by the \texttt{CONNECTED} items in the \squad's sequence.
 It can be represented as a 2D sparse matrix of booleans, as shown in the Table~\ref{tab:connection_times} (depicting a user owning a laptop, a phone, and a smart-TV).
@@ -79,8 +79,8 @@ when the current state is new, we compute a $P'_d$, an estimator of $d$'s averag
 $$ P'_d = \frac{\left| \left\{ X_i \in \mathcal{X}_{d\text{ online}}, X_{i+1} \in \mathcal{X}_{d\text{ online}} \right\}_{i \in \left[0, |S| - 1\right]} \right|}{\left| \left\{ X_i \in \mathcal{X}_{d\text{ online}} \right\}_{i \in \left[0, |S| - 1\right]} \right|} $$
 
 $P'd$ will be advertised in spite of $P_d$. It will also be used as a baseline in the evaluation.
-
-\subsection{Probabilistic Onion Routes}
+\sonja{this and the next subsection seem redundant and need to be merged}
+\subsection{Stateless Predictive Probabilistic Onion Routes}
 \label{ssec:por}
 
 \subsubsection{The global overlay}
@@ -137,7 +137,7 @@ We now apply this feature to reliably exchange files between two users.
 Our file transfer protocol is loosely based on BitTorrent \cite{bt_bep3}: 
 at initialization, a file $f$ of size \filesize is first cut into chunks of constant size \chunksize by its uploader,
 resulting in $\nchunks = \lceil \filesize / \chunksize \rceil$ chunks.
-A SHA1 hash \hashchunk is computed for each chunk, plus another SHA1 hash \hashfile of the chunks hashes ; that will serve error detection. 
+A SHA1 hash \hashchunk is computed for each chunk, plus another SHA1 hash \hashfile of the chunks hashes; that will serve error detection. 
 
 
 In BitTorrent, .torrent files are publicly available on the Web.
@@ -162,7 +162,7 @@ Each chunk $c_i \in f$ is uploaded to Bob through a unique route $\mathcal{H}_{c
 When $d_f$ is online, it periodically sends chunks of $f$ to Bob until $f$ is entirely uploaded, with a period of 
 
 Bob receives $f$ on a device \recdevice, but a chunk $c_i$ for $f$ might arrive on any of his devices. 
-This device then fetches the address of the proper recipient \recdevice by looking for the line \texttt{RECEIVING<\recdevice, \fileid>} in its squad sequence, 
+This device then fetches the address of the proper recipient \recdevice by looking for the line \texttt{RECEIVING<\recdevice, \fileid>} in its \squad sequence, 
 and forwards the file chunk to \recdevice.
 Upon reception of the chunk, \recdevice verifies its integrity by computing its SHA1 hash $h_{c_i}$ and comparing it to $\finfo.h_{c_i}$.
 If the chunk is valid, \recdevice updates its \emph{bitfield} \bitfield: this bit-array of size \nchunks is initialized with 0;
