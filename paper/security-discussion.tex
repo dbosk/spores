@@ -9,7 +9,7 @@ The \ac{SPORES} system is composed of several parts, each of which requires its
 own security analysis.
 We thus primarily need to ensure that
 \begin{enumerate*}
-\item Sphinxes (\cref{Sphinxes}) preserves the properties of 
+\item \Sphinxes (\cref{Sphinxes}) preserves the properties of 
   \textcite{CLOnionRouting} and \textcite{Sphinx} yielding \ac{UC}-secure 
   \ac{OR};
 \item the node selection (\ac{SPOR}, \cref{SPOR}) does not introduce any 
@@ -22,7 +22,7 @@ We thus primarily need to ensure that
   privacy and robustness (packet re-ordering and drops).
 \end{enumerate*}
 
-\paragraph*{Security of Sphinxes}
+\paragraph*{Security of \Sphinxes}
 
 There are two changes that we have made that must be analysed.
 We changed the key agreement from a pure \ac{DHKE}, \ie based on the \ac{DH} 
@@ -45,16 +45,18 @@ The second change is that we use several nodes per layer as opposed to only
 one.
 The proofs of Sphinx rest on the results of \textcite{CLOnionRouting}, which 
 are results for ordinary \ac{OR} with only one node per layer.
-\sonja{Daniel is working on sketching a proof/rephrasing the following.}
-As long as we output all the nodes in the next layer, the proofs should not 
-change.
+
+As long as we output all the nodes in the next layer, the results for
+the adversary are the same: the adversary learns the entire
+composition of the layer regardless of whether the set contains a
+single or several nodes.
 We note that this is actually quite natural as a malicious adversary can drop 
 any incoming traffic to a router and wait for the timeout and retransmission to 
 the next node.
-As such, the adversary can learn all nodes in the layer.
+As such, the adversary can learn all nodes in the layer. 
 
-With these arguments, we believe that Sphinxes inherits the \ac{UC} security 
-properties of Sphinx, however, this should be formally analysed.
+With these arguments, we believe that \Sphinxes inherits the \ac{UC} security 
+properties of Sphinx. %, however, this should be formally analysed.
 
 \paragraph*{Security of \acs*{SPOR}, node selection}
 
@@ -118,13 +120,13 @@ does not put any other constraints on the \ac{RPS} used.
 \paragraph*{Robustness}
 
 Stateless routing can result in re-ordered chunks or packets, and
-chunks received on different devices of a user's squad. From Sphinx,
-we inherit IDs for packets that we we include in the out-of-band
+chunks received on different devices of a user's \squad. From Sphinx,
+we inherit IDs for mix packets that we we include in the out-of-band
 metadata on the file to be exchanged, as an ordered list, that is used
-to re-order chunks if need be. The squad overlay handles inter-squad
-device coordination. Liveness despite the possibility of squad devices
+to re-order chunks if need be. The \squad overlay handles inter-squad
+device coordination. Liveness despite the possibility of \squad devices
 going offline during transfer or other node or link failures is
-ensured by acknowledgements and timeouts as detailed in 
+ensured by acknowledgments and timeouts as detailed in 
 \cref{sec:squad_overlay}.
 
 
@@ -133,8 +135,7 @@ ensured by acknowledgements and timeouts as detailed in
 
 A global, passive, network-observing adversary can of course do
 statistical disclosure attacks to eventually learn who communicates
-with whom~\cite{StatisticalDisclosureAttacks}. \sonja{Daniel: the
-  reference seems to be missing}  There are also denial
+with whom~\cite{StatisticalDisclosureAttacks}. There are also denial
 of service attacks that can lead to the adversary learning more from
 the system~\cite{DenialOfSecurity}.  As mentioned in
 \cref{system-model}, we share the adversary model with Tor and Sphinx
@@ -149,8 +150,8 @@ adversary has introduced an error.  \sonja{``But these advantages will
   only postpone the success of the attack, eventually even our
   protocol must resend.'' why?}  \commentDaniel{We should look into
   this denial of security.} Another example is that the source-bounded
-random walk and different routes for file chunks make tracking more
-difficult than with onion routing circuits. A drawback, however, is
+random walk and new routes for file chunks make tracking more
+difficult than with regular onion routing circuits. A drawback, however, is
 that since the chunks can take several paths from source to destination, the source 
 will send and the destination will receive more traffic than other nodes in the 
 network~\cite{RoutingSurveyAnonymousProtocols}. However, this is mitigated by the fact that the source and 
@@ -159,17 +160,17 @@ destination can be several different devices --- \ie from the \squads.
 
 We would also like to point out that
 vulnerability to a global passive attacker is not inherent in Sphinx
-or Sphinxes, but can be caused by the way they are applied, \ie the
+or \Sphinxes, but can be caused by the way they are applied, \ie the
 traffic sent. If performance and resource consumption were not an
 issue, batched and well-timed message or file transfer by all nodes
-would render traffic analysis pointless. \Ac{SPORES} inherits the security properties from Sphinxes and \ac{SPOR}.
-However, both Sphinxes and \ac{SPOR} can be used with any mixing strategy, and 
+would render traffic analysis pointless. Concretely, \Ac{SPORES} inherits the security properties from \Sphinxes and \ac{SPOR}.
+However, both \Sphinxes and \ac{SPOR} can be used with any mixing strategy, and 
 the security they provide is as secure as the mixing strategy (or flushing 
 algorithm) allows.
 Since \ac{SPORES} is a fully-fledged system, it must make a concrete choice for 
 the mixing strategy.
 Since \ac{SPORES} aims at low latency, routers do not batch and mix incoming 
-messages; it immediately forwards the messages.
+messages; they immediately forward any messages.
 This puts \ac{SPORES} in the same position as Tor~\cite{Tor}, \ie more 
 vulnerable to traffic analysis than batching 
 mix-nets~\cite{RoutingSurveyAnonymousProtocols} \commentDaniel{we should 
