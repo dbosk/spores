@@ -2,19 +2,21 @@
 
 \section{Design of the \name file transfer system}%
 \label{design}
-% \sonja{will frame and structure (A) squad overlay (prediction) (B)
-%   global overlay (RPS) (C) sphinxes (incl.\ sphinx, onion routing in
-%   general) (D) SPOR and SPORES (E) encryption (hybrid, payload, header)
-%   if not included earlier (F) out-of-band}
-% \commentDaniel{I suggest the following structure:
-%   (A) Sphinxes
-%   (B) SPOR (global overlay)
-%   (C) SPORES (local overlay).
-%   My original idea was to make Sphinxes its own section before the design 
-%   section instead of a subsection in the design section.}
 
+\sonja{will frame and structure (A) squad overlay (prediction) (B)
+  global overlay (RPS) (C) sphinxes (incl.\ sphinx, onion routing in
+  general) (D) SPOR and SPORES (E) encryption (hybrid, payload, header)
+  if not included earlier (F) out-of-band}
+\commentDaniel{I suggest the following structure:
+  (A) Sphinxes
+  (B) SPOR (global overlay)
+  (C) SPORES (local overlay).
+  My original idea was to make Sphinxes its own section before the design 
+  section instead of a subsection in the design section.}
 
-Our goal is to enable private and reliable file transfer between users 
+\subsection{Key features of \name}
+
+Our goal is to enable private and reliable file exchange between users 
 participating in the system, by using their respective devices only.
 When Alice and Bob, two users of our system, want to exchange a file \(f\) 
 through \name, they start by sharing some information out-of-band, \eg from 
@@ -43,7 +45,7 @@ routing information for the headers.
 \end{figure}
 
 After the initial, out-of-band setup, file transfer happens along
-onion routes but with the following \name modifications:
+onion routes but with the following features:
 
 \begin{description}
 \item [Stateless.] There is no mandatory circuit creation, the file transfer can be
@@ -68,14 +70,16 @@ onion routes but with the following \name modifications:
   changes above, described in \cref{Sphinxes}.
 \end{description} 
 
-This rest of this section presents the different parts of the system in detail.
-We align the presentation of the system with the taxonomy of 
+\subsection{Taxonomy of anonymous communication protocols}
+
+To present the different parts of \name in details, 
+we align the presentation of the system with the taxonomy of 
 \textcite{RoutingSurveyAnonymousProtocols}.
 They characterize anonymous communication protocols using the following 
 categories (see~\cite[Table 1]{RoutingSurveyAnonymousProtocols}):
 \begin{description}
-  \item[Network structure]
-    describes the characteristics of the network nodes, the connections between 
+  \item[Network structure.]
+    It describes the characteristics of the network nodes, the connections between 
     them and the underlying topology.
     The subcategories are
     \begin{enumerate*}
@@ -84,8 +88,8 @@ categories (see~\cite[Table 1]{RoutingSurveyAnonymousProtocols}):
       \item symmetry (node roles, node topology for routing, decentralization);
     \end{enumerate*}
 
-  \item[Routing information]
-    describes the network information available to entities deciding on 
+  \item[Routing information.]
+    It describes the network information available to entities deciding on 
     the route of an anonymous file exchange.
     The subcategories are
     \begin{enumerate*}
@@ -93,8 +97,8 @@ categories (see~\cite[Table 1]{RoutingSurveyAnonymousProtocols}):
       \item triggers for routing information updates;
     \end{enumerate*}
 
-  \item[Communication model]
-    describes the entities that make the routing decisions and how they 
+  \item[Communication model.]
+   It describes the entities that make the routing decisions and how they 
     make these decisions.
     The subcategories are
     \begin{enumerate*}
@@ -103,8 +107,8 @@ categories (see~\cite[Table 1]{RoutingSurveyAnonymousProtocols}):
       \item node selection (determinism, selection set, selection probability);
     \end{enumerate*}
 
-  \item[Performance]
-    describes things like latency and communication mode.
+  \item[Performance.]
+    It describes things like latency and communication mode.
     The subcategories are
     \begin{enumerate*}
       \item protocol latency,
@@ -112,8 +116,10 @@ categories (see~\cite[Table 1]{RoutingSurveyAnonymousProtocols}):
     \end{enumerate*}
 \end{description}
 
+We first describe \sphinxes (\cref{Sphinxes}), which is an adaptation of the 
+
 \sonja{do we apply all categories here?}
-We first describe Sphinxes (\cref{Sphinxes}), which is an adaptation of the 
+
 Sphinx~\cite{Sphinx} mix-header format.
 This means that we inherit some properties from Sphinx and due to being only a 
 header format, it only imposes some restrictions in the above categories.
