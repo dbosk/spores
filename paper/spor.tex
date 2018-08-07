@@ -7,8 +7,6 @@
 \label{sec:SPOR}%
 \label{sec:message_passing}%
 
-\commentAL{I would like to merge that with \ref{ssec:por}.}
-
 Say that Alice wants to send a message \(m\) to Bob.
 Bob creates a reply header using \(\CreateReply\) and gives the output to Alice 
 over an out-of-band channel.
@@ -37,28 +35,26 @@ Now we will focus on how Alice and Bob choose the nodes that they provide to
   }
 \end{figure}
 
-\commentAL{When is CreateHeader used?}
-
-There are many uses of Sphinxes, many criteria that can be used to select the 
+There are many uses of \Sphinxes, many criteria that can be used to select the 
 nodes in each layer.
 We will focus on maximizing availability when routing in a network with high 
 churn, but one could equally well select nodes to maximize, \eg, bandwidth.
-We now describe a protocol, \ac{SPOR}, which uses Sphinxes to transfer messages 
+We now describe a protocol, \ac{SPOR}, which uses \Sphinxes to transfer messages 
 from a source to a destination over a network of nodes with high churn.
 
-\((d, \pk_d, \avail_d)\gets \GetRandomNode\): We assume that there is an 
-algorithm \(\GetRandomNode\) which returns a tuple \((d, \pk_d, \avail_d)\) of 
+\((d, \pk_d, \Pon_d)\gets \GetRandomNode\): We assume that there is an 
+algorithm \(\GetRandomNode\) which returns a tuple \((d, \pk_d, \Pon_d)\) of 
 one uniformly randomly selected node, where.
 \begin{itemize}
   \item \(d\) is the node's identifier (address);
   \item \(\pk_d\) is the node's public key;
-  \item \(\avail_d(t)\) is the node's probability of being online as a function 
+  \item \(\Pon_d(t)\) is the node's probability of being online as a function 
     of time.
 \end{itemize}
 The \(\GetRandomNode\) algorithm can be instantiated using \eg
 Octopus~\cite{Octopus}.
 But even a solution like Tor's authoritative directory servers would work,
-We will treat \(\avail_d\) in \cref{sec:squad_overlay}.
+We will treat \(\Pon_d\) in \cref{sec:squad_overlay}.
 
 When Bob runs \(\CreateReply\) (or Alice runs \(\CreateFwd\)) he must supply a 
 set of nodes for each layer of the route, \(L = \{L_0, \dotsc, L_\nu\}\), where 
@@ -68,8 +64,8 @@ For the other layers, \(L_i\) for \(i < \nu\), Bob will do the following:
 Bob queries \(\GetRandomNode\) \((\nu-1)\cdot w_L\) times to get enough nodes 
 to fill all remaining layers.
 Bob will distribute these nodes across all layers \(L_i\) to maximize \(\min_i 
-  \avail_{L_i}(t)\), where \(\avail_{L_i}(t) = 1-\prod_{l\in L_i} 
-  (1-\avail_l(t))\).
+  \Pon_{L_i}(t)\), where \(\Pon_{L_i}(t) = 1-\prod_{l\in L_i} 
+  (1-\Pon_l(t))\).
 This means that Bob minimizes the risk of a layer (\ie all nodes in a layer) 
 being unavailable.
 

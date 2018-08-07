@@ -8,10 +8,10 @@
   general) (D) SPOR and SPORES (E) encryption (hybrid, payload, header)
   if not included earlier (F) out-of-band}
 \commentDaniel{I suggest the following structure:
-  (A) Sphinxes
+  (A) \Sphinxes
   (B) SPOR (global overlay)
   (C) SPORES (local overlay).
-  My original idea was to make Sphinxes its own section before the design 
+  My original idea was to make \Sphinxes its own section before the design 
   section instead of a subsection in the design section.}
 
 \subsection{Key features of \name}
@@ -67,7 +67,7 @@ onion routes but with the following features:
   have received a packet directly from the sender or some other
   intermediate node. We base our format for layering and peeling on
   Sphinx~\cite{Sphinx}, with some modification to allow for the
-  changes above, described in \cref{Sphinxes}.
+  changes above, described in \cref{\Sphinxes}.
 \end{description} 
 
 \subsection{Taxonomy of anonymous communication protocols}
@@ -116,27 +116,27 @@ categories (see~\cite[Table 1]{RoutingSurveyAnonymousProtocols}):
     \end{enumerate*}
 \end{description}
 
-We first describe \sphinxes (\cref{Sphinxes}), which is an adaptation of the 
+We first describe \sphinxes (\cref{\Sphinxes}), which is an adaptation of the 
 
 \sonja{do we apply all categories here?}
 
 Sphinx~\cite{Sphinx} mix-header format.
 This means that we inherit some properties from Sphinx and due to being only a 
 header format, it only imposes some restrictions in the above categories.
-Sphinxes provides, just as Sphinx, unidirectional (network structure), 
+\Sphinxes provides, just as Sphinx, unidirectional (network structure), 
 message-based (performance) communication.
-But unlike Sphinx, Sphinxes is hybrid source-hop-by-hop routed, a
+But unlike Sphinx, \Sphinxes is hybrid source-hop-by-hop routed, a
 source-bounded random walk (communication 
 model),
-Sphinxes relies on a flat routing-topology (network structure) with fair 
+\Sphinxes relies on a flat routing-topology (network structure) with fair 
 scheduling (communication model) --- as all packets are indistinguishable they 
 must be processed on a first-in-first-out basis.
-Sphinxes also introduces some probability to the node selection, but this is 
+\Sphinxes also introduces some probability to the node selection, but this is 
 only a probabilistic selection among already selected nodes and only 
 interesting against passive adversaries (an active \sonja{global?} adversary can learn the 
 entire set).
 
-Sphinxes does \emph{not} introduce any restrictions on whether the network 
+\Sphinxes does \emph{not} introduce any restrictions on whether the network 
 topology must be fully connected or not, be asynchronous (as in Tor) or 
 synchronous (as in mix-nets), whether node selection must be uniformly random 
 or not.
@@ -144,7 +144,7 @@ Just as Sphinx, it can be used in many different settings.
 
 Next, we describe the \ac{SPOR} protocol (\cref{SPOR}).
 \commentAL{A lot of description here, should only come in Section~\ref{sec:squad_overlay}}
-This focuses on the node selection, \ie adds node selection on top of Sphinxes.
+This focuses on the node selection, \ie adds node selection on top of \Sphinxes.
 The \ac{SPOR} protocol assumes a source of random nodes, \eg through 
 \ac{RPS}~\cite[\eg][]{BrahmsRPS} or \iac{DHT} based 
 scheme~\cite[\eg][]{Octopus}.
@@ -175,10 +175,5 @@ messages by fragmentation and reassembly across the devices in the \squad.
 
 \include*{sphinxes}
 \include*{spor}
-\commentAL{What I want to do from here:
-(1) The squad overlay, where a user's devices exchange behavioral information;
-(2) Predicting a device's availability;
-(3) What is at the moment III-B SPOR: global overlay (one-liner: ``we use a RPS service'') and nodes selection per layer etc.;
-(4) File exchange.}
 \include*{squad-overlay-design}
-\include*{file-transfer-design}
+%\include*{file-transfer-design}

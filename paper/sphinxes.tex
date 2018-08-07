@@ -1,6 +1,6 @@
 %!TEX root = p2p-private-cloud.tex
 
-\subsection{Sphinxes: the Sphinx header format Extended for Sets of nodes}%
+\subsection{\Sphinxes: the Sphinx header format Extended for Sets of nodes}%
 \label{Sphinxes}
 
 \Textcite{Sphinx} designed \iac{UC} secure message format for mixes, called 
@@ -13,10 +13,10 @@ tagging attacks.
 It is also compact with only 224 bytes of header for a five-hop path with 
 128-bit security. \sonja{what about the CL properties?}
 Sphinx only provides one node per onion layer; in this section we extend Sphinx 
-to Sphinxes, which allows for multiple nodes per onion layer.
+to \Sphinxes, which allows for multiple nodes per onion layer.
 (See \cref{fig:OR-POR}.)
 % AL: Bounded random-walk....
-As such, Sphinxes could be described as a bounded random-walk protocol, \ie the 
+As such, \Sphinxes could be described as a bounded random-walk protocol, \ie the 
 each node selects the next node from a set restricted by the source.
 
 \begin{figure}
@@ -35,7 +35,7 @@ and mixing (OR, top) and \ac{SPOR} (bottom).
 We will now give an overview of the Sphinx header format.
 The idea is not to give a detailed description of Sphinx, but to give the 
 reader enough understanding of Sphinx to understand the changes we make to 
-achieve Sphinxes.
+achieve \Sphinxes.
 For a more detailed understanding of Sphinx, we refer the reader to the 
 excellent description in the original Sphinx paper~\cite{Sphinx}.
 
@@ -75,7 +75,7 @@ address \(d_2\).
 When node \(n\) discovers \(d_{n+1} = *\) it knows that the message is intended 
 for itself and thus stops the forwarding.
 
-\subsubsection{The Sphinxes extension for sets of nodes}
+\subsubsection{The \Sphinxes extension for sets of nodes}
 
 We will now extend Sphinx to do \ac{SPOR}: instead of providing only \(d_{i+1}\) 
 in \(\beta_i\), we will have a set \(\{d_{i+1}^{(1)}, \dotsc, d_{i+1}^{(m)}\}\) 
@@ -107,9 +107,9 @@ If \iac{MAC} key that successfully verifies \(\beta_i\) using \(\gamma_i\) can
 be derived from \(\hat s_i\), then the node knows that \(\hat s_i = s_i\).
 
 
-\subsubsection{Sphinxes algorithms and \acf*{SPOR}}
+\subsubsection{\Sphinxes algorithms and \acf*{SPOR}}
 
-Sphinxes provides the following algorithms:
+\Sphinxes provides the following algorithms:
 \begin{itemize}
   \item \(\CreateHeader\) creates a header.
 
@@ -356,7 +356,7 @@ If \(L' = \{\nullnode\}\), the packet is addressed to the current node.
 Parse the first \(\kappa\) bits of \(\beta'\) as an identifier \(I\).
 Pass \((I, \delta)\) to the \(\ProcessMessage\) algorithm.
 
-If \(L' = \{\rdvnode\}\), the packet payload contains another Sphinxes packet 
+If \(L' = \{\rdvnode\}\), the packet payload contains another \Sphinxes packet 
 to be forwarded.
 Decrypt the payload \(\delta\) to get the mix packet \((M', \delta')\gets 
   \prp^{-1}(\hash_\prp(s_i), \delta)\).
