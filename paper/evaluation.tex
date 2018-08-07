@@ -173,22 +173,23 @@ The plot reads that files below 319MB have more than 90\% chances of being succe
 The probability falls as the file gets bigger, such that a 1,O43MB has 50\% chances of successful transfer (see $x_0$).
 
 
-\begin{figure}[t]
-  \centering
-  %\def\svgwidth{0.8\columnwidth}
-  \includegraphics[width=0.8\columnwidth]{figures/bw.pdf}
-
-  \caption{\label{fig:bw}Median outbound traffic per node per second over a whole experiment.}
-\end{figure}
-
 
 \begin{figure}[t]
   \centering
   %\def\svgwidth{0.8\columnwidth}
-  \includegraphics[width=0.8\columnwidth]{figures/bw_mean.pdf}
+  \includegraphics[width=\columnwidth]{figures/bw_and_pending_files.pdf}
 
-  \caption{\label{fig:bw_mean}Mean outbound traffic per node per second over the same experiment as figure~\ref{fig:bw}.}
+  \caption{\label{fig:bw_and_pending_files}In gray: number of pending file exchanges; in black: mean outbound traffic (kB) per node per second.}
 \end{figure}
+
+\begin{figure}[t]
+  \centering
+  %\def\svgwidth{0.8\columnwidth}
+  \includegraphics[width=\columnwidth]{figures/bw_and_pending_files_log.pdf}
+
+  \caption{\label{fig:bw_and_pending_files_log}In gray: number of pending file exchanges; in black: mean outbound traffic (kB) per node per second.}
+\end{figure}
+
 
 % \subsection{Shortcomings} % (fold)
 % \label{sub:shortcomings}
