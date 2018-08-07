@@ -112,6 +112,31 @@ distributed and privacy-preserving are not easily met in practice,
 there are some promising candidates~\cite{Octopus, BrahmsRPS}.\name
 does not put any other constraints on the \ac{RPS} used.
 
+\paragraph*{Security of \ac{SPORES}}
+
+\Ac{SPORES} inherits the security properties from Sphinxes and \ac{SPOR}.
+However, both Sphinxes and \ac{SPOR} can be used with any mixing strategy, and 
+the security they provide is as secure as the mixing strategy (or flushing 
+algorithm) allows.
+Since \ac{SPORES} is a fully-fledged system, it must make a concrete choice for 
+the mixing strategy.
+Since \ac{SPORES} aims at low latency, routers do not batch and mix incoming 
+messages; it immediately forwards the messages.
+This puts \ac{SPORES} in the same position as Tor~\cite{Tor}, \ie more 
+vulnerable to traffic analysis than batching 
+mix-nets~\cite{RoutingSurveyAnonymousProtocols} \commentDaniel{we should 
+  probably look for the original papers} --- this vulnerability is inherited 
+from the mixing strategy.
+
+\Ac{SPORES} also inherits a vulnerability from random-walk protocols and the 
+fact that a large message is split into chunks.
+Since the chunks can take several paths from source to destination, the source 
+will send and the destination will receive more traffic than other nodes in the 
+network~\cite{RoutingSurveyAnonymousProtocols} \commentDaniel{we should 
+  probably look for the original papers}.
+However, this is slightly alleviated by the fact that the source and 
+destination can be several different devices --- \ie from the \squad{}s.
+
 \paragraph*{Robustness}
 
 Stateless routing can result in re-ordered chunks or packets, and
