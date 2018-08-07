@@ -41,7 +41,7 @@ through the transmitted link onto one of his devices.
 
 The use of the cloud provider, as a third party,
 provides two main privacy properties, which we should preserve when
-moving to a P2P~\cite{DevilInMetadata} setting:
+moving to a P2P setting:
 \begin{itemize}
 \item Alice and Bob are the only users who learn 
 about Alice sharing a file with Bob.
@@ -54,7 +54,7 @@ The cloud provider, however, has this information and any other
 stemming from the users' interaction with the service, and can draw
 inferences from metadata even when the data itself is encrypted. The
 provider thus poses a threat to the users' privacy which we remove in
-the P2P scenario.
+the P2P scenario~\cite{DevilInMetadata}.
 
 
 \subsection{Moving to a P2P environment}
@@ -78,38 +78,40 @@ typically associated with onion routing, as defined by Camenisch and Lysyanskaya
 % the \ac{P2P} setting with those from onion routing for anonymity.
 % Camenisch and Lysianskaya \cite{CLOnionRouting} define security properties 
 % for onion routing:
-onion-correctness, integrity, and security %(wrap resistance,
-                                %indistinguishability). 
-Informally, onion-correctness means that if an onion is formed
+\textit{onion-correctness, integrity}, and \textit{security}. %(wrap resistance,
+                                %indistinguishability)
+Informally, \textit{onion-correctness} means that if an onion is formed
 correctly, processed by the correct routers in the correct order, then
-the correct message is received by the last router. Onion-integrity
+the correct message is received by the last router. \textit{Onion-integrity}
 means that even for an onion created by an adversary, the path length
-is bounded by $N$. Onion-security means that an adversary sending a
-challenge onion to a router and able to see the outcome of how the
-onion is processed, cannot distinguish between whether that onion
+is bounded by $N$. \textit{Onion-security} means that an adversary sending an
+ onion to a router as a challenge
+ and able to see the response (the outcome of how the
+onion is processed), cannot distinguish between whether that onion
 corresponds to a particular message and route or not. This is also
-true for a \emph{re-wrapped} onion, i.e. a challenge onion wrapped in
+true for a \emph{re-wrapped} onion, \ie a challenge (onion) wrapped in
 another layer. The formal definitions are in~\cite{CLOnionRouting} along
 with a theorem that states that an onion routing scheme satisfying
 these three properties, combined with secure point-to-point channels,
-is UC-secure.
-
+is universal composability (UC)-secure, \ie the protocol remains
+secure even if arbitrarily composed with other instances of the same or other protocols.
 These properties cover the concerns about
 revealing to others that Alice shares a file with Bob in the first
 place. In \name, we additionally derive the property of
-\emph{device-unlinkability} from the \ac{P2P} requirements, meaning that
+\emph{device-unlinkability} from the \ac{P2P} requirements above, meaning that
 using \name does not reveal the \squad a device belongs to nor its
 owner. Thus, no information on the user's behavior (e.g. being online)
-can be infered through \name. \sonja{insert more formal definition
+can be infered through \name. 
+\sonja{insert more formal definition
   here, and perhaps explanation that we need it because we introduce
   availability information}
 
 
- \commentFT{Removed, as did not fit with
-  the flow, but probably needed somewhere: `We give the definitions
-  for the security and privacy properties of \name in
-  Section~\ref{security-discussion}.'} \sonja{better here. Need to define
-  device unlinkability, the rest is covered by Camenisch.}
+ % \commentFT{Removed, as did not fit with
+ %  the flow, but probably needed somewhere: `We give the definitions
+ %  for the security and privacy properties of \name in
+ %  Section~\ref{security-discussion}.'} \sonja{better here. Need to define
+ %  device unlinkability, the rest is covered by Camenisch.}
 
 \paragraph*{Adversary model} To assess our approach, we use the
 adversary model assumed by Tor~\cite{Tor} and Sphinx~\cite{Sphinx}:

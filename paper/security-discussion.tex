@@ -4,17 +4,12 @@
 %\sonja{will add some framing about us composing and modifying parts that
 %  have security proofs for their original and individual versions and needing to evaluate the resulting s%chemes}
 
-\commentDaniel{Predecessor attacks: random walk protocols has the problem that 
-  the adversary can see the initiator (statistically) more often than the other 
-  nodes, and can thus identify the 
-  source~\cite{RoutingSurveyAnonymousProtocols}.
-  Our protocol is a \enquote{bounded} random walk, \ie within limits.}
 
 The \ac{SPORES} system is composed of several parts, each of which requires its 
 own security analysis.
 We thus primarily need to ensure that
 \begin{enumerate*}
-\item Sphinxes (\cref{Sphinxes}) preserves the properties of 
+\item \Sphinxes (\cref{Sphinxes}) preserves the properties of 
   \textcite{CLOnionRouting} and \textcite{Sphinx} yielding \ac{UC}-secure 
   \ac{OR};
 \item the node selection (\ac{SPOR}, \cref{SPOR}) does not introduce any 
@@ -27,7 +22,7 @@ We thus primarily need to ensure that
   privacy and robustness (packet re-ordering and drops).
 \end{enumerate*}
 
-\paragraph*{Security of Sphinxes}
+\paragraph*{Security of \Sphinxes}
 
 There are two changes that we have made that must be analysed.
 We changed the key agreement from a pure \ac{DHKE}, \ie based on the \ac{DH} 
@@ -59,10 +54,11 @@ We note that this is actually quite natural as a malicious adversary can drop
 any incoming traffic to a router and wait for the retransmission, \ie when the 
 node has selected a new node from the next layer and retried sending.
 As such, the adversary can learn all nodes in the layer --- just as for 
-traditional \ac{OR}.
+traditional \ac{OR}, regardless of whether the set making up a layer contains a
+single or several nodes.
 
-With these arguments, we believe that Sphinxes inherits the \ac{UC} security 
-properties of Sphinx, however, this should be formally analysed.
+With these arguments, we believe that \Sphinxes inherits the \ac{UC} security 
+properties of Sphinx. %, however, this should be formally analysed.
 
 \paragraph*{Security of \acs*{SPOR}, node selection}
 
@@ -82,7 +78,7 @@ If \(f_A \nu w_L < \nu\), then Eve cannot be present on every layer of the
 route.
 Considering how \ac{SPOR} distributed the \(\nu w_L\) selected nodes, Eve's 
 best strategy is to have high-availability nodes --- assume that 
-\(\avail_{D_E}(t) = 1\) for all Eve's devices \(D_E\).
+\(\Pon_{D_E}(t) = 1\) for all Eve's devices \(D_E\).
 This way, Eve's devices will be distributed evenly across all layers.
 To succeed, Eve must be chosen in the first layer, the probability of which 
 will be \(\frac{f_A}{w_L}\).
@@ -123,16 +119,55 @@ distributed and privacy-preserving are not easily met in practice,
 there are some promising candidates~\cite{Octopus, BrahmsRPS}.\name
 does not put any other constraints on the \ac{RPS} used.
 
+\paragraph*{Device unlinkability}
+
+Alice transfers a file \(f\) to Bob during the time interval 
+\(\interval{t_0}{t_1}\).
+We denote the set of Alice's devices as \(D_A\) and Bob's as \(D_B\).
+Bob wants to compute an estimate \(\hat D_A\) which is as close to \(D_A\) as 
+possible.
+
+At this point, Bob knows that \emph{at least one} of Alice's devices must have 
+been online at any given time in \(\interval{t_0}{t_1}\).
+We can also assume that Bob knows all data from the \ac{RPS}, \ie the \((d, 
+  \pk_d, \avail_d)\) tuple (see \cref{SPOR}) of \emph{every device that was 
+  online at some point during \(\interval{t_0}{t_1}\)}.
+Let \(\A_{\interval{t_0}{t_1}}\subseteq \N\times \G^*\times (\RR\to 
+  \interval{0}{1})\) denote the set of those tuples.
+Thus Bob can approximate \(D_A\) by \(\hat D_A \gets 
+  \A_{\interval{t_0}{t_1}}\cap D_B\).
+
+When Alice and Bob interact the next time, either Alice sends a file \(f'\) to 
+Bob or Bob sends a file \(f'\) to Alice, then Bob can do the same again:
+\(\hat D_A' \gets \A_{\interval{t_0'}{t_1'}} \cap D_B\).
+If at least one of \(d, \pk_d, \avail_d\) remains constant, Bob can use that to 
+improve his approximation.
+Say that \(\avail_d\) remains constant.
+Then Bob can improve his approximation to \(\hat D_A \cap_{\avail_d} 
+  \hat{D}_A'\), where \(\cap_{\avail_d}\) is the intersection which only 
+considers the attribute \(\avail_d\).
+Even if \(\avail_d\) is not constant, its variation might stay inside some 
+\(\epsilon\)-neighbourhood, and if \(\epsilon\) is small enough, \(\avail_d\) 
+might still be used to distinguish Alice.
+The same applies for \(d\).
+(\(\pk_d\) can be regularly updated.)
+
+With an inaccurate availability function, \(\avail\), this will not be a 
+problem as there will be many (as the system scales) that shares the same 
+availability distribution.
+With more accurate availability estimates we would have to employ techniques 
+like \ac{DP}.
+
 \paragraph*{Robustness}
 
 Stateless routing can result in re-ordered chunks or packets, and
-chunks received on different devices of a user's squad. From Sphinx,
-we inherit IDs for packets that we we include in the out-of-band
+chunks received on different devices of a user's \squad. From Sphinx,
+we inherit IDs for mix packets that we we include in the out-of-band
 metadata on the file to be exchanged, as an ordered list, that is used
-to re-order chunks if need be. The squad overlay handles inter-squad
-device coordination. Liveness despite the possibility of squad devices
+to re-order chunks if need be. The \squad overlay handles inter-squad
+device coordination. Liveness despite the possibility of \squad devices
 going offline during transfer or other node or link failures is
-ensured by acknowledgements and timeouts as detailed in 
+ensured by acknowledgments and timeouts as detailed in 
 \cref{sec:squad_overlay}.
 
 
@@ -141,8 +176,7 @@ ensured by acknowledgements and timeouts as detailed in
 
 A global, passive, network-observing adversary can of course do
 statistical disclosure attacks to eventually learn who communicates
-with whom~\cite{StatisticalDisclosureAttacks}. \sonja{Daniel: the
-  reference seems to be missing}  There are also denial
+with whom~\cite{StatisticalDisclosureAttacks}. There are also denial
 of service attacks that can lead to the adversary learning more from
 the system~\cite{DenialOfSecurity}.  As mentioned in
 \cref{system-model}, we share the adversary model with Tor and Sphinx
@@ -156,11 +190,40 @@ example, no control messages are sent back to the source if the
 adversary has introduced an error.  \sonja{``But these advantages will
   only postpone the success of the attack, eventually even our
   protocol must resend.'' why?}  \commentDaniel{We should look into
-  this denial of security.} We would also like to point out that
+  this denial of security.} Another example is that the source-bounded
+random walk and new routes for file chunks make tracking more
+difficult than with regular onion routing circuits. A drawback, however, is
+that since the chunks can take several paths from source to destination, the source 
+will send and the destination will receive more traffic than other nodes in the 
+network~\cite{RoutingSurveyAnonymousProtocols}. However, this is mitigated by the fact that the source and 
+destination can be several different devices --- \ie from the \squads.
+
+
+We would also like to point out that
 vulnerability to a global passive attacker is not inherent in Sphinx
-or Sphinxes, but can be caused by the way they are applied, \ie the
+or \Sphinxes, but can be caused by the way they are applied, \ie the
 traffic sent. If performance and resource consumption were not an
 issue, batched and well-timed message or file transfer by all nodes
-would render traffic analysis pointless.
+would render traffic analysis pointless. Concretely, \Ac{SPORES} inherits the security properties from \Sphinxes and \ac{SPOR}.
+However, both \Sphinxes and \ac{SPOR} can be used with any mixing strategy, and 
+the security they provide is as secure as the mixing strategy (or flushing 
+algorithm) allows.
+Since \ac{SPORES} is a fully-fledged system, it must make a concrete choice for 
+the mixing strategy.
+Since \ac{SPORES} aims at low latency, routers do not batch and mix incoming 
+messages; they immediately forward any messages.
+This puts \ac{SPORES} in the same position as Tor~\cite{Tor}, \ie more 
+vulnerable to traffic analysis than batching 
+mix-nets~\cite{RoutingSurveyAnonymousProtocols} \commentDaniel{we should 
+  probably look for the original papers} --- this vulnerability is inherited 
+from the mixing strategy.
+
+
+% \commentDaniel{Predecessor attacks: random walk protocols has the problem that 
+%   the adversary can see the initiator (statistically) more often than the other 
+%   nodes, and can thus identify the 
+%   source~\cite{RoutingSurveyAnonymousProtocols}.
+%   Our protocol is a \enquote{bounded} random walk, \ie within limits.}
+
 
 

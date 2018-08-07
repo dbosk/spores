@@ -140,6 +140,14 @@ We observed that downloads---however big---usually succeeded long before this ti
 \subsection{File transfer}
 \label{sub:file_transfer}
 
+\begin{figure}[t]
+  \centering
+  %\def\svgwidth{0.8\columnwidth}
+  \includegraphics[width=0.8\columnwidth]{figures/completion_vs_size.pdf}
+
+  \caption{\label{fig:completion_vs_size}
+  Success rate of the file transfer ordered by size of file.}
+\end{figure}
 
 
 Using the previous parameters, we performed our experiment 30 times, yielding 360 file exchanges. Plots show the aggregation of the results from all experiments, which alleviates the high variability of the stochastic processes involved (most notably the devices' churn).
@@ -173,6 +181,24 @@ The plot reads that files below 319MB have more than 90\% chances of being succe
 The probability falls as the file gets bigger, such that a 1,O43MB has 50\% chances of successful transfer (see $x_0$).
 
 
+
+\begin{figure}[t]
+  \centering
+  %\def\svgwidth{0.8\columnwidth}
+  \includegraphics[width=\columnwidth]{figures/bw_and_pending_files.pdf}
+
+  \caption{\label{fig:bw_and_pending_files}Traffic during one experiment.
+  In gray: number of pending file exchanges; in black: mean outbound traffic (kB) per node per second.}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  %\def\svgwidth{0.8\columnwidth}
+  \includegraphics[width=\columnwidth]{figures/bw_and_pending_files_log.pdf}
+
+  \caption{\label{fig:bw_and_pending_files_log}Traffic during one experiment.
+  In gray: number of pending file exchanges; in black: mean outbound traffic (kB) per node per second.}
+\end{figure}
 
 
 % \subsection{Shortcomings} % (fold)
