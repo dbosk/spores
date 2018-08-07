@@ -144,6 +144,8 @@ We observed that downloads---however big---usually succeeded long before this ti
 
 Using the previous parameters, we performed our experiment 30 times, yielding 360 file exchanges. Plots show the aggregation of the results from all experiments, which alleviates the high variability of the stochastic processes involved (most notably the devices' churn).
 
+Overall, we saw 94\% of successful file transfer.
+
 \begin{figure}[t]
   \centering
   %\def\svgwidth{0.8\columnwidth}
@@ -164,6 +166,7 @@ $$ f(x) = \frac{1}{1 + e^{-k \cdot x + x_0 }} $$
 Because it sets the top (100\%) and bottom (0\%) values as asymptotes, 
 logistic regression does not yield very optimistic success rates at the beginning,
 but its midpoint $x_0$ tends to be very accurate even with a low quantity of training samples.
+\commentAL{Yes indeed, very pessimistic, where is our 94\%!? I want to make a CDF also.}
 
 In our case, $f(x)$ reads the probability that a file exchange fails given its size. 
 The plot reads that files below 319MB have more than 90\% chances of being successfully exchanged.
