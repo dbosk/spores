@@ -15,7 +15,7 @@
    viewBox="0 0 435.55625 328.98074"
    id="svg4617"
    version="1.1"
-   inkscape:version="0.91 r13725"
+   inkscape:version="0.92.2 5c3e80d, 2017-08-06"
    sodipodi:docname="outline_figure_only.svg">
   <defs
      id="defs4619">
@@ -360,16 +360,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.8"
-     inkscape:cx="176.29051"
-     inkscape:cy="79.651541"
+     inkscape:zoom="2.5484375"
+     inkscape:cx="158.28928"
+     inkscape:cy="189.52279"
      inkscape:document-units="px"
      inkscape:current-layer="layer3"
      showgrid="false"
      inkscape:window-width="1920"
-     inkscape:window-height="1053"
+     inkscape:window-height="1151"
      inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:window-y="1"
      inkscape:window-maximized="1"
      inkscape:snap-smooth-nodes="false"
      inkscape:object-paths="true"
@@ -421,13 +421,12 @@
          inkscape:export-ydpi="92"
          inkscape:export-xdpi="92"
          inkscape:export-filename="/home/adrien/outline.png"
-         sodipodi:linespacing="125%"
          id="text10365"
          y="12.6616"
          x="-0.54946464"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5px;line-height:125%;font-family:'Latin Modern Roman';-inkscape-font-specification:'Latin Modern Roman, ';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Latin Modern Roman';-inkscape-font-specification:'Latin Modern Roman, ';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          xml:space="preserve"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:17.5px;font-family:'Latin Modern Roman';-inkscape-font-specification:'Latin Modern Roman, '"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:17.5px;line-height:1.25;font-family:'Latin Modern Roman';-inkscape-font-specification:'Latin Modern Roman, '"
            y="12.6616"
            x="-0.54946464"
            id="tspan10367"
@@ -714,17 +713,16 @@
          inkscape:export-ydpi="92"
          inkscape:export-xdpi="92"
          inkscape:export-filename="/home/adrien/outline.png"
-         sodipodi:linespacing="125%"
          id="text10369"
          y="127.90831"
          x="-0.54945099"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5px;line-height:125%;font-family:'Latin Modern Roman';-inkscape-font-specification:'Latin Modern Roman, ';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Latin Modern Roman';-inkscape-font-specification:'Latin Modern Roman, ';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          xml:space="preserve"><tspan
-           style="font-size:17.5px"
+           style="font-size:17.5px;line-height:1.25"
            y="127.90831"
            x="-0.54945099"
            id="tspan10371"
-           sodipodi:role="line">\ref{sec:global_overlay}</tspan></text>
+           sodipodi:role="line">\ref{ssec:device_availability}</tspan></text>
       <g
          transform="matrix(1.0003149,0,-0.40373063,0.69928196,569.96481,247.67425)"
          id="g7640">
@@ -1056,11 +1054,10 @@
        transform="translate(0,-14)">
       <text
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5px;line-height:125%;font-family:'Latin Modern Roman';-inkscape-font-specification:'Latin Modern Roman, ';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Latin Modern Roman';-inkscape-font-specification:'Latin Modern Roman, ';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          x="-0.54944742"
          y="258.40173"
          id="text5731"
-         sodipodi:linespacing="125%"
          inkscape:export-filename="/home/adrien/outline.png"
          inkscape:export-xdpi="92"
          inkscape:export-ydpi="92"><tspan
@@ -1068,7 +1065,7 @@
            id="tspan5733"
            x="-0.54944742"
            y="258.40173"
-           style="font-size:17.5px">\ref{sec:message_passing}</tspan></text>
+           style="font-size:17.5px;line-height:1.25">\ref{ssec:por}</tspan></text>
       <g
          transform="matrix(1.0003149,0,-0.40373063,0.69928196,695.32051,161.0452)"
          id="g7538">
