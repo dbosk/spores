@@ -78,21 +78,22 @@ typically associated with onion routing, as defined by Camenisch and Lysyanskaya
 % the \ac{P2P} setting with those from onion routing for anonymity.
 % Camenisch and Lysianskaya \cite{CLOnionRouting} define security properties 
 % for onion routing:
-onion-correctness, integrity, and security %(wrap resistance,
-                                %indistinguishability). 
-Informally, onion-correctness means that if an onion is formed
+\textit{onion-correctness, integrity}, and \textit{security}. %(wrap resistance,
+                                %indistinguishability)
+Informally, \textit{onion-correctness} means that if an onion is formed
 correctly, processed by the correct routers in the correct order, then
-the correct message is received by the last router. Onion-integrity
+the correct message is received by the last router. \textit{Onion-integrity}
 means that even for an onion created by an adversary, the path length
-is bounded by $N$. Onion-security means that an adversary sending a
-challenge onion to a router and able to see the outcome of how the
+is bounded by $N$. \textit{Onion-security} means that an adversary sending a
+challenge onion \david{what is a challenge onion?} to a router and able to see the outcome of how the
 onion is processed, cannot distinguish between whether that onion
 corresponds to a particular message and route or not. This is also
 true for a \emph{re-wrapped} onion, i.e. a challenge onion wrapped in
 another layer. The formal definitions are in~\cite{CLOnionRouting} along
 with a theorem that states that an onion routing scheme satisfying
 these three properties, combined with secure point-to-point channels,
-is UC-secure.
+is UC-secure \david{what does it means, it has never been introduced
+  before, what do you mean?}.
 
 These properties cover the concerns about
 revealing to others that Alice shares a file with Bob in the first
