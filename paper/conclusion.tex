@@ -14,20 +14,22 @@ already results in successful file transfer with high probability,
 though often at low speed. More in-depth knowledge of the users'
 behavior would allow us to predict device connectivity farther into
 the future and thus likely improve the throughput. From a security and
-privacy perspective, we were guided by the properties of
-TOR~\cite{Tor}, which we used to provide a modicum of privacy for this
-first investigation of feasibility of file-sharing between two users'
-squads of devices and modified to a stateless protocol to
-accommodate unreliable nodes. While we took the first steps toward
-analyzing the consequences of the modifications on security and
-privacy, more work is needed to provably ensure that the added feature
-of resilience despite unreliable nodes (supported by peer sampling)
-does 
-%and the side effect of enabling more local TOR routing (for example,
-%keeping routes inside a country) do 
-not compromise security. Another
-consideration is the nature of the traffic in this scenario and the
-limits of protection against statistical inference. 
+privacy perspective, we were guided by the properties for secure onion
+routing schemes defined by~\cite{CLOnionRouting} and added a property
+for device-unlinkability to prevent inferences from availiability data.
+% TOR~\cite{Tor}, which we used to provide a modicum of privacy for this
+% first investigation of feasibility of file-sharing between two users'
+% squads of devices and modified to a stateless protocol to
+% accommodate unreliable nodes. While we took the first steps toward
+% analyzing the consequences of the modifications on security and
+% privacy, more work is needed to provably ensure that the added feature
+% of resilience despite unreliable nodes (supported by peer sampling)
+% does 
+% %and the side effect of enabling more local TOR routing (for example,
+% %keeping routes inside a country) do 
+% not compromise security. Another
+% consideration is the nature of the traffic in this scenario and the
+% limits of protection against statistical inference. 
 
 Although we presented a stateless solution, mainly to handle churn in
 a file transfer scenario, \name does not preclude a stateful alternative. 
