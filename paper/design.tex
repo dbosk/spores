@@ -34,16 +34,8 @@ network of unreliable nodes while also achieving privacy.
   \def\svgwidth{0.8\columnwidth}
   %  \import{figures/}{outline_figure_only.pdf_tex}
     \includegraphics[width=\columnwidth]{figures/OverviewSPORES_cropped}
-  \caption{\label{fig:outline}%
-    %\commentDaniel{We must adapt this figure to the text.}%
-    %% Outline of \name's components. Users' squads of devices are circled in gray. 
-    %% From top to bottom: a user's devices collaborate through the Squad Overlay 
-    %% (\cref{sec:squad_overlay}); online devices globally share information about 
-    %% them with random peers (\cref{ssec:device_availability}); using the two 
-    %% overlays above allows for the creation of routes (\ac{SPOR}) between sets of devices. 
-    %% These protocols enable secure file transfer between users 
-    %% (\cref{ssec:por}).
-    \protect\commentFT{TODO by Francois: describe figure}}
+    \caption{Architectural overview of the \ac{SPORES} private file sharing service. \ac{SPORES} relies on a predictive and probabilistic onion routing protocol (\ac{SPOR}). \ac{SPOR} in turn combines a multi-set mix-header format (\Sphinxes) together with a node selection protocol that exploit decentralized prediction regarding node availability to optimize the reliability of \Sphinxes without jeopardizing its security properties.}
+    \label{fig:outline}
 \end{figure}
 
 After the initial, out-of-band setup, file transfer happens along
