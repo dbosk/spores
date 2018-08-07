@@ -46,14 +46,15 @@ one.
 The proofs of Sphinx rest on the results of \textcite{CLOnionRouting}, which 
 are results for ordinary \ac{OR} with only one node per layer.
 
-As long as we output all the nodes in the next layer, the results for
-the adversary are the same: the adversary learns the entire
-composition of the layer regardless of whether the set contains a
-single or several nodes.
+Analogously to traditional \ac{OR},  we also reveal the previous and next sets 
+of nodes to the adversary. 
 We note that this is actually quite natural as a malicious adversary can drop 
-any incoming traffic to a router and wait for the timeout and retransmission to 
-the next node.
-As such, the adversary can learn all nodes in the layer. 
+any incoming traffic to a router and wait for the timeout and
+retransmission, \ie when the 
+node has selected a new node from the next layer and retried sending.
+As such, the adversary can learn all nodes in the layer --- just as for 
+traditional \ac{OR}, regardless of whether the set making up a layer contains a
+single or several nodes.
 
 With these arguments, we believe that \Sphinxes inherits the \ac{UC} security 
 properties of Sphinx. %, however, this should be formally analysed.
