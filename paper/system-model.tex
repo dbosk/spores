@@ -84,23 +84,25 @@ Informally, \textit{onion-correctness} means that if an onion is formed
 correctly, processed by the correct routers in the correct order, then
 the correct message is received by the last router. \textit{Onion-integrity}
 means that even for an onion created by an adversary, the path length
-is bounded by $N$. \textit{Onion-security} means that an adversary sending a
-challenge onion \david{what is a challenge onion?} to a router and able to see the outcome of how the
-onion is processed, cannot distinguish between whether that onion
+is bounded by $N$. \textit{Onion-security} means that an adversary sending an
+ onion to a router as a challenge
+ and able to see the response (the outcome of how the
+onion is processed), cannot distinguish between whether that onion
 corresponds to a particular message and route or not. This is also
-true for a \emph{re-wrapped} onion, \ie a challenge onion wrapped in
+true for a \emph{re-wrapped} onion, \ie a challenge (onion) wrapped in
 another layer. The formal definitions are in~\cite{CLOnionRouting} along
 with a theorem that states that an onion routing scheme satisfying
 these three properties, combined with secure point-to-point channels,
-is UC-secure \david{what does it means, it has never been introduced
-  before, what do you mean?}.
+is universal composability (UC)-secure, \ie the protocol remains
+secure even if arbitrarily composed with other instances of the same or other protocols.
 These properties cover the concerns about
 revealing to others that Alice shares a file with Bob in the first
 place. In \name, we additionally derive the property of
-\emph{device-unlinkability} from the \ac{P2P} requirements, meaning that
+\emph{device-unlinkability} from the \ac{P2P} requirements above, meaning that
 using \name does not reveal the \squad a device belongs to nor its
 owner. Thus, no information on the user's behavior (e.g. being online)
-can be infered through \name. \sonja{insert more formal definition
+can be infered through \name. 
+\sonja{insert more formal definition
   here, and perhaps explanation that we need it because we introduce
   availability information}
 
