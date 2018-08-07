@@ -17,9 +17,6 @@ In the following, we first give precisions on the evaluation testbed and paramet
 \subsubsection{Simulating user behavior} % (fold)
 \label{ssub:simulating_user_behavior}
 
-\newcommand\tuser{\ensuremath{t_{\text{user}}}}
-\newcommand\ndevices{\ensuremath{n_{\text{devices}}}}
-
 To evaluate \name, we take interest in users owning a variable amount of devices of different types, and frequently switching among them.
 To the best of our knowledge, there exists no real-world dataset of the devices connection times of such a user.
 On our testbed, each user's behavior is therefore simulated, according to the following rules:
@@ -126,10 +123,10 @@ The latter heavily influences both the network overhead (the more, the bigger th
 The default availability threshold $\theta$ is $10^-3$.
 
 \paragraph*{File transfer} The main parameter here is the chunk size \chunksize, that was set to 512KB, which is considered, in BitTorrent, to be a good trade-off between network efficiency and number of chunks.
-The other parameter, \tupload, was empirically set to 500ms.
+The other parameter, \tupload, that is the period between two chunk sends, was empirically set to 500ms.
 
 
-\paragraph*{Users' behavior} Finally we set \tuser to 3s. 
+\paragraph*{Users' behavior} We set \tuser, the time between two user actions, to 3s. 
 
 \trps, \tupload and \tuser are correlated, but otherwise meaningless since \tuser is artificial. 
 Their values were thus empirically chosen to balance efficiency, network traffic and the experiments' duration.
@@ -188,15 +185,6 @@ The probability falls as the file gets bigger, such that a 1,O43MB has 50\% chan
   \includegraphics[width=\columnwidth]{figures/bw_and_pending_files.pdf}
 
   \caption{\label{fig:bw_and_pending_files}Traffic during one experiment.
-  In gray: number of pending file exchanges; in black: mean outbound traffic (kB) per node per second.}
-\end{figure}
-
-\begin{figure}[t]
-  \centering
-  %\def\svgwidth{0.8\columnwidth}
-  \includegraphics[width=\columnwidth]{figures/bw_and_pending_files_log.pdf}
-
-  \caption{\label{fig:bw_and_pending_files_log}Traffic during one experiment.
   In gray: number of pending file exchanges; in black: mean outbound traffic (kB) per node per second.}
 \end{figure}
 
