@@ -4,11 +4,6 @@
 %\sonja{will add some framing about us composing and modifying parts that
 %  have security proofs for their original and individual versions and needing to evaluate the resulting s%chemes}
 
-\commentDaniel{Predecessor attacks: random walk protocols has the problem that 
-  the adversary can see the initiator (statistically) more often than the other 
-  nodes, and can thus identify the 
-  source~\cite{RoutingSurveyAnonymousProtocols}.
-  Our protocol is a \enquote{bounded} random walk, \ie within limits.}
 
 We base our solution on Sphinx~\cite{Sphinx}, which, when used for
 onion routing, has been proved to satisfy the properties given
@@ -145,11 +140,40 @@ example, no control messages are sent back to the source if the
 adversary has introduced an error.  \sonja{``But these advantages will
   only postpone the success of the attack, eventually even our
   protocol must resend.'' why?}  \commentDaniel{We should look into
-  this denial of security.} We would also like to point out that
+  this denial of security.} Another example is that the source-bounded
+random walk and different routes for file chunks make tracking more
+difficult than with onion routing circuits. A drawback, however, is
+that since the chunks can take several paths from source to destination, the source 
+will send and the destination will receive more traffic than other nodes in the 
+network~\cite{RoutingSurveyAnonymousProtocols}. However, this is mitigated by the fact that the source and 
+destination can be several different devices --- \ie from the \squads.
+
+
+We would also like to point out that
 vulnerability to a global passive attacker is not inherent in Sphinx
 or Sphinxes, but can be caused by the way they are applied, \ie the
 traffic sent. If performance and resource consumption were not an
 issue, batched and well-timed message or file transfer by all nodes
-would render traffic analysis pointless.
+would render traffic analysis pointless. \Ac{SPORES} inherits the security properties from Sphinxes and \ac{SPOR}.
+However, both Sphinxes and \ac{SPOR} can be used with any mixing strategy, and 
+the security they provide is as secure as the mixing strategy (or flushing 
+algorithm) allows.
+Since \ac{SPORES} is a fully-fledged system, it must make a concrete choice for 
+the mixing strategy.
+Since \ac{SPORES} aims at low latency, routers do not batch and mix incoming 
+messages; it immediately forwards the messages.
+This puts \ac{SPORES} in the same position as Tor~\cite{Tor}, \ie more 
+vulnerable to traffic analysis than batching 
+mix-nets~\cite{RoutingSurveyAnonymousProtocols} \commentDaniel{we should 
+  probably look for the original papers} --- this vulnerability is inherited 
+from the mixing strategy.
+
+
+% \commentDaniel{Predecessor attacks: random walk protocols has the problem that 
+%   the adversary can see the initiator (statistically) more often than the other 
+%   nodes, and can thus identify the 
+%   source~\cite{RoutingSurveyAnonymousProtocols}.
+%   Our protocol is a \enquote{bounded} random walk, \ie within limits.}
+
 
 

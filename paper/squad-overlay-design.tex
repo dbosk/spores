@@ -17,8 +17,8 @@ the recipients answer with any information that they believe the sender does not
 The exchanged messages form a sequence, ordered by timestamp, populated by three message types:
 \begin{itemize}
 	\item \texttt{CONNECTED<$d, t_{step}$>}: Sent by device $d$ when it is used by its user at time step\footnote{As far as devices connections are concerned, time is discretized: we consider that each interaction lasts the same time.} $t_{step}$. $d$ is otherwise considered offline at this time. Devices use this information to predict their probability of remaining online, as presented in section~\ref{ssec:device_availability};
-	\item \texttt{SENDING<\sendingdevice, \fileid>}: When the user decides to send a file $f$ located on a device \sendingdevice, \sendingdevice informs its peers of this fact, and joins the file ID \fileid. Squad members will use this information to forward acknowledgments from the remote to \sendingdevice;
-	\item \texttt{RECEIVING<\recdevice, \fileid>}: Reciprocally, when the user starts receiving a file $f$ onto a device \recdevice, \recdevice informs its peers of this fact, and joins the file ID \fileid. Squad members will use this information to forward the file's content from the remote to \recdevice.
+	\item \texttt{SENDING<\sendingdevice, \fileid>}: When the user decides to send a file $f$ located on a device \sendingdevice, \sendingdevice informs its peers of this fact, and joins the file ID \fileid. \Squad members will use this information to forward acknowledgments from the recipient to \sendingdevice;
+	\item \texttt{RECEIVING<\recdevice, \fileid>}: Reciprocally, when the user starts receiving a file $f$ onto a device \recdevice, \recdevice informs its peers of this fact, and joins the file ID \fileid. \Squad members will use this information to forward the file's content from the sender to \recdevice.
 \end{itemize}
 
 Given this information dissemination (push) and history reconciliation mechanism (pull), each \squad member knows the full sequence $S$ at all time with an overwhelming probability, even in the face of churn~\cite{luxey:cascade}.
@@ -27,7 +27,7 @@ Given this information dissemination (push) and history reconciliation mechanism
 \label{ssec:device_availability}
 
 The predictive nature of \name lies in the fact that each participating device publicly advertises its probability of being connected in the near future. 
-This information is used when any node needs to create a Probabilistic Onion Route (POR), as will be shown in the next subsection~\ref{ssec:por}.
+This information is used when any node needs to create a Stateless Predictive Probabilistic Onion Route (\SPOR), as will be shown in the next subsection~\ref{ssec:por}.
 
 As described earlier, \squad members know the connection times of all the user's devices, given by the \texttt{CONNECTED} items in the \squad's sequence.
 It can be represented as a 2D sparse matrix of booleans, as shown in the Table~\ref{tab:connection_times} (depicting a user owning a laptop, a phone, and a smart-TV).
@@ -182,8 +182,6 @@ A bitfield \bitfield is bit-array of size \nchunks, such that $\bitfield[i] = 0$
 $\bitfield$ describes the state of the total transfer and not just the current chunk, which is very useful when messages are prone to get lost in transit. 
 This bitfield is sent to Alice using the unique reply route $\backwardheader_i$.
 
-% Every time Bob successfully receives a chunk $\chunk_i$, \recdevice sets the bit $\bitfield[i]$, 
-% To acknowledge the chunk's reception, \recdevice sends \bitfield back to Alice, through a unique route $\mathcal{H}'_{\chunk_i}$.
 
 Reciprocally, acknowledgments can arrive to Alice on any on her devices, while only \sendingdevice can process it.
 When one of Alice's devices (say $d'$) receives Bob's bitfield \bitfield, 
