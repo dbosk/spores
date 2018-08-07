@@ -114,7 +114,8 @@ In SPORES, a descriptor $\desc_d$ describing device $d$ contains the following i
 \subsubsection{Routes creation}
 \label{sssec:routes_creation}
 
-\newcommand\layer{\ensuremath{{\mathcal{L}}}\xspace}
+%\newcommand\layer{\ensuremath{{\mathcal{L}}}\xspace}
+\newcommand\layer{L\xspace}
 \newcommand\Poff{\ensuremath{P_{\text{off}}}\xspace}
 
 Routes are created via Sphinxes, as described in section~\ref{SPOR}.
@@ -127,6 +128,9 @@ Note that Sphinxes is agnostic to this use-case: one could want to maximize othe
 \CreateLayer\xspace iteratively adds random descriptors from the RPS's view \rpsview to the current layer \layer, until the layer's probability of being offline, $\Poff^\layer$, falls below the availability threshold $\theta$:
 
 $$ \Poff^\layer = \sum\limits_{d \in \layer}\desc_d.P_d $$
+
+When a device creates a layer to reach its user, descriptors are not taken from \rpsview but from the \squad's sequence: all devices in this layer will belong to the user.
+The logic is otherwise the same.
 
 Recall that each layer in Sphinxes has a constant number of nodes $w_\layer$, that is a Sphinxes parameter.
 If $w_\layer$ is reached before $\Poff^\layer < \theta$, then we early abort \CreateLayer.
@@ -141,7 +145,7 @@ On the other hand, if $|\layer| < w_\layer$, we pad the layer with blank descrip
 \newcommand\chunksize{\ensuremath{s_{\text{chunk}}}\xspace}
 \newcommand\nchunks{\ensuremath{n_{\text{chunks}}}\xspace}
 \newcommand\hashchunk{\ensuremath{h_{\text{chunk}}}\xspace}
-\newcommand\hashfile{\ensuremath{h}\xspace}
+\newcommand\hashfile{h\xspace}
 
 We have seen how participants of \name could craft routes to secretly exchange messages.
 We now apply this feature to reliably exchange files between two users.
@@ -168,10 +172,12 @@ Still out-of-band, Bob replies with one forward header per chunk.
 Alice and Bob now have everything they need to start transferring $f$ in-band.
 
 \newcommand\bitfield{\ensuremath{bf_f}\xspace}
+\newcommand\tupload{\ensuremath{t_{\text{upload}}}\xspace}
+
 \paragraph*{Chunks and bitfields}
 Alice's file $f$ is located on one of her devices, \sendingdevice. 
 Each chunk $c_i \in f$ is uploaded to Bob through a unique route $\mathcal{H}_{c_i}$.
-When $d_f$ is online, it periodically sends chunks of $f$ to Bob until $f$ is entirely uploaded.
+When $d_f$ is online, it periodically sends chunks of $f$ to Bob until $f$ is entirely uploaded, with a period of 
 
 Bob receives $f$ on a device \recdevice, but a chunk $c_i$ for $f$ might arrive on any of his devices. 
 This device then fetches the address of the proper recipient \recdevice by looking for the line \texttt{RECEIVING<\recdevice, \fileid>} in its squad sequence, 
