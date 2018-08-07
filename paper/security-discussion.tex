@@ -118,6 +118,45 @@ distributed and privacy-preserving are not easily met in practice,
 there are some promising candidates~\cite{Octopus, BrahmsRPS}.\name
 does not put any other constraints on the \ac{RPS} used.
 
+\paragraph*{Device unlinkability}
+
+Alice transfers a file \(f\) to Bob during the time interval 
+\(\interval{t_0}{t_1}\).
+We denote the set of Alice's devices as \(D_A\) and Bob's as \(D_B\).
+Bob wants to compute an estimate \(\hat D_A\) which is as close to \(D_A\) as 
+possible.
+
+At this point, Bob knows that \emph{at least one} of Alice's devices must have 
+been online at any given time in \(\interval{t_0}{t_1}\).
+We can also assume that Bob knows all data from the \ac{RPS}, \ie the \((d, 
+  \pk_d, \avail_d)\) tuple (see \cref{SPOR}) of \emph{every device that was 
+  online at some point during \(\interval{t_0}{t_1}\)}.
+Let \(\A_{\interval{t_0}{t_1}}\subseteq \N\times \G^*\times (\RR\to 
+  \interval{0}{1})\) denote the set of those tuples.
+Thus Bob can approximate \(D_A\) by \(\hat D_A \gets 
+  \A_{\interval{t_0}{t_1}}\cap D_B\).
+
+When Alice and Bob interact the next time, either Alice sends a file \(f'\) to 
+Bob or Bob sends a file \(f'\) to Alice, then Bob can do the same again:
+\(\hat D_A' \gets \A_{\interval{t_0'}{t_1'}} \cap D_B\).
+If at least one of \(d, \pk_d, \avail_d\) remains constant, Bob can use that to 
+improve his approximation.
+Say that \(\avail_d\) remains constant.
+Then Bob can improve his approximation to \(\hat D_A \cap_{\avail_d} 
+  \hat{D}_A'\), where \(\cap_{\avail_d}\) is the intersection which only 
+considers the attribute \(\avail_d\).
+Even if \(\avail_d\) is not constant, its variation might stay inside some 
+\(\epsilon\)-neighbourhood, and if \(\epsilon\) is small enough, \(\avail_d\) 
+might still be used to distinguish Alice.
+The same applies for \(d\).
+(\(\pk_d\) can be regularly updated.)
+
+With an inaccurate availability function, \(\avail\), this will not be a 
+problem as there will be many (as the system scales) that shares the same 
+availability distribution.
+With more accurate availability estimates we would have to employ techniques 
+like \ac{DP}.
+
 \paragraph*{Robustness}
 
 Stateless routing can result in re-ordered chunks or packets, and
