@@ -3,16 +3,16 @@
 \section{Design of the \name file transfer system}%
 \label{design}
 
-\sonja{will frame and structure (A) squad overlay (prediction) (B)
-  global overlay (RPS) (C) sphinxes (incl.\ sphinx, onion routing in
-  general) (D) SPOR and SPORES (E) encryption (hybrid, payload, header)
-  if not included earlier (F) out-of-band}
-\commentDaniel{I suggest the following structure:
-  (A) \Sphinxes
-  (B) SPOR (global overlay)
-  (C) SPORES (local overlay).
-  My original idea was to make \Sphinxes its own section before the design 
-  section instead of a subsection in the design section.}
+% \sonja{will frame and structure (A) squad overlay (prediction) (B)
+%   global overlay (RPS) (C) sphinxes (incl.\ sphinx, onion routing in
+%   general) (D) SPOR and SPORES (E) encryption (hybrid, payload, header)
+%   if not included earlier (F) out-of-band}
+% \commentDaniel{I suggest the following structure:
+%   (A) \Sphinxes
+%   (B) SPOR (global overlay)
+%   (C) SPORES (local overlay).
+%   My original idea was to make \Sphinxes its own section before the design 
+%   section instead of a subsection in the design section.}
 
 \subsection{Key features of \name}
 
@@ -26,23 +26,23 @@ some use-once reply mix-headers.
 They use these reply headers to transfer the file contents of \(f\) over a 
 network of unreliable nodes while also achieving privacy.
 
-Figure~\ref{fig:outline} shows the components needed to obtain the
-routing information for the headers.  
+% Figure~\ref{fig:outline} shows the components needed to obtain the
+% routing information for the headers.  
 
-\begin{figure}[t]
-  \centering
-  \def\svgwidth{0.8\columnwidth}
-  \import{figures/}{outline_figure_only.pdf_tex}
-  \caption{\label{fig:outline}%
-    %\commentDaniel{We must adapt this figure to the text.}%
-    Outline of \name's components. Users' squads of devices are circled in gray. 
-    From top to bottom: a user's devices collaborate through the Squad Overlay 
-    (\cref{sec:squad_overlay}); online devices globally share information about 
-    them with random peers (\cref{ssec:device_availability}); using the two 
-    overlays above allows for the creation of routes (\ac{SPOR}) between sets of devices. 
-    These protocols enable secure file transfer between users 
-    (\cref{ssec:por}).}
-\end{figure}
+% \begin{figure}[t]
+%   \centering
+%   \def\svgwidth{0.8\columnwidth}
+%   \import{figures/}{outline_figure_only.pdf_tex}
+%   \caption{\label{fig:outline}%
+%     %\commentDaniel{We must adapt this figure to the text.}%
+%     Outline of \name's components. Users' squads of devices are circled in gray. 
+%     From top to bottom: a user's devices collaborate through the Squad Overlay 
+%     (\cref{sec:squad_overlay}); online devices globally share information about 
+%     them with random peers (\cref{ssec:device_availability}); using the two 
+%     overlays above allows for the creation of routes (\ac{SPOR}) between sets of devices. 
+%     These protocols enable secure file transfer between users 
+%     (\cref{ssec:por}).}
+% \end{figure}
 
 After the initial, out-of-band setup, file transfer happens along
 onion routes but with the following features:
@@ -52,7 +52,7 @@ onion routes but with the following features:
   done in a stateless way. 
 \item [Predictive.] The choice of nodes included in the onion routing
   layers is based on a predictive model for availability, disseminated
-  according to Figure~\ref{fig:outline}, and queried by random peer sampling.
+  by an overlay and queried by random peer sampling.
 \item [Probabilistic.] Instead of source routes with one node per onion layer, each
   layer consists of a set of nodes and although the source route still
   determines the sequence of layers, the actual node used for the next
@@ -70,11 +70,11 @@ onion routes but with the following features:
   changes above, described in \cref{Sphinxes}.
 \end{description} 
 
-\subsection{Taxonomy of anonymous communication protocols}
+%\subsection{Taxonomy of anonymous communication protocols}
 
-To present the different parts of \name in details, 
+To present the different parts of \name in detail, 
 we align the presentation of the system with the taxonomy of 
-\textcite{RoutingSurveyAnonymousProtocols}.
+\textcite{RoutingSurveyAnonymousProtocols} .
 They characterize anonymous communication protocols using the following 
 categories (see~\cite[Table 1]{RoutingSurveyAnonymousProtocols}):
 \begin{description}
@@ -133,8 +133,10 @@ scheduling (communication model) --- as all packets are indistinguishable they
 must be processed on a first-in-first-out basis.
 \Sphinxes also introduces some probability to the node selection, but this is 
 only a probabilistic selection among already selected nodes and only 
-interesting against passive adversaries (an active \sonja{global?} adversary can learn the 
-entire set).
+interesting against passive adversaries (an active adversary can learn the 
+entire set just as she can learn the single node constituting a layer of a
+secure onion-routing scheme without endangering the security
+properties~\cite{CLOnionRouting}).
 
 \Sphinxes does \emph{not} introduce any restrictions on whether the network 
 topology must be fully connected or not, be asynchronous (as in Tor) or 
