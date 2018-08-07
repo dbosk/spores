@@ -41,7 +41,7 @@ through the transmitted link onto one of his devices.
 
 The use of the cloud provider, as a third party,
 provides two main privacy properties, which we should preserve when
-moving to a P2P~\cite{DevilInMetadata} setting:
+moving to a P2P setting:
 \begin{itemize}
 \item Alice and Bob are the only users who learn 
 about Alice sharing a file with Bob.
@@ -54,7 +54,7 @@ The cloud provider, however, has this information and any other
 stemming from the users' interaction with the service, and can draw
 inferences from metadata even when the data itself is encrypted. The
 provider thus poses a threat to the users' privacy which we remove in
-the P2P scenario.
+the P2P scenario~\cite{DevilInMetadata}.
 
 
 \subsection{Moving to a P2P environment}
@@ -88,12 +88,16 @@ is bounded by $N$. \textit{Onion-security} means that an adversary sending a
 challenge onion \david{what is a challenge onion?} to a router and able to see the outcome of how the
 onion is processed, cannot distinguish between whether that onion
 corresponds to a particular message and route or not. This is also
-true for a \emph{re-wrapped} onion, i.e. a challenge onion wrapped in
+true for a \emph{re-wrapped} onion, \ie a challenge onion wrapped in
 another layer. The formal definitions are in~\cite{CLOnionRouting} along
 with a theorem that states that an onion routing scheme satisfying
 these three properties, combined with secure point-to-point channels,
+<<<<<<< HEAD
 is UC-secure \david{what does it means, it has never been introduced
   before, what do you mean?}.
+=======
+is UC secure.
+>>>>>>> cc2bec61a6353cbe88cc06fabfeb82728a8039ef
 
 These properties cover the concerns about
 revealing to others that Alice shares a file with Bob in the first
@@ -106,11 +110,11 @@ can be infered through \name. \sonja{insert more formal definition
   availability information}
 
 
- \commentFT{Removed, as did not fit with
-  the flow, but probably needed somewhere: `We give the definitions
-  for the security and privacy properties of \name in
-  Section~\ref{security-discussion}.'} \sonja{better here. Need to define
-  device unlinkability, the rest is covered by Camenisch.}
+ % \commentFT{Removed, as did not fit with
+ %  the flow, but probably needed somewhere: `We give the definitions
+ %  for the security and privacy properties of \name in
+ %  Section~\ref{security-discussion}.'} \sonja{better here. Need to define
+ %  device unlinkability, the rest is covered by Camenisch.}
 
 \paragraph*{Adversary model} To assess our approach, we use the
 adversary model assumed by Tor~\cite{Tor} and Sphinx~\cite{Sphinx}:

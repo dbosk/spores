@@ -2,6 +2,7 @@
 
 \section{Design of the \name file transfer system}%
 \label{design}
+<<<<<<< HEAD
 \sonja{will frame and structure (A) squad overlay (prediction) (B)
   global overlay (RPS) (C) sphinxes (incl.\ sphinx, onion routing in
   general) (D) SPOR and SPORES (E) encryption (hybrid, payload, header)
@@ -16,6 +17,21 @@
 \subsection{Key features of \name}
 
 Our goal is to enable private and reliable file exchange between users 
+=======
+% \sonja{will frame and structure (A) squad overlay (prediction) (B)
+%   global overlay (RPS) (C) sphinxes (incl.\ sphinx, onion routing in
+%   general) (D) SPOR and SPORES (E) encryption (hybrid, payload, header)
+%   if not included earlier (F) out-of-band}
+% \commentDaniel{I suggest the following structure:
+%   (A) Sphinxes
+%   (B) SPOR (global overlay)
+%   (C) SPORES (local overlay).
+%   My original idea was to make Sphinxes its own section before the design 
+%   section instead of a subsection in the design section.}
+
+
+Our goal is to enable private and reliable file transfer between users 
+>>>>>>> cc2bec61a6353cbe88cc06fabfeb82728a8039ef
 participating in the system, by using their respective devices only.
 When Alice and Bob, two users of our system, want to exchange a file \(f\) 
 through \name, they start by sharing some information out-of-band, \eg from 
@@ -25,30 +41,27 @@ some use-once reply mix-headers.
 They use these reply headers to transfer the file contents of \(f\) over a 
 network of unreliable nodes while also achieving privacy.
 
-\sonja{Here comes more of a solution overview and reference to the outline
-  figure.}
-Figure~\ref{fig:outline} shows the components needed to obtain this
-routing information.  
+Figure~\ref{fig:outline} shows the components needed to obtain the
+routing information for the headers.  
 
 \begin{figure}[t]
   \centering
   \def\svgwidth{0.8\columnwidth}
-  \import{figures/}{outline.pdf_tex}
+  \import{figures/}{outline_figure_only.pdf_tex}
   \caption{\label{fig:outline}%
     %\commentDaniel{We must adapt this figure to the text.}%
     Outline of \name's components. Users' squads of devices are circled in gray. 
     From top to bottom: a user's devices collaborate through the Squad Overlay 
     (\cref{sec:squad_overlay}); online devices globally share information about 
-    them with random peers (\cref{sec:SPOR}); using the two 
+    them with random peers (\cref{ssec:device_availability}); using the two 
     overlays above allows for the creation of routes (\ac{SPOR}) between sets of devices. 
     These protocols enable secure file transfer between users 
-    (\cref{sec:sphinxes}).}
+    (\cref{ssec:por}).}
 \end{figure}
 
 After the initial, out-of-band setup, file transfer happens along
 onion routes but with the following features:
 
-\sonja{might need different naming, and deciding about predictive and probabilistic}
 \begin{description}
 \item [Stateless.] There is no mandatory circuit creation, the file transfer can be
   done in a stateless way. 
@@ -58,7 +71,8 @@ onion routes but with the following features:
 \item [Probabilistic.] Instead of source routes with one node per onion layer, each
   layer consists of a set of nodes and although the source route still
   determines the sequence of layers, the actual node used for the next
-  hop of forwarding is selected from the set in an ad-hoc way.
+  hop of forwarding is selected from the set in an ad-hoc way,
+  resulting in a source-bounded random walk.
 \item[Onion Routing.] Put simply, in onion routing, the sender creates
   a source route and 
   encapsulates the payload and next-hop information in layers (by
@@ -76,7 +90,7 @@ onion routes but with the following features:
 To present the different parts of \name in details, 
 we align the presentation of the system with the taxonomy of 
 \textcite{RoutingSurveyAnonymousProtocols}.
-They classify anonymous communication protocols using the following 
+They characterize anonymous communication protocols using the following 
 categories (see~\cite[Table 1]{RoutingSurveyAnonymousProtocols}):
 \begin{description}
   \item[Network structure.]
@@ -118,19 +132,23 @@ categories (see~\cite[Table 1]{RoutingSurveyAnonymousProtocols}):
 \end{description}
 
 We first describe \sphinxes (\cref{Sphinxes}), which is an adaptation of the 
+
+\sonja{do we apply all categories here?}
+
 Sphinx~\cite{Sphinx} mix-header format.
 This means that we inherit some properties from Sphinx and due to being only a 
 header format, it only imposes some restrictions in the above categories.
 Sphinxes provides, just as Sphinx, unidirectional (network structure), 
 message-based (performance) communication.
-But unlike Sphinx, Sphinxes is hybrid source-hop-by-hop routed (communication 
+But unlike Sphinx, Sphinxes is hybrid source-hop-by-hop routed, a
+source-bounded random walk (communication 
 model),
 Sphinxes relies on a flat routing-topology (network structure) with fair 
 scheduling (communication model) --- as all packets are indistinguishable they 
 must be processed on a first-in-first-out basis.
 Sphinxes also introduces some probability to the node selection, but this is 
 only a probabilistic selection among already selected nodes and only 
-interesting against passive adversaries (an active adversary can learn the 
+interesting against passive adversaries (an active \sonja{global?} adversary can learn the 
 entire set).
 
 Sphinxes does \emph{not} introduce any restrictions on whether the network 
@@ -160,15 +178,15 @@ Thus, ultimately, these also depends on the source of random nodes.
 
 A device's availability depends on its user's behavior, hence the device must 
 predict this behavior.
-This is best done jointly between the user's all devices.
+This is best done jointly between all of the user's devices.
 In \cref{sec:squad_overlay}, we describe a protocol which allows the devices to 
 compute their own availability prediction function based on the observations by 
 all other devices.
 
 Finally, we describe the complete \ac{SPORES} protocol (\cref{SPORES}), which 
-allows the device squad to act as an autonomous system.
+allows the device \squad to act as an autonomous system.
 In particular, we introduce a protocol which allows transferring larger 
-messages by fragmentation and reassembly across the devices in the squad.
+messages by fragmentation and reassembly across the devices in the \squad.
 
 \include*{sphinxes}
 \include*{spor}

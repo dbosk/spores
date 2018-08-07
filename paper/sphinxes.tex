@@ -11,7 +11,7 @@ functionality.
 length, makes replies indistinguishable from forward messages and resists 
 tagging attacks.
 It is also compact with only 224 bytes of header for a five-hop path with 
-128-bit security.
+128-bit security. \sonja{what about the CL properties?}
 Sphinx only provides one node per onion layer; in this section we extend Sphinx 
 to Sphinxes, which allows for multiple nodes per onion layer.
 (See \cref{fig:OR-POR}.)
@@ -20,10 +20,12 @@ As such, Sphinxes could be described as a bounded random-walk protocol, \ie the
 each node selects the next node from a set restricted by the source.
 
 \begin{figure}
-  \includegraphics[width=\linewidth]{figures/OR-POR.png}
+  \centering
+  %  \includegraphics[width=\linewidth]{figures/OR-POR.png}
+    \includegraphics[width=0.65\linewidth]{figures/principle_SPOR.pdf}
   \caption{\label{fig:OR-POR}%
     Illustration of the conceptual difference between traditional onion routing 
-    and mixing (top) and \ac{POR} (bottom).
+and mixing (OR, top) and \ac{SPOR} (bottom).
     %\commentDaniel{This figure should be fixed, issue \#42.}
   }
 \end{figure}
@@ -75,7 +77,7 @@ for itself and thus stops the forwarding.
 
 \subsubsection{The Sphinxes extension for sets of nodes}
 
-We will now extend Sphinx to do \ac{POR}: instead of providing only \(d_{i+1}\) 
+We will now extend Sphinx to do \ac{SPOR}: instead of providing only \(d_{i+1}\) 
 in \(\beta_i\), we will have a set \(\{d_{i+1}^{(1)}, \dotsc, d_{i+1}^{(m)}\}\) 
 of \(m\) alternative next nodes.
 This means that all \(m\) nodes must be able to compute the same shared secret 
@@ -105,7 +107,7 @@ If \iac{MAC} key that successfully verifies \(\beta_i\) using \(\gamma_i\) can
 be derived from \(\hat s_i\), then the node knows that \(\hat s_i = s_i\).
 
 
-\subsubsection{Sphinxes algorithms and \acf*{POR}}
+\subsubsection{Sphinxes algorithms and \acf*{SPOR}}
 
 Sphinxes provides the following algorithms:
 \begin{itemize}
@@ -174,18 +176,22 @@ Sphinx~\cite{Sphinx}, hence we will use the following notation:
     We have two special node identifiers:
     \(\nullnode\in \N\) is the null-node identifier, indicating an empty 
     address.
-    \(\rdvnode\in \N\) is the rendezvous-node identifier, indicating that the 
-    current node is a rendezvous node and that the payload is \iac{POR} route 
-    to forward.
+    \(\rdvnode\in \N\) is the crossover-node identifier, indicating that the 
+    current node is the node at the end of one leg of a route that needs to cross
+   over to another, and that the payload is \iac{SPOR} route 
+    for forwarding.
 
   \item \(0_x\) denotes \(x\) zeroes.
     \(s_{[a..b]}\) denotes all bits from the \(a\)th bit to the \(b\)th of the 
     bit string \(s\).
 \end{itemize}
 
+We keep the nomenclature of mix headers and messages from Sphinx for
+clarity but later apply them to onions and file chunks, repectively.
+
 \paragraph*{The \(\CreateHeader\) algorithm}
 
-This algorithm creates a header for \iac{POR}.
+This algorithm creates a header for \iac{SPOR}.
 It is identical to that of Sphinx~\cite[\S 3.2]{Sphinx} except that we use a 
 set of addresses and keys for each layer instead of only one address and key.
 Also, we do not distinguish between addresses of destinations and routers.
@@ -193,7 +199,7 @@ Also, we do not distinguish between addresses of destinations and routers.
 The algorithm takes as input a unique identifier \(I\in \bin^\kappa\) and a set 
 of layers \(L = \{L_0, \dotsc, L_\nu\}\) such that \(\nu+1\leq r\).
 The last layer, \(L_\nu\), should be either \(\{\nullnode\}\) or 
-\(\{\rdvnode\}\) to terminate the routing.
+\(\{\rdvnode\}\) to terminate the routing. \sonja{define v(nu)}
 
 Remember that \(w_L\) is the maximum width of a layer, \ie the number of 
 alternative nodes in the layer.
@@ -254,7 +260,7 @@ and pad them to \(w_L\kappa\) bits with uniformly random bits.
 Next we need to compute the padding \(\phi_i\) for each layer \(i\).
 We must do this to predict the padding introduced at each layer so that we 
 can compute the correct \acp{MAC} (\(\gamma_i\)).
-The padding for the outmost layer (layer 0) is the empty string, thus \(\phi_0 
+The padding for the outermost layer (layer 0) is the empty string, thus \(\phi_0 
   \gets \epsilon\).
 Then, for layers \(1\leq i\leq \nu\), we get
 \begin{multline*}
@@ -262,11 +268,11 @@ Then, for layers \(1\leq i\leq \nu\), we get
   \left\{\prg\left(\hash_\prg\left(s_{i-1}\right)\right)_{[(w_H(r-i)+3)\kappa..(2r+3)\kappa-1]}\right\}.
 \end{multline*}
 
-Next we will use the above computations to compute the mix headers \(M_i = 
+Next we will use the above computations to arrive at the mix headers \(M_i = 
   (\alpha_i, \beta_i, \gamma_i)\).
 \(\alpha_i\) was computed above, so we will compute \(\beta_i\) and 
 \(\gamma_i\).
-We must compute \(\beta_i\) in reverse order.
+We must compute \(\beta_i\) in reverse order. \sonja{why? layering?}
 We let \(\beta_{\nu} = I\concat 0_{(w_H r-1)\kappa}\), then, for \(\nu < i\leq 
   0\), we let
 \begin{align*}
@@ -363,5 +369,5 @@ Compute the blinding factor \(b\gets \hash_\blind(\alpha, s_i)\) and let
 Choose a node \(n\rgets L'\) uniformly at random.
 Send \((\alpha', C', \beta', \gamma')\) to \(n\).
 If sending to \(n\) fails, choose another node from \(L'\) uniformly at random.
-If all nodes in \(L'\) fails, the algorithm drops the packet and silently 
-fails.
+If all nodes in \(L'\) fail, the algorithm drops the packet and fails silently.
+
