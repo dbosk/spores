@@ -1,5 +1,5 @@
 .PHONY: all
-all: p2p-private-cloud.pdf
+all: spores.pdf
 
 SRC+=		contents.tex abstract.tex
 SRC+= 		intro.tex
@@ -18,20 +18,20 @@ SRC+=		conclusion.tex
 
 DEPENDS+= 	bibsp.sty meta.bib osn.bib anon.bib be.bib crypto.bib p2p.bib
 DEPENDS+= 	otrmsg.bib ac.bib privacy.bib
-DEPENDS+= 	adrien.bib p2p-private-cloud.bib
+DEPENDS+= 	adrien.bib spores.bib
 DEPENDS+=	figures/*.pdf
 
-p2p-private-cloud.pdf: p2p-private-cloud.tex preamble.tex revision_macros.tex
-p2p-private-cloud.pdf: ${SRC} ${DEPENDS}
+spores.pdf: spores.tex preamble.tex revision_macros.tex
+spores.pdf: ${SRC} ${DEPENDS}
 
 
 .PHONY: clean
 clean:
-	${RM} p2p-private-cloud.pdf
+	${RM} spores.pdf
 
 
 .PHONY: print todo
-print: p2p-private-cloud.pdf
+print: spores.pdf
 todo: ${SRC}
 
 
