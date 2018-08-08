@@ -1,3 +1,5 @@
+%!TEX root = p2p-private-cloud.tex
+
 \usepackage{ifthen}
 \usepackage{calc}
 \usepackage{color}
@@ -14,6 +16,7 @@
 
 \newcommand{\ftanote}[2]{\marginpar{\centering #1 \fbox{#2}}}
 \DeclareRobustCommand{\change}[3]{{\color{#3}#1\ftanote{\color{#3} \sc}{#2}}}
+\DeclareRobustCommand{\changeBis}[3]{{\color{#3}#1}} % no margin note
 
 % \newcommand{\fixme}[1]{\annote{#1}{Fixme}{red}}
 % \newcommand{\flaw}[1]{\annote{#1}{flaw}{red}}
@@ -33,12 +36,15 @@
 % \newcommand{\answer}[1]{\annote{#1}{Answer}{RubineRed}}
 
 \newcommand{\commentDaniel}[1]{\annote{#1}{Daniel}{magenta}}
+\newcommand{\changeAL}[1]{\change{#1}{AL}{blue}}
 \newcommand{\commentAL}[1]{\annote{#1}{AL}{blue}}
 \newcommand{\david}[1]{\annote{#1}{David}{red}}
 \newcommand{\commentFT}[1]{\annote{#1}{FT}{brown}}
 \newcommand{\changeFT}[1]{\change{#1}{FT}{brown}}
+\newcommand{\changeBisFT}[1]{\changeBis{#1}{FT}{brown}}
 \newcommand{\sonja}[1]{\annote{#1}{Sonja}{violet}}
 
 %% Uncomment for final version
-% \renewcommand{\change}[3]{#1}
-% \renewcommand{\annote}[3]{}
+\renewcommand{\change}[3]{#1}
+\renewcommand{\changeBis}[3]{#1}
+\renewcommand{\annote}[3]{}

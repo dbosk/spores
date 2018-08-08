@@ -6,11 +6,10 @@ SRC+= 		intro.tex
 SRC+= 		system-model.tex
 
 SRC+=		design.tex
-SRC+= 		building-blocks.tex 
+SRC+= 		sphinxes.tex
+SRC+=		spor.tex
 SRC+= 		squad-overlay-design.tex 
-SRC+=		global-overlay-design.tex
-SRC+= 		message-passing-design.tex
-SRC+=		file-exchange-design.tex
+SRC+=		file-transfer-design.tex
 
 SRC+= 		security-discussion.tex
 SRC+= 		evaluation.tex
@@ -18,8 +17,8 @@ SRC+= 		related.tex
 SRC+=		conclusion.tex
 
 DEPENDS+= 	bibsp.sty meta.bib osn.bib anon.bib be.bib crypto.bib p2p.bib
-DEPENDS+= 	otrmsg.bib ac.bib
-DEPENDS+= 	adrien.bib
+DEPENDS+= 	otrmsg.bib ac.bib privacy.bib
+DEPENDS+= 	adrien.bib p2p-private-cloud.bib
 DEPENDS+=	figures/*.pdf
 
 spores.pdf: spores.tex preamble.tex revision_macros.tex

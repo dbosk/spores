@@ -1,6 +1,6 @@
-%% Creator: Inkscape inkscape 0.91, www.inkscape.org
+%% Creator: Inkscape inkscape 0.92.2, www.inkscape.org
 %% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
-%% Accompanies image file 'outline.pdf' (pdf, eps, ps)
+%% Accompanies image file 'outline_figure_only.pdf' (pdf, eps, ps)
 %%
 %% To include the image in your LaTeX document, write
 %%   \input{<filename>.pdf_tex}
@@ -36,7 +36,7 @@
   }%
   \providecommand\rotatebox[2]{#2}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{348.44499963bp}%
+    \setlength{\unitlength}{351.27964538bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -48,13 +48,13 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,0.7553117)%
-    \put(0,0){\includegraphics[width=\unitlength,page=1]{outline.pdf}}%
-    \put(-0.00225003,0.72517781){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\ref{sec:squad_overlay}}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=2]{outline.pdf}}%
-    \put(-0.00225,0.46084871){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\ref{sec:global_overlay}}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=3]{outline.pdf}}%
-    \put(-0.00224999,0.19312222){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\ref{sec:file_transfer}}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=4]{outline.pdf}}%
+  \begin{picture}(1,0.7572862)%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{outline_figure_only.pdf}}%
+    \put(-0.00223187,0.719326){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\ref{sec:squad_overlay}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{outline_figure_only.pdf}}%
+    \put(-0.00223184,0.45712991){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\ref{ssec:device_availability}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{outline_figure_only.pdf}}%
+    \put(-0.00223184,0.19156384){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\ref{ssec:por}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{outline_figure_only.pdf}}%
   \end{picture}%
 \endgroup%
