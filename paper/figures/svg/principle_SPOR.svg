@@ -13,21 +13,21 @@
    sodipodi:docname="principle_SPOR.svg"
    id="svg8"
    version="1.1"
-   viewBox="0 0 200.84288 156.71577"
+   viewBox="0 0 208.25122 156.71577"
    height="156.71577mm"
-   width="200.84288mm">
+   width="208.25122mm">
   <sodipodi:namedview
-     inkscape:window-maximized="1"
-     inkscape:window-y="1"
-     inkscape:window-x="1280"
+     inkscape:window-maximized="0"
+     inkscape:window-y="0"
+     inkscape:window-x="295"
      inkscape:window-height="1036"
      inkscape:window-width="1920"
      showgrid="false"
      inkscape:current-layer="layer1"
      inkscape:document-units="mm"
-     inkscape:cy="248.37735"
-     inkscape:cx="284.12459"
-     inkscape:zoom="1.4377424"
+     inkscape:cy="248.37732"
+     inkscape:cx="573.64571"
+     inkscape:zoom="0.71887122"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -49,8 +49,8 @@
        empspacing="1"
        spacingx="1.3229167"
        spacingy="1.3229167"
-       originx="12.634887"
-       originy="-34.131261" />
+       originx="20.043221"
+       originy="-34.131267" />
   </sodipodi:namedview>
   <defs
      id="defs2">
@@ -234,7 +234,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -242,7 +242,7 @@
      id="layer1"
      inkscape:groupmode="layer"
      inkscape:label="Layer 1"
-     transform="translate(12.634887,-106.15297)">
+     transform="translate(20.043222,-106.15297)">
     <g
        id="g6663"
        transform="translate(-2.4047881,0.24200894)">
@@ -823,26 +823,26 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="-13.229166"
+       x="-20.637501"
        y="125.02082"
        id="text9993"><tspan
          sodipodi:role="line"
          id="tspan9991"
-         x="-13.229166"
+         x="-20.637501"
          y="125.02082"
          style="stroke-width:0.26458332px">OR:</tspan></text>
     <text
        id="text9997"
        y="214.86288"
-       x="-12.348209"
+       x="-19.756542"
        style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        xml:space="preserve"><tspan
          style="stroke-width:0.26458332px"
          y="214.86288"
-         x="-12.348209"
+         x="-19.756542"
          id="tspan9995"
          sodipodi:role="line">SP<tspan
-   style="font-size:65%;baseline-shift:super"
+   style="font-size:64.99999762%;baseline-shift:super"
    id="tspan1745">2</tspan>OR:</tspan></text>
   </g>
 </svg>
