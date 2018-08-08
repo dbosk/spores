@@ -9,7 +9,7 @@ Each device is a Docker container that ships the same \name code, and communicat
 To allow for realistic simulations (embodying more than 10 users), we distribute the experiments over 5 machines (one with an Intel Xeon E5-2660 CPU (32 cores) and 128GB of RAM, and four having an Intel Xeon E5420 CPU (8 cores) and 32GB of RAM), such that each \squad always resides on the same machine.
 All peers are connected to the same Docker overlay network, and are thus reachable from any other device.
 
-In the following, we first give precisions on the evaluation testbed and parameters in section~\ref{sub:evaluation_testbed}, before evaluating the file transfer performance in section~\ref{sub:file_transfer}.
+In the following, we first give precisions on the evaluation testbed and parameters in section~\ref{sub:evaluation_testbed}, before evaluating the file transfer performance in section~\ref{sub:file_transfer}. Finally, we look at the devices availability over time, and at the messages life over the network in \ref{ssub:traffic_and_availability}.
 
 \subsection{Evaluation testbed} % (fold)
 \label{sub:evaluation_testbed}
@@ -217,7 +217,7 @@ Over 5 experiments, we observed a file transfer success rate of 41.7\%, which is
 % subsubsection comparison_to_churnful_tor (end)
 
 
-\subsubsection{Availability of nodes and messages in transit} % (fold)
+\subsection{Availability of nodes and messages in transit} % (fold)
 \label{ssub:traffic_and_availability}
 
 
@@ -227,7 +227,7 @@ Over 5 experiments, we observed a file transfer success rate of 41.7\%, which is
   \includegraphics[width=0.9\columnwidth]{figures/avail.pdf}
 
   \caption{\label{fig:avail}
-  Availability of devices and number of messages waiting for reception.}
+  Availability of devices (in gray) and number of messages waiting for reception (in black) over an experiment. The black dotted line represents the mean rate of online devices: 15.8\%.}
 \end{figure}
 
 To assess the performance of \name, another important metric is the rate of online nodes at a time.
@@ -247,10 +247,10 @@ extremely slow messages (with a maximum transit time of 9m13s).
 In last resort, we compute the median of the messages transfer time: 639ms; it means that half messages spend less that this time in the system.
 
 An obvious direction for future work is to implement at Time To Leave (TTL) or other stale-messages-removal policy.
-
 \\
-To conclude this section, we have seen that \name could empower users to privately exchange files over a challenging network where only 15.8\% of the infrastructure was available at a time.
-Our proposal, \name, allows to nevertheless complete the file exchange with an average probability of 94.4\%, against 41.7\% success rate using classical onion routes
+
+We have seen that \name could empower users to privately exchange files in a distributed manner over a challenging network where only 15.8\% of the infrastructure is available at a time.
+Our proposal allows to nevertheless complete the file exchange with an average probability of 94.4\%, against 41.7\% success rate using classical onion routes.
 
 
 
