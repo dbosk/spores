@@ -49,7 +49,8 @@ one uniformly randomly selected node, where.
 \begin{itemize}
   \item \(d\) is the node's identifier (address);
   \item \(\pk_d\) is the node's public key;
-  \item \(\avail_d\) is the node's probability of being online in the near future. It computation will be discussed in~\ref{ssec:device_availability}.
+  \item  \(\avail_d(t)\) is the node's probability of being online as a function of time. 
+  Its computation will be discussed in~\ref{ssec:device_availability}.
 \end{itemize}
 The \(\GetRandomNode\) algorithm can be instantiated using \eg
 Octopus~\cite{Octopus}. Its function is analogous to 
