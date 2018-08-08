@@ -6,7 +6,7 @@
 % What's the problem?
 
 Fulfilling Mark Weiser's vision, we now rely on a increasing number of personal digital devices for many everyday tasks. These devices form a \textit{personal squad} of connected entities (or \emph{\squad} as we shall call them in the remainder of the
-paper), that users rely on for their everyday interactions with the material and digital world, and with their fellow humans.
+paper), that users rely on for their everyday interactions with their fellow humans, as well as with the material and digital worlds.
 The growing importance of these \squad{}s is profoundly modifying how we live~\cite{Dearman:2008, Oh:2017, Sohn:2008,Harper08}, and has opened new areas of research such as \textit{proxemics}, the study of proximity-based interactions in a world of ubiquitous computing
 \cite{Marquardt:2011}.
 %% we are nowadays
@@ -31,8 +31,8 @@ would have a few years ago with an USB key or an email.
 
 This thirst for seamless sharing explains the rise and ongoing popularity
 of personal sharing platforms such as Dropbox, Google Docs,
-OneDrive, Amazon Drive, etc. These solutions allow users to share data between any device, with anyone, almost
-anytime, anywhere. They achieve this feat by relying heavily on
+OneDrive, Amazon Drive, etc. These solutions allow users to share data with anyone, anywhere, at almost
+anytime, between any devices. They achieve this feat by relying heavily on
 \emph{remote cloud services}, which have now become a key enabler of ubiquitous ecosystems. 
 % argument: cloud -> danger, 
 %% From a technical perspective, one major trend to provide a seamless
@@ -58,7 +58,7 @@ Unfortunately, this reliance on the cloud comes at a strong price:
 users lose control over their own data, which is distributed over
 multiple data centers, often in foreign jurisdictions, making it difficult for most users to grasp, review, and assess the privacy, and
 confidentiality guarantees they can expect. In practice, user data hosted in the cloud is routinely harvested, often without explicit
-consent, either by cloud providers or third parties, only partially
+consent, either by cloud providers or third parties, a sad situation that is only partially
 mitigated by legal measures such as the GDPR.
 
 Although data encryption is often proposed as a first line of defense for cloud-hosted data, it is unfortunately  insufficient~\cite{granick_2017, HooffLZZ15, HarnikPS10}. Metadata such as a user'
@@ -67,7 +67,7 @@ control histories, thus revealing what each user shared with whom and when.
 %  because it does not protect meta-data information
 The exposure of metadata seriously weakens user privacy, as famously emphasized by a former NSA and CIA director: "\emph{We kill people based on metadata.}''~\cite{NaughtonTheGuardian2016} 
 In this model, user devices, masquerading as allies, get turned into %% tracking and/or monitoring \squad{}s, and serve as
-highly efficient instruments spying on their owners. 
+highly efficient monitoring tools spying on their owners. 
 
 Constructing a system that provides fully anonymous content sharing while avoiding the above pitfalls is unfortunately highly
 challenging. The last two decades have witnessed many attempts at building privacy-preserving and anonymous P2P data-sharing
@@ -77,7 +77,7 @@ These solutions typically leverage \emph{onion
  discovery in a distributed manner, a step that is otherwise
 centralized in traditional onion routing schemes. However, because of the high
 churn typically experienced by P2P networks, the performance of these systems has been
-discouraging~\cite{LeBlond:2013}; churn causes routes to disappear and be
+discouraging~\cite{LeBlond:2013}, as churn causes routes to disappear and be
 reconstructed frequently, which is particularly costly. By contrast, Tor
 \cite{Tor}, one of the most popular anonymous networks,
 trades lower anonymity guarantees for a much better
