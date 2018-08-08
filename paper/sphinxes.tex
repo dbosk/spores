@@ -37,7 +37,7 @@ The idea is not to give a detailed description of Sphinx, but to give the
 reader enough understanding of Sphinx to understand the changes we make to 
 achieve \Sphinxes.
 For a more detailed understanding of Sphinx, we refer the reader to the 
-excellent description in the original Sphinx paper~\cite{Sphinx}.
+description in the original Sphinx paper~\cite{Sphinx}.
 
 Each node \(n\) in the system has a long-term public-key pair: private key 
 \(\sk_n\in \ZZ_q^*\) and public key \(\pk_n = g^{\sk_n}\in G\), where \(g\) 
@@ -70,9 +70,7 @@ completely random to the next node, thus the position on the path is hidden.
 Finally, \(\alpha_1\) is blinded into \(\alpha_2\) with a key derived from 
 \(s_1\).
 Then the triple \((\alpha_2, \beta_2, \gamma_2)\) is sent to the node with 
-address \(d_2\).
-
-When node \(n\) discovers \(d_{n+1} = *\) it knows that the message is intended 
+address \(d_2\). When node \(n\) discovers \(d_{n+1} = *\) it knows that the message is intended 
 for itself and thus stops the forwarding.
 
 \subsubsection{The \Sphinxes extension for sets of nodes}
@@ -84,7 +82,7 @@ This means that all \(m\) nodes must be able to compute the same shared secret
 \(s_{i+1}\).
 We do this by adding one layer of indirection.
 
-In Sphinx we denoted the public key for layer \(i\) as \(\pk_i\).
+In Sphinx, the public key for layer \(i\) is denoted as \(\pk_i\).
 Since we have \(m\) alternative nodes with different keys, let us denote them 
 by \(\pk_i^{(1)}, \dotsc, \pk_i^{(m)}\).
 
@@ -344,7 +342,7 @@ If the \ac{MAC} does not verify correctly for any key, then the algorithm
 aborts.
 
 If the \ac{MAC} computed correctly, compute \(t\gets \hash_\tau(s_i)\).
-If \(t\) is already in the table of seen packets, drop the packet.
+If \(t\) is already in the table of seen (mix, not IP) packets, drop the packet.
 Otherwise, add \(t\) to the table and decrypt \(\beta\):
 \begin{equation*}
   L'\concat C'\concat \gamma'\concat \beta'\gets \{\beta\concat 0_{w_H 

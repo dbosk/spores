@@ -118,14 +118,12 @@
 \NewVariable{\sk}{x}
 \NewVariable{\pk}{X}
 \NewAlgorithm{\Enc}{Enc}
-\NewScheme{\Sphinxes}{SphinxES}
-\NewAlgorithm{\CreateHeader}{\Sphinxes[CreateHeader]}
-\NewAlgorithm{\CreateFwd}{\Sphinxes[CreateForward]}
-\NewAlgorithm{\CreateReply}{\Sphinxes[CreateReply]}
-\NewAlgorithm{\UseReply}{\Sphinxes[UseReply]}
-\NewAlgorithm{\ProcessHeader}{\Sphinxes[ProcessHeader]}
-\NewAlgorithm{\CreateLayer}{\SPOR[CreateLayer]}
-\NewAlgorithm{\GetRandomNode}{\SPOR[GetRandomNode]}
+\NewScheme{\Sphnxs}{SphinxES}
+\NewAlgorithm{\CreateHeader}{\Sphnxs[CreateHeader]}
+\NewAlgorithm{\CreateFwd}{\Sphnxs[CreateForward]}
+\NewAlgorithm{\CreateReply}{\Sphnxs[CreateReply]}
+\NewAlgorithm{\UseReply}{\Sphnxs[UseReply]}
+\NewAlgorithm{\ProcessHeader}{\Sphnxs[ProcessHeader]}
 \NewVariable{\G}{\mathcal{G}}
 \NewVariable*{\mac}{\mu}
 \NewVariable*{\prg}{\rho}
@@ -143,6 +141,11 @@
 \NewVariable{\ProcessMessage}{ProcessMessage}
 
 %spor.tex
+\NewScheme{\RPS}{RPS}
+\NewAlgorithm{\GetRandomNode}{\RPS[GetRandomNode]}
+\NewScheme{\SPOR}{SPOR}
+% used by Adrien
+\NewAlgorithm{\CreateLayer}{\SPOR[CreateLayer]}
 \NewFunction{\avail}{\Pon}
 
 %security-discussion.tex
