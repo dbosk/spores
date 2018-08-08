@@ -141,13 +141,12 @@ We now apply this feature to reliably exchange files between two users.
 Our file transfer protocol is loosely based on BitTorrent \cite{bt_bep3}: 
 at initialization, a file $f$ of size \filesize is first cut into chunks of constant size \chunksize by its uploader,
 resulting in $\nchunks = \lceil \filesize / \chunksize \rceil$ chunks.
-A SHA1 hash \hashchunk is computed for each chunk, plus another SHA1 hash \hashfile of the chunks hashes; that will serve error detection. 
+A SHA1 hash \hashchunk is computed for each chunk, plus another SHA1 hash \hashfile of the chunks hashes; that will serve as an error detection scheme. 
 
-
-In BitTorrent, .torrent files are publicly available on the Web.
+In BitTorrent, \textit{.torrent} files are publicly available on the Web.
 They contain $\finfo = \left(\filesize, \nchunks, \left[\hashchunk\right]_{\chunk \in f}, \hashfile\right)$, 
 along with network information to reach uploaders of $f$ (e.g. the tracker's address).
-Anyone can download a .torrent and start receiving the file associated to it.
+Anyone can download a \textit{.torrent} and start receiving the file associated to it.
 
 In \name, we want file exchanges to remain private: the file's metadata are exchanged out-of-band.
 In addition , each file is associated with a random \fileid, that is part of \finfo.
@@ -192,9 +191,10 @@ Once \sendingdevice receives \bitfield, it merges it with its previous knowledge
 If all chunks were acknowledged, the transfer is over.
 Else, \sendingdevice sends a new chunk, among the ones that were not acknowledged by Bob.
 
-\commentAL{This is a shitty scheduler. Should I mention it? Rephrase? You have a citation to propose instead?}
-Messages in \name might arrive in a wrong order or fail:
+%\commentAL{This is a shitty scheduler. Should I mention it? Rephrase? You have a citation to propose instead?}
+
+Naturally, in \name, messages might arrive in a wrong order or fail, e.g.
 it is not unlikely that the file exchange stops before its transfer is done.
-As a solution, if the transfer hangs, \sendingdevice will restart periodically sending chunks that were not acknowledged by Bob.
-This solution ensures liveness over network efficiency (some chunks might be received several times), as will be seen in the evaluation.
-It nevertheless allows reliable file transfer among a network of poorly connected nodes in a private manner.
+Consequently, as a solution, if the transfer hangs, \sendingdevice will restart periodically sending chunks that were not acknowledged by Bob.
+Hence, \name ensures liveness over network efficiency (some chunks might be received several times), as it will be seen in the evaluation.
+Nevertheless, it allows reliable file transfer among a network of poorly connected nodes in a private manner.
