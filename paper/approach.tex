@@ -73,8 +73,11 @@ To present the different parts of \name in detail,
 we align the presentation of the system with the taxonomy of 
 \textcite{RoutingSurveyAnonymousProtocols}.
 They characterize anonymous communication protocols using the following 
-categories: (i) \textit{network structure}, (ii) \textit{routing information},
-(iii) \textit{communication model} and (iv) \textit{performance} (see~\cite[Table 1]{RoutingSurveyAnonymousProtocols}).
+categories: (i) \textit{network structure}%~\ding{168}
+, (ii) \textit{routing information}%~\ding{169}
+, (iii) \textit{communication model}%~\ding{170}
+, and (iv) \textit{performance}%~\ding{171}
+~(see~\cite[Table 1]{RoutingSurveyAnonymousProtocols}).
 
 % \begin{description}
 %   \item[Network structure.]
@@ -120,12 +123,11 @@ Particularly, \sphinxes (\cref{Sphinxes}), is an adaptation of the
 \sonja{do we apply all categories here?} Sphinx~\cite{Sphinx} mix-header format.
 This means that we inherit some properties from Sphinx and due to being only a 
 header format, it only imposes some restrictions in the above categories.
-\Sphinxes provides, just as Sphinx, unidirectional (network structure), 
+\Sphinxes (Figure~\ref{fig:outline} \ding{202}) provides, just as Sphinx, unidirectional (network structure), 
 message-based (performance) communication.
-But unlike Sphinx, \Sphinxes is hybrid source-hop-by-hop routed, a
+But unlike Sphinx, \Sphinxes is an hybrid source-hop-by-hop routed, and a
 source-bounded random walk (communication 
-model),
-\Sphinxes relies on a flat routing-topology (network structure) with fair 
+model). \Sphinxes relies on a flat routing-topology (network structure) with fair 
 scheduling (communication model) --- as all packets are indistinguishable they 
 must be processed on a first-in-first-out basis.
 \Sphinxes also introduces some probability to the node selection, but this is 
@@ -141,8 +143,8 @@ synchronous (as in mix-nets), whether node selection must be uniformly random
 or not.
 Just as Sphinx, it can be used in many different settings.
 
-Further, \ac{SPOR} protocol (\cref{SPOR}) adds node selection on top of \Sphinxes.
-The \ac{SPOR} protocol assumes a source of random nodes, \eg through 
+Further, \ac{SPOR} protocol (\cref{design}) adds node selection on top of \Sphinxes.
+The \ac{SPOR} protocol (Figure~\ref{fig:outline} \ding{203})  assumes a source of random nodes, \eg through 
 \ac{RPS}~\cite[\eg][]{BrahmsRPS} or \iac{DHT} based 
 scheme~\cite[\eg][]{Octopus}.
 Each node must be associated with a public key and some availability 
@@ -159,13 +161,13 @@ As \ac{SPOR} is designed, it selects nodes uniformly among all the nodes
 Thus, ultimately, these also depends on the source of random nodes.
 
 A device's availability depends on its user's behavior, hence the device must 
-predict this behavior.
-This is best done jointly between all of the user's devices.
-In \cref{sec:squad_overlay}, we describe a protocol which allows the devices to 
+predict this behavior. This is best done jointly between all of the user's devices.
+%In \cref{sec:squad_overlay}, we describe
+Accordingly we introduce a protocol that allows the devices to 
 compute their own availability prediction function based on the observations by 
 all other devices.
 
-Finally, we describe the complete \ac{SPORES} protocol (\cref{SPORES}), which 
+Finally, we introduce the complete \ac{SPORES} protocol that acts as a private P2P file transfer. It 
 allows the device \squad to act as an autonomous system.
 In particular, we introduce a protocol which allows transferring larger 
-messages by fragmentation and reassembly across the devices in the \squad.
+messages by fragmentation and reassembly across the devices in the \squad  (Figure~\ref{fig:outline} \ding{204}).
