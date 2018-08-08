@@ -143,7 +143,7 @@ synchronous (as in mix-nets), whether node selection must be uniformly random
 or not.
 Just as Sphinx, it can be used in many different settings.
 
-Further, \ac{SPOR} protocol (\cref{design}) adds node selection on top of \Sphinxes.
+Further, the \ac{SPOR} protocol (\cref{design}) adds node selection on top of \Sphinxes.
 The \ac{SPOR} protocol (Figure~\ref{fig:outline} \ding{203})  assumes a source of random nodes, \eg through 
 \ac{RPS}~\cite[\eg][]{BrahmsRPS} or \iac{DHT} based 
 scheme~\cite[\eg][]{Octopus}.
@@ -152,7 +152,7 @@ prediction.
 \Ac{SPOR} selects nodes for a route uniformly randomly and uses the 
 availability to maximize the availability of the entire route, \ie across 
 layers.
-As \ac{SPOR} assumes this source of random nodes, the network view (routing 
+\commentFT{What follows seems quite convoluted, with a lot of repetition. Would be nice to revise.} As \ac{SPOR} assumes this source of random nodes, the network view (routing 
 information) of each node depends on this source of random nodes, as does the 
 fact of how decentralized the scheme becomes and whether the network toppology 
 is fully, mostly or partly connected (network structure).

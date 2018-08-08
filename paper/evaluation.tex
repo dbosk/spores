@@ -117,7 +117,7 @@ Using a bigger view would result in more descriptors choice when crafting routes
 \paragraph*{Overlay} The \squad overlay has two parameters: the fanout of the gossip exchange when a device has new information to share, set to 3, and the initial length of the sequence $S$ (cf. section~\ref{ssec:device_availability}), set to 50.
 The latter provides initial knowledge to \squad members: their peers addresses, among with an estimate of the user's prior behavior.
 
-\paragraph*{PORs} We used a constant amount of 3 layers per routes (excluding the final, destination layer),
+\paragraph*{\ac{SPOR}} We used a constant amount of 3 layers per routes (excluding the final, destination layer),
 and a constant number of peers per layer $w_\layer$ of 16.
 The latter heavily influences both the network overhead (the more, the bigger the headers), and the routes' availability (more peers means a better probability that at least one peer is online in a layer).
 The default availability threshold $\theta$ is $10^-3$.
@@ -198,9 +198,7 @@ This experiment finished early aborting past 600s.
 Using the previous parameters, we performed our experiment 30 times, yielding 360 file exchanges. Plots show the aggregation of the results from all experiments, which alleviates the high variability of the stochastic processes involved (most notably the devices' churn).
 
 Figure~\ref{fig:completion_vs_size} first shows the success rate of each exchanged file over the 30 experiments.
-The dotted black line shows the overall success rate: 94.4\%. We also
-ran a naive version of classical \OR to get an impression of the
-potential difference; the success rate was 41.7\%.
+The dotted black line shows the overall success rate: 94.4\%. 
 Each bar shows the individual success rate of our test files, with their size on the x-axis.
 As one can see, the success rate drops as files get bigger.
 Files bigger than 112MB show a success rate between 80 and 90\%, while all lighter files are successfully transfered in 90\% of the cases at least.
@@ -208,9 +206,33 @@ Files bigger than 112MB show a success rate between 80 and 90\%, while all light
 % \subsubsection{Comparison to churnful Tor} % (fold)
 % \label{ssub:comparison_to_churnful_tor}
 
-% To demonstrate the need for 
+
+To get a rough baseline to evaluate the need for \iac{SPOR}, 
+we attempt the same experiment as before, but this time using an availability threshold $\theta = 1$ (cf~\ref{SPOR}): 
+layers only contain one random descriptor, as a naive approximation of
+classical \OR. 
+Over 5 experiments, we observed a file transfer success rate of 41.7\%, which is far below our results when leveraging on \ac{SPOR}.
+
 
 % subsubsection comparison_to_churnful_tor (end)
+
+\subsubsection{Traffic and availability} % (fold)
+\label{ssub:traffic_and_availability}
+
+
+\begin{figure}[t]
+  \centering
+  %\def\svgwidth{0.8\columnwidth}
+  \includegraphics[width=0.9\columnwidth]{figures/avail.pdf}
+
+  \caption{\label{fig:completion_vs_size}
+  Availability of devices and number of messages waiting for reception.}
+\end{figure}
+
+
+
+% subsubsection traffic_and_availability (end)
+
 
 % \begin{figure}[t]
 %   \centering
