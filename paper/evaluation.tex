@@ -203,15 +203,19 @@ Each bar shows the individual success rate of our test files, with their size on
 As one can see, the success rate drops as files get bigger.
 Files bigger than 112MB show a success rate between 80 and 90\%, while all lighter files are successfully transfered in 90\% of the cases at least.
 
-\subsubsection{Comparison to churnful Tor} % (fold)
-\label{ssub:comparison_to_churnful_tor}
+% \subsubsection{Comparison to churnful Tor} % (fold)
+% \label{ssub:comparison_to_churnful_tor}
 
-To demonstrate the need for \iac{SPOR}, 
+
+To get a rough baseline to evaluate the need for \iac{SPOR}, 
 we attempt the same experiment as before, but this time using an availability threshold $\theta = 1$ (cf~\ref{SPOR}): 
-layers only contain one random descriptor.
+layers only contain one random descriptor, as a naive approximation of
+classical \acl{OR}. 
 Over 5 experiments, we observed a file transfer success rate of 41.7\%, which is far below our results when leveraging on \ac{SPOR}.
 
+
 % subsubsection comparison_to_churnful_tor (end)
+
 
 \subsubsection{Availability of nodes and messages in transit} % (fold)
 \label{ssub:traffic_and_availability}
