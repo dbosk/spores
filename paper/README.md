@@ -10,7 +10,7 @@
     - `algorithm.tex` contains a description of the algorithm.
     - `privacy.tex` outlines our privacy expectations.
  - `preamble.tex` contains the LaTeX document preamble.
- - `p2p-private-cloud.tex` simply puts the files together.
+ - `spores.tex` simply puts the files together.
 
 
 # Compilation
