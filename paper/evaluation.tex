@@ -18,7 +18,7 @@ In the following, we first give precisions on the evaluation testbed and paramet
 \label{ssub:simulating_user_behavior}
 
 To evaluate \name, we take interest in users owning a variable amount of devices of different types, and frequently switching among them.
-To the best of our knowledge, there exists no real-world dataset of the devices connection times of such a user.
+To the best of our knowledge, there does not exist real-world dataset of the devices connection times of such a user.
 On our testbed, each user's behavior is therefore simulated, according to the following rules:
 \begin{itemize}
   \item The user owns a variable amount of devices. We consider the following device types: mobile (e.g. tablet, phone), portable (laptop), fixed (workstation, home computer) and server (such as a NAS, Raspberry Pi or rented appliance);
@@ -114,7 +114,7 @@ The files exchanged are a collection of 12 real ones, ranging from 6KB to 640MB.
 \paragraph*{Random Peer Sampling} It has three parameters: the period between two views exchange \trps, set to 400ms, the size of the exchanged views (6) and the size of the devices' view \rpsview, set to 30. 
 Using a bigger view would result in more descriptors choice when crafting routes, but their descriptor would be more stale: descriptors in a view have a lifetime of $|\rpsview| * \trps$ seconds on average.
 
-\paragraph*{Sprinkler} The \squad overlay has two parameters: the fanout of the gossip exchange when a device has new information to share, set to 3, and the initial length of the sequence $S$ (cf. section~\ref{ssec:device_availability}), set to 50.
+\paragraph*{Overlay} The \squad overlay has two parameters: the fanout of the gossip exchange when a device has new information to share, set to 3, and the initial length of the sequence $S$ (cf. section~\ref{ssec:device_availability}), set to 50.
 The latter provides initial knowledge to \squad members: their peers addresses, among with an estimate of the user's prior behavior.
 
 \paragraph*{PORs} We used a constant amount of 3 layers per routes (excluding the final, destination layer),
