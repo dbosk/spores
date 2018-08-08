@@ -2,18 +2,16 @@
 \label{conclusion}
 
 We presented \name that, in analogy to its biological
-counterparts, enables dissemination under unfavorable conditions. More
-specifially, the deliberate dissemination of files without using
+counterparts, enables the dissemination of critical data under unfavorable conditions. More
+specifially, \name allows the private dissemination of files between users without relying on
 storage on third-party devices, be they peers or servers in the
-cloud. This constraint results in the unfavorable conditions of
-reduced a-priori availability and therefore unreliable nodes for
-routing. We build resilience to these conditions by using predictive
-modeling for user behavior and the ensuing availability of their
-devices. From our experiments, we find that even suboptimal prediction
-already results in successful file transfer with high probability,
-though often at low speed. More in-depth knowledge of the users'
+cloud. This design choice brings unfavorable conditions that our protocol must withstand, in particular the need to route over unreliable and only partially available nodes. We overcome this challenge by combining a set-based onion-routing strategy, with {a probabilistic node selection protocol, informed by the on-line prediction of device availability. The result is a \emph{predictive and probabilistic onion routing protocol} (\ac{SPOR}), on which we based our private file transfer protocol (\ac{SPORES}). Our experiments show that even a suboptimal prediction
+already results in a high success rate of file transfer,
+though often at low speed.
+
+We conjecture that a more in-depth understanding of users'
 behavior would allow us to predict device connectivity farther into
-the future and thus likely improve the throughput. From a security and
+the future, and is thus likely to improve the throughput and reliability of our service. From a security and
 privacy perspective, we were guided by the properties for secure onion
 routing schemes defined by~\cite{CLOnionRouting} and added a property
 for device-unlinkability to prevent inferences from availiability data.
@@ -35,10 +33,10 @@ Although we presented a stateless solution, mainly to handle churn in
 a file transfer scenario, \name does not preclude a stateful alternative. 
 Other applications such as web browsing, interaction and
 collaboration or other kind of hidden services might benefit from a stateful, circuit-based approach
-like with traditional onion routing. Prediction of device availability
-could support different goals, for example time of day for delayed
-file transfer for resource optimization. 
+such as found in traditional onion routing. We could also use our knowledge of future device availability to support a wider range of objectives beyond throughput and rate of success, for instance by delaying
+file transfers to optimize resource usage. 
 
+Finally our solution assumes a secure Random Peer Sampling service (RPS), i.e. a uniformly random sampling service whose sampling properties are immune to interference by malicious nodes. These are strong requirements, that are not easily met in practice. Some promising candidates for this service exist however~\cite{Octopus,BrahmsRPS}. Further strengthening these solutions seem particularly worthwhile and interesting.
 
 %
 % \commentAL{To rewrite as real paragraphs} Future work and prospects:
