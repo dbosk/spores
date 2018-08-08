@@ -7,12 +7,11 @@
 
 \name provides a private and fully decentralized file transfer service by exploiting 
 %% is a distributed system made of
-users' devices.  We assume any two devices can communicate with one
-another as soon as one knows the address of the other (\eg using the
+users' devices.  We assume any pair of devices can communicate with each other as soon as one knows the address of the other (\eg using the
 Internet, possibly extended with NAT traversal techniques). The
 devices owned by the same user (this user's \squad) know of each
-other. Other users' devices can help transfer the file from one user
-to another but are not needed for storage.  We also assume that users
+other. We leverage the the devices of other users to help transfer the file from one user
+to another, but do not use them for storage.  We also assume that users
 can exchange some limited amounts of data out-of-band, \ie through
 some other channel than the network just mentioned (\eg using \ac{NFC}
 or QR codes).
@@ -26,8 +25,8 @@ In the following, we first describe how file transfer typically occurs
 when users rely on a cloud storage provider. We use this simple use
 case to highlight some of the desirable privacy properties of a file
 transfer service, before mapping them into our fully decentralized
-(a.k.a. peer-to-peer (P2P\footnote{We use the terms \emph{fully decentralized} and
-  \emph{P2P} interchangeably, and preferentially the latter for brevity.}))
+(a.k.a. P2P\footnote{We use the terms \emph{fully decentralized} and
+  \emph{P2P} interchangeably, and preferentially the latter for brevity.})
 context.  We finally consider the additional privacy properties
 required to protect users from inferences, such as by network traffic
 analysis, and state our adversary model.
@@ -45,7 +44,7 @@ moving to a P2P setting:
 \begin{itemize}
 \item Alice and Bob are the only users who learn 
 about Alice sharing a file with Bob.
-\item The composition and behavior of Alice and Bob's \squad remain
+\item The composition and behavior of Alice and Bob's \squad{}s remain
   hidden to each other, and to other users. I.e. Alice does not learn
   which devices Bob owns or uses, let alone how Bob uses them, and
   reciprocally.
@@ -98,8 +97,8 @@ secure even if arbitrarily composed with other instances of the same or other pr
 These properties cover the concerns about
 revealing to others that Alice shares a file with Bob in the first
 place. In \name, we additionally derive the property of
-\emph{device-unlinkability} from the \ac{P2P} requirements above, meaning that
-using \name does not reveal the \squad a device belongs to nor its
+\emph{device-unlinkability} from the \ac{P2P} requirements introduced above, meaning that
+using \name neither reveals the \squad a device belongs to, nor its
 owner. Thus, no information on the user's behavior (e.g. being online)
 can be infered through \name. 
 \sonja{insert more formal definition
