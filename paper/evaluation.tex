@@ -198,15 +198,17 @@ This experiment finished early aborting past 600s.
 Using the previous parameters, we performed our experiment 30 times, yielding 360 file exchanges. Plots show the aggregation of the results from all experiments, which alleviates the high variability of the stochastic processes involved (most notably the devices' churn).
 
 Figure~\ref{fig:completion_vs_size} first shows the success rate of each exchanged file over the 30 experiments.
-The dotted black line shows the overall success rate: 94.4\%. 
+The dotted black line shows the overall success rate: 94.4\%. We also
+ran a naive version of classical \OR to get an impression of the
+potential difference; the success rate was 41.7\%.
 Each bar shows the individual success rate of our test files, with their size on the x-axis.
 As one can see, the success rate drops as files get bigger.
 Files bigger than 112MB show a success rate between 80 and 90\%, while all lighter files are successfully transfered in 90\% of the cases at least.
 
-\subsubsection{Comparison to churnful Tor} % (fold)
-\label{ssub:comparison_to_churnful_tor}
+% \subsubsection{Comparison to churnful Tor} % (fold)
+% \label{ssub:comparison_to_churnful_tor}
 
-To demonstrate the need for 
+% To demonstrate the need for 
 
 % subsubsection comparison_to_churnful_tor (end)
 
