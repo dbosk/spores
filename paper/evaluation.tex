@@ -132,12 +132,25 @@ The other parameter, \tupload, that is the period between two chunk sends, was e
 \trps, \tupload and \tuser are correlated, but otherwise meaningless since \tuser is artificial. 
 Their values were thus empirically chosen to balance efficiency, network traffic and the experiments' duration.
 
-Finally, the experiments had a timeout of 15 minutes. 
+Finally, the experiments had a timeout \texp of 15 minutes. 
 We observed that downloads---however big---usually succeeded long before this time, or did not succeed whatever time was given to them.
 
 
 \subsubsection{Experimental process} % (fold)
 \label{ssub:experimental_process}
+
+The experiments are conducted as follows: 
+\begin{itemize}
+  \item A first initialization procedure takes care of bootstrapping the users and their devices. 
+  A scheduler is started for each user, that will turn devices on or off throughout the experiment according to the models discussed in~\ref{ssub:simulating_user_behavior};
+  \item Each file is initiated in turn: a couple $(d_s, d_r)$ of online devices from different users is chosen.
+  The sender $d_s$ is requested to initialize file upload---chunks hashes and routes take some time to compute---and answers with \finfo, including reply headers. 
+  \finfo is given to $d_r$ as it is asked to receive $f$. It replies with forward headers, that are given to $d_s$. The exchange starts;
+  \item We wait for this initialization process to end before starting to send the next file;
+  \item Once all 12 files are initiated; we wait for the \texp timeout, unless all files have successfully completed their transfer, 
+  in which case we early abort. This process takes up to a minute.
+\end{itemize}
+
 
 \begin{figure}[t]
   \centering
@@ -148,14 +161,23 @@ We observed that downloads---however big---usually succeeded long before this ti
   In gray: number of pending file exchanges; in black: mean outbound traffic (kB) per node per second.}
 \end{figure}
 
-The experiments were conducted as follows: 
-\begin{itemize}
-  \item A first initialization procedure takes care of bootstrapping the users and their devices. 
-  A scheduler is started for each user, that will turn devices on or off throughout the experiment according to the models discussed in~\ref{ssub:simulating_user_behavior};
-  \item The 12 file exchanges are initiated in turn: a couple $(d_s, d_r)$ of online devices from different users is chosen.
-  The sender $d_s$ is requested to initialize file upload
-\end{itemize}
 
+Figure~\ref{fig:bw_and_pending_files} reads the timeline of a typical experiment by showing, 
+in gray, the number of simultaneous file exchanges and, in black, the average outbound traffic per node per second.
+The initialization phase is not part of the graph. 
+In this particular experiment, all files were successfully exchanged.
+
+We see that file transfers get started in turn, but that some complete fast, such that the maximum number of simultaneous downloads only rises to 8.
+It quickly drops to 4 at 160s, but the last files take another 300s to finish. 
+Those last files are either the biggest ones, or are exchanged between poorly connected nodes that tend not to be online at the same time.
+
+The dark plot shows that the traffic is uneven, with frequent spikes in the MB/s order. 
+The traffic is obviously dependent on the number of pending exchanges, 
+but remains around 600 kB/s on average, even when 8 files are concurrently downloading.
+Knowing that a chunk message weighs 516 kB, we deduce that nodes exchange an average of one chunk per second when the traffic is substantial.
+We also see that the traffic remains non-null long after the last file finished downloading it. 
+Indeed, some stale messages can remain in the buffers of poorly connected devices for an unbounded period of time.
+This experiment finished early aborting past 600s.
 
 % subsubsection experimental_process (end)
 
@@ -165,10 +187,11 @@ The experiments were conducted as follows:
 \begin{figure}[t]
   \centering
   %\def\svgwidth{0.8\columnwidth}
-  \includegraphics[width=0.8\columnwidth]{figures/completion_vs_size.pdf}
+  \includegraphics[width=0.9\columnwidth]{figures/completion_vs_size.pdf}
 
   \caption{\label{fig:completion_vs_size}
-  Success rate of the file transfer ordered by size of file.}
+  Success rate of the file transfer ordered by size of file over 30 experiments.
+  The dotted black line shows the overall success rate of 94.4\%.}
 \end{figure}
 
 

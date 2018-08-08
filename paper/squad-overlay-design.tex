@@ -157,7 +157,7 @@ In addition , each file is associated with a random \fileid, that is part of \fi
 
 \paragraph*{Out-of-band initialization} 
 When Alice wishes to send a file $f$ to Bob, she computes \finfo, 
-plus one reply header per chunk (as was seen in section~\ref{sec:SPOR}), and sends the whole to Bob.
+including one reply header per chunk (as was seen in section~\ref{sec:SPOR}), and sends the whole to Bob.
 Still out-of-band, Bob replies with one forward header per chunk.
 This way, each chunk $\chunk_i$ is associated with a unique route both ways: 
 a forward header $\forwardheader_i$ known by Alice, and a backward header $\backwardheader_i$ known by Bob.
