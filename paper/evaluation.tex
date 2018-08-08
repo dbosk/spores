@@ -17,9 +17,6 @@ In the following, we first give precisions on the evaluation testbed and paramet
 \subsubsection{Simulating user behavior} % (fold)
 \label{ssub:simulating_user_behavior}
 
-\newcommand\tuser{\ensuremath{t_{\text{user}}}}
-\newcommand\ndevices{\ensuremath{n_{\text{devices}}}}
-
 To evaluate \name, we take interest in users owning a variable amount of devices of different types, and frequently switching among them.
 To the best of our knowledge, there exists no real-world dataset of the devices connection times of such a user.
 On our testbed, each user's behavior is therefore simulated, according to the following rules:
@@ -112,7 +109,7 @@ This way, even though the time step \tuser is fixed, devices enter and leave the
 \label{ssub:experimental_parameters}
 
 All our experiments were conducted with 25 users participating in \name. 
-The files exchanged are a collection of 12 real ones, ranging from 5KB to 640MB.
+The files exchanged are a collection of 12 real ones, ranging from 6KB to 640MB.
 
 \paragraph*{Random Peer Sampling} It has three parameters: the period between two views exchange \trps, set to 400ms, the size of the exchanged views (6) and the size of the devices' view \rpsview, set to 30. 
 Using a bigger view would result in more descriptors choice when crafting routes, but their descriptor would be more stale: descriptors in a view have a lifetime of $|\rpsview| * \trps$ seconds on average.
@@ -125,61 +122,34 @@ and a constant number of peers per layer $w_\layer$ of 16.
 The latter heavily influences both the network overhead (the more, the bigger the headers), and the routes' availability (more peers means a better probability that at least one peer is online in a layer).
 The default availability threshold $\theta$ is $10^-3$.
 
+
 \paragraph*{File transfer} The main parameter here is the chunk size \chunksize, that was set to 512KB, which is considered, in BitTorrent, to be a good trade-off between network efficiency and number of chunks.
-The other parameter, \tupload, was empirically set to 500ms.
+The other parameter, \tupload, that is the period between two chunk sends, was empirically set to 500ms.
 
 
-\paragraph*{Users' behavior} Finally we set \tuser to 3s. 
+\paragraph*{Users' behavior} We set \tuser, the time between two user actions, to 3s. 
 
 \trps, \tupload and \tuser are correlated, but otherwise meaningless since \tuser is artificial. 
 Their values were thus empirically chosen to balance efficiency, network traffic and the experiments' duration.
 
-Finally, the experiments had a timeout of 15 minutes. 
+Finally, the experiments had a timeout \texp of 15 minutes. 
 We observed that downloads---however big---usually succeeded long before this time, or did not succeed whatever time was given to them.
 
-\subsection{File transfer}
-\label{sub:file_transfer}
 
-\begin{figure}[t]
-  \centering
-  %\def\svgwidth{0.8\columnwidth}
-  \includegraphics[width=0.8\columnwidth]{figures/completion_vs_size.pdf}
+\subsubsection{Experimental process} % (fold)
+\label{ssub:experimental_process}
 
-  \caption{\label{fig:completion_vs_size}
-  Success rate of the file transfer ordered by size of file.}
-\end{figure}
-
-
-Using the previous parameters, we performed our experiment 30 times, yielding 360 file exchanges. Plots show the aggregation of the results from all experiments, which alleviates the high variability of the stochastic processes involved (most notably the devices' churn).
-
-Overall, we saw 94\% of successful file transfer.
-
-\begin{figure}[t]
-  \centering
-  %\def\svgwidth{0.8\columnwidth}
-  \includegraphics[width=0.8\columnwidth]{figures/logistic_many_0-001.pdf}
-
-  \caption{\label{fig:logistic}
-  Logistic regression of the success rate as a function of the file size using the default parameters.}
-\end{figure}
-
-Figure~\ref{fig:logistic} shows the logistic regression of the success rate as a function of the files' size. 
-This regression is good candidate to describe binary stochastic processes as a function of a dependent variable,
-and is often used in epidemics prediction, economics, and even marketing.
-Simply put, given $X$ (in our case, the size of each transfered file) and $y$ (the outcome of the transfer: success or failure), 
-the regressor estimates the coefficient $k$ and the mid-point $x_0$ of the logistic function defined as follows:
-
-$$ f(x) = \frac{1}{1 + e^{-k \cdot x + x_0 }} $$
-
-Because it sets the top (100\%) and bottom (0\%) values as asymptotes, 
-logistic regression does not yield very optimistic success rates at the beginning,
-but its midpoint $x_0$ tends to be very accurate even with a low quantity of training samples.
-\commentAL{Yes indeed, very pessimistic, where is our 94\%!? I want to make a CDF also.}
-
-In our case, $f(x)$ reads the probability that a file exchange fails given its size. 
-The plot reads that files below 319MB have more than 90\% chances of being successfully exchanged.
-The probability falls as the file gets bigger, such that a 1,O43MB has 50\% chances of successful transfer (see $x_0$).
-
+The experiments are conducted as follows: 
+\begin{itemize}
+  \item A first initialization procedure takes care of bootstrapping the users and their devices. 
+  A scheduler is started for each user, that will turn devices on or off throughout the experiment according to the models discussed in~\ref{ssub:simulating_user_behavior};
+  \item Each file is initiated in turn: a couple $(d_s, d_r)$ of online devices from different users is chosen.
+  The sender $d_s$ is requested to initialize file upload---chunks hashes and routes take some time to compute---and answers with \finfo, including reply headers. 
+  \finfo is given to $d_r$ as it is asked to receive $f$. It replies with forward headers, that are given to $d_s$. The exchange starts;
+  \item We wait for this initialization process to end before starting to send the next file;
+  \item Once all 12 files are initiated; we wait for the \texp timeout, unless all files have successfully completed their transfer, 
+  in which case we early abort. This process takes up to a minute.
+\end{itemize}
 
 
 \begin{figure}[t]
@@ -187,18 +157,88 @@ The probability falls as the file gets bigger, such that a 1,O43MB has 50\% chan
   %\def\svgwidth{0.8\columnwidth}
   \includegraphics[width=\columnwidth]{figures/bw_and_pending_files.pdf}
 
-  \caption{\label{fig:bw_and_pending_files}Traffic during one experiment.
+  \caption{\label{fig:bw_and_pending_files}Timeline of one experiment's traffic.
   In gray: number of pending file exchanges; in black: mean outbound traffic (kB) per node per second.}
 \end{figure}
+
+
+Figure~\ref{fig:bw_and_pending_files} reads the timeline of a typical experiment by showing, 
+in gray, the number of simultaneous file exchanges and, in black, the average outbound traffic per node per second.
+The initialization phase is not part of the graph. 
+In this particular experiment, all files were successfully exchanged.
+
+We see that file transfers get started in turn, but that some complete fast, such that the maximum number of simultaneous downloads only rises to 8.
+It quickly drops to 4 at 160s, but the last files take another 300s to finish. 
+Those last files are either the biggest ones, or are exchanged between poorly connected nodes that tend not to be online at the same time.
+
+The dark plot shows that the traffic is uneven, with frequent spikes in the MB/s order. 
+The traffic is obviously dependent on the number of pending exchanges, 
+but remains around 600 kB/s on average, even when 8 files are concurrently downloading.
+Knowing that a chunk message weighs 516 kB, we deduce that nodes exchange an average of one chunk per second when the traffic is substantial.
+We also see that the traffic remains non-null long after the last file finished downloading it. 
+Indeed, some stale messages can remain in the buffers of poorly connected devices for an unbounded period of time.
+This experiment finished early aborting past 600s.
+
+% subsubsection experimental_process (end)
+
+\subsection{File transfer}
+\label{sub:file_transfer}
 
 \begin{figure}[t]
   \centering
   %\def\svgwidth{0.8\columnwidth}
-  \includegraphics[width=\columnwidth]{figures/bw_and_pending_files_log.pdf}
+  \includegraphics[width=0.9\columnwidth]{figures/completion_vs_size.pdf}
 
-  \caption{\label{fig:bw_and_pending_files_log}Traffic during one experiment.
-  In gray: number of pending file exchanges; in black: mean outbound traffic (kB) per node per second.}
+  \caption{\label{fig:completion_vs_size}
+  Success rate of the file transfer ordered by size of file over 30 experiments.
+  The dotted black line shows the overall success rate of 94.4\%.}
 \end{figure}
+
+
+Using the previous parameters, we performed our experiment 30 times, yielding 360 file exchanges. Plots show the aggregation of the results from all experiments, which alleviates the high variability of the stochastic processes involved (most notably the devices' churn).
+
+Figure~\ref{fig:completion_vs_size} first shows the success rate of each exchanged file over the 30 experiments.
+The dotted black line shows the overall success rate: 94.4\%. 
+Each bar shows the individual success rate of our test files, with their size on the x-axis.
+As one can see, the success rate drops as files get bigger.
+Files bigger than 112MB show a success rate between 80 and 90\%, while all lighter files are successfully transfered in 90\% of the cases at least.
+
+\subsubsection{Comparison to churnful Tor} % (fold)
+\label{ssub:comparison_to_churnful_tor}
+
+To demonstrate the need for 
+
+% subsubsection comparison_to_churnful_tor (end)
+
+% \begin{figure}[t]
+%   \centering
+%   %\def\svgwidth{0.8\columnwidth}
+%   \includegraphics[width=0.8\columnwidth]{figures/logistic_many_0-001.pdf}
+
+%   \caption{\label{fig:logistic}
+%   Logistic regression of the success rate as a function of the file size using the default parameters.}
+% \end{figure}
+
+% Figure~\ref{fig:logistic} shows the logistic regression of the success rate as a function of the files' size. 
+% This regression is good candidate to describe binary stochastic processes as a function of a dependent variable,
+% and is often used in epidemics prediction, economics, and even marketing.
+% Simply put, given $X$ (in our case, the size of each transfered file) and $y$ (the outcome of the transfer: success or failure), 
+% the regressor estimates the coefficient $k$ and the mid-point $x_0$ of the logistic function defined as follows:
+
+% $$ f(x) = \frac{1}{1 + e^{-k \cdot x + x_0 }} $$
+
+% Because it sets the top (100\%) and bottom (0\%) values as asymptotes, 
+% logistic regression does not yield very optimistic success rates at the beginning,
+% but its midpoint $x_0$ tends to be very accurate even with a low quantity of training samples.
+% \commentAL{Yes indeed, very pessimistic, where is our 94\%!? I want to make a CDF also.}
+
+% In our case, $f(x)$ reads the probability that a file exchange fails given its size. 
+% The plot reads that files below 319MB have more than 90\% chances of being successfully exchanged.
+% The probability falls as the file gets bigger, such that a 1,O43MB has 50\% chances of successful transfer (see $x_0$).
+
+
+
+% ------------------
 
 
 % \subsection{Shortcomings} % (fold)

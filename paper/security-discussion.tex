@@ -161,10 +161,11 @@ The same applies for \(d\).
 (\(\pk_d\) can be regularly updated.)
 
 With an inaccurate availability function, \(\avail\), this will not be a 
-problem as there will be many others (as the system scales) that shares the 
+problem as there will be many others (as the system scales) that share the 
 same availability distribution.
 With more accurate availability estimates we would have to employ techniques 
-like \ac{DP} to ensure that Alice's availability distribution is not too 
+like \ac{DP} to ensure that Alice's availability distribution is not
+(too close to)
 unique.
 
 \paragraph*{Robustness}
@@ -175,7 +176,7 @@ we inherit unique IDs for each mix packet.
 If we provide the mix packets as an ordered list when we communicate them 
 out-of-band together with the metadata of the file and they are used in that 
 same order, then we can use those IDs to re-order chunks if need be.
-The \squad overlay handles inter-squad \commentDaniel{intra?} device 
+The \squad overlay handles intra-squad device 
 coordination.
 We ensure liveness by acknowledgments and timeouts (as detailed in 
 \cref{sec:squad_overlay}), despite the possibility of \squad devices

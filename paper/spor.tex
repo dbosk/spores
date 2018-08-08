@@ -49,8 +49,8 @@ one uniformly randomly selected node, where.
 \begin{itemize}
   \item \(d\) is the node's identifier (address);
   \item \(\pk_d\) is the node's public key;
-  \item \(\avail_d(t)\) is the node's probability of being online as a function 
-    of time.
+  \item  \(\avail_d(t)\) is the node's probability of being online as a function of time. 
+  Its computation will be discussed in~\ref{ssec:device_availability}.
 \end{itemize}
 The \(\GetRandomNode\) algorithm can be instantiated using \eg
 Octopus~\cite{Octopus}. Its function is analogous to 
@@ -70,3 +70,11 @@ Bob will distribute these nodes across all layers \(L_i\) to maximize \(\min_i
 This means that Bob minimizes the risk of a layer (\ie all nodes in a layer) 
 being unavailable.
 
+For the evaluaion of the impact of devices' availability prediction, we introduce a parameter, coined the \emph{availability threshold} $\theta$. 
+\CreateLayer iteratively adds nodes to a layer \layer until its probability of being entirely offline $\Poff^\layer$ falls below $\theta$ or $w_\layer$ is reached:
+
+$$ \Poff^\layer = \sum\limits_{d \in \layer}(1 - \desc_d.\Pon_d) $$
+
+When $|\layer| < w_\layer$, the layer is filled with empty descriptors so as to fill the target number of nodes per layer.
+
+Using $\theta$, \name becomes more conservative than \ac{SPOR}, and we can investigate the best number of nodes per layer in regard of its probability of being available.

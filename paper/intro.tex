@@ -106,9 +106,8 @@ In contrast to state-of-the-art P2P systems, users of \name agree out-of-band to
 do not keep it available for anyone else in the future. \emph{Thirdly}, we
 exploit distributed machine learning techniques to predict the future
 availability of user devices, and use this ability to implement a
-\emph{probabilistic predictive onion routing} mechanism. The
-predictive nature of our routing, exploited in a stateless way, allows
-us to overcome the inherent fragility of pure P2P file transfer schemes. 
+\emph{probabilistic predictive onion routing} protocol. Our protocol exploits a new mix-header format that uses onion layers made of sets of nodes rather single nodes. The use of multiple nodes in individual layers, together with our estimation of future device availability, exploited in a stateless way, allows
+us to overcome the inherent fragility of pure P2P file transfer schemes while providing strong privacy properties. 
 
 %% In this paper, we introduce \name{}, a novel approach to perform a decentralized, autonomous,
 %% and self-organizing file sharing among users' devices while preserving the users’ privacy
@@ -142,34 +141,37 @@ Our contributions are as follows:
 %   suboptimal prediction results in successful file transfer with high
 %   probability. 
 
-  \item We provide the Sphinxes mix-header format which extends 
-    Sphinx~\cite{Sphinx} to a source-routed limited random-walk protocol --- 
-    \ie each layer of the onion route contains several alternative next nodes.
+  \item We propose \Sphinxes, an extension of the
+    Sphinx~\cite{Sphinx} mix-header format to set-based onion routing. \Sphinxes allows each layer of an onion route to contain several alternative next nodes, thus realizing a source-routed limited random-walk protocol.
 
-  \item We provide the \ac{SPOR} node selection strategy for routing which, given a secure 
+  \item Building on \Sphinxes, we introduce the \ac{SPOR} %% node selection strategy for routing
+    protocol
+    that, given a secure 
     \ac{RPS} protocol and availability estimates, selects nodes to populate the 
-    layers of Sphinxes to maximize the availability of the route --- this 
-    yields reliable routes even with low-availability nodes.
+    layers of \Sphinxes in order to maximize the availability of the route. This node selection procedure 
+    yields reliable routes even in the presence of low-availability nodes while retaining the strong privacy properties of onion routing.
 
-  \item We provide a protocol for a device squad to estimate the availabilities 
+  \item We provide a protocol for a device \squad to estimate the availabilities 
     of its own devices, based on Markov models and \squad overlays.
-    These availabilities can then be used with \ac{SPOR}.
+    These estimated availabilities can then be exploited by \ac{SPOR} to populate \Sphinxes.
    % \commentDaniel{We should add some more details, maybe.}
 
-  \item We use \ac{SPOR} to design \name \sonja{removed for
+  \item We use \ac{SPOR} to realize \name, \sonja{removed for
       redundancy, rephrased: a novel, fully decentralized, 
-    autonomous and self-organizing} as a privacy-preserving file transfer service among
-  users without third-party storage.
+    autonomous and self-organizing} a privacy-preserving file transfer service among
+  users that eschews any third-party storage or centralized bootstrapping service.
 
 \end{itemize}
 
-In the following, in Section~\ref{system-model}, we state the
-system and adversary models as well as the desired security and privacy properties of \name. Section~\ref{design}
-introduces the design of our proposed solution. In
-Sections~\ref{security-discussion} and \ref{Performance},
+The remainder of this paper is organized as follows. Section~\ref{system-model} presents the
+system and adversary models as well as the desired security and
+privacy properties of \name. Section~\ref{approach} describes the
+overall approach. In Section~\ref{Sphinxes}, we introduce \sphinxes. 
+Then, in Section~\ref{design}, we introduce the different building
+blocks of \name. In sections~\ref{security-discussion} and \ref{Performance},
 respectively, we evaluate the security and performance of our
 approach. We set \name into context with related work in
-Section~\ref{RelatedWork} and conclude with Section~\ref{conclusion}.
+Section~\ref{RelatedWork}, and finally conclude with Section~\ref{conclusion}.
 
 % Cashmere: resilient anonymous routing.
 % Route fingerprinting in anonymous communications.
