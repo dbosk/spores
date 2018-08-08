@@ -37,7 +37,7 @@ The idea is not to give a detailed description of Sphinx, but to give the
 reader enough understanding of Sphinx to understand the changes we make to 
 achieve \Sphinxes.
 For a more detailed understanding of Sphinx, we refer the reader to the 
-excellent description in the original Sphinx paper~\cite{Sphinx}.
+description in the original Sphinx paper~\cite{Sphinx}.
 
 Each node \(n\) in the system has a long-term public-key pair: private key 
 \(\sk_n\in \ZZ_q^*\) and public key \(\pk_n = g^{\sk_n}\in G\), where \(g\) 
@@ -344,7 +344,7 @@ If the \ac{MAC} does not verify correctly for any key, then the algorithm
 aborts.
 
 If the \ac{MAC} computed correctly, compute \(t\gets \hash_\tau(s_i)\).
-If \(t\) is already in the table of seen packets, drop the packet.
+If \(t\) is already in the table of seen (mix, not IP) packets, drop the packet.
 Otherwise, add \(t\) to the table and decrypt \(\beta\):
 \begin{equation*}
   L'\concat C'\concat \gamma'\concat \beta'\gets \{\beta\concat 0_{w_H 
