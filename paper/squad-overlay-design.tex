@@ -27,7 +27,7 @@ Given this information dissemination (push) and history reconciliation mechanism
 \label{ssec:device_availability}
 
 The predictive nature of \name lies in the fact that each participating device publicly advertises its probability of being connected in the near future. 
-This information is used when any node needs to create a Stateless Predictive Probabilistic Onion Route (\SPOR), as will be shown in the next subsection~\ref{ssec:por}.
+This information is used when any node needs to create a Stateless Predictive Probabilistic Onion Route (\acs{SPOR}).%, as will be shown in the next subsection~\ref{ssec:por}.
 
 As described earlier, \squad members know the connection times of all the user's devices, given by the \texttt{CONNECTED} items in the \squad's sequence.
 It can be represented as a 2D sparse matrix of booleans, as shown in the Table~\ref{tab:connection_times} (depicting a user owning a laptop, a phone, and a smart-TV).
@@ -81,54 +81,54 @@ $$ P'_d = \frac{\left| \left\{ X_i \in \mathcal{X}_{d\text{ online}}, X_{i+1} \i
 $P'd$ will be advertised in spite of $P_d$. It will also be used as a baseline in the evaluation.
 
 %\subsection{Probabilistic Onion Routes}
-\subsection{Selection of nodes for routes creation}
-\label{ssec:por}
+% \subsection{Selection of nodes for routes creation}
+% \label{ssec:por}
 
-%\subsubsection{The global overlay}
-\subsubsection{\GetRandomNode}
-\label{sssec:global_overlay}
+% %\subsubsection{The global overlay}
+% \subsubsection{\GetRandomNode}
+% \label{sssec:global_overlay}
 
-Devices need to know the address of SPORES participants in order to craft PORs.
-To this end, we employ a Random Peer Sampling service~\cite{Jelasity_Voulgaris_Guerraoui_Kermarrec_van_Steen_2007,Jesi_Montresor_van_Steen_2010} (RPS) among all nodes in SPORES.
-It is a gossip protocol that allows each participant to keep a fixed-size \emph{random} subset of other nodes' descriptor (that we will call the RPS's \emph{view} \rpsview). 
-The view is constantly evolving, as queries are periodically issued between nodes to exchange descriptors between their respective views.
-Finally, offline nodes are quickly evicted from devices' views.
+% Devices need to know the address of SPORES participants in order to craft PORs.
+% To this end, we employ a Random Peer Sampling service~\cite{Jelasity_Voulgaris_Guerraoui_Kermarrec_van_Steen_2007,Jesi_Montresor_van_Steen_2010} (RPS) among all nodes in SPORES.
+% It is a gossip protocol that allows each participant to keep a fixed-size \emph{random} subset of other nodes' descriptor (that we will call the RPS's \emph{view} \rpsview). 
+% The view is constantly evolving, as queries are periodically issued between nodes to exchange descriptors between their respective views.
+% Finally, offline nodes are quickly evicted from devices' views.
 
-The randomness of the views must be guaranteed: 
-a node that would be present in views too often would become a bottleneck, and could monitor a bigger portion of the network.
-It will be evaluated in section~\commentAL{TODO}.
+% The randomness of the views must be guaranteed: 
+% a node that would be present in views too often would become a bottleneck, and could monitor a bigger portion of the network.
+% It will be evaluated in section~\commentAL{TODO}.
 
-In SPORES, a descriptor $\desc_d$ describing device $d$ contains the following information:
-\begin{itemize}
-  \item \(d\) is the node's identifier (address);
-  \item \(\pk_d\) is the node's public key;
-  \item \(\Pon_d\) is the node's probability of remaining online at the time of the descriptor's creation.
-\end{itemize}
+% In SPORES, a descriptor $\desc_d$ describing device $d$ contains the following information:
+% \begin{itemize}
+%   \item \(d\) is the node's identifier (address);
+%   \item \(\pk_d\) is the node's public key;
+%   \item \(\Pon_d\) is the node's probability of remaining online at the time of the descriptor's creation.
+% \end{itemize}
 
-$(d, \pk_d, \Pon_d)= \leftarrow \GetRandomNode$ is the function that takes a node from the RPS's view \rpsview on demand.
+% $(d, \pk_d, \Pon_d)= \leftarrow \GetRandomNode$ is the function that takes a node from the RPS's view \rpsview on demand.
 
-%\subsubsection{Routes creation}
-\subsubsection{\CreateLayer}
-\label{sssec:routes_creation}
+% %\subsubsection{Routes creation}
+% \subsubsection{\CreateLayer}
+% \label{sssec:routes_creation}
 
 
-Routes are created via \Sphinxes as described in section~\ref{sec:SPOR}.
-But each layer \layer constituting the route is created by the $\CreateLayer$ function, that is independent from \Sphinxes.
+% Routes are created via \Sphinxes as described in section~\ref{sec:SPOR}.
+% But each layer \layer constituting the route is created by the $\CreateLayer$ function, that is independent from \Sphinxes.
 
-In \name, we wish to maximize the availability of the route.
-Therefore, each layer \layer is created so as to reach the availability threshold $\theta$, a parameter chosen by the user.
-Note that \Sphinxes is agnostic to this use-case: one could want to maximize other characteristics, e.g. the layer's expected bandwidth.
+% In \name, we wish to maximize the availability of the route.
+% Therefore, each layer \layer is created so as to reach the availability threshold $\theta$, a parameter chosen by the user.
+% Note that \Sphinxes is agnostic to this use-case: one could want to maximize other characteristics, e.g. the layer's expected bandwidth.
 
-$\CreateLayer$ iteratively calls $\GetRandomNode\xspace$ to add random nodes to the current layer \layer, until the layer's probability of being offline, $\Poff^\layer$, falls below the availability threshold $\theta$:
+% $\CreateLayer$ iteratively calls $\GetRandomNode\xspace$ to add random nodes to the current layer \layer, until the layer's probability of being offline, $\Poff^\layer$, falls below the availability threshold $\theta$:
 
-$$ \Poff^\layer = \sum\limits_{d \in \layer}(1 - \desc_d.\Pon_d) $$
+% $$ \Poff^\layer = \sum\limits_{d \in \layer}(1 - \desc_d.\Pon_d) $$
 
-When a device creates a layer to reach its user, descriptors are not taken from \rpsview but from the \squad's sequence: all devices in this layer will belong to the user.
-The logic is otherwise the same.
+% When a device creates a layer to reach its user, descriptors are not taken from \rpsview but from the \squad's sequence: all devices in this layer will belong to the user.
+% The logic is otherwise the same.
 
-Recall that each layer in \Sphinxes has a constant number of nodes $w_\layer$, that is a \Sphinxes parameter.
-If $w_\layer$ is reached before $\Poff^\layer < \theta$, then we early abort $\CreateLayer$.
-On the other hand, if $|\layer| < w_\layer$, we pad the layer with blank descriptors, such that the header always weighs the same size.
+% Recall that each layer in \Sphinxes has a constant number of nodes $w_\layer$, that is a \Sphinxes parameter.
+% If $w_\layer$ is reached before $\Poff^\layer < \theta$, then we early abort $\CreateLayer$.
+% On the other hand, if $|\layer| < w_\layer$, we pad the layer with blank descriptors, such that the header always weighs the same size.
 
 
 \subsection{SPORES: file exchange through probabilistic onion routes}
@@ -141,13 +141,12 @@ We now apply this feature to reliably exchange files between two users.
 Our file transfer protocol is loosely based on BitTorrent \cite{bt_bep3}: 
 at initialization, a file $f$ of size \filesize is first cut into chunks of constant size \chunksize by its uploader,
 resulting in $\nchunks = \lceil \filesize / \chunksize \rceil$ chunks.
-A SHA1 hash \hashchunk is computed for each chunk, plus another SHA1 hash \hashfile of the chunks hashes; that will serve error detection. 
+A SHA1 hash \hashchunk is computed for each chunk, plus another SHA1 hash \hashfile of the chunks hashes; that will serve as an error detection scheme. 
 
-
-In BitTorrent, .torrent files are publicly available on the Web.
+In BitTorrent, \textit{.torrent} files are publicly available on the Web.
 They contain $\finfo = \left(\filesize, \nchunks, \left[\hashchunk\right]_{\chunk \in f}, \hashfile\right)$, 
 along with network information to reach uploaders of $f$ (e.g. the tracker's address).
-Anyone can download a .torrent and start receiving the file associated to it.
+Anyone can download a \textit{.torrent} and start receiving the file associated to it.
 
 In \name, we want file exchanges to remain private: the file's metadata are exchanged out-of-band.
 In addition , each file is associated with a random \fileid, that is part of \finfo.
@@ -192,9 +191,10 @@ Once \sendingdevice receives \bitfield, it merges it with its previous knowledge
 If all chunks were acknowledged, the transfer is over.
 Else, \sendingdevice sends a new chunk, among the ones that were not acknowledged by Bob.
 
-\commentAL{This is a shitty scheduler. Should I mention it? Rephrase? You have a citation to propose instead?}
-Messages in \name might arrive in a wrong order or fail:
+%\commentAL{This is a shitty scheduler. Should I mention it? Rephrase? You have a citation to propose instead?}
+
+Naturally, in \name, messages might arrive in a wrong order or fail, e.g.
 it is not unlikely that the file exchange stops before its transfer is done.
-As a solution, if the transfer hangs, \sendingdevice will restart periodically sending chunks that were not acknowledged by Bob.
-This solution ensures liveness over network efficiency (some chunks might be received several times), as will be seen in the evaluation.
-It nevertheless allows reliable file transfer among a network of poorly connected nodes in a private manner.
+Consequently, as a solution, if the transfer hangs, \sendingdevice will restart periodically sending chunks that were not acknowledged by Bob.
+Hence, \name ensures liveness over network efficiency (some chunks might be received several times), as it will be seen in the evaluation.
+Nevertheless, it allows reliable file transfer among a network of poorly connected nodes in a private manner.
