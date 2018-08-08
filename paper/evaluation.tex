@@ -213,7 +213,7 @@ Over 5 experiments, we observed a file transfer success rate of 41.7\%, which is
 
 % subsubsection comparison_to_churnful_tor (end)
 
-\subsubsection{Traffic and availability} % (fold)
+\subsubsection{Availability of nodes and messages in transit} % (fold)
 \label{ssub:traffic_and_availability}
 
 
@@ -222,9 +222,32 @@ Over 5 experiments, we observed a file transfer success rate of 41.7\%, which is
   %\def\svgwidth{0.8\columnwidth}
   \includegraphics[width=0.9\columnwidth]{figures/avail.pdf}
 
-  \caption{\label{fig:completion_vs_size}
+  \caption{\label{fig:avail}
   Availability of devices and number of messages waiting for reception.}
 \end{figure}
+
+To assess the performance of \name, another important metric is the rate of online nodes at a time.
+Figure~\ref{fig:avail} shows just that (in gray), along with the number of messages that are in transit at a time (in black). 
+It takes its data from the same experiment as figure~\ref{fig:bw_and_pending_files}.
+The black dotted line is the average number of online nodes throughout the experiment: 15.8\% (it was computed up to the ~500th second where the nodes are killed).
+
+We see that the number of online devices lies around its mean the whole experiment.
+The message curve roughly follows the previous figure~\ref{fig:bw_and_pending_files}'s number of pending file exchanges. 
+Some spikes are created when two devices are online and exchange many chunks in a small amount of time. 
+The spike is shut down when these messages are received by the downloader, or when it suddenly falls offline.
+The curve never goes down below 1000 messages in transit before the end of the experiment: these account for messages in offline devices that took very long to reach their end.
+
+Indeed, it is interesting to look at the transmission times of the messages: their mean time in transit is of 22s in this experiment, which is incredibly long.
+Looking at the standard deviation, that is of 48s, we understand that the dispersion of the transit time is very high, and that the mean is skewed by 
+extremely slow messages (with a maximum transit time of 9m13s).
+In last resort, we compute the median of the messages transfer time: 639ms; it means that half messages spend less that this time in the system.
+
+An obvious direction for future work is to implement at Time To Leave (TTL) or other stale-messages-removal policy.
+
+\\
+To conclude this section, we have seen that \name could empower users to privately exchange files over a challenging network where only 15.8\% of the infrastructure was available at a time.
+Our proposal, \name, allows to nevertheless complete the file exchange with an average probability of 94.4\%, against 41.7\% success rate using classical onion routes
+
 
 
 
