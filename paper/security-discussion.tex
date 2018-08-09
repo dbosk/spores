@@ -191,7 +191,7 @@ statistical disclosure attacks to eventually learn who communicates
 with whom~\cite{StatisticalDisclosureAttacks}. There are also denial
 of service attacks that can lead to the adversary learning more from
 the system~\cite{DenialOfSecurity}.  As mentioned in
-\cref{system-model}, we share the adversary model with Tor
+\cref{system-model}, we share the adversary model with \ac{Tor}
 %and Sphinx
 and thus exclude a global passive adversary. Our focus is on
 protecting Alice and Bob from each other and from others who also
@@ -227,11 +227,10 @@ Since \ac{SPORES} is a fully-fledged system, it must make a concrete choice for
 the mixing strategy.
 Since \ac{SPORES} aims at low latency, routers do not batch and mix incoming 
 messages; they immediately forward any messages.
-This puts \ac{SPORES} in the same position as Tor~\cite{Tor}, \ie more 
-vulnerable to traffic analysis than batching 
-mix-nets~\cite{RoutingSurveyAnonymousProtocols} \commentDaniel{we should 
-  probably look for the original papers} --- this vulnerability is inherited 
-from the mixing strategy.
+This puts \ac{SPORES} in the same position as \ac{Tor}, \ie more vulnerable to 
+traffic analysis than batching mix-nets~\cite{RoutingSurveyAnonymousProtocols} 
+\commentDaniel{we should probably look for the original papers} --- this 
+vulnerability is inherited from the mixing strategy.
 
 
 % \commentDaniel{Predecessor attacks: random walk protocols has the problem that 
