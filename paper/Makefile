@@ -24,10 +24,17 @@ DEPENDS+=	figures/*.pdf
 spores.pdf: spores.tex preamble.tex revision_macros.tex
 spores.pdf: ${SRC} ${DEPENDS}
 
+figures/%::
+	${MAKE} -C $(dir $@) $(notdir $@)
 
 .PHONY: clean
 clean:
 	${RM} spores.pdf
+	${MAKE} -C figures clean
+
+.PHONY: distclean
+distclean:
+	${MAKE} -C figures distclean
 
 
 .PHONY: print todo
