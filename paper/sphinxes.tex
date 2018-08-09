@@ -12,7 +12,7 @@ length, makes replies indistinguishable from forward messages and resists
 tagging attacks.
 It is also compact with only 224 bytes of header for a five-hop path with 
 128-bit security. \sonja{what about the CL properties?}
-Sphinx only provides one node per onion layer; in this section we extend \ac{Sphinx} 
+\Ac{Sphinx} only provides one node per onion layer; in this section we extend \ac{Sphinx} 
 to \Sphinxes, which allows for multiple nodes per onion layer.
 (See \cref{fig:OR-POR}.)
 % AL: Bounded random-walk....
@@ -36,7 +36,7 @@ We will now give an overview of the \ac{Sphinx} header format.
 The idea is not to give a detailed description of \ac{Sphinx}, but to give the 
 reader enough understanding of \ac{Sphinx} to understand the changes we make to 
 achieve \Sphinxes.
-For a more detailed understanding of Sphinx, we refer the reader to the 
+For a more detailed understanding of \ac{Sphinx}, we refer the reader to the 
 description in the original Sphinx paper~\cite{Sphinx}.
 
 Each node \(n\) in the system has a long-term public-key pair: private key 
@@ -166,7 +166,7 @@ We will synchronize our detailed descriptions with that of
     key \(\pk_n = g^{\sk_n}\in \G^*\).
     We assume that the identifier--public-key pairs, \((n, \pk_n)\), are 
     distributed.
-    (Sphinx made a difference between nodes and destinations, \ie the set 
+    (\Ac{Sphinx} made a difference between nodes and destinations, \ie the set 
     \(\D\) such that \(\D\cap \N = \emptyset\) and \(\D\cup \N\) is prefix 
     free, see~\cite{Sphinx} for details.
     We could do the same adoption, but we do not need that for the purposes of 
@@ -190,7 +190,7 @@ clarity but later apply them to onions and file chunks, repectively.
 \paragraph*{The \(\CreateHeader\) algorithm}
 
 This algorithm creates a header for \iac{SPOR}.
-It is identical to that of \ac{Sphinx}~\cite[\S 3.2]{Sphinx} except that we use a 
+It is identical to that of Sphinx~\cite[\S 3.2]{Sphinx} except that we use a 
 set of addresses and keys for each layer instead of only one address and key.
 Also, we do not distinguish between addresses of destinations and routers.
 
