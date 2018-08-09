@@ -121,11 +121,11 @@ categories: (i) \textit{network structure}%~\ding{168}
 As depicted in Figure~\ref{fig:outline}, \ac{SPORES} relies on a predictive and probabilistic onion routing protocol (\ac{SPOR}). \ac{SPOR} in turn combines a multi-set mix-header format (\Sphinxes) together with a node selection protocol that exploits decentralized prediction regarding node availability to optimize the reliability of \Sphinxes without jeopardizing its security properties.
 %% Particularly, \sphinxes (\cref{Sphinxes}), is an adaptation of the 
 %% \sonja{do we apply all categories here?} \ac{Sphinx} mix-header format.
-%% This means that we inherit some properties from Sphinx and due to being only a 
+%% This means that we inherit some properties from \ac{Sphinx} and due to being only a 
 %% header format, it only imposes some restrictions in the above categories.
-\Sphinxes (Figure~\ref{fig:outline} \ding{202}) provides, just as Sphinx, unidirectional (network structure), 
+\Sphinxes (Figure~\ref{fig:outline} \ding{202}) provides, just as \ac{Sphinx}, unidirectional (network structure), 
 message-based (performance) communication.
-But unlike Sphinx, \Sphinxes is an hybrid source-hop-by-hop routed, and a
+But unlike \ac{Sphinx}, \Sphinxes is an hybrid source-hop-by-hop routed, and a
 source-bounded random walk (communication 
 model). \Sphinxes relies on a flat routing-topology (network structure) with fair 
 scheduling (communication model) --- as all packets are indistinguishable they 
@@ -141,7 +141,7 @@ properties~\cite{CLOnionRouting}).
 topology must be fully connected or not, be asynchronous (as in \ac{Tor}) or 
 synchronous (as in mix-nets), whether node selection must be uniformly random 
 or not.
-Just as Sphinx, it can be used in many different settings.
+Just as \ac{Sphinx}, it can be used in many different settings.
 
 Further, the \ac{SPOR} protocol (\cref{design}) adds node selection on top of \Sphinxes.
 The \ac{SPOR} protocol (Figure~\ref{fig:outline} \ding{203})  assumes a source of random nodes, \eg through 

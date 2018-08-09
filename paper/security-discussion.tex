@@ -39,11 +39,11 @@ The integrity is still reduced to the security of the \ac{MAC} \(\mac\)
 (\(\gamma\) in the header).
 We still achieve the bitwise unlinkability since \(C\) is replaced at each 
 layer and the next \(C\) is hidden inside the header --- which otherwise 
-remains identical to that of Sphinx.
+remains identical to that of \ac{Sphinx}.
 
 The second change is that we use several nodes per layer as opposed to only 
 one.
-The proofs of Sphinx rest on the results of \textcite{CLOnionRouting}, which 
+The proofs of \ac{Sphinx} rest on the results of \textcite{CLOnionRouting}, which 
 are results for classical \ac{OR} with only one node per layer.
 
 Analogously to classical \ac{OR}, we also reveal the previous and next sets of 
@@ -57,7 +57,7 @@ classical \ac{OR}, regardless of whether the set making up a layer contains a
 single or several nodes.
 
 With these arguments, we believe that \Sphinxes inherits the \ac{UC} security 
-properties of Sphinx. %, however, this should be formally analysed.
+properties of \ac{Sphinx}. %, however, this should be formally analysed.
 
 \paragraph*{Security of \acs*{SPOR}, node selection}
 
@@ -100,7 +100,7 @@ However, Eve can only be certain that she has relayed the message from Alice to
 Bob if \(\nu = r\), \ie she receives the message from Alice, relays it \(r-1\) 
 times and lastly sends it to Bob.
 If \(\nu < r\) though, then, due to the indistinguishability and unlinkability 
-properties of Sphinxes (inherited from Sphinx), Eve cannot know for certain if 
+properties of Sphinxes (inherited from \ac{Sphinx}), Eve cannot know for certain if 
 Alice is the first node and Bob is the last node. \sonja{but what can
   she learn/guess?}
 \commentDaniel{For all she knows there might be another node at either the 
@@ -171,7 +171,7 @@ unique.
 \paragraph*{Robustness}
 
 Stateless routing can result in re-ordered chunks or packets, and
-chunks received on different devices of a user's \squad. From Sphinx,
+chunks received on different devices of a user's \squad. From \ac{Sphinx},
 we inherit unique IDs for each mix packet.
 If we provide the mix packets as an ordered list when we communicate them 
 out-of-band together with the metadata of the file and they are used in that 
