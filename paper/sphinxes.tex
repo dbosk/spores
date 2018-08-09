@@ -1,6 +1,6 @@
-%!TEX root = p2p-private-cloud.tex
+%!TEX root = spores.tex
 
-\subsection{\Sphinxes: the Sphinx header format Extended for Sets of nodes}%
+\section{\Sphinxes: the Sphinx header format Extended for Sets of nodes}%
 \label{Sphinxes}
 
 \Textcite{Sphinx} designed \iac{UC} secure message format for mixes, called 
@@ -12,7 +12,7 @@ length, makes replies indistinguishable from forward messages and resists
 tagging attacks.
 It is also compact with only 224 bytes of header for a five-hop path with 
 128-bit security. \sonja{what about the CL properties?}
-Sphinx only provides one node per onion layer; in this section we extend Sphinx 
+\Ac{Sphinx} only provides one node per onion layer; in this section we extend \ac{Sphinx} 
 to \Sphinxes, which allows for multiple nodes per onion layer.
 (See \cref{fig:OR-POR}.)
 % AL: Bounded random-walk....
@@ -32,18 +32,18 @@ and mixing (OR, top) and \ac{SPOR} (bottom).
 
 \subsubsection{Overview of the Sphinx header format}
 
-We will now give an overview of the Sphinx header format.
-The idea is not to give a detailed description of Sphinx, but to give the 
-reader enough understanding of Sphinx to understand the changes we make to 
+We will now give an overview of the \ac{Sphinx} header format.
+The idea is not to give a detailed description of \ac{Sphinx}, but to give the 
+reader enough understanding of \ac{Sphinx} to understand the changes we make to 
 achieve \Sphinxes.
-For a more detailed understanding of Sphinx, we refer the reader to the 
-excellent description in the original Sphinx paper~\cite{Sphinx}.
+For a more detailed understanding of \ac{Sphinx}, we refer the reader to the 
+description in the original Sphinx paper~\cite{Sphinx}.
 
 Each node \(n\) in the system has a long-term public-key pair: private key 
 \(\sk_n\in \ZZ_q^*\) and public key \(\pk_n = g^{\sk_n}\in G\), where \(g\) 
 generates a group \(G\) of prime order \(q\).
 
-The Sphinx header (for the first node) is a triple \((\alpha_1, \beta_1, 
+The \ac{Sphinx} header (for the first node) is a triple \((\alpha_1, \beta_1, 
   \gamma_1)\), where \(\alpha_1\) is \iac{DHKE} exponent (\(g^x\), where \(x\) 
 is a short-term secret chosen randomly for each header), \(\beta_1\) is the 
 encrypted routing data and \(\gamma_1\) is \iac{MAC} for \(\beta_1\).
@@ -70,21 +70,19 @@ completely random to the next node, thus the position on the path is hidden.
 Finally, \(\alpha_1\) is blinded into \(\alpha_2\) with a key derived from 
 \(s_1\).
 Then the triple \((\alpha_2, \beta_2, \gamma_2)\) is sent to the node with 
-address \(d_2\).
-
-When node \(n\) discovers \(d_{n+1} = *\) it knows that the message is intended 
+address \(d_2\). When node \(n\) discovers \(d_{n+1} = *\) it knows that the message is intended 
 for itself and thus stops the forwarding.
 
 \subsubsection{The \Sphinxes extension for sets of nodes}
 
-We will now extend Sphinx to do \ac{SPOR}: instead of providing only \(d_{i+1}\) 
+We will now extend \ac{Sphinx} to do \ac{SPOR}: instead of providing only \(d_{i+1}\) 
 in \(\beta_i\), we will have a set \(\{d_{i+1}^{(1)}, \dotsc, d_{i+1}^{(m)}\}\) 
 of \(m\) alternative next nodes.
 This means that all \(m\) nodes must be able to compute the same shared secret 
 \(s_{i+1}\).
 We do this by adding one layer of indirection.
 
-In Sphinx we denoted the public key for layer \(i\) as \(\pk_i\).
+In \ac{Sphinx}, the public key for layer \(i\) is denoted as \(\pk_i\).
 Since we have \(m\) alternative nodes with different keys, let us denote them 
 by \(\pk_i^{(1)}, \dotsc, \pk_i^{(m)}\).
 
@@ -123,7 +121,7 @@ be derived from \(\hat s_i\), then the node knows that \(\hat s_i = s_i\).
 \end{itemize}
 
 We will synchronize our detailed descriptions with that of 
-Sphinx~\cite{Sphinx}, hence we will use the following notation:
+\ac{Sphinx}, hence we will use the following notation:
 \begin{itemize}
   \item \(\kappa\) is the security parameter.
     The adversary must thus do about \(2^\kappa\) work to break the security.
@@ -168,7 +166,7 @@ Sphinx~\cite{Sphinx}, hence we will use the following notation:
     key \(\pk_n = g^{\sk_n}\in \G^*\).
     We assume that the identifier--public-key pairs, \((n, \pk_n)\), are 
     distributed.
-    (Sphinx made a difference between nodes and destinations, \ie the set 
+    (\Ac{Sphinx} made a difference between nodes and destinations, \ie the set 
     \(\D\) such that \(\D\cap \N = \emptyset\) and \(\D\cup \N\) is prefix 
     free, see~\cite{Sphinx} for details.
     We could do the same adoption, but we do not need that for the purposes of 
@@ -186,7 +184,7 @@ Sphinx~\cite{Sphinx}, hence we will use the following notation:
     bit string \(s\).
 \end{itemize}
 
-We keep the nomenclature of mix headers and messages from Sphinx for
+We keep the nomenclature of mix headers and messages from \ac{Sphinx} for
 clarity but later apply them to onions and file chunks, repectively.
 
 \paragraph*{The \(\CreateHeader\) algorithm}
@@ -344,7 +342,7 @@ If the \ac{MAC} does not verify correctly for any key, then the algorithm
 aborts.
 
 If the \ac{MAC} computed correctly, compute \(t\gets \hash_\tau(s_i)\).
-If \(t\) is already in the table of seen packets, drop the packet.
+If \(t\) is already in the table of seen (mix, not IP) packets, drop the packet.
 Otherwise, add \(t\) to the table and decrypt \(\beta\):
 \begin{equation*}
   L'\concat C'\concat \gamma'\concat \beta'\gets \{\beta\concat 0_{w_H 

@@ -48,6 +48,10 @@ When the headers are used in the correct order Bob can use the identifiers from
 the headers (\(I\)) to correctly reassemble the fragments despite out-of-order 
 delivery.
 
+Alice also creates reply-headers for Bob, these can be used by Bob to inform 
+Alice at regular time intervals about which chunks have been received and which 
+are missing.
+
 %\commentDaniel{I leave the remaining details for someone else to write up.
  % What we need is the details of how Bob's devices syncs and reassembles files.
  % Maybe this is reduced to Sprinkler or something.}

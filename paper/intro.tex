@@ -1,12 +1,12 @@
-% -*- tex-main-file: "contents.tex" compile-command: "pdflatex p2p-private-cloud.tex" ispell-dictionary: "american" -*-
-%!TEX root = p2p-private-cloud.tex
+% -*- tex-main-file: "contents.tex" compile-command: "pdflatex spores.tex" ispell-dictionary: "american" -*-
+%!TEX root = spores.tex
 
 \section{Introduction}
 
 % What's the problem?
 
 Fulfilling Mark Weiser's vision, we now rely on a increasing number of personal digital devices for many everyday tasks. These devices form a \textit{personal squad} of connected entities (or \emph{\squad} as we shall call them in the remainder of the
-paper), that users rely on for their everyday interactions with the material and digital world, and with their fellow humans.
+paper), that users rely on for their everyday interactions with their fellow humans, as well as with the material and digital worlds.
 The growing importance of these \squad{}s is profoundly modifying how we live~\cite{Dearman:2008, Oh:2017, Sohn:2008,Harper08}, and has opened new areas of research such as \textit{proxemics}, the study of proximity-based interactions in a world of ubiquitous computing
 \cite{Marquardt:2011}.
 %% we are nowadays
@@ -31,8 +31,8 @@ would have a few years ago with an USB key or an email.
 
 This thirst for seamless sharing explains the rise and ongoing popularity
 of personal sharing platforms such as Dropbox, Google Docs,
-OneDrive, Amazon Drive, etc. These solutions allow users to share data between any device, with anyone, almost
-anytime, anywhere. They achieve this feat by relying heavily on
+OneDrive, Amazon Drive, etc. These solutions allow users to share data with anyone, anywhere, at almost
+anytime, between any devices. They achieve this feat by relying heavily on
 \emph{remote cloud services}, which have now become a key enabler of ubiquitous ecosystems. 
 % argument: cloud -> danger, 
 %% From a technical perspective, one major trend to provide a seamless
@@ -58,7 +58,7 @@ Unfortunately, this reliance on the cloud comes at a strong price:
 users lose control over their own data, which is distributed over
 multiple data centers, often in foreign jurisdictions, making it difficult for most users to grasp, review, and assess the privacy, and
 confidentiality guarantees they can expect. In practice, user data hosted in the cloud is routinely harvested, often without explicit
-consent, either by cloud providers or third parties, only partially
+consent, either by cloud providers or third parties, a sad situation that is only partially
 mitigated by legal measures such as the GDPR.
 
 Although data encryption is often proposed as a first line of defense for cloud-hosted data, it is unfortunately  insufficient~\cite{granick_2017, HooffLZZ15, HarnikPS10}. Metadata such as a user'
@@ -67,7 +67,7 @@ control histories, thus revealing what each user shared with whom and when.
 %  because it does not protect meta-data information
 The exposure of metadata seriously weakens user privacy, as famously emphasized by a former NSA and CIA director: "\emph{We kill people based on metadata.}''~\cite{NaughtonTheGuardian2016} 
 In this model, user devices, masquerading as allies, get turned into %% tracking and/or monitoring \squad{}s, and serve as
-highly efficient instruments spying on their owners. 
+highly efficient monitoring tools spying on their owners. 
 
 Constructing a system that provides fully anonymous content sharing while avoiding the above pitfalls is unfortunately highly
 challenging. The last two decades have witnessed many attempts at building privacy-preserving and anonymous P2P data-sharing
@@ -77,11 +77,11 @@ These solutions typically leverage \emph{onion
  discovery in a distributed manner, a step that is otherwise
 centralized in traditional onion routing schemes. However, because of the high
 churn typically experienced by P2P networks, the performance of these systems has been
-discouraging~\cite{LeBlond:2013}; churn causes routes to disappear and be
-reconstructed frequently, which is particularly costly. By contrast, Tor
-\cite{Tor}, one of the most popular anonymous networks,
+discouraging~\cite{LeBlond:2013}, as churn causes routes to disappear and be
+reconstructed frequently, which is particularly costly. By contrast, \ac{Tor}, 
+one of the most popular anonymous networks,
 trades lower anonymity guarantees for a much better
-performance. \sonja{lower than who?} Tor's lower protection arises from
+performance. \sonja{lower than who?} \acg{Tor} lower protection arises from
 a partially centralized design that hinges on a set of \emph{directory
 servers}, which are used to advertise trusted nodes that are available to bootstrap onion
 routes. 
@@ -106,9 +106,8 @@ In contrast to state-of-the-art P2P systems, users of \name agree out-of-band to
 do not keep it available for anyone else in the future. \emph{Thirdly}, we
 exploit distributed machine learning techniques to predict the future
 availability of user devices, and use this ability to implement a
-\emph{probabilistic predictive onion routing} mechanism. The
-predictive nature of our routing, exploited in a stateless way, allows
-us to overcome the inherent fragility of pure P2P file transfer schemes. 
+\emph{probabilistic predictive onion routing} protocol. Our protocol exploits a new mix-header format that uses onion layers made of sets of nodes rather single nodes. The use of multiple nodes in individual layers, together with our estimation of future device availability, exploited in a stateless way, allows
+us to overcome the inherent fragility of pure P2P file transfer schemes while providing strong privacy properties. 
 
 %% In this paper, we introduce \name{}, a novel approach to perform a decentralized, autonomous,
 %% and self-organizing file sharing among users' devices while preserving the users’ privacy
@@ -132,7 +131,7 @@ Our contributions are as follows:
 % concept named Stateless Probabilistic Onion Routes (SPOR), which combines onion routing with
 % probabilistic node selection, informed by random peer sampling and
 % predictions for node availability;
-% \item We have extended Sphinx~\cite{Sphinx}, a compact and secure
+% \item We have extended \ac{Sphinx}, a compact and secure
 %   message header format for mixnets, to allow for sets of nodes
 %   instead of single nodes for onion routing layers, resulting in a
 %   hybrid between source routing and ad-hoc node  selection that can
@@ -142,34 +141,37 @@ Our contributions are as follows:
 %   suboptimal prediction results in successful file transfer with high
 %   probability. 
 
-  \item We provide the Sphinxes mix-header format which extends 
-    Sphinx~\cite{Sphinx} to a source-routed limited random-walk protocol --- 
-    \ie each layer of the onion route contains several alternative next nodes.
+  \item We propose \Sphinxes, an extension of the
+    \ac{Sphinx} mix-header format to set-based onion routing. \Sphinxes allows each layer of an onion route to contain several alternative next nodes, thus realizing a source-routed limited random-walk protocol.
 
-  \item We provide the \ac{SPOR} node selection strategy for routing which, given a secure 
+  \item Building on \Sphinxes, we introduce the \ac{SPOR} %% node selection strategy for routing
+    protocol
+    that, given a secure 
     \ac{RPS} protocol and availability estimates, selects nodes to populate the 
-    layers of Sphinxes to maximize the availability of the route --- this 
-    yields reliable routes even with low-availability nodes.
+    layers of \Sphinxes in order to maximize the availability of the route. This node selection procedure 
+    yields reliable routes even in the presence of low-availability nodes while retaining the strong privacy properties of onion routing.
 
-  \item We provide a protocol for a device squad to estimate the availabilities 
+  \item We provide a protocol for a device \squad to estimate the availabilities 
     of its own devices, based on Markov models and \squad overlays.
-    These availabilities can then be used with \ac{SPOR}.
+    These estimated availabilities can then be exploited by \ac{SPOR} to populate \Sphinxes.
    % \commentDaniel{We should add some more details, maybe.}
 
-  \item We use \ac{SPOR} to design \name \sonja{removed for
+  \item We use \ac{SPOR} to realize \name, \sonja{removed for
       redundancy, rephrased: a novel, fully decentralized, 
-    autonomous and self-organizing} as a privacy-preserving file transfer service among
-  users without third-party storage.
+    autonomous and self-organizing} a privacy-preserving file transfer service among
+  users that eschews any third-party storage or centralized bootstrapping service.
 
 \end{itemize}
 
-In the following, in Section~\ref{system-model}, we state the
-system and adversary models as well as the desired security and privacy properties of \name. Section~\ref{design}
-introduces the design of our proposed solution. In
-Sections~\ref{security-discussion} and \ref{Performance},
+The remainder of this paper is organized as follows. Section~\ref{system-model} presents the
+system and adversary models as well as the desired security and
+privacy properties of \name. Section~\ref{approach} describes the
+overall approach. In Section~\ref{Sphinxes}, we introduce \sphinxes. 
+Then, in Section~\ref{design}, we introduce the different building
+blocks of \name. In sections~\ref{security-discussion} and \ref{Performance},
 respectively, we evaluate the security and performance of our
 approach. We set \name into context with related work in
-Section~\ref{RelatedWork} and conclude with Section~\ref{conclusion}.
+Section~\ref{RelatedWork}, and finally conclude with Section~\ref{conclusion}.
 
 % Cashmere: resilient anonymous routing.
 % Route fingerprinting in anonymous communications.
