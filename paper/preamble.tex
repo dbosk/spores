@@ -1,4 +1,4 @@
-%!TEX root = p2p-private-cloud.tex
+%!TEX root = spores.tex
 
 \usepackage[binary-units]{siunitx}
 \usepackage[british]{babel}
@@ -69,6 +69,29 @@
 
 \usepackage[natbib,style=ieee]{biblatex}
 \usepackage[capitalize]{cleveref}
+\usepackage{acro}
+\ExplSyntaxOn
+\ProvideAcroEnding{possessive-singular}{'s}{'s}
+\ProvideAcroEnding{possessive-plural}{s'}{s'}
+\ProvideAcroCommand{\acg}{%
+  \acro_possessive_singular:
+  \acro_use:n {#1}
+}
+\ProvideAcroCommand{\acgp}{%
+  \acro_possessive_plural:
+  \acro_use:n {#1}
+}
+\ProvideAcroCommand{\Acg}{%
+  \acro_possessive_singular:
+  \acro_first_upper:
+  \acro_use:n {#1}
+}
+\ProvideAcroCommand{\Acgp}{%
+  \acro_possessive_plural:
+  \acro_first_upper:
+  \acro_use:n {#1}
+}
+\ExplSyntaxOff
 \usepackage{bibsp}
 \addbibresource{meta.bib}
 \addbibresource{osn.bib}
@@ -79,7 +102,7 @@
 \addbibresource{otrmsg.bib}
 \addbibresource{ac.bib}
 \addbibresource{privacy.bib}
-\addbibresource{p2p-private-cloud.bib}
+\addbibresource{spores.bib}
 \addbibresource{adrien.bib}
 
 \DeclareAcronym{OR}{%
@@ -92,13 +115,15 @@
 }
 \DeclareAcronym{SPOR}{%
   short = {SP$^2$OR},
+  short-format = \scshape,
   long = {Stateless Predictive Probabilistic Onion Routing},
-  short-format = \scshape
 }
 \DeclareAcronym{SPORES}{%
   short = {SP$^2$ORES},
-  long = {\it Stateless Predictive Probabilistic Onion Routing for E-Squads},
-  short-format = \scshape
+  short-format = \scshape,
+  long = {Stateless Predictive Probabilistic Onion Routing for E-Squads},
+  long-format = \it,
+  long-possessive-plural = {'},
 }
 \DeclareAcronym{RPS}{%
   short = {RPS},

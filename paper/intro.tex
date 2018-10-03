@@ -1,5 +1,5 @@
-% -*- tex-main-file: "contents.tex" compile-command: "pdflatex p2p-private-cloud.tex" ispell-dictionary: "american" -*-
-%!TEX root = p2p-private-cloud.tex
+% -*- tex-main-file: "contents.tex" compile-command: "pdflatex spores.tex" ispell-dictionary: "american" -*-
+%!TEX root = spores.tex
 
 \section{Introduction}
 
@@ -78,10 +78,10 @@ These solutions typically leverage \emph{onion
 centralized in traditional onion routing schemes. However, because of the high
 churn typically experienced by P2P networks, the performance of these systems has been
 discouraging~\cite{LeBlond:2013}, as churn causes routes to disappear and be
-reconstructed frequently, which is particularly costly. By contrast, Tor
-\cite{Tor}, one of the most popular anonymous networks,
+reconstructed frequently, which is particularly costly. By contrast, \ac{Tor}, 
+one of the most popular anonymous networks,
 trades lower anonymity guarantees for a much better
-performance. \sonja{lower than who?} Tor's lower protection arises from
+performance. \sonja{lower than who?} \acg{Tor} lower protection arises from
 a partially centralized design that hinges on a set of \emph{directory
 servers}, which are used to advertise trusted nodes that are available to bootstrap onion
 routes. 
@@ -131,7 +131,7 @@ Our contributions are as follows:
 % concept named Stateless Probabilistic Onion Routes (SPOR), which combines onion routing with
 % probabilistic node selection, informed by random peer sampling and
 % predictions for node availability;
-% \item We have extended Sphinx~\cite{Sphinx}, a compact and secure
+% \item We have extended \ac{Sphinx}, a compact and secure
 %   message header format for mixnets, to allow for sets of nodes
 %   instead of single nodes for onion routing layers, resulting in a
 %   hybrid between source routing and ad-hoc node  selection that can
@@ -142,7 +142,7 @@ Our contributions are as follows:
 %   probability. 
 
   \item We propose \Sphinxes, an extension of the
-    Sphinx~\cite{Sphinx} mix-header format to set-based onion routing. \Sphinxes allows each layer of an onion route to contain several alternative next nodes, thus realizing a source-routed limited random-walk protocol.
+    \ac{Sphinx} mix-header format to set-based onion routing. \Sphinxes allows each layer of an onion route to contain several alternative next nodes, thus realizing a source-routed limited random-walk protocol.
 
   \item Building on \Sphinxes, we introduce the \ac{SPOR} %% node selection strategy for routing
     protocol

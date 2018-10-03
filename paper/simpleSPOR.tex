@@ -3,7 +3,7 @@
 \begin{verbatim}
 Names: source S, destination D, intermediate node (set) I, rendezvous point R, file f, secret symmetric key k_s, threshold t,  a node's public key for ANOBE k_p_j
 
-Simple Tor:
+Simple \ac{Tor}:
 1) S: get I from directory
 2) set up circuit (via key agreements with each I_i)
 3) send/receive in circuit via onion (constructed by encrypting packet for each layer, next hop outermost)
@@ -55,7 +55,7 @@ Onion(S, Onion(I_1, Onion(I_2, Onion(R_S, Onion(W, payload)))))
 
 4) S sends 2) along (as payload in) 3), with http request for server
 
-Note: need to figure out how Tor sends both return onion and request, then do the same here.
+Note: need to figure out how \ac{Tor} sends both return onion and request, then do the same here.
 
 5) R_S forwards http request to W, via http(s)/TCP
 
@@ -83,22 +83,22 @@ reduced to the RPS we use.
 
 - web browsing not stateless at exit node, even possible
 
-- ANOBE encrypts for all, non-recipients get nonsense. But here we only encrypt for set of nodes in I_i. Note: current plan to use Sphinx and modify it to allow sets of nodes (encryption from ANOBE)
+- ANOBE encrypts for all, non-recipients get nonsense. But here we only encrypt for set of nodes in I_i. Note: current plan to use \ac{Sphinx} and modify it to allow sets of nodes (encryption from ANOBE)
 
 
-Comparison between Tor and SPOR:
-- SPOR file sharing similar to Tor hidden service
-- Tor web browsing similar to Spor
-- Tor stateful (circuits), SPOR stateless
-- SPOR layers are sets of nodes, Tor layers are single nodes.
-- SPOR allows for parallelism (bottlenecks only at S and D). Whereas Tor bottlenecks at the node in the circuit with the lowest 
+Comparison between \ac{Tor} and SPOR:
+- SPOR file sharing similar to \ac{Tor} hidden service
+- \ac{Tor} web browsing similar to Spor
+- \ac{Tor} stateful (circuits), SPOR stateless
+- SPOR layers are sets of nodes, \ac{Tor} layers are single nodes.
+- SPOR allows for parallelism (bottlenecks only at S and D). Whereas \ac{Tor} bottlenecks at the node in the circuit with the lowest 
 bandwidth.
-- Tor infrastracture, SPOR decentralized
+- \ac{Tor} infrastracture, SPOR decentralized
 - SPOR allows any node intor relay directory. Anyone can enter. Then they receive different ranks based on "good behaviour". They also monitor the nodes and kick out suspicious nodes.
 - SPOR chooses routes informed by availability prediction to minimize churn (prevention)
 - SPOR can do local repairs (future work?) to cope with churn (detection, response, recovery). Already now: if node not available, choose another from the set to send to. Problem in current version if node is available but then crashes. [3]
 - SPOR can limit location, e.g. within a country? Would help with availability and uniform distribution of chosen nodes again due to lack of a-priori differences in availability in same time zone.
-- Tor sender anonymity, SPOR file sharing sender-receiver anonymity (ID of device, not user as there's out-of-band communication), but the more fair analogy is probably with hidden services, where there should be sender-receiver anonymity also in Tor. Only sender anonymity when SPOR is used for web browsing.
+- \ac{Tor} sender anonymity, SPOR file sharing sender-receiver anonymity (ID of device, not user as there's out-of-band communication), but the more fair analogy is probably with hidden services, where there should be sender-receiver anonymity also in \ac{Tor}. Only sender anonymity when SPOR is used for web browsing.
 
 
 
@@ -110,7 +110,7 @@ predictor. A better prediction model would be future work (not our
 point: just plug your own prediction model).
 
 [2]
-Daniel: We could let the digest be the digest of each chunk. Then we get the ordering of the chunks as well. (\Ie the metadata is equivalent to a torrent file.) Then the ack could be a bitmap of which chunks are received. This is good for efficiency but opens up for attacks. However, the damage of this is not as bad as for mixes (or Tor), since the retransmission will *probably* not take the same route.
+Daniel: We could let the digest be the digest of each chunk. Then we get the ordering of the chunks as well. (\Ie the metadata is equivalent to a torrent file.) Then the ack could be a bitmap of which chunks are received. This is good for efficiency but opens up for attacks. However, the damage of this is not as bad as for mixes (or \ac{Tor}), since the retransmission will *probably* not take the same route.
 Adrien: We take inspiration from BitTorrent. They chunk files in fixed-size
 pieces, make a SHA1 hash of each piece, and a hash of the previous
 hashes. This is all we need to share. We can even share it in-band,
