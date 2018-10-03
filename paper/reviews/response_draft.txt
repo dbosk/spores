@@ -1,0 +1,3 @@
+Dear Reviewers,
+
+We acknowledge your valuable input regarding our paper. Notably, we understand that the relationship between SP²ORES' building blocks must to be better explained (with a figure), that putting SphinxES details (Section IV) in an appendix would facilitate the presentation, and that we need to address the security risks of publicly advertising the devices' predicted availability.
