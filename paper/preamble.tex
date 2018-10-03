@@ -1,3 +1,5 @@
+%!TEX root = spores.tex
+
 \usepackage[binary-units]{siunitx}
 \usepackage[british]{babel}
 \usepackage[hidelinks]{hyperref}
@@ -18,6 +20,7 @@
 %\usepackage{subcaption}
 \usepackage{thmtools}
 \usepackage{xfrac}
+\usepackage{interval}
 \usepackage{xparse}
 \usepackage{xspace}
 \usepackage[inline]{enumitem}
@@ -66,6 +69,29 @@
 
 \usepackage[natbib,style=ieee]{biblatex}
 \usepackage[capitalize]{cleveref}
+\usepackage{acro}
+\ExplSyntaxOn
+\ProvideAcroEnding{possessive-singular}{'s}{'s}
+\ProvideAcroEnding{possessive-plural}{s'}{s'}
+\ProvideAcroCommand{\acg}{%
+  \acro_possessive_singular:
+  \acro_use:n {#1}
+}
+\ProvideAcroCommand{\acgp}{%
+  \acro_possessive_plural:
+  \acro_use:n {#1}
+}
+\ProvideAcroCommand{\Acg}{%
+  \acro_possessive_singular:
+  \acro_first_upper:
+  \acro_use:n {#1}
+}
+\ProvideAcroCommand{\Acgp}{%
+  \acro_possessive_plural:
+  \acro_first_upper:
+  \acro_use:n {#1}
+}
+\ExplSyntaxOff
 \usepackage{bibsp}
 \addbibresource{meta.bib}
 \addbibresource{osn.bib}
@@ -75,7 +101,8 @@
 \addbibresource{p2p.bib}
 \addbibresource{otrmsg.bib}
 \addbibresource{ac.bib}
-\addbibresource{p2p-private-cloud.bib}
+\addbibresource{privacy.bib}
+\addbibresource{spores.bib}
 \addbibresource{adrien.bib}
 
 \DeclareAcronym{OR}{%
@@ -87,14 +114,16 @@
   long = {Probabilistic Onion Routing},
 }
 \DeclareAcronym{SPOR}{%
-  short = {SPOR},
+  short = {SP$^2$OR},
+  short-format = \scshape,
   long = {Stateless Predictive Probabilistic Onion Routing},
-  short-format = \scshape
 }
 \DeclareAcronym{SPORES}{%
-  short = {SPORES},
-  long = {\it Stateless Predictive Onion Routing for E-Squads},
-  short-format = \scshape
+  short = {SP$^2$ORES},
+  short-format = \scshape,
+  long = {Stateless Predictive Probabilistic Onion Routing for E-Squads},
+  long-format = \it,
+  long-possessive-plural = {'},
 }
 \DeclareAcronym{RPS}{%
   short = {RPS},
@@ -102,22 +131,24 @@
 }
 
 \newcommand{\name}{\ac{SPORES}\xspace}
+\newcommand{\sphinxes}{\textsc{SphinxES}\xspace}
+\newcommand{\Sphinxes}{\textsc{SphinxES}\xspace}
 \newcommand{\squad}{e-squad\xspace}
 \newcommand{\squads}{e-squads\xspace}
 \newcommand{\Squad}{E-squad\xspace}
 \newcommand{\Squads}{E-squads\xspace}
 
 % sphinxes.tex
+\NewScheme{\SPORES}{SPORES}
 \NewVariable{\sk}{x}
 \NewVariable{\pk}{X}
 \NewAlgorithm{\Enc}{Enc}
-\NewScheme{\Sphinxes}{Sphinxes}
-\NewAlgorithm{\CreateHeader}{\Sphinxes[CreateHeader]}
-\NewAlgorithm{\CreateFwd}{\Sphinxes[CreateForward]}
-\NewAlgorithm{\CreateReply}{\Sphinxes[CreateReply]}
-\NewAlgorithm{\UseReply}{\Sphinxes[UseReply]}
-\NewAlgorithm{\ProcessHeader}{\Sphinxes[ProcessHeader]}
-\NewAlgorithm{\CreateLayer}{CreateLayer\xspace}
+\NewScheme{\Sphnxs}{SphinxES}
+\NewAlgorithm{\CreateHeader}{\Sphnxs[CreateHeader]}
+\NewAlgorithm{\CreateFwd}{\Sphnxs[CreateForward]}
+\NewAlgorithm{\CreateReply}{\Sphnxs[CreateReply]}
+\NewAlgorithm{\UseReply}{\Sphnxs[UseReply]}
+\NewAlgorithm{\ProcessHeader}{\Sphnxs[ProcessHeader]}
 \NewVariable{\G}{\mathcal{G}}
 \NewVariable*{\mac}{\mu}
 \NewVariable*{\prg}{\rho}
@@ -135,14 +166,51 @@
 \NewVariable{\ProcessMessage}{ProcessMessage}
 
 %spor.tex
-\NewAlgorithm{\GetRandomNode}{GetRandomNode}
-\NewFunction{\avail}{avail}
+\NewScheme{\RPS}{RPS}
+\NewAlgorithm{\GetRandomNode}{\RPS[GetRandomNode]}
+\NewScheme{\SPOR}{SPOR}
+% used by Adrien
+\NewAlgorithm{\CreateLayer}{\SPOR[CreateLayer]}
+\NewFunction{\avail}{\Pon}
 
+%security-discussion.tex
+\NewFunction{\A}{\mathcal{A}}
+
+
+% Adrien's
+
+\newcommand\fileid{\ensuremath{ID_{\text{f}}}\xspace}
+\newcommand\sendingdevice{\ensuremath{d^{(s)}_f}\xspace}
+\newcommand\recdevice{\ensuremath{d^{(r)}_f}\xspace}
+\newcommand\trps{\ensuremath{t_{\text{RPS}}}}
+\newcommand\rpsview{\ensuremath{\mathcal{V}}\xspace}
+\newcommand\desc{\ensuremath{{\mathtt{desc}}}\xspace}
+%\newcommand\layer{\ensuremath{{\mathcal{L}}}\xspace}
+\newcommand\layer{L\xspace}
+\newcommand\Pon{\ensuremath{P}\xspace}
+\newcommand\Poff{\ensuremath{P_{\text{off}}}\xspace}
+\newcommand\finfo{\ensuremath{\mathcal{I}_f}}
+\newcommand\filesize{\ensuremath{s_f}\xspace}
+%\newcommand\chunk{\ensuremath{\mathit{ch}}}
+\newcommand\chunk{\ensuremath{ch}}
+\newcommand\chunksize{\ensuremath{s_{\chunk}}\xspace}
+\newcommand\nchunks{\ensuremath{n_{\chunk}}\xspace}
+\newcommand\hashchunk{\ensuremath{h_{\chunk}}\xspace}
+\newcommand\hashfile{h\xspace}
+
+\newcommand\bitfield{\ensuremath{bf_f}\xspace}
+\newcommand\tupload{\ensuremath{t_{up}}\xspace}
+
+
+\newcommand\tuser{\ensuremath{t_{\text{user}}}\xspace}
+\newcommand\ndevices{\ensuremath{n_{\text{devices}}}\xspace}
+
+\newcommand\texp{\ensuremath{t_{exp}}\xspace}
 
 
 
 \usepackage{breqn}
-
+\usepackage{graphicx}
 \usepackage{import} % for pdf+latex
 %\graphicspath{{figures/}}
 
