@@ -1,3 +1,55 @@
 Dear Reviewers,
 
 We acknowledge your valuable input regarding our paper. Notably, we understand that the relationship between SP²ORES' building blocks must to be better explained (with a figure), that putting SphinxES details (Section IV) in an appendix would facilitate the presentation, and that we need to address the security risks of publicly advertising the devices' predicted availability.
+
+We will develop on two other points: the statelessness of SP²ORES, and our evaluation testbed.
+
+Reviewer B observed the following: "It is not clear how you use onion routing without circuits". 
+In Tor, Alice creates onion routes by iteratively contacting her designated relays. The Onion Routers (OR) along the path must remember where to forward each received stream (i.e. they maintain a routing table).
+Unlike it, SP²ORES builds routes by crafting a self-sufficient header beforehand, such that each OR will know where to forward each packet by simply decrypting the header.
+// To enjoy sender-receiver anonymity in SP²ORES, both ends of the circuit must exchange their headers out-of-band.
+
+You coined our evaluation optimistic, and doubted its realism. It is true that we only employ fabricated user traces (furthermore, using the same stochastic model as our prediction engine).
+We aim to show that, assuming information on personal devices (such as timestamped connection/disconnection), it is possible to infer their future availability by modeling the user's behavior. 
+Alas, real-world data that would fit our purpose is cruelly lacking (at least for academia). Adapting data such as wireless connectivity traces to fit our purpose (multi-device interaction over time) would by itself constitute a legitimate contribution: we firmly envisage to tackle it in the near future.
+
+[...]
+
+# @A The evaluation struck me as being somewhat optimistic, 
+since human movements are emulated in the evaluation via a Hidden Markov Model
+(HMM) and HMMs also serve as the models as to how SP$^2$ORES forms
+predictive behavior.  In other words, the evaluation uses a model
+that's assumed by the implementation, and thus misses how actual human
+behavior (which doesn't strictly conform to HMMs) affects performance.
+# @B Section VII I wonder how realistic the performance 
+evaluation is. I would have liked some discussion of how the Docker instances 
+can be limited to emulate lower powered devices. Also, how do you distribute 
+the user's e-squads over the five machines in your evaluation. I feel like 
+putting these all on the same machine will hide impacts of unreliable wireless 
+channels on your results. 
+# @B Section VII It would have been nice to see models of user 
+mobility that are available in existing traces vs. a totally simulated 
+mobility/usage pattern here. E.g., traces from CRAWDAD (https://crawdad.org/) 
+may be a good starting point to create more realistic user models.
+
+You both had concerns about the realism of our evaluation.
+We use a general model for our predictions: a Markov chain (not Hidden) where state are the bitarray stating which devices are connected:
+our prediction of a future device's availability solely depends on which devices are online now, given the history of the user's behavior.
+Our argument is that prediction enables predictive routing. 
+If we had field data, we would choose another prediction model, e.g. Recurrent Neural Networks, that are good candidates for classifying patterns in time series.
+For the evaluation, we introduced the user's location (leading to a HMM), which enabled to model fixed appliances tied to a location. 
+Despite the location transition matrix being fixed for all users, devices' connectivity traces exhibit much diversity, because the number, type and connection probability of devices are all different for each user. 
+
+Our study did not consider connection unreliability or devices' scarce resources, because we collapsed these concepts with the availability: 
+a user carrying their phone outside would have e.g. 65% of availability, because the phone's connection is often dropping and its resources are constrained.
+Using Docker to limit the resources of devices, or simulate an unreliable network with high latency would still benefit the soundness of our experiments.
+
+
+Our argument is that prediction enables predictive routing. If we had field data, we would choose another prediction model, e.g. Recurrent Neural Networks, that are good candidates for classifying patterns in time series.
+OR
+We picked a Markov prediction model because it fits the simulated users behavior. If we had field, we would strengthen our prediction with a more complex model (e.g. Recurrent Neural Networks are good candidates for classifying patterns in time series).
+
+Which leads to the question of ground data being absent from our experiments.
+Mobility/connectivity datasets are not applicable as-is for our study, because they do not capture the interaction of a user with many of their devices; we would need to engage in empirical experiments to get data on the emerging trend of e-squads.
+Still, studies about user mobility prediction (like https://crawdad.org/yonsei/lifemap/20120103/) or connectivity over time are of interest to us, and we thank you for pointing us to Crawdad.
+Lastly, 
