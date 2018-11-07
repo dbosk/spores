@@ -1,0 +1,268 @@
+Date: Tue, 6 Nov 2018 17:52:42 +0000
+From: NDSS 2019 HotCRP <noreply@ndss19.hotcrp.com>
+To: Daniel Bosk <dbosk@kth.se>
+Subject: [NDSS 2019] Submission #454 "SP²ORES: Stateless Predictive..."
+
+Dear Daniel Bosk,
+
+We regret to inform you that your paper #454 will not be included in the
+2019 Network and Distributed System Security Symposium.
+
+       Title: SP²ORES: Stateless Predictive Probabilistic Onion Routing for
+              E-Squads
+  Paper site: https://ndss19.hotcrp.com/paper/454?cap=0454afVnzGUpLtog
+
+We received a total of 521 submissions, and after a competitive review
+process with three review rounds and a PC meeting, only 89 papers were
+accepted to appear in the conference.
+
+Reviews and comments on your paper are appended to this email, and
+available on the paper site linked above. Hope they would be of help in
+revising your work.
+
+We do thank you for submitting to NDSS'19.
+
+- NDSS 2019 PC Co-Chairs
+
+----------------------------------------------------
+
+Review #454A
+===========================================================================
+* Updated: 24 Oct 2018 8:24:14pm EDT
+
+Overall merit
+-------------
+4. Accept
+
+Reviewer expertise
+------------------
+2. Some familiarity
+
+Novelty
+-------
+3. New contribution
+
+Paper summary
+-------------
+This paper presents SP$^2$ORES, a distributed system for file
+transferring that avoids centralized trust.  SP$^2$ORES leverages (1)
+the ubiquity of **e-squads**, a group of devices that share an owner,
+and (2) **proxemics**, the manner in which devices within proximity of
+one another can communicate.  To enable SP$^2$ORES, the authors make
+several contributions, including (1) modifying the Sphinx onion
+routing protocol to support groups, (2) the SP$^2$OR protocol that
+uses random-peer sampling (RPS) and availability estimates to maximize
+the availability of onion routes, (3) a protocol for an e-squad to
+estimate its availability, and (4) the file transfer service itself.
+
+Comments for author
+-------------------
+This is very impressive work that somehow fits a number of interesting
+contributions into a single conference paper submission.
+
+I like the system model of this paper: Alice and Bob want to transfer
+a file, don't want to involve a centralized party, and don't care
+about leaving that file available for sharing after it's been
+transferred.  This is a useful and realistic scenario, and I like the
+unique tact of using e-squads and predictive behavior to deliver
+messages/files.
+
+The paper is very well-written, but it's definitely not an easy read.
+Given the complexities involved, the paper could benefit from a
+clearer operational diagram; Figure 1 presents the overall
+architecture, but attempts to incorporate all of the various protocols
+and components of the system into a single diagram.  I'd prefer to see
+a clearer and more high-level figure that shows a complete file
+transfer between two devices.
+
+On a somewhat related note, Section IV spends a considerable amount of
+time on the formalities of SphinxES and its security properties.  I
+think some of the material here is better suited for an appendix; the
+paper could be made a bit more readable by describing in more detail
+the overall operation and purpose of the protocol (and how it fits
+into the larger SP$^2$ORES picture) and stating its security
+properties (but saving the subtle implementation details for an
+appendix).
+
+To me, the more interesting portion of the paper is the e-squad
+overlay and techniques for predicting a device's availability
+(presented in Sections IV-B and IV-C, respectively).
+
+The paper does seem to gloss over SP$^2$ORES' location privacy
+implications.  Devices publicly advertise its probability of being
+connected in the near future, based on their past behavior.  I would
+have liked to see some analysis of how much information is leaked due
+to the advertising of $P'd$ -- that is, what can be inferred about a
+device (and/or the device's owner) based on these advertisements?  Can
+this privacy risk be quantified?
+
+The evaluation struck me as being somewhat optimistic, since human
+movements are emulated in the evaluation via a Hidden Markov Model
+(HMM) and HMMs also serve as the models as to how SP$^2$ORES forms
+predictive behavior.  In other words, the evaluation uses a model
+that's assumed by the implementation, and thus misses how actual human
+behavior (which doesn't strictly conform to HMMs) affects performance.
+
+Overall, however, I think this paper exceeds the bar.  Routing in a
+fully-decentralized manner is difficult.  SP$^2$ORES does quite a bit
+of work to achieve such decentralization.  Performing availability
+prediction using e-squads is a neat idea, and incorporating this into
+onion routing protocols isn't straightforward.  SP$^2$ORES doesn't
+introduce any especially novel protocols, but it does a very good job
+of both composing and extending several existing techniques to achieve
+its goals.  This is good work, and I appreciate the paper's formal
+treatment of the problem.
+
+
+Nit: toppology -> topology (page 4)
+
+
+## Rebuttal response
+
+Thank you for the thoughtful response to the initial review.  I remain mostly
+positive on this paper, but I'm still unconvinced about the location privacy
+implications.  I recommend that the authors incorporate this into the paper.
+Also, as the other reviewers have pointed out, the paper could be much improved
+by including high-level diagrams and better describing the "big picture" ideas
+before diving into the nuances.
+
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+Review #454B
+===========================================================================
+* Updated: 24 Oct 2018 2:39:30pm EDT
+
+Overall merit
+-------------
+2. Weak reject
+
+Reviewer expertise
+------------------
+2. Some familiarity
+
+Novelty
+-------
+3. New contribution
+
+Paper summary
+-------------
+This paper describes a distributed file system to connect sets of devices associated with different users. The bulk of the paper is spent describing the SP(2)ORES system, but it is difficult to map the authors design onto their target deployment scenario. There are also numerous places where the description of the system is unclear (e.g., stating that communication should not require a circuit, but then using onion routing which will require some state set up). I also wonder if the overheads in terms of data transmitted and power used by this system would be incompatible with the small personal devices people keep with them.
+
+Comments for author
+-------------------
+Detailed comments:
+
+* Intro: you should cite the Mark Weiser vision/statement you refer to in the first sentence.
+
+* Section III: It is not clear how you use onion routing without circuits
+
+* Section III: It doesn’t seem reasonable to have a hash table of nodes that are globally selected across vs. select among a users nodes, or nodes that are in close proximity. Especially thinking of low-powered devices that are kept with users and store such personal data.
+
+* Section IV: This section contains a lot of detail that perhaps would be more suited to an appendix. In general, the system design contains a lot of details that get in the way of understanding how the system actually fits together and operates in practice. 
+
+* Section IV-V: The system is comprised of many different named subsystems. It is difficult to recall the functions of all these subsystems. It would help to include a figure or table mapping each of these subsystems to the task they actually accomplish. It'd also be a good place to highlight which of these you implemented yourself or which were existing. 
+
+* Section V C: It seems like the data needed to predict availability of the different devices could present a privacy risk to users of this system. How does the system protect this information once it is determined?
+
+* Section VII I wonder how realistic the performance evaluation is. I would have liked some discussion of how the Docker instances can be limited to emulate lower powered devices. Also, how do you distribute the user's e-squads over the five machines in your evaluation. I feel like putting these all on the same machine will hide impacts of unreliable wireless channels on your results. 
+
+* Section VII It would have been nice to see models of user mobility that are available in existing traces vs. a totally simulated mobility/usage pattern here. E.g., traces from CRAWDAD (https://crawdad.org/) may be a good starting point to create more realistic user models. 
+
+* In light of my prior comment, it would be worth commenting on how generalizable your results are/how much they are tied to your particulate performance evaluation set up.
+
+Response to authors:
+
+Thank you to the authors for your thoughtful rebuttal. I appreciated the clarification of the stateless onion routing used in the system. Overall the paper remains extremely difficult to follow and the evaluation and exposition could be improved with additional time/efforts.
+
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+Review #454C
+===========================================================================
+
+Overall merit
+-------------
+2. Weak reject
+
+Reviewer expertise
+------------------
+3. Knowledgeable
+
+Novelty
+-------
+2. Incremental improvement
+
+Paper summary
+-------------
+
+This paper proposes a private file transfer service called  SP2ORES, whose goal is to provide privacy-preserving file-sharing with no need to any third-party storage or centralized bootstrapping services. The core of the proposed system is a stateless probabilistic onion routing protocol, which exploits decentralized peer sampling, a probabilistic model of node availability, and a set-based onion routing header format. The paper evaluates the performance of the proposed system and discusses its security.
+
+Comments for author
+-------------------
+
+As noted by the authors, existing solutions do not provide fully-private file sharing. Using encryption over central services like dropbox still leaks the communication metadata, and p2p-based mechanisms require trusted third-parties for the bootstrapping. The paper aims at protecting metadata with no need to third-party bootstrapers, which is an interesting direction. 
+
+The authors implement a proof-of-concept, and use it to evaluate the performance of the proposed system. The authors also discuss the security of system (though I have some concerns with that as described later). 
+
+Overall the writing was adequately well, but the clarity can be improved. 
+
+
+
+I, however, have several concerns:
+
+
+Novelty: While the paper may appear to be full of technical details, its technical novelty is incremental. The core of the proposed system is the onion-routing protocol SPHINXES, which is essentially Sphinx [18] with a small extension: Sphinx only provides one node per onion layer; but the extended SPHINXES, allows for multiple nodes per onion layer. The authors also make use of few other standard techniques to build their system, in particular they perform the initialization process out-of-band. 
+
+
+Usability: Some of the techniques used by the authors may hurt usability of the proposed system. Most importantly, the proposed system requires an *out-of-band* initialization step for every communication, so Alice and Bob can exchange the file only if they are able to establish such out-of-band communication. This does not seem very usable to me. 
+
+
+Privacy: I am worried that using multiple nodes in each layer of SPHINXES may in fact degrade privacy. An adversary can make her nodes available all the time (the availability is posted by each users), and therefore, compared to normal users, the adversary's nodes will have a higher chance of being chosen for building the circuits. Unfortunately, the authors do not discuss this potential issue. 
+
+Another possible privacy issue:  each participating device publicly advertises its probability of being connected in the near future. Can an adversary correlate the availability of Alice with data downloaded by user Bob to infer that Bob is downloading from Alice?
+
+
+Practicality: The proposed system leverages the devices of other users to help transfer the file from one user to another, but do not use them for storage. This still uses their resources, so I wonder what incentivizes users to transfer files between other users? Why can't they be selfish and not waste their bandwidth/battery?
+
+
+
+
+Other comments:
+
+- In "Security of SP2OR, node selection", the adversary Eve does not need to be at every layer to perform the attack; she needs to be at the first and last layer, and then perform traffic correlation. 
+
+
+- Some of the security properties relies on each user having multiple devices for file transfer, which is not realistic. Most users have a single device that use for downloading files (I never use my cellphone to download torrent files)
+
+
+-"on a increasing" on an
+
+- "rather single nodes" rather than single ...
+
+- "Friendly surveillance" not sure what this means
+
+- "an hybrid" a
+
+Response by Adrien Luxey <adrien.luxey@irisa.fr>
+---------------------------------------------------------------------------
+We would like to thank the reviewers for their constructive reviews. We structured our response by topic, referring to reviewers as RA and RB.
+
+We agree with your joint suggestions for presentation (operational diagram, roles of protocols/subsystems; overview in text, details in appendix) and reference to Weiser; we will update the paper accordingly.
+
+Regarding the concern about privacy threats from availability prediction data: @RB the data used for prediction is stored locally, only the predicted availability can be sampled. 
+@RA leaks from prediction are analyzed in Section VI  (Device unlinkability), albeit for the worst case of extremely detailed availability data. In practice, leaks are constrained by separate address spaces (NFC for the out-of-band set-up step, and IP for availability sampling), public keys which can be replaced with configurable frequency, and availability prediction being coarse-grained and thus not unique. There are corner cases that allow for a link between IP addresses and devices and then potentially owners; for example when the adversary is behind the same NAT as the target, but even those are short-lived.
+
+@RB on onion routing without circuits: this is likely a terminology issue. Onion routing is associated with circuits as Tor uses them, but it is not included in the definition in reference [21].  While Tor establishes circuits by maintaining a routing table at relays according to the onion layers, SphinxES defines a header format that encapsulates the routing information, hence the statelessness of SP²ORES.
+
+@RB about global v. local sampling, we sample globally to achieve anonymity: if we only used our own devices, we would expose whom we are communicating with through our network metadata.
+
+Both reviewers expressed concerns regarding the realism of our evaluation. We have considered data collections such as Crawdad, but the data sets are not applicable as-is to our problem. Mobility is not a direct estimator of availability (e.g. mobile phones are available even during transitions), and it does not capture the interaction of a user with several of her devices, an emergent domain for which field data does not exist yet. We will keep an eye on data collections for any more directly applicable traces or empirical studies on availability of devices and their relation to data on mobility and other traces.
+
+In the absence of data, HMM are commonly used for simulating user behavior. Should user behavior diverge markedly, however, the prediction module we use (based on plain Markov Chains) could be exchanged for one adapted to the scenario, for instance using privacy-preserving decentralized machine learning [Bellet, Guerraoui, et al, 2018].
+
+@RB We agree that adapting our Docker setup to emulate more complex network properties and energy constraints could enrich our model. Our choice was to fold issues of network reliability and device resources together with device availability, considering that a poorly connected device is in effect only intermittently available. We believe that this provides an appropriate approximation for our experimental aims.
+
+
