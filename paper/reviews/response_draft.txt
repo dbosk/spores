@@ -41,8 +41,10 @@ For the evaluation, we introduced the user's location (leading to a HMM), which 
 Despite the location transition matrix being fixed for all users, devices' connectivity traces exhibit much diversity, because the number, type and connection probability of devices are all different for each user. 
 
 Our study did not consider connection unreliability or devices' scarce resources, because we collapsed these concepts with the availability: 
-a user carrying their phone outside would have e.g. 65% of availability, because the phone's connection is often dropping and its resources are constrained.
-Using Docker to limit the resources of devices, or simulate an unreliable network with high latency would still benefit the soundness of our experiments.
+a user carrying their phone outside would have e.g. 65% of availability, because the phone's connection often drops and its resources are constrained.
+Using Docker to limit the resources of devices, or simulate an unreliable network with high latency would still benefit the soundness of our experiments, but certainly field data would be best.
+Mobility/connectivity datasets are not applicable as-is for our study, because they do not capture the interaction of a user with many of their devices; we would need to engage in empirical experiments to get data on the emerging trend of e-squads.
+Still, studies about user mobility prediction (like https://crawdad.org/yonsei/lifemap/20120103/) or connectivity over time are of interest to us, and we thank you for pointing us to Crawdad.
 
 
 Our argument is that prediction enables predictive routing. If we had field data, we would choose another prediction model, e.g. Recurrent Neural Networks, that are good candidates for classifying patterns in time series.
