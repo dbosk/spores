@@ -1,0 +1,205 @@
+%!TEX root = spores.tex
+
+
+\subsection{The \squad overlay}
+\label{sec:squad_overlay}
+
+A user's devices communicate through an information dissemination protocol (coined \emph{e-squad overlay}) so as to learn the user's behavior.
+The goal is twofold: 
+devices need information on the user to predict their future availability, 
+and they must know which device is responsible for which file exchange to route messages to their recipient in the \squad.
+
+To achieve this goal, we adapt the Sprinkler protocol, proposed by Luxey et al.~\cite{luxey:hal-01704172}, to suit our needs. 
+Using Sprinkler, participating nodes gossip in a push-pull manner: 
+when a node has new information, it sends it to a fixed-size random subset of its peers; 
+the recipients answer with any information that they believe the sender does not know about, thus reconciling their history.
+
+The exchanged messages form a sequence, ordered by timestamp, populated by three message types:
+\begin{itemize}
+	\item \texttt{CONNECTED<$d, t_{step}$>}: Sent by device $d$ when it is used by its user at time step\footnote{As far as devices connections are concerned, time is discretized: we consider that each interaction lasts the same time.} $t_{step}$. $d$ is otherwise considered offline at this time. Devices use this information to predict their probability of remaining online, as presented in section~\ref{ssec:device_availability};
+	\item \texttt{SENDING<\sendingdevice, \fileid>}: When the user decides to send a file $f$ located on a device \sendingdevice, \sendingdevice informs its peers of this fact, and joins the file ID \fileid. \Squad members will use this information to forward acknowledgments from the recipient to \sendingdevice;
+	\item \texttt{RECEIVING<\recdevice, \fileid>}: Reciprocally, when the user starts receiving a file $f$ onto a device \recdevice, \recdevice informs its peers of this fact, and joins the file ID \fileid. \Squad members will use this information to forward the file's content from the sender to \recdevice.
+\end{itemize}
+
+Given this information dissemination (push) and history reconciliation mechanism (pull), each \squad member knows the full sequence $S$ at all time with an overwhelming probability, even in the face of churn~\cite{luxey:cascade}.
+
+\subsection{Predicting a device's availability}
+\label{ssec:device_availability}
+
+The predictive nature of \name lies in the fact that each participating device publicly advertises its probability of being connected in the near future. 
+This information is used when any node needs to create a Stateless Predictive Probabilistic Onion Route (\acs{SPOR}), as was shown in section~\ref{SPOR}.
+
+In the following, we refer to the node's probability of a node $d$ being online as the scalar $\Pon_d$, because $\forall t, \Pon_d(t) = \Pon_d$.
+The estimate that is made accounts for the next state of the user's behavior in discrete time, and thus approximates the availability of $d$ in the near future.
+The prediction eventually becomes stale, but we count on the fact that stale descriptors are removed fast in most RPS solutions: 
+as a device calls \GetRandomNode, it only gets fresh descriptors.
+
+As described earlier, \squad members know the connection times of all the user's devices, given by the \texttt{CONNECTED} items in the \squad's sequence.
+It can be represented as a 2D sparse matrix of booleans, as shown in the Table~\ref{tab:connection_times} (depicting a user owning a laptop, a phone, and a smart-TV).
+
+
+\begin{table}
+\caption{Matrix representation of an \squad availability over time}
+\centering
+\begin{tabular}{@{}lccccc@{}} \toprule
+		& $\cdots$	& $t_{i-1}$	& $t_i$		& $t_{i+1}$	& $\cdots$ \\ \midrule
+Laptop	& $\cdots$	& 1			& 0			& 0			& $\cdots$ \\
+Phone	& $\cdots$	& 1			& 1			& 1			& $\cdots$ \\
+TV		& $\cdots$	& 0			& 1			& 1			& $\cdots$ \\ \bottomrule
+\end{tabular}
+\label{tab:connection_times}
+\end{table}
+
+To predict a device's future availability, we build a Markov representation of the user's activity, 
+where the state $S_i$ represents the availability of the user's devices at time $t_i$.
+The state space $\mathcal{S}$ is the set of possible combinations of the devices' connection.
+
+Given the \squad sequence of connections $S = S_1, \dots, S_i, S_{i+1}, \dots$,
+we can compute the probability of transition from a state $S_i=x$ to $S_{i+1}=x'$ by counting\footnote{%
+	Because we work with low-probability events observed with a small amount of data, there is a possibility that an event never occurs in $S$. 
+	To counter that, we apply additive smoothing while computing probabilities. 
+	We left this engineering optimization out of the demonstration for clarity.
+} the number of times $x'$ is seen right after $x$ in $S$:
+
+\begin{align*}
+P\left[S_{i+1}=x' \mid S_i=x \right] &= P\left[x \rightarrow x' \right] \\&= \frac{\left| \left\{ S_i = x, S_{i+1} = x' \right\}_{i \in \left[0, |S| - 1\right]} \right|}{\left| \left\{ S_i = x \right\}_{i \in \left[0, |S| - 1\right]} \right|}
+\end{align*}
+
+Each device knows the current state $S_i=x$ of the Markov chain.
+To predict its probability $P_d$ of remaining online in the next round, 
+a device $d$ simply adds the probabilities that the user switches to a state where $d$ is online next.
+Consider $\mathcal{S}_{d\text{ online}} \subset \mathcal{S}$ the set of states where $d$ is online. Then:
+
+\begin{align*}
+P_d & = P\left[d\text{ online at }S_{i+1} \mid S_i=x\right] \\ & = \sum\limits_{x' \in \mathcal{S}_{d\text{ online}}} P\left[ S_{i+1}=x' \mid S_i=x \right]
+\end{align*}
+
+There is a caveat, though.
+While the user acts, $S$ keeps growing, and the Markov chain must be recomputed: there is a probability that the current state $S_i=x$ has never been seen before.
+In this case, $\forall x' \in \mathcal{S}, P\left[x \rightarrow x'\right]$ is undefined.
+
+To counter this possibility, we propose a fallback:
+when the current state is new, we compute a $P'_d$, an estimator of $d$'s average probability of staying online two turns in a row:
+
+$$ P'_d = \frac{\left| \left\{ S_i \in \mathcal{S}_{d\text{ online}}, S_{i+1} \in \mathcal{S}_{d\text{ online}} \right\}_{i \in \left[0, |S| - 1\right]} \right|}{\left| \left\{ S_i \in \mathcal{S}_{d\text{ online}} \right\}_{i \in \left[0, |S| - 1\right]} \right|} $$
+
+$P'd$ will be advertised in spite of $P_d$. It will also be used as a baseline in the evaluation.
+
+%\subsection{Probabilistic Onion Routes}
+% \subsection{Selection of nodes for routes creation}
+% \label{ssec:por}
+
+% %\subsubsection{The global overlay}
+% \subsubsection{\GetRandomNode}
+% \label{sssec:global_overlay}
+
+% Devices need to know the address of SPORES participants in order to craft PORs.
+% To this end, we employ a Random Peer Sampling service~\cite{Jelasity_Voulgaris_Guerraoui_Kermarrec_van_Steen_2007,Jesi_Montresor_van_Steen_2010} (RPS) among all nodes in SPORES.
+% It is a gossip protocol that allows each participant to keep a fixed-size \emph{random} subset of other nodes' descriptor (that we will call the RPS's \emph{view} \rpsview). 
+% The view is constantly evolving, as queries are periodically issued between nodes to exchange descriptors between their respective views.
+% Finally, offline nodes are quickly evicted from devices' views.
+
+% The randomness of the views must be guaranteed: 
+% a node that would be present in views too often would become a bottleneck, and could monitor a bigger portion of the network.
+% It will be evaluated in section~\commentAL{TODO}.
+
+% In SPORES, a descriptor $\desc_d$ describing device $d$ contains the following information:
+% \begin{itemize}
+%   \item \(d\) is the node's identifier (address);
+%   \item \(\pk_d\) is the node's public key;
+%   \item \(\Pon_d\) is the node's probability of remaining online at the time of the descriptor's creation.
+% \end{itemize}
+
+% $(d, \pk_d, \Pon_d)= \leftarrow \GetRandomNode$ is the function that takes a node from the RPS's view \rpsview on demand.
+
+% %\subsubsection{Routes creation}
+% \subsubsection{\CreateLayer}
+% \label{sssec:routes_creation}
+
+
+% Routes are created via \Sphinxes as described in section~\ref{sec:SPOR}.
+% But each layer \layer constituting the route is created by the $\CreateLayer$ function, that is independent from \Sphinxes.
+
+% In \name, we wish to maximize the availability of the route.
+% Therefore, each layer \layer is created so as to reach the availability threshold $\theta$, a parameter chosen by the user.
+% Note that \Sphinxes is agnostic to this use-case: one could want to maximize other characteristics, e.g. the layer's expected bandwidth.
+
+% $\CreateLayer$ iteratively calls $\GetRandomNode\xspace$ to add random nodes to the current layer \layer, until the layer's probability of being offline, $\Poff^\layer$, falls below the availability threshold $\theta$:
+
+% $$ \Poff^\layer = \sum\limits_{d \in \layer}(1 - \desc_d.\Pon_d) $$
+
+% When a device creates a layer to reach its user, descriptors are not taken from \rpsview but from the \squad's sequence: all devices in this layer will belong to the user.
+% The logic is otherwise the same.
+
+% Recall that each layer in \Sphinxes has a constant number of nodes $w_\layer$, that is a \Sphinxes parameter.
+% If $w_\layer$ is reached before $\Poff^\layer < \theta$, then we early abort $\CreateLayer$.
+% On the other hand, if $|\layer| < w_\layer$, we pad the layer with blank descriptors, such that the header always weighs the same size.
+
+
+\subsection{SPORES: file exchange through probabilistic onion routes}
+\label{ssec:spores_file_exchange_through_probabilistic_onion_routes}
+
+
+We have seen how participants of \name could craft routes to secretly exchange messages.
+We now apply this feature to reliably exchange files between two users.
+
+Our file transfer protocol is loosely based on BitTorrent \cite{bt_bep3}: 
+at initialization, a file $f$ of size \filesize is first cut into chunks of constant size \chunksize by its uploader,
+resulting in $\nchunks = \lceil \filesize / \chunksize \rceil$ chunks.
+A SHA1 hash \hashchunk is computed for each chunk, plus another SHA1 hash \hashfile of the chunks hashes; that will serve as an error detection scheme. 
+
+In BitTorrent, \textit{.torrent} files are publicly available on the Web.
+They contain $\finfo = \left(\filesize, \nchunks, \left[\hashchunk\right]_{\chunk \in f}, \hashfile\right)$, 
+along with network information to reach uploaders of $f$ (e.g. the tracker's address).
+Anyone can download a \textit{.torrent} and start receiving the file associated to it.
+
+In \name, we want file exchanges to remain private: the file's metadata are exchanged out-of-band.
+In addition , each file is associated with a random \fileid, that is part of \finfo.
+
+\newcommand\forwardheader{\ensuremath{\mathcal{H}^{(f)}}}
+\newcommand\backwardheader{\ensuremath{\mathcal{H}^{(b)}}}
+
+\paragraph*{Out-of-band initialization} 
+When Alice wishes to send a file $f$ to Bob, she computes \finfo, 
+including one reply header per chunk (as was seen in section~\ref{sec:SPOR}), and sends the whole to Bob.
+Still out-of-band, Bob replies with one forward header per chunk.
+This way, each chunk $\chunk_i$ is associated with a unique route both ways: 
+a forward header $\forwardheader_i$ known by Alice, and a backward header $\backwardheader_i$ known by Bob.
+
+Alice and Bob now have everything they need to start transferring $f$ in-band.
+
+
+\paragraph*{Chunks and bitfields}
+Alice's file $f$ is located on one of her devices, \sendingdevice. 
+When $\sendingdevice$ is online, it periodically sends chunks of $f$ to Bob until $f$ is entirely uploaded, with a period of \tupload.
+Each chunk $\chunk_i \in f$ is uploaded to Bob through a unique route $\forwardheader_i$.
+
+Bob receives $f$ on a single device \recdevice, but chunks for $f$ might arrive on any of his devices.
+Say Bob has received a chunk $\chunk_i$ on $d \neq \recdevice$.
+This device must the address of the file's recipient \recdevice by looking for the line \texttt{RECEIVING<\recdevice, \fileid>} in its squad sequence.
+Having found the address of \recdevice, $d$ forwards the $\chunk_i$ to \recdevice.
+
+Upon reception of a chunk $\chunk_i$, \recdevice verifies its integrity by computing the SHA1 hash $h_{\chunk_i}$ and comparing it to $\finfo.h_{\chunk_i}$.
+If the chunk is valid, Bob must inform Alice that $\chunk_i$ was successfully received.
+We borrow again from the BitTorrent protocol by acknowledging reception with \emph{bitfields}.
+A bitfield \bitfield is bit-array of size \nchunks, such that $\bitfield[i] = 0$ means that Bob lacks the chunk $\chunk_i$, whereas $\bitfield[i] = 1$ means that he successfully received that chunk.
+$\bitfield$ describes the state of the total transfer and not just the current chunk, which is very useful when messages are prone to get lost in transit. 
+This bitfield is sent to Alice using the unique reply route $\backwardheader_i$.
+
+
+Reciprocally, acknowledgments can arrive to Alice on any on her devices, while only \sendingdevice can process it.
+When one of Alice's devices (say $d'$) receives Bob's bitfield \bitfield, 
+$d'$ forwards it to \sendingdevice by getting its address on the line \texttt{RECEIVING<\sendingdevice, \fileid>} of the \squad overlay's sequence.
+
+
+Once \sendingdevice receives \bitfield, it merges it with its previous knowledge of Bob's reception of $f$.
+If all chunks were acknowledged, the transfer is over.
+Else, \sendingdevice sends a new chunk, among the ones that were not acknowledged by Bob.
+
+%\commentAL{This is a shitty scheduler. Should I mention it? Rephrase? You have a citation to propose instead?}
+
+Naturally, in \name, messages might arrive in a wrong order or fail, e.g.
+it is not unlikely that the file exchange stops before its transfer is done.
+Consequently, as a solution, if the transfer hangs, \sendingdevice will restart periodically sending chunks that were not acknowledged by Bob.
+Hence, \name ensures liveness over network efficiency (some chunks might be received several times), as it will be seen in the evaluation.
+Nevertheless, it allows reliable file transfer among a network of poorly connected nodes in a private manner.

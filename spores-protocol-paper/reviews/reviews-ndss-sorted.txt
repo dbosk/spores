@@ -1,0 +1,103 @@
+I do not understand:
+	* [454B] Section III: It doesn’t seem reasonable to have a hash table 
+of nodes that are globally selected across vs. select among a users nodes, 
+or nodes that are in close proximity. Especially thinking of low-powered 
+devices that are kept with users and store such personal data.
+	* [454B] In light of my prior comment, it would be worth commenting on how 
+generalizable your results are/how much they are tied 
+to your particulate performance evaluation set up.
+
+Negative:
+	Answerable:
+		* [454A] the paper could benefit from a
+clearer operational diagram; Figure 1 presents the overall
+architecture, but attempts to incorporate all of the various protocols
+and components of the system into a single diagram.  I'd prefer to see
+a clearer and more high-level figure that shows a complete file
+transfer between two devices.
+		* [454B] Section IV-V: The system is comprised of many different named 
+subsystems. It is difficult to recall the functions of all these subsystems. 
+It would help to include a figure or table mapping each of these subsystems 
+to the task they actually accomplish.
+		=> Need clearer big picture with figure.
+		=> "We acknowledge the constructive feedback from the reviewers."
+
+		* [454A] Section IV spends a considerable amount of time on the 
+formalities of SphinxES and its security properties. I think some of the 
+material here is better suited for an appendix; the paper could be made a bit 
+more readable by describing in more detail the overall operation and purpose of
+the protocol (and how it fits into the larger SP$^2$ORES picture) and stating 
+its security properties (but saving the subtle implementation details for an 
+appendix).
+		* [454B] Section IV: This section contains a lot of detail that 
+perhaps would be more suited to an appendix. In general, the system design 
+contains a lot of details that get in the way of understanding how the system 
+actually fits together and operates in practice. 
+		=> Move SphinxES details to Appendix. 
+		=> Better explain big picture in Sec IV.
+		=> "We acknowledge the constructive feedback from the reviewers."
+
+		* [454A] I would have liked to see some analysis 
+of how much information is leaked due to the advertising of $P'd$ -- 
+that is, what can be inferred about a device (and/or the device's owner) 
+based on these advertisements?  Can this privacy risk be quantified?
+		* [454B] Section V C: It seems like the data needed to predict 
+availability of the different devices could present a privacy risk to users 
+of this system. How does the system protect this information 
+once it is determined?
+		=> Need security discussion about the availability prediction.
+
+		* [454A] The evaluation struck me as being somewhat optimistic, 
+since human movements are emulated in the evaluation via a Hidden Markov Model
+(HMM) and HMMs also serve as the models as to how SP$^2$ORES forms
+predictive behavior.  In other words, the evaluation uses a model
+that's assumed by the implementation, and thus misses how actual human
+behavior (which doesn't strictly conform to HMMs) affects performance.
+		* [454B] Section VII I wonder how realistic the performance 
+evaluation is. I would have liked some discussion of how the Docker instances 
+can be limited to emulate lower powered devices. Also, how do you distribute 
+the user's e-squads over the five machines in your evaluation. I feel like 
+putting these all on the same machine will hide impacts of unreliable wireless 
+channels on your results. 
+		* [454B] Section VII It would have been nice to see models of user 
+mobility that are available in existing traces vs. a totally simulated 
+mobility/usage pattern here. E.g., traces from CRAWDAD (https://crawdad.org/) 
+may be a good starting point to create more realistic user models.
+		=> Justify simulated users on evaluation.
+		=> "Using real world traces is future work."?
+
+		* [454B] There are also numerous places where the description of the 
+system is unclear (e.g., stating that communication should not require a 
+circuit, but then using onion routing which will require some state set up). 
+		* [454B] Section III: It is not clear how you use onion routing without circuits
+		=> MISUNDERSTANDING: Needs clarification in response.
+
+
+
+
+	Non-answerable:
+		* [454A] but it's definitely not an easy read
+
+		* [454B] it is difficult to map the authors design onto their target deployment scenario
+
+		* [454B] Intro: you should cite the Mark Weiser vision/statement you refer to in the first sentence.
+
+Positive:
+	* [454A] I like the system model of this paper: Alice and Bob want to transfer
+a file, don't want to involve a centralized party, and don't care
+about leaving that file available for sharing after it's been
+transferred.  This is a useful and realistic scenario, and I like the
+unique tact of using e-squads and predictive behavior to deliver
+messages/files.
+
+	* [454A] The paper is very well-written
+
+	* [454A] To me, the more interesting portion of the paper is the e-squad
+overlay and techniques for predicting a device's availability
+(presented in Sections IV-B and IV-C, respectively).
+
+	* [454A] This is good work, and I appreciate the paper's formal
+treatment of the problem.
+
+Typos: 
+	* toppology -> topology (page 4)

@@ -1,0 +1,272 @@
+%!TEX root = spores.tex
+
+\usepackage[binary-units]{siunitx}
+\usepackage[british]{babel}
+\usepackage[hidelinks]{hyperref}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage[single]{acro}
+\usepackage{booktabs}
+\usepackage[T1]{fontenc}
+\usepackage[unq]{unique}
+\usepackage[utf8]{inputenc}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{mathtools}
+\usepackage{newclude}
+%\usepackage{subcaption}
+\usepackage{thmtools}
+\usepackage{xfrac}
+\usepackage{interval}
+\usepackage{xparse}
+\usepackage{xspace}
+\usepackage[inline]{enumitem}
+
+\usepackage[all]{foreign}
+\renewcommand{\foreignfullfont}{}
+\renewcommand{\foreignabbrfont}{}
+
+\usepackage[strict]{csquotes}
+
+\DeclareMathOperator{\powerset}{\mathcal{P}}
+
+\lstset{%
+  basicstyle=\footnotesize,
+  numbers=left
+}
+\let\email\texttt
+
+
+% Adrien: What is the following for?
+\usepackage[noamsthm,notheorems]{beamerarticle}
+\declaretheorem[numbered=unless unique,style=theorem]{theorem}
+\declaretheorem[numbered=unless unique,style=definition]{definition}
+\declaretheorem[numbered=unless unique,style=definition]{assumption}
+\declaretheorem[numbered=unless unique,style=definition]{protocol}
+\declaretheorem[numbered=unless unique,style=example]{example}
+%\declaretheorem[style=definition,numbered=unless unique,
+%  name=Example,refname={example,examples}]{example}
+\declaretheorem[numbered=unless unique,style=remark]{remark}
+\declaretheorem[numbered=unless unique,style=remark]{idea}
+\declaretheorem[numbered=unless unique,style=exercise]{exercise}
+\declaretheorem[numbered=unless unique,style=exercise]{question}
+\declaretheorem[numbered=unless unique,style=solution]{solution}
+
+\usepackage[sets]{cryptocode}
+
+\usepackage[natbib,style=ieee]{biblatex}
+\usepackage[capitalize]{cleveref}
+\usepackage{acro}
+\ExplSyntaxOn
+\ProvideAcroEnding{possessive-singular}{'s}{'s}
+\ProvideAcroEnding{possessive-plural}{s'}{s'}
+\ProvideAcroCommand{\acg}{%
+  \acro_possessive_singular:
+  \acro_use:n {#1}
+}
+\ProvideAcroCommand{\acgp}{%
+  \acro_possessive_plural:
+  \acro_use:n {#1}
+}
+\ProvideAcroCommand{\Acg}{%
+  \acro_possessive_singular:
+  \acro_first_upper:
+  \acro_use:n {#1}
+}
+\ProvideAcroCommand{\Acgp}{%
+  \acro_possessive_plural:
+  \acro_first_upper:
+  \acro_use:n {#1}
+}
+\ExplSyntaxOff
+\usepackage{bibsp}
+\addbibresource{meta.bib}
+\addbibresource{osn.bib}
+\addbibresource{anon.bib}
+\addbibresource{be.bib}
+\addbibresource{crypto.bib}
+\addbibresource{p2p.bib}
+\addbibresource{otrmsg.bib}
+\addbibresource{ac.bib}
+\addbibresource{privacy.bib}
+\addbibresource{spores.bib}
+\addbibresource{adrien.bib}
+
+\DeclareAcronym{OR}{%
+  short = {OR},
+  long = {Onion Routing},
+}
+\DeclareAcronym{POR}{%
+  short = {POR},
+  long = {Probabilistic Onion Routing},
+}
+\DeclareAcronym{SPOR}{%
+  short = {SP$^2$OR},
+  short-format = \scshape,
+  long = {Stateless Predictive Probabilistic Onion Routing},
+}
+\DeclareAcronym{SPORES}{%
+  short = {SP$^2$ORES},
+  short-format = \scshape,
+  long = {Stateless Predictive Probabilistic Onion Routing for E-Squads},
+  long-format = \it,
+  long-possessive-plural = {'},
+}
+\DeclareAcronym{RPS}{%
+  short = {RPS},
+  long = {random-peer sampling},
+}
+
+\newcommand{\name}{\ac{SPORES}\xspace}
+\newcommand{\sphinxes}{\textsc{SphinxES}\xspace}
+\newcommand{\Sphinxes}{\textsc{SphinxES}\xspace}
+\newcommand{\squad}{e-squad\xspace}
+\newcommand{\squads}{e-squads\xspace}
+\newcommand{\Squad}{E-squad\xspace}
+\newcommand{\Squads}{E-squads\xspace}
+
+% sphinxes.tex
+\NewScheme{\SPORES}{SPORES}
+\NewVariable{\sk}{x}
+\NewVariable{\pk}{X}
+\NewAlgorithm{\Enc}{Enc}
+\NewScheme{\Sphnxs}{SphinxES}
+\NewAlgorithm{\CreateHeader}{\Sphnxs[CreateHeader]}
+\NewAlgorithm{\CreateFwd}{\Sphnxs[CreateForward]}
+\NewAlgorithm{\CreateReply}{\Sphnxs[CreateReply]}
+\NewAlgorithm{\UseReply}{\Sphnxs[UseReply]}
+\NewAlgorithm{\ProcessHeader}{\Sphnxs[ProcessHeader]}
+\NewVariable{\G}{\mathcal{G}}
+\NewVariable*{\mac}{\mu}
+\NewVariable*{\prg}{\rho}
+\NewVariable*{\prp}{\pi}
+\NewVariable{\hash}{h}
+%\NewVariable{\tag}{\tau}
+\NewVariable{\secret}{s}
+\NewVariable{\blind}{b}
+\NewVariable*{\N}{\mathcal{N}}
+\NewVariable*{\D}{\mathcal{D}}
+\NewVariable*{\nullnode}{\varepsilon}
+\NewVariable{\rdvnode}{*}
+\NewAlgorithm{\ComputeKeys}{ComputeKeys}
+\NewAlgorithm{\ComputePadding}{ComputePadding}
+\NewVariable{\ProcessMessage}{ProcessMessage}
+
+%spor.tex
+\NewScheme{\RPS}{RPS}
+\NewAlgorithm{\GetRandomNode}{\RPS[GetRandomNode]}
+\NewScheme{\SPOR}{SPOR}
+% used by Adrien
+\NewAlgorithm{\CreateLayer}{\SPOR[CreateLayer]}
+\NewFunction{\avail}{\Pon}
+
+%security-discussion.tex
+\NewFunction{\A}{\mathcal{A}}
+
+
+% Adrien's
+
+\newcommand\fileid{\ensuremath{ID_{\text{f}}}\xspace}
+\newcommand\sendingdevice{\ensuremath{d^{(s)}_f}\xspace}
+\newcommand\recdevice{\ensuremath{d^{(r)}_f}\xspace}
+\newcommand\trps{\ensuremath{t_{\text{RPS}}}}
+\newcommand\rpsview{\ensuremath{\mathcal{V}}\xspace}
+\newcommand\desc{\ensuremath{{\mathtt{desc}}}\xspace}
+%\newcommand\layer{\ensuremath{{\mathcal{L}}}\xspace}
+\newcommand\layer{L\xspace}
+\newcommand\Pon{\ensuremath{P}\xspace}
+\newcommand\Poff{\ensuremath{P_{\text{off}}}\xspace}
+\newcommand\finfo{\ensuremath{\mathcal{I}_f}}
+\newcommand\filesize{\ensuremath{s_f}\xspace}
+%\newcommand\chunk{\ensuremath{\mathit{ch}}}
+\newcommand\chunk{\ensuremath{ch}}
+\newcommand\chunksize{\ensuremath{s_{\chunk}}\xspace}
+\newcommand\nchunks{\ensuremath{n_{\chunk}}\xspace}
+\newcommand\hashchunk{\ensuremath{h_{\chunk}}\xspace}
+\newcommand\hashfile{h\xspace}
+
+\newcommand\bitfield{\ensuremath{bf_f}\xspace}
+\newcommand\tupload{\ensuremath{t_{up}}\xspace}
+
+
+\newcommand\tuser{\ensuremath{t_{\text{user}}}\xspace}
+\newcommand\ndevices{\ensuremath{n_{\text{devices}}}\xspace}
+
+\newcommand\texp{\ensuremath{t_{exp}}\xspace}
+
+
+
+\usepackage{graphicx}
+\usepackage{import} % for pdf+latex
+%\graphicspath{{figures/}}
+
+\input{revision_macros.tex}
+
+\usepackage[noend]{algpseudocode}
+\usepackage{pifont}
+%\errorcontextlines\maxdimen
+\usepackage{breqn}
+
+% begin vertical rule patch for algorithmicx
+% (http://tex.stackexchange.com/questions/144840/vertical-loop-block-lines-in-algorithmicx-with-noend-option)
+\makeatletter
+% start with some helper code
+% This is the vertical rule that is inserted
+    \newcommand*{\algrule}[1][\algorithmicindent]{\makebox[#1][l]{\hspace*{.5em}\thealgruleextra\vrule height \thealgruleheight depth \thealgruledepth}}%
+% its height and depth need to be adjustable
+\newcommand*{\thealgruleextra}{}
+\newcommand*{\thealgruleheight}{.75\baselineskip}
+\newcommand*{\thealgruledepth}{.25\baselineskip}
+
+\newcount\ALG@printindent@tempcnta
+\def\ALG@printindent{%
+    \ifnum \theALG@nested>0% is there anything to print
+        \ifx\ALG@text\ALG@x@notext% is this an end group without any text?
+            % do nothing
+        \else
+            \unskip
+            \addvspace{-1pt}% FUDGE to make the rules line up
+            % draw a rule for each indent level
+            \ALG@printindent@tempcnta=1
+            \loop
+                \algrule[\csname ALG@ind@\the\ALG@printindent@tempcnta\endcsname]%
+                \advance \ALG@printindent@tempcnta 1
+            \ifnum \ALG@printindent@tempcnta<\numexpr\theALG@nested+1\relax% can't do <=, so add one to RHS and use < instead
+            \repeat
+        \fi
+    \fi
+    }%
+\usepackage{etoolbox}
+% the following line injects our new indent handling code in place of the default spacing
+\patchcmd{\ALG@doentity}{\noindent\hskip\ALG@tlm}{\ALG@printindent}{}{\errmessage{failed to patch}}
+\makeatother
+
+% the required height and depth are set by measuring the content to be shown
+% this means that the content is processed twice
+\newbox\statebox
+\newcommand{\myState}[1]{%
+    \setbox\statebox=\vbox{#1}%
+    \edef\thealgruleheight{\dimexpr \the\ht\statebox+1pt\relax}%
+    \edef\thealgruledepth{\dimexpr \the\dp\statebox+1pt\relax}%
+    \ifdim\thealgruleheight<.75\baselineskip
+        \def\thealgruleheight{\dimexpr .75\baselineskip+1pt\relax}%
+    \fi
+    \ifdim\thealgruledepth<.25\baselineskip
+        \def\thealgruledepth{\dimexpr .25\baselineskip+1pt\relax}%
+    \fi
+    %\showboxdepth=100
+    %\showboxbreadth=100
+    %\showbox\statebox
+    \State #1%
+    %\State \usebox\statebox
+    %\State \unvbox\statebox
+    %reset in case the next command is not wrapped in \myState
+    \def\thealgruleheight{\dimexpr .75\baselineskip+1pt\relax}%
+    \def\thealgruledepth{\dimexpr .25\baselineskip+1pt\relax}%
+}
+% end vertical rule patch for algorithmicx
+
+
+
