@@ -1,4 +1,5 @@
-# SPORES: Transferring files without the Cloud
+## Short talk
+# SPORES: Transferring files as spores through the wind instead of up in the Cloud
 ## Daniel Bosk and Sonja Buchegger, KTH
 
 #### Abstract
