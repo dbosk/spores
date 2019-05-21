@@ -30,7 +30,7 @@ and mixing (OR, top) and \ac{SPOR} (bottom).
   }
 \end{figure}
 
-\subsubsection{Overview of the Sphinx header format}
+\subsection{Overview of the Sphinx header format}
 
 We will now give an overview of the \ac{Sphinx} header format.
 The idea is not to give a detailed description of \ac{Sphinx}, but to give the 
@@ -73,7 +73,7 @@ Then the triple \((\alpha_2, \beta_2, \gamma_2)\) is sent to the node with
 address \(d_2\). When node \(n\) discovers \(d_{n+1} = *\) it knows that the message is intended 
 for itself and thus stops the forwarding.
 
-\subsubsection{The \Sphinxes extension for sets of nodes}
+\subsection{The \Sphinxes extension for sets of nodes}
 
 We will now extend \ac{Sphinx} to do \ac{SPOR}: instead of providing only \(d_{i+1}\) 
 in \(\beta_i\), we will have a set \(\{d_{i+1}^{(1)}, \dotsc, d_{i+1}^{(m)}\}\) 
@@ -105,7 +105,7 @@ If \iac{MAC} key that successfully verifies \(\beta_i\) using \(\gamma_i\) can
 be derived from \(\hat s_i\), then the node knows that \(\hat s_i = s_i\).
 
 
-\subsubsection{\Sphinxes algorithms and \acf*{SPOR}}
+\subsection{\Sphinxes algorithms and \acf*{SPOR}}
 
 \Sphinxes provides the following algorithms:
 \begin{itemize}
