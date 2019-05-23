@@ -11,7 +11,7 @@ P2P file sharing has been researched extensively, with respect to aspects such
 as architecture (starting with the semi-centralized Napster, then decentralized 
 Gnutella), availability and replication~\cite{replica}, scalability 
 (Bittorrent~\cite{bittorrent-incentives}), anonymity 
-(Freenet~\cite{Clarke:2001}, \ac{Tor}, and \acp{DHT} such as CAN, Chord, 
+(Freenet~\cite{Clarke:2001}, Tor, and \acp{DHT} such as CAN, Chord, 
 Pastry, and Tapestry, see~\cite{dhtchurn} for an overview). In contrast to our 
 work, these efforts principally aimed at enabling dissemination to many users 
 who do not necessarily know each other in person. With \ac{SPORES}, we focus on 
@@ -21,7 +21,7 @@ anyone else in the future.
 
 Mixnets~\cite{Chaum:1981} are perhaps the first solution to turn to for sending content from A to B anonymously. In our context, however, they are less suitable due to their reliance on mix servers, the limited protection against statistical inference possible for even a perfect mixnet given the multiple varying sources and destinations of our use case, and the delay they would add due to batching. We thus decided for an approach based on onion routing, which also entails sender-receiver anonymity.
 
-Onion routing schemes, with infrastructure and governance (\ac{Tor}) and 
+Onion routing schemes, with infrastructure and governance (Tor) and 
 without (I2P\footnote{https://geti2p.net/en/}), though geared toward web 
 browsing, come closest to file transfer without third-party storage. They do 
 not, however, allow for unreliable user devices as relay nodes, as we do. 
