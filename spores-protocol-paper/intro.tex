@@ -27,11 +27,12 @@ interactions \textit{in situ} in order to share digital content
 \cite{Oh:2017} between devices of their own \squad or with those of other users' \squad{}s. More broadly, users want to be able to share digital content seamlessly,
 wherever the content, its sender, or its recipient might be located, from one
 arbitrary device to another~\cite{Dearman:2008}, as they
-would have a few years ago with an USB key or an email. 
+would have a few years ago with a USB key, an email or, nowadays, the Cloud. 
 
 This thirst for seamless sharing explains the rise and ongoing popularity
-of personal sharing platforms such as Dropbox, Google Docs,
-OneDrive, Amazon Drive, etc. These solutions allow users to share data with anyone, anywhere, at almost
+of personal sharing platforms such as Dropbox, Google Drive,
+OneDrive, Amazon Drive, \etc.
+These solutions allow users to share data with anyone, anywhere, at almost
 anytime, between any devices. They achieve this feat by relying heavily on
 \emph{remote cloud services}, which have now become a key enabler of ubiquitous ecosystems. 
 % argument: cloud -> danger, 
@@ -57,7 +58,10 @@ Unfortunately, this reliance on the cloud comes at a strong price:
 %% a direct consequence,
 users lose control over their own data, which is distributed over
 multiple data centers, often in foreign jurisdictions, making it difficult for most users to grasp, review, and assess the privacy, and
-confidentiality guarantees they can expect. In practice, user data hosted in the cloud is routinely harvested, often without explicit
+confidentiality guarantees they can expect.
+\daniel{We need a reference for this strong statement.}
+In practice, user data hosted in the cloud is routinely harvested, often 
+without explicit
 consent, either by cloud providers or third parties, a sad situation that is only partially
 mitigated by legal measures such as the GDPR.
 
@@ -65,8 +69,10 @@ Although data encryption is often proposed as a first line of defense for cloud-
 location and activity can still be tracked, including access
 control histories, thus revealing what each user shared with whom and when. 
 %  because it does not protect meta-data information
-The exposure of metadata seriously weakens user privacy, as famously emphasized by a former NSA and CIA director: "\emph{We kill people based on metadata.}''~\cite{NaughtonTheGuardian2016} 
-In this model, user devices, masquerading as allies, get turned into %% tracking and/or monitoring \squad{}s, and serve as
+The exposure of metadata seriously weakens user privacy, as famously emphasized 
+by a former NSA and CIA director: \textcquote{NaughtonTheGuardian2016}{We kill 
+  people based on metadata}. In this model, user devices, masquerading as 
+allies, get turned into %% tracking and/or monitoring \squad{}s, and serve as
 highly efficient monitoring tools spying on their owners. 
 
 Constructing a system that provides fully anonymous content sharing while avoiding the above pitfalls is unfortunately highly
@@ -88,7 +94,7 @@ routes.
 
 In this paper, we demonstrate how good performance can be reconciled
 with strong privacy protection in file transfer systems. We present
-\name{}, a novel fully decentralized, autonomous,
+\name{}, a fully decentralized, autonomous,
 % approach that provides a 
 and self-organizing file transfer service between the \squad{}s of different users that preserves user privacy
 in terms of both data \emph{and} metadata. \commentFT{Moving to 3 ideas, to highlight proxemics in its own right} Our proposal hinges on three
@@ -98,15 +104,16 @@ key ideas: \emph{Firstly}, the emergence of \emph{\squad{}s}, the set of connect
 %% become possible to
 makes it possible to apply P2P technology to one's own devices
 alone, thereby reducing one's exposure to security and privacy threats
-from third parties. \emph{Secondly}, we consider \emph{proxemics relationships} as a key enabler to initiate file
-transfers. Physical proximity allow users to share
-routing information out-of-band.
-%, e.g. from their \squad. \commentFT{I did not get what 'from their \squad' mean.} 
-In contrast to state-of-the-art P2P systems, users of \name agree out-of-band to share a file, but
+from third parties. \emph{Secondly}, just as users must exchange links (URLs) 
+that point to the files in the Cloud, we can encode mix-net headers and 
+meta-data as links to exchange instead.
+In contrast to state-of-the-art P2P systems, users of \name agree out-of-band 
+to share a file, but
 do not keep it available for anyone else in the future. \emph{Thirdly}, we
-exploit distributed machine learning techniques to predict the future
-availability of user devices, and use this ability to implement a
-\emph{probabilistic predictive onion routing} protocol. Our protocol exploits a new mix-header format that uses onion layers made of sets of nodes rather single nodes. The use of multiple nodes in individual layers, together with our estimation of future device availability, exploited in a stateless way, allows
+implement a \emph{stateless probabilistic onion routing} protocol. Our protocol 
+exploits a new mix-header format that uses onion layers made of sets of nodes 
+rather single nodes. The use of multiple nodes in individual layers, exploited 
+in a stateless way, allows
 us to overcome the inherent fragility of pure P2P file transfer schemes while providing strong privacy properties. 
 
 %% In this paper, we introduce \name{}, a novel approach to perform a decentralized, autonomous,
@@ -142,36 +149,37 @@ Our contributions are as follows:
 %   probability. 
 
   \item We propose \Sphinxes, an extension of the
-    \ac{Sphinx} mix-header format to set-based onion routing. \Sphinxes allows each layer of an onion route to contain several alternative next nodes, thus realizing a source-routed limited random-walk protocol.
+    \ac{Sphinx} mix-header format to set-based onion routing. \Sphinxes allows 
+    each layer of an onion route to contain several alternative next nodes, 
+    thus realizing a source-routed bounded random-walk protocol.
 
   \item Building on \Sphinxes, we introduce the \ac{SPOR} %% node selection strategy for routing
     protocol
-    that, given a secure 
-    \ac{RPS} protocol and availability estimates, selects nodes to populate the 
-    layers of \Sphinxes in order to maximize the availability of the route. This node selection procedure 
-    yields reliable routes even in the presence of low-availability nodes while retaining the strong privacy properties of onion routing.
+    that, given a secure \ac{RPS} protocol and a probability distribution, 
+    selects nodes to populate the layers of \Sphinxes in order to maximize a 
+    desired property of the route.
+    \daniel{We must reconsider this phrasing.}
+    This node selection procedure yields reliable routes even in the presence 
+    of low-availability nodes while retaining the strong privacy properties of 
+    onion routing.
 
-  \item We provide a protocol for a device \squad to estimate the availabilities 
-    of its own devices, based on Markov models and \squad overlays.
-    These estimated availabilities can then be exploited by \ac{SPOR} to populate \Sphinxes.
-   % \daniel{We should add some more details, maybe.}
+  \item \daniel{Protocol for syncing devices? Or just refer to Cascade?}
 
-  \item We use \ac{SPOR} to realize \name, \sonja{removed for
-      redundancy, rephrased: a novel, fully decentralized, 
-    autonomous and self-organizing} a privacy-preserving file transfer service among
+  \item We use \ac{SPOR} to realize \name, a privacy-preserving file transfer 
+    service among
   users that eschews any third-party storage or centralized bootstrapping service.
 
 \end{itemize}
 
 The remainder of this paper is organized as follows. Section~\ref{system-model} presents the
 system and adversary models as well as the desired security and
-privacy properties of \name. Section~\ref{approach} describes the
-overall approach. In Section~\ref{Sphinxes}, we introduce \sphinxes. 
-Then, in Section~\ref{design}, we introduce the different building
-blocks of \name. In sections~\ref{security-discussion} and \ref{Performance},
-respectively, we evaluate the security and performance of our
-approach. We set \name into context with related work in
-Section~\ref{RelatedWork}, and finally conclude with Section~\ref{conclusion}.
+privacy properties of \name.
+\Cref{approach} describes the overall approach.
+In \cref{Sphinxes}, we introduce \sphinxes.
+Then, in \cref{design}, we introduce the different building blocks of \name.
+In \cref{security-discussion}, we evaluate the security of our approach.
+We set \name into context with related work in \cref{RelatedWork} and, finally, 
+conclude with \cref{conclusion}.
 
 % Cashmere: resilient anonymous routing.
 % Route fingerprinting in anonymous communications.
