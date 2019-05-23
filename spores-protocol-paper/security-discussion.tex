@@ -68,7 +68,7 @@ This means that any adversary, say Eve,  must ensure that the message passes
 through an adversarial node on each layer.
 The probability of successful attack is proportional to Eve's size in the 
 network, \ie \(f_A = \frac{|D_A|}{|D|}\).
-\commentDaniel{Check that we still use the \(D_i\) notation for the devices in 
+\daniel{Check that we still use the \(D_i\) notation for the devices in 
   \(i\)'s squad.}
 If we assume that \(\GetRandomNode\) returns nodes with close to the uniform 
 distribution, then the \(\nu w_L\) nodes selected is expected to contain \(f_A 
@@ -94,7 +94,7 @@ both active and passive adversaries).
   layer AND chosen in the first layer to regular onion routing where she
   needs to be the (sole) node on each layer. Are we doing
   better/worse/the same?}
-\commentDaniel{Hard to say at this time of night \dots}
+\daniel{Hard to say at this time of night \dots}
 
 However, Eve can only be certain that she has relayed the message from Alice to 
 Bob if \(\nu = r\), \ie she receives the message from Alice, relays it \(r-1\) 
@@ -103,7 +103,7 @@ If \(\nu < r\) though, then, due to the indistinguishability and unlinkability
 properties of Sphinxes (inherited from \ac{Sphinx}), Eve cannot know for certain if 
 Alice is the first node and Bob is the last node. \sonja{but what can
   she learn/guess?}
-\commentDaniel{For all she knows there might be another node at either the 
+\daniel{For all she knows there might be another node at either the 
   beginning or the end, she cannot tell.}
 
 
@@ -202,7 +202,7 @@ might yield some advantages over classical \ac{OR}. For
 example, no control messages are sent back to the source if the
 adversary has introduced an error.  \sonja{``But these advantages will
   only postpone the success of the attack, eventually even our
-  protocol must resend.'' why?}  \commentDaniel{Due to statistics. We should 
+  protocol must resend.'' why?}  \daniel{Due to statistics. We should 
   also look into
   this denial of security.} Another example is that the source-bounded
 random-walk and new routes for file chunks make tracking more
