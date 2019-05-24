@@ -5,16 +5,6 @@
 \section{System model, adversary model and desired security and privacy properties}%
 \label{system-model}
 
-\name provides a private and fully decentralized file transfer service by exploiting 
-%% is a distributed system made of
-users' devices.  We assume any pair of devices can communicate with each other as soon as one knows the address of the other (\eg using the
-Internet, possibly extended with NAT traversal techniques). The
-devices owned by the same user (this user's \squad) know of each
-other. We leverage the the devices of other users to help transfer the file from one user
-to another, but do not use them for storage.  We also assume that users
-can exchange some limited amounts of data out-of-band, \ie through
-some other channel than the network just mentioned (\eg using \ac{NFC}
-or QR codes).
 %system model: explain e-squad, contrast with cloud
 
 %adversary model: remove provider, compensate, results in same as in sphinxOR/Tor?  friends?
@@ -27,7 +17,8 @@ case to highlight some of the desirable privacy properties of a file
 transfer service, before mapping them into our fully decentralized
 (a.k.a. P2P\footnote{We use the terms \emph{fully decentralized} and
   \emph{P2P} interchangeably, and preferentially the latter for brevity.})
-context.  We finally consider the additional privacy properties
+context.
+We finally consider the additional privacy properties
 required to protect users from inferences, such as by network traffic
 analysis, and state our adversary model.
 
@@ -42,8 +33,8 @@ The use of the cloud provider, as a third party,
 provides two main privacy properties, which we should preserve when
 moving to a P2P setting:
 \begin{itemize}
-\item Alice and Bob are the only users who learn 
-about Alice sharing a file with Bob.
+\item Alice and Bob are the only \emph{users} who learn about Alice sharing a 
+  file with Bob.
 \item The composition and behavior of Alice and Bob's \squad{}s remain
   hidden to each other, and to other users. I.e. Alice does not learn
   which devices Bob owns or uses, let alone how Bob uses them, and
@@ -51,28 +42,45 @@ about Alice sharing a file with Bob.
 \end{itemize} 
 The cloud provider, however, has this information and any other
 stemming from the users' interaction with the service, and can draw
-inferences from metadata even when the data itself is encrypted. The
-provider thus poses a threat to the users' privacy which we remove in
-the P2P scenario~\cite{DevilInMetadata}.
-
+inferences from metadata even when the data itself is encrypted.
 
 \subsection{Moving to a P2P environment}
+
 A private P2P file transfer solution should retain the privacy that
 Alice and Bob already enjoy when a cloud provider functions as a
 gatekeeper towards each other and other users.  Eschewing a cloud
 provider, as we propose to do, removes not just the privacy risks
 associated with a central brokering entity but also the benefits from
-gatekeeping and therefore exposes users to friendly
-surveillance~\cite{FriendlySurveillance} by other peers (other \name
-users including Alice and Bob). In particular, in an
+gatekeeping~\cite{DevilInMetadata} and therefore exposes users to friendly
+surveillance~\cite{FriendlySurveillance} by other peers (\name
+users including Alice and Bob themselves). In particular, in an
 honest-but-curious setting, other users might collude to observe some
 of the traffic, and gain knowledge regarding Alice's and Bob's
 interactions, the devices they own, and how they use them.
 
-\subsection{The privacy properties and adversary model of \name}
+\subsection{Basic assumptions}
+
+We assume any pair of devices can communicate with each other as soon as one 
+knows the address of the other (\eg using the Internet, possibly extended with 
+NAT traversal techniques).
+The devices owned by the same user (this user's \squad) know of each
+other and their addresses.
+We also assume there exists some protocol which allows them to synchronize 
+their knowledge~\cite[\eg][]{luxey:cascade}.
+
+We also assume that users can exchange some limited amounts of data 
+out-of-band, \ie through some other channel --- \eg using \ac{NFC}, QR codes or 
+simply send a link through instant messaging or email.
+
+\subsection{Privacy properties and adversary model of \name}
+
+\daniel{This section doesn't really say what the privacy properties are.}
+
+\paragraph*{Privacy properties}
 
 Friendly surveillance can be mitigated by ensuring security properties 
-typically associated with onion routing, as defined by Camenisch and Lysyanskaya~\cite{CLOnionRouting}: 
+typically associated with onion routing.
+\Textcite{CLOnionRouting} define security properties for onion routing as 
 % We combine the requirements from
 % the \ac{P2P} setting with those from onion routing for anonymity.
 % Camenisch and Lysianskaya \cite{CLOnionRouting} define security properties 
@@ -92,7 +100,7 @@ true for a \emph{re-wrapped} onion, \ie a challenge (onion) wrapped in
 another layer. The formal definitions are in~\cite{CLOnionRouting} along
 with a theorem that states that an onion routing scheme satisfying
 these three properties, combined with secure point-to-point channels,
-is universal composability (UC)-secure, \ie the protocol remains
+is \acadv{UC} secure, \ie the protocol remains
 secure even if arbitrarily composed with other instances of the same or other protocols.
 These properties cover the concerns about
 revealing to others that Alice shares a file with Bob in the first
@@ -112,7 +120,9 @@ can be infered through \name.
  %  Section~\ref{security-discussion}.'} \sonja{better here. Need to define
  %  device unlinkability, the rest is covered by Camenisch.}
 
-\paragraph*{Adversary model} To assess our approach, we use the
+\paragraph*{Adversary model}
+
+To assess our approach, we use the
 adversary model assumed by Tor and \ac{Sphinx}:
 the adversary has complete control over some part of the network as
 well as some of the nodes. Like them, we do not consider a passive global network

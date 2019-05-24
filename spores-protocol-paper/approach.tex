@@ -3,46 +3,37 @@
 Our goal is to enable private and reliable file exchange between users 
 participating in the system, by using their respective devices only.
 When Alice and Bob, two users of our system, want to exchange a file \(f\) 
-through \name, they start by sharing some information out-of-band, \eg from 
-their smartphones.
+through \name, they start by sharing some information out-of-band, comparable 
+to links for sharing a file in the Cloud.
 More precisely, they exchange metadata on \(f\), encryption keys, and
 some single-use reply mix-headers.
 They use these reply headers to transfer the file contents of \(f\) over a 
 network of unreliable nodes while also achieving privacy.
 
-%% Figure~\ref{fig:outline} shows the components needed to obtain the
-%% routing information for the headers.  
-
-\begin{figure}[t]
-  \centering
-  \def\svgwidth{0.8\columnwidth}
-  %  \import{figures/}{outline_figure_only.pdf_tex}
-    \includegraphics[width=\columnwidth]{figures/OverviewSPORES_cropped}
-    \caption{Architectural overview of the \ac{SPORES} private file sharing service.}
-    \label{fig:outline}
-\end{figure}
-
 After the initial, out-of-band setup, file transfer happens along
 onion routes with the following features:\\
-\textbf{Stateless.} There is no mandatory circuit creation, the file transfer can be
-  done in a stateless way. \\
- \textbf{Predictive.} The choice of which nodes is placed in which onion routing
-  layer is informed on a predictive model for availability, disseminated
-  by an overlay and queried by random peer sampling (RPS). Note that availability predictions only influence how nodes returned by the random peer sampling service are distributed among layers, but have no impact on the overall population of nodes making up the onion route. This population is controlled by the random peer sampling service, which we assume is secure. This is important to ensure strong privacy protection, and we return to this point in the Security Discussion of Section~\ref{security-discussion}.\\
- \textbf{Probabilistic.} Instead of source routes with one node per onion layer, each
-  layer consists of a set of nodes and although the source route still
-  determines the sequence of layers, the actual node used for the next
-  hop of forwarding is selected from the set in an ad-hoc way,
-  resulting in a source-bounded random walk.\\
- \textbf{Onion Routing.} Put simply, in onion routing, the sender creates
-  a source route and encapsulates the payload and next-hop information in layers (by
-  encryption), that are \emph{peeled} (decrypted) one by one along the
-  route. By virtue of these layers, the forwarding nodes on the
-  route do not know where on the route they are and thus whether they
-  have received a packet directly from the sender or some other
-  intermediate node. We base our format for layering and peeling on the
-  \ac{Sphinx} mix-header format, which we extend to allow for the
-  changes above, described in \cref{Sphinxes}.
+\begin{description}
+  \item[Stateless] There is no circuit creation.
+    The protocol is stateless up to remembering previously seen packets to 
+    prevent replay attacks.
+    (There is no relation between packets.)
+
+  \item[Probabilistic] Instead of source routes with one node per onion layer, 
+    each layer consists of a set of nodes and although the source route still 
+    determines the sequence of layers, the actual node used for the next hop of 
+    forwarding is selected from the set in an ad-hoc way\daniel{%
+      What is \enquote{ad-hoc way}?}, resulting in a source-bounded random 
+    walk.
+
+  \item[Onion Routing] Put simply, in onion routing, the sender creates a 
+    source route and encapsulates the payload and next-hop information in 
+    layers (by encryption), that are \emph{peeled} (decrypted) one by one along 
+    the route. By virtue of these layers, the forwarding nodes on the route do 
+    not know where on the route they are and thus whether they have received a 
+    packet directly from the sender or some other intermediate node. We base 
+    our format for layering and peeling on the \ac{Sphinx} mix-header format, 
+    which we extend to allow for sets of nodes in each layer.
+\end{description}
 
 % \begin{description}
 % \item [Stateless.] There is no mandatory circuit creation, the file transfer can be
@@ -118,24 +109,39 @@ categories: (i) \textit{network structure}%~\ding{168}
 %     \end{enumerate*}
 % \end{description}
 
-As depicted in Figure~\ref{fig:outline}, \ac{SPORES} relies on a predictive and probabilistic onion routing protocol (\ac{SPOR}). \ac{SPOR} in turn combines a multi-set mix-header format (\Sphinxes) together with a node selection protocol that exploits decentralized prediction regarding node availability to optimize the reliability of \Sphinxes without jeopardizing its security properties.
+As depicted in \cref{fig:outline}, \ac{SPORES} relies on a probabilistic onion 
+routing protocol (\ac{SPOR}). \Ac{SPOR} in turn combines a set-based mix-header 
+format (\Sphinxes) together with a node selection protocol.
 %% Particularly, \sphinxes (\cref{Sphinxes}), is an adaptation of the 
 %% \sonja{do we apply all categories here?} \ac{Sphinx} mix-header format.
 %% This means that we inherit some properties from \ac{Sphinx} and due to being only a 
 %% header format, it only imposes some restrictions in the above categories.
-\Sphinxes (Figure~\ref{fig:outline} \ding{202}) provides, just as \ac{Sphinx}, unidirectional (network structure), 
-message-based (performance) communication.
-But unlike \ac{Sphinx}, \Sphinxes is an hybrid source-hop-by-hop routed, and a
-source-bounded random walk (communication 
-model). \Sphinxes relies on a flat routing-topology (network structure) with fair 
+\Sphinxes (Figure~\ref{fig:outline} \ding{202}, \cref{Sphinxes}) provides, just 
+as \ac{Sphinx}, unidirectional (network structure), message-based (performance) 
+communication.
+But unlike \ac{Sphinx}, \Sphinxes is a hybrid: source-hop-by-hop routed, 
+essentially a source-bounded random walk (communication model).
+\Sphinxes relies on a flat routing-topology (network structure) with fair 
 scheduling (communication model) --- as all packets are indistinguishable they 
 must be processed on a first-in-first-out basis.
 \Sphinxes also introduces some probability to the node selection, but this is 
 only a probabilistic selection among already selected nodes and only 
 interesting against passive adversaries (an active adversary can learn the 
 entire set just as she can learn the single node constituting a layer of a
-secure onion-routing scheme without endangering the security
+secure onion-routing scheme, this does not endanger the security
 properties~\cite{CLOnionRouting}).
+
+\begin{figure}[t]
+  \centering
+  \def\svgwidth{0.8\columnwidth}
+  %  \import{figures/}{outline_figure_only.pdf_tex}
+    \includegraphics[width=\columnwidth]{figures/OverviewSPORES_cropped}
+    \caption{%
+      Architectural overview of the \ac{SPORES} private file sharing service.
+      \daniel{This figure must be updated.}
+    }
+    \label{fig:outline}
+\end{figure}
 
 \Sphinxes does \emph{not} introduce any restrictions on whether the network 
 topology must be fully connected or not, be asynchronous (as in Tor) or 
@@ -147,27 +153,18 @@ Further, the \ac{SPOR} protocol (\cref{design}) adds node selection on top of \S
 The \ac{SPOR} protocol (Figure~\ref{fig:outline} \ding{203})  assumes a source of random nodes, \eg through 
 \ac{RPS}~\cite[\eg][]{BrahmsRPS} or \iac{DHT} based 
 scheme~\cite[\eg][]{Octopus}.
-Each node must be associated with a public key and some availability 
-prediction.
-\Ac{SPOR} selects nodes for a route uniformly randomly and uses the 
-availability to maximize the availability of the entire route, \ie across 
-layers.
-\commentFT{What follows seems quite convoluted, with a lot of repetition. Would be nice to revise.} As \ac{SPOR} assumes this source of random nodes, the network view (routing 
-information) of each node depends on this source of random nodes, as does the 
-fact of how decentralized the scheme becomes and whether the network toppology 
-is fully, mostly or partly connected (network structure).
+The choice of this source of random nodes affects the network view (routing 
+information) of each node, as well as how decentralized the scheme becomes and 
+whether the network topology is fully, mostly or partly connected (network 
+structure).
+
+Each node must be associated with a public key and some prediction function.
+\Ac{SPOR} selects nodes for a route uniformly randomly and uses the prediction 
+function to optimize the properties of the entire route, \ie across layers.
 As \ac{SPOR} is designed, it selects nodes uniformly among all the nodes 
 (communication model, node selection) that the source of random nodes provides.
 Thus, ultimately, these also depends on the source of random nodes.
 
-A device's availability depends on its user's behavior, hence the device must 
-predict this behavior. This is best done jointly between all of the user's devices.
-%In \cref{sec:squad_overlay}, we describe
-Accordingly we introduce a protocol that allows the devices to 
-compute their own availability prediction function based on the observations by 
-all other devices.
-
-Finally, we introduce the complete \ac{SPORES} protocol that acts as a private P2P file transfer. It 
-allows the device \squad to act as an autonomous system.
-In particular, we introduce a protocol which allows transferring larger 
-messages by fragmentation and reassembly across the devices in the \squad  (Figure~\ref{fig:outline} \ding{204}).
+Finally, we introduce the complete \ac{SPORES} protocol that allows 
+transferring larger messages by fragmentation and reassembly across the devices 
+in the \squad  (Figure~\ref{fig:outline} \ding{204}).
