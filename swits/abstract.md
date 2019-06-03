@@ -1,6 +1,7 @@
 ## Short talk
 # SPORES: Transferring files as spores through the wind instead of up in the Cloud
-## Daniel Bosk and Sonja Buchegger, KTH
+## Daniel Bosk, KTH
+### Joint work with Sonja Buchegger (KTH), Adrien Luxey, David Bromberg, François Taïani (INRIA/IRISA Rennes)
 
 #### Abstract
 
