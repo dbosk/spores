@@ -8,8 +8,12 @@ fig/%:
 abstract.pdf: abstract.md
 	pandoc -s $^ -o $@
 
-INCLUDE_MAKEFILES=../makefiles
-include ${INCLUDE_MAKEFILES}/doc.mk
+
+.PHONY: clean
+clean:
+	${MAKE} -C fig clean
+
+
 include ${INCLUDE_MAKEFILES}/tex.mk
 INCLUDE_BEAMERDIDACTIC=../beamer-didactic
 include ${INCLUDE_BEAMERDIDACTIC}/beamer-didactic.mk
