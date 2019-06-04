@@ -14,6 +14,8 @@ clean:
 	${MAKE} -C fig clean
 
 
+INCLUDE_MAKEFILES=../makefiles
+include ${INCLUDE_MAKEFILES}/doc.mk
 include ${INCLUDE_MAKEFILES}/tex.mk
 INCLUDE_BEAMERDIDACTIC=../beamer-didactic
 include ${INCLUDE_BEAMERDIDACTIC}/beamer-didactic.mk
