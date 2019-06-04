@@ -1,3 +1,8 @@
+.PHONY: all
+all: slides.pdf
+all: abstract.pdf
+
+
 slides.pdf: slides.tex preamble.tex contents.tex
 slides.pdf: fig/principle-SPOR.pdf
 slides.pdf: beamer-didactic.sty
