@@ -56,7 +56,7 @@
 \begin{frame}
   \begin{remark}
     \begin{itemize}
-      \item Alice and Bob have privacy against each other.
+      \item Alice and Bob enjoy privacy against each other.
       \item Someone Else can see everything.
     \end{itemize}
   \end{remark}
@@ -66,7 +66,7 @@
   \begin{question}
     \begin{itemize}
       \item Can we remove Someone Else's central position?
-      \item And still have privacy?
+      \item And still enjoy privacy?
     \end{itemize}
   \end{question}
 \end{frame}
@@ -89,13 +89,17 @@
 \end{frame}
 
 \begin{frame}
-  \begin{idea}
-    \begin{itemize}
-      \item We leverage that each user have multiple devices.
-      \item Some subset of devices is online at any given time.
-      \item Alice and Bob will use Carol's and David's devices for relaying.
-    \end{itemize}
-  \end{idea}
+%  \begin{idea}
+%    \begin{itemize}
+%      \item We leverage that each user have multiple devices.
+%      \item Some subset of devices is online at any given time.
+%      \item Alice and Bob will use Carol's and David's devices for relaying.
+%    \end{itemize}
+%  \end{idea}
+
+  \begin{center}
+    \includegraphics[height=0.6\textheight]{spores-squads.png}
+  \end{center}
 \end{frame}
 
 \begin{frame}
@@ -120,26 +124,21 @@
 
 \begin{frame}
   \begin{center}
-    \includegraphics[height=0.5\textheight]{fig/principle-SPOR.png}
+    \includegraphics[height=0.25\textheight]{sphinx-route.png}
   \end{center}
 
-  \pause
-
-  \begin{block}{Approach}
-    \begin{itemize}
-      \item We adapt the Sphinx mix-header format.
-      \item Still universally composable.
-    \end{itemize}
-  \end{block}
+  \begin{center}
+    \includegraphics[height=0.4\textheight]{sphinxes-route.png}
+  \end{center}
 \end{frame}
 
 \begin{frame}
   \begin{example}[Scenario]
     \begin{itemize}
       \item Alice wants to send a file to Bob.
-      \item \emph{Bob} encodes a SPOR route as a URL and sends to Alice.
+      \item \emph{Bob} encodes a route as a URL and sends to Alice.
       \item Alice \enquote{wraps} a route around Bob's.
-      \item She sends the file over the route.
+      \item She sends the file (chunks) over the route.
     \end{itemize}
   \end{example}
 
