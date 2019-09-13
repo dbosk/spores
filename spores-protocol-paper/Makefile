@@ -25,8 +25,8 @@ figures/%::
 	${MAKE} -C $(dir $@) $(notdir $@)
 
 
-usenix2019_v3.sty:
-	curl -o $@ https://www.usenix.org/sites/default/files/usenix2019_v3.sty
+usenixart.sty: usenixart/usenixart.sty
+	${LN} $^ $@
 
 
 .PHONY: clean
