@@ -4,10 +4,17 @@ all: abstract.pdf
 
 
 slides.pdf: slides.tex preamble.tex contents.tex
-slides.pdf: fig/principle-SPOR.pdf
 slides.pdf: beamer-didactic.sty
+slides.pdf: ${ART}
 
-fig/%:
+ART+= 		spores-squads.png
+ART+= 		sphinx-route.png
+ART+= 		sphinxes-route.png
+
+%.png: ../art/%.png
+	ln $< $@
+
+../%:
 	${MAKE} -C $(dir $@) $(notdir $@)
 
 abstract.pdf: abstract.md
@@ -16,7 +23,10 @@ abstract.pdf: abstract.md
 
 .PHONY: clean
 clean:
-	${MAKE} -C fig clean
+	${RM} abstract.pdf
+	${RM} slides.pdf
+	${RM} ${ART}
+	${MAKE} -C ../art clean
 
 
 INCLUDE_MAKEFILES=../makefiles
