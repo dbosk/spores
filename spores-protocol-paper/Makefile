@@ -18,11 +18,15 @@ DEPENDS+= 	otrmsg.bib ac.bib privacy.bib
 DEPENDS+= 	spores.bib
 DEPENDS+=	$(wildcard figures/*.pdf)
 
-spores.pdf: spores.tex preamble.tex revision_macros.tex
+spores.pdf: spores.tex usenix2019_v3.sty preamble.tex revision_macros.tex
 spores.pdf: ${SRC} ${DEPENDS}
 
 figures/%::
 	${MAKE} -C $(dir $@) $(notdir $@)
+
+
+usenix2019_v3.sty:
+	curl -o $@ https://www.usenix.org/sites/default/files/usenix2019_v3.sty
 
 
 .PHONY: clean
@@ -33,6 +37,7 @@ clean:
 .PHONY: distclean
 distclean:
 	${MAKE} -C figures distclean
+	${RM} usenix2019_v3.sty
 
 
 .PHONY: print todo
