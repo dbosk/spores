@@ -5,11 +5,12 @@ all: abstract.pdf
 
 slides.pdf: slides.tex preamble.tex contents.tex
 slides.pdf: beamer-didactic.sty
-slides.pdf: ${ART}
 
 ART+= 		spores-squads.png
 ART+= 		sphinx-route.png
 ART+= 		sphinxes-route.png
+
+slides.pdf: ${ART}
 
 %.png: ../art/%.png
 	ln $< $@
