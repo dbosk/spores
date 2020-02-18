@@ -7,3 +7,6 @@
 [submodule "beamer-didactic"]
 	path = beamer-didactic
 	url = https://github.com/dbosk/beamer-didactic.git
+[submodule "spores_code"]
+	path = spores_code
+	url = https://github.com/dbosk/spores_code.git
