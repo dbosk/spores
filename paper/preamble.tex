@@ -72,29 +72,7 @@
 
 \usepackage[natbib,style=ieee]{biblatex}
 \usepackage[capitalize]{cleveref}
-\usepackage{acro}
-\ExplSyntaxOn
-\ProvideAcroEnding{possessive-singular}{'s}{'s}
-\ProvideAcroEnding{possessive-plural}{s'}{s'}
-\ProvideAcroCommand{\acg}{%
-  \acro_possessive_singular:
-  \acro_use:n {#1}
-}
-\ProvideAcroCommand{\acgp}{%
-  \acro_possessive_plural:
-  \acro_use:n {#1}
-}
-\ProvideAcroCommand{\Acg}{%
-  \acro_possessive_singular:
-  \acro_first_upper:
-  \acro_use:n {#1}
-}
-\ProvideAcroCommand{\Acgp}{%
-  \acro_possessive_plural:
-  \acro_first_upper:
-  \acro_use:n {#1}
-}
-\ExplSyntaxOff
+\usepackage{acrox}
 \usepackage{bibsp}
 \addbibresource{meta.bib}
 \addbibresource{osn.bib}

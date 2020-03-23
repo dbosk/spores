@@ -7,3 +7,6 @@
 [submodule "beamer-didactic"]
 	path = beamer-didactic
 	url = https://github.com/dbosk/beamer-didactic.git
+[submodule "acrox"]
+	path = acrox
+	url = https://github.com/dbosk/acrox.git

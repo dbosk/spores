@@ -20,11 +20,17 @@ DEPENDS+= 	bibsp.sty meta.bib osn.bib anon.bib be.bib crypto.bib p2p.bib
 DEPENDS+= 	otrmsg.bib ac.bib privacy.bib
 DEPENDS+= 	adrien.bib spores.bib
 DEPENDS+=	figures/*.pdf
+DEPENDS+= 	acrox.sty
 
 spores.pdf: spores.tex preamble.tex revision_macros.tex
 spores.pdf: ${SRC} ${DEPENDS}
 
 figures/%::
+	${MAKE} -C $(dir $@) $(notdir $@)
+
+acrox.sty: ../acrox/acrox.sty
+
+../%:
 	${MAKE} -C $(dir $@) $(notdir $@)
 
 .PHONY: clean
