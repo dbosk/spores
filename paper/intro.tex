@@ -5,6 +5,30 @@
 
 % What's the problem?
 
+First, we provide an extension to the Sphinx mix-header format~\cite{Sphinx} 
+that adds several nodes per layer.
+We call this extension SphinxES.
+In essence, this makes it a source-routed random-walk.
+
+The sender can populate the layers according to different optimizations.
+For instance, the sender can populate the layers to minimize the risk of 
+failure of a complete layer to minimize the impact of high churn in a 
+network.
+Another example is that the sender distribute nodes over the layers to maximize 
+the sum of bandwidth over the nodes of each layer.
+This would optimize for throughput.
+
+Second, we provide a way for messaging services, like Signal, to use SphinxES 
+to relay messages over the devices in \iac{P2P} network with high churn.
+We call this the \ac{SPOR} protocol.
+
+Third, we provide a higher-level protocol\footnote{%
+  If SphinxES is IP, this protocol would be TCP.
+} for file transfers.
+We call this the \ac{SPORES} protocol.
+
+\endinput
+
 Fulfilling Mark Weiser's vision, we now rely on a increasing number of personal digital devices for many everyday tasks. These devices form a \textit{personal squad} of connected entities (or \emph{\squad} as we shall call them in the remainder of the
 paper), that users rely on for their everyday interactions with their fellow humans, as well as with the material and digital worlds.
 The growing importance of these \squad{}s is profoundly modifying how we live~\cite{Dearman:2008, Oh:2017, Sohn:2008,Harper08}, and has opened new areas of research such as \textit{proxemics}, the study of proximity-based interactions in a world of ubiquitous computing
