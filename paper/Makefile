@@ -3,6 +3,7 @@ all: spores.pdf
 
 SRC+=		contents.tex abstract.tex
 SRC+= 		intro.tex
+SRC+=		UCOR.tex
 SRC+= 		sphinxes.tex sphinxes-security.tex
 SRC+=		spor.tex spor-security.tex
 
