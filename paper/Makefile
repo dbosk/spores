@@ -3,11 +3,12 @@ all: spores.pdf
 
 SRC+=		contents.tex abstract.tex
 SRC+= 		intro.tex
+SRC+= 		sphinxes.tex sphinxes-security.tex
+SRC+=		spor.tex spor-security.tex
+
 SRC+= 		system-model.tex
 
 SRC+=		design.tex
-SRC+= 		sphinxes.tex
-SRC+=		spor.tex
 SRC+= 		squad-overlay-design.tex 
 SRC+=		file-transfer-design.tex
 
