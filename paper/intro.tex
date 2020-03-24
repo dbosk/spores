@@ -165,19 +165,19 @@ Our contributions are as follows:
 %   suboptimal prediction results in successful file transfer with high
 %   probability. 
 
-  \item We propose \Sphinxes, an extension of the
-    \ac{Sphinx} mix-header format to set-based onion routing. \Sphinxes allows each layer of an onion route to contain several alternative next nodes, thus realizing a source-routed limited random-walk protocol.
+  \item We propose SphinxES, an extension of the
+    \ac{Sphinx} mix-header format to set-based onion routing. SphinxES allows each layer of an onion route to contain several alternative next nodes, thus realizing a source-routed limited random-walk protocol.
 
-  \item Building on \Sphinxes, we introduce the \ac{SPOR} %% node selection strategy for routing
+  \item Building on SphinxES, we introduce the \ac{SPOR} %% node selection strategy for routing
     protocol
     that, given a secure 
     \ac{RPS} protocol and availability estimates, selects nodes to populate the 
-    layers of \Sphinxes in order to maximize the availability of the route. This node selection procedure 
+    layers of SphinxES in order to maximize the availability of the route. This node selection procedure 
     yields reliable routes even in the presence of low-availability nodes while retaining the strong privacy properties of onion routing.
 
   \item We provide a protocol for a device \squad to estimate the availabilities 
     of its own devices, based on Markov models and \squad overlays.
-    These estimated availabilities can then be exploited by \ac{SPOR} to populate \Sphinxes.
+    These estimated availabilities can then be exploited by \ac{SPOR} to populate SphinxES.
    % \commentDaniel{We should add some more details, maybe.}
 
   \item We use \ac{SPOR} to realize \name, \sonja{removed for
@@ -190,7 +190,7 @@ Our contributions are as follows:
 The remainder of this paper is organized as follows. Section~\ref{system-model} presents the
 system and adversary models as well as the desired security and
 privacy properties of \name. Section~\ref{approach} describes the
-overall approach. In Section~\ref{Sphinxes}, we introduce \sphinxes. 
+overall approach. In Section~\ref{SphinxES}, we introduce \sphinxes. 
 Then, in Section~\ref{design}, we introduce the different building
 blocks of \name. In sections~\ref{security-discussion} and \ref{Performance},
 respectively, we evaluate the security and performance of our
