@@ -1,9 +1,9 @@
 %!TEX root = spores.tex
 
-\section{\Sphinxes: the Sphinx header format Extended for Sets of nodes}%
-\label{Sphinxes}
+\section{SphinxES: the Sphinx header format Extended for Sets of nodes}%
+\label{SphinxES}
 
-\Textcite{Sphinx} designed \iac{UC} secure message format for mixes, called 
+\Textcite{Sphinx} designed \iacadv{UC} secure message format for mixes, called 
 Sphinx.
 Since it is \ac{UC} secure, it provably implements an ideal onion routing 
 functionality.
@@ -12,38 +12,26 @@ length, makes replies indistinguishable from forward messages and resists
 tagging attacks.
 It is also compact with only 224 bytes of header for a five-hop path with 
 128-bit security. \sonja{what about the CL properties?}
-\Ac{Sphinx} only provides one node per onion layer; in this section we extend \ac{Sphinx} 
-to \Sphinxes, which allows for multiple nodes per onion layer.
-(See \cref{fig:OR-POR}.)
-% AL: Bounded random-walk....
-As such, \Sphinxes could be described as a bounded random-walk protocol, \ie the 
-each node selects the next node from a set restricted by the source.
+Sphinx only provides one node per onion layer; in this section we extend Sphinx 
+to SphinxES, which allows for multiple nodes per onion layer.
+As such, SphinxES could be described as a source-bounded random-walk protocol, 
+\ie the each node selects the next node randomly from a set restricted by the 
+source.
 
-\begin{figure}
-  \centering
-  %  \includegraphics[width=\linewidth]{figures/OR-POR.png}
-    \includegraphics[width=0.65\linewidth]{figures/principle_SPOR.pdf}
-  \caption{\label{fig:OR-POR}%
-    Illustration of the conceptual difference between traditional onion routing 
-and mixing (OR, top) and \ac{SPOR} (bottom).
-    %\commentDaniel{This figure should be fixed, issue \#42.}
-  }
-\end{figure}
+\subsection{Overview of the Sphinx header format}
 
-\subsubsection{Overview of the Sphinx header format}
-
-We will now give an overview of the \ac{Sphinx} header format.
-The idea is not to give a detailed description of \ac{Sphinx}, but to give the 
-reader enough understanding of \ac{Sphinx} to understand the changes we make to 
-achieve \Sphinxes.
-For a more detailed understanding of \ac{Sphinx}, we refer the reader to the 
+We will now give an overview of the Sphinx header format.
+The idea is not to give a detailed description of Sphinx, but to give the 
+reader enough understanding of Sphinx to understand the changes we make to 
+achieve SphinxES.
+For a more detailed understanding of Sphinx, we refer the reader to the 
 description in the original Sphinx paper~\cite{Sphinx}.
 
 Each node \(n\) in the system has a long-term public-key pair: private key 
 \(\sk_n\in \ZZ_q^*\) and public key \(\pk_n = g^{\sk_n}\in G\), where \(g\) 
 generates a group \(G\) of prime order \(q\).
 
-The \ac{Sphinx} header (for the first node) is a triple \((\alpha_1, \beta_1, 
+The Sphinx header (for the first node) is a triple \((\alpha_1, \beta_1, 
   \gamma_1)\), where \(\alpha_1\) is \iac{DHKE} exponent (\(g^x\), where \(x\) 
 is a short-term secret chosen randomly for each header), \(\beta_1\) is the 
 encrypted routing data and \(\gamma_1\) is \iac{MAC} for \(\beta_1\).
@@ -73,16 +61,16 @@ Then the triple \((\alpha_2, \beta_2, \gamma_2)\) is sent to the node with
 address \(d_2\). When node \(n\) discovers \(d_{n+1} = *\) it knows that the message is intended 
 for itself and thus stops the forwarding.
 
-\subsubsection{The \Sphinxes extension for sets of nodes}
+\subsection{The SphinxES extension for sets of nodes}
 
-We will now extend \ac{Sphinx} to do \ac{SPOR}: instead of providing only \(d_{i+1}\) 
+We will now extend Sphinx to do \ac{SPOR}: instead of providing only \(d_{i+1}\) 
 in \(\beta_i\), we will have a set \(\{d_{i+1}^{(1)}, \dotsc, d_{i+1}^{(m)}\}\) 
 of \(m\) alternative next nodes.
 This means that all \(m\) nodes must be able to compute the same shared secret 
 \(s_{i+1}\).
 We do this by adding one layer of indirection.
 
-In \ac{Sphinx}, the public key for layer \(i\) is denoted as \(\pk_i\).
+In Sphinx, the public key for layer \(i\) is denoted as \(\pk_i\).
 Since we have \(m\) alternative nodes with different keys, let us denote them 
 by \(\pk_i^{(1)}, \dotsc, \pk_i^{(m)}\).
 
@@ -105,9 +93,9 @@ If \iac{MAC} key that successfully verifies \(\beta_i\) using \(\gamma_i\) can
 be derived from \(\hat s_i\), then the node knows that \(\hat s_i = s_i\).
 
 
-\subsubsection{\Sphinxes algorithms and \acf*{SPOR}}
+\subsection{SphinxES algorithms}
 
-\Sphinxes provides the following algorithms:
+SphinxES provides the following algorithms:
 \begin{itemize}
   \item \(\CreateHeader\) creates a header.
 
@@ -121,7 +109,7 @@ be derived from \(\hat s_i\), then the node knows that \(\hat s_i = s_i\).
 \end{itemize}
 
 We will synchronize our detailed descriptions with that of 
-\ac{Sphinx}, hence we will use the following notation:
+Sphinx, hence we will use the following notation:
 \begin{itemize}
   \item \(\kappa\) is the security parameter.
     The adversary must thus do about \(2^\kappa\) work to break the security.
@@ -184,7 +172,7 @@ We will synchronize our detailed descriptions with that of
     bit string \(s\).
 \end{itemize}
 
-We keep the nomenclature of mix headers and messages from \ac{Sphinx} for
+We keep the nomenclature of mix headers and messages from Sphinx for
 clarity but later apply them to onions and file chunks, repectively.
 
 \paragraph*{The \(\CreateHeader\) algorithm}
@@ -354,7 +342,7 @@ If \(L' = \{\nullnode\}\), the packet is addressed to the current node.
 Parse the first \(\kappa\) bits of \(\beta'\) as an identifier \(I\).
 Pass \((I, \delta)\) to the \(\ProcessMessage\) algorithm.
 
-If \(L' = \{\rdvnode\}\), the packet payload contains another \Sphinxes packet 
+If \(L' = \{\rdvnode\}\), the packet payload contains another SphinxES packet 
 to be forwarded.
 Decrypt the payload \(\delta\) to get the mix packet \((M', \delta')\gets 
   \prp^{-1}(\hash_\prp(s_i), \delta)\).

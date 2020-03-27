@@ -1,0 +1,57 @@
+\subsection{\acs{SPORES}: fragmentation and reassembly across devices}%
+\label{SPORES}%
+\label{sec:file_transfer}
+
+\sonja{to be merged with the previous subsection}
+So far, we have treated the case where Alice sends \emph{one} message to Bob in 
+\emph{one} round and any one of Bob's devices receives it.
+Now we will consider a slightly different scenario, we will show how to build a 
+file transferring service on top of \ac{SPORES}.
+Consider that the message \(m\) that Alice wants to send to Bob is too large to 
+successfully pass every layer of the route.
+\Eg each device goes offline and back online every \(t\) seconds, the bandwidth 
+is \(w\) bits per second and the message is \(|m|\) bits; if \(|m| > t w\), 
+then the message \(m\) can never be delivered as any device will go offline 
+before relaying it to the next node.
+The natural solution is to split \(m\) into \(n\) parts, \(m_0, \dotsc, 
+  m_{n-1}\), where \(|m|/n\leq t w\).
+The problem now is that \(m_i\) and \(m_j\) (\(i\neq j\)) might end up on 
+different devices.
+The parameters \(t\) and \(w\) must be empirically approximated and used as 
+global configuration parameters for the system.
+We run simulations for various values of \(t\) and \(w\) in \cref{Performance}.
+In this section we describe a file-transfer protocol for splitting a large 
+message, sending the fragments using \ac{SPOR} and reassemble them --- even if 
+the fragments are received by different devices of the squad.
+
+Alice wants to send the message \(m\) to Bob, \(m\) is \(|m|\) bits long.
+She splits \(m\) into \(n\) parts \(m_0, \dotsc, m_{n-1}\).
+Alice gives \(|m|\), \(n\), \(\hash(m)\) and \(\hash(m_0), \dotsc, 
+  \hash(m_{n-1})\) to Bob over an out-of-band channel.
+
+Bob runs \(\CreateReply\) \(n\) times, the node sets passed to \(\CreateReply\) 
+are created as in \cref{SPOR}.
+Bob notes the order of the identifiers, \(I\), of each header and sends the 
+headers in that order to Alice.
+
+Alice receives the headers and keeps the order of the headers.
+For each \(0\leq i < n\), she uses \(\UseReply\) with \(m_i\) as payload to get 
+a header \(\hat M_i\).
+Then she constructs the final header \(M_i\) by running \(\CreateFwd\) with 
+\(\hat M_i\) as payload and the final layer set to \(\{\rdvnode\}\) (to 
+indicate to the last node that it is a rendezvous node).
+She then sends \(M_i\) along the route.
+We note that Alice can process all pieces in parallel as long as she uses the 
+headers she got from Bob in the correct order.
+
+When the headers are used in the correct order Bob can use the identifiers from 
+the headers (\(I\)) to correctly reassemble the fragments despite out-of-order 
+delivery.
+
+Alice also creates reply-headers for Bob, these can be used by Bob to inform 
+Alice at regular time intervals about which chunks have been received and which 
+are missing.
+
+%\daniel{I leave the remaining details for someone else to write up.
+ % What we need is the details of how Bob's devices syncs and reassembles files.
+ % Maybe this is reduced to Sprinkler or something.}

@@ -1,0 +1,51 @@
+\section{Conclusion and Future Work}%
+\label{conclusion}
+
+We presented \name that, in analogy to its biological
+counterparts, enables the dissemination of critical data under unfavorable conditions. More
+specifially, \name allows the private dissemination of files between users without relying on
+storage on third-party devices, be they peers or servers in the
+cloud. This design choice brings unfavorable conditions that our protocol must withstand, in particular the need to route over unreliable and only partially available nodes. We overcome this challenge by combining a set-based onion-routing strategy, with {a probabilistic node selection protocol, informed by the on-line prediction of device availability. The result is a \emph{predictive and probabilistic onion routing protocol} (\ac{SPOR}), on which we based our private file transfer protocol (\ac{SPORES}). Our experiments show that even a suboptimal prediction
+already results in a high success rate of file transfer,
+though often at low speed.
+
+We conjecture that a more in-depth understanding of users'
+behavior would allow us to predict device connectivity farther into
+the future, and is thus likely to improve the throughput and reliability of our service. From a security and
+privacy perspective, we were guided by the properties for secure onion
+routing schemes defined by~\cite{CLOnionRouting} and added a property
+for device-unlinkability to prevent inferences from availiability data.
+% Tor, which we used to provide a modicum of privacy for this
+% first investigation of feasibility of file-sharing between two users'
+% squads of devices and modified to a stateless protocol to
+% accommodate unreliable nodes. While we took the first steps toward
+% analyzing the consequences of the modifications on security and
+% privacy, more work is needed to provably ensure that the added feature
+% of resilience despite unreliable nodes (supported by peer sampling)
+% does 
+% %and the side effect of enabling more local TOR routing (for example,
+% %keeping routes inside a country) do 
+% not compromise security. Another
+% consideration is the nature of the traffic in this scenario and the
+% limits of protection against statistical inference. 
+
+Although we presented a stateless solution, mainly to handle churn in
+a file transfer scenario, \name does not preclude a stateful alternative. 
+Other applications such as web browsing, interaction and
+collaboration or other kind of hidden services might benefit from a stateful, circuit-based approach
+such as found in traditional onion routing. We could also use our knowledge of future device availability to support a wider range of objectives beyond throughput and rate of success, for instance by delaying
+file transfers to optimize resource usage. 
+
+Finally our solution assumes a secure Random Peer Sampling service (RPS), i.e. a uniformly random sampling service whose sampling properties are immune to interference by malicious nodes. These are strong requirements, that are not easily met in practice. Some promising candidates for this service exist however~\cite{Octopus,BrahmsRPS}. Further strengthening these solutions seem particularly worthwhile and interesting.
+
+%
+% \commentAL{To rewrite as real paragraphs} Future work and prospects:
+% \begin{itemize}
+% 	\item More in-depth knowledge of the user's behavior would allow to predict devices connections farther in the future;
+% 	\item Changing devices' asymmetric keys regularly would increase security.
+% 	Updating keys is easy in \name given the RPS that propagates new information to all nodes.
+% 	However, more reflection would be needed to avoid key updates breaking ongoing communications passing through the devices in question;
+% 	\item \name is not resilient to Byzantine nodes for now: malicious users could potentially make users pick Predictive Onion Routes that pass through them with a high probability, thus allowing the attacker to learn the file sender and receiver. To circumvent this, we would need to employ a secure Random Peer Sampling \cite{Jesi_Montresor_van_Steen_2010}, and prevent devices to lie on their probability of being online.
+
+% \end{itemize}
+

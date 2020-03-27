@@ -5,6 +5,30 @@
 
 % What's the problem?
 
+First, we provide an extension to the Sphinx mix-header format~\cite{Sphinx} 
+that adds several nodes per layer.
+We call this extension SphinxES and describe it in detail in \cref{SphinxES}.
+In essence, this makes it a source-routed random-walk.
+
+The sender can populate the layers according to different optimizations.
+For instance, the sender can populate the layers to minimize the risk of 
+failure of a complete layer to minimize the impact of high churn in a 
+network.
+Another example is that the sender distribute nodes over the layers to maximize 
+the sum of bandwidth over the nodes of each layer.
+This would optimize for throughput.
+
+Second, we provide a way for messaging services, like Signal, to use SphinxES 
+to relay messages over the devices in \iac{P2P} network with high churn.
+We call this the \ac{SPOR} protocol and describe it in detail in \cref{SPOR}.
+
+Third, we provide a higher-level protocol\footnote{%
+  If SphinxES is IP, this protocol would be TCP.
+} for file transfers.
+We call this the \ac{SPORES} protocol.
+
+\endinput
+
 Fulfilling Mark Weiser's vision, we now rely on a increasing number of personal digital devices for many everyday tasks. These devices form a \textit{personal squad} of connected entities (or \emph{\squad} as we shall call them in the remainder of the
 paper), that users rely on for their everyday interactions with their fellow humans, as well as with the material and digital worlds.
 The growing importance of these \squad{}s is profoundly modifying how we live~\cite{Dearman:2008, Oh:2017, Sohn:2008,Harper08}, and has opened new areas of research such as \textit{proxemics}, the study of proximity-based interactions in a world of ubiquitous computing
@@ -141,19 +165,19 @@ Our contributions are as follows:
 %   suboptimal prediction results in successful file transfer with high
 %   probability. 
 
-  \item We propose \Sphinxes, an extension of the
-    \ac{Sphinx} mix-header format to set-based onion routing. \Sphinxes allows each layer of an onion route to contain several alternative next nodes, thus realizing a source-routed limited random-walk protocol.
+  \item We propose SphinxES, an extension of the
+    \ac{Sphinx} mix-header format to set-based onion routing. SphinxES allows each layer of an onion route to contain several alternative next nodes, thus realizing a source-routed limited random-walk protocol.
 
-  \item Building on \Sphinxes, we introduce the \ac{SPOR} %% node selection strategy for routing
+  \item Building on SphinxES, we introduce the \ac{SPOR} %% node selection strategy for routing
     protocol
     that, given a secure 
     \ac{RPS} protocol and availability estimates, selects nodes to populate the 
-    layers of \Sphinxes in order to maximize the availability of the route. This node selection procedure 
+    layers of SphinxES in order to maximize the availability of the route. This node selection procedure 
     yields reliable routes even in the presence of low-availability nodes while retaining the strong privacy properties of onion routing.
 
   \item We provide a protocol for a device \squad to estimate the availabilities 
     of its own devices, based on Markov models and \squad overlays.
-    These estimated availabilities can then be exploited by \ac{SPOR} to populate \Sphinxes.
+    These estimated availabilities can then be exploited by \ac{SPOR} to populate SphinxES.
    % \commentDaniel{We should add some more details, maybe.}
 
   \item We use \ac{SPOR} to realize \name, \sonja{removed for
@@ -166,7 +190,7 @@ Our contributions are as follows:
 The remainder of this paper is organized as follows. Section~\ref{system-model} presents the
 system and adversary models as well as the desired security and
 privacy properties of \name. Section~\ref{approach} describes the
-overall approach. In Section~\ref{Sphinxes}, we introduce \sphinxes. 
+overall approach. In Section~\ref{SphinxES}, we introduce \sphinxes. 
 Then, in Section~\ref{design}, we introduce the different building
 blocks of \name. In sections~\ref{security-discussion} and \ref{Performance},
 respectively, we evaluate the security and performance of our

@@ -1,0 +1,190 @@
+%!TEX root = spores.tex
+
+\usepackage{authblk}
+\usepackage[binary-units]{siunitx}
+\usepackage[british]{babel}
+\usepackage[hidelinks]{hyperref}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage[single]{acro}
+\usepackage{booktabs}
+\usepackage[T1]{fontenc}
+\usepackage[unq]{unique}
+\usepackage[utf8]{inputenc}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{newclude}
+%\usepackage{subcaption}
+\usepackage{xfrac}
+\usepackage{interval}
+\usepackage{xparse}
+\usepackage{xspace}
+\usepackage[inline]{enumitem}
+
+\usepackage[all]{foreign}
+\renewcommand{\foreignfullfont}{}
+\renewcommand{\foreignabbrfont}{}
+
+\usepackage[strict]{csquotes}
+
+\DeclareMathOperator{\powerset}{\mathcal{P}}
+
+\lstset{%
+  basicstyle=\footnotesize,
+  numbers=left
+}
+\let\email\texttt
+
+
+% Adrien: What is the following for?
+%\usepackage[noamsthm,notheorems]{beamerarticle}
+\usepackage{mathtools}
+\usepackage{thmtools}
+\declaretheorem[numbered=unless unique,style=theorem]{theorem}
+\declaretheorem[numbered=unless unique,style=definition]{definition}
+\declaretheorem[numbered=unless unique,style=definition]{assumption}
+\declaretheorem[numbered=unless unique,style=definition]{protocol}
+\declaretheorem[numbered=unless unique,style=example]{example}
+%\declaretheorem[style=definition,numbered=unless unique,
+%  name=Example,refname={example,examples}]{example}
+\declaretheorem[numbered=unless unique,style=remark]{remark}
+\declaretheorem[numbered=unless unique,style=remark]{idea}
+\declaretheorem[numbered=unless unique,style=exercise]{exercise}
+\declaretheorem[numbered=unless unique,style=exercise]{question}
+\declaretheorem[numbered=unless unique,style=solution]{solution}
+
+\usepackage[sets]{cryptocode}
+
+\usepackage[natbib]{biblatex}
+\usepackage[capitalize]{cleveref}
+\usepackage{bibsp}
+\addbibresource{meta.bib}
+\addbibresource{osn.bib}
+\addbibresource{anon.bib}
+\addbibresource{be.bib}
+\addbibresource{crypto.bib}
+\addbibresource{p2p.bib}
+\addbibresource{otrmsg.bib}
+\addbibresource{ac.bib}
+\addbibresource{privacy.bib}
+\addbibresource{spores.bib}
+\addbibresource{adrien.bib}
+
+\DeclareAcronym{OR}{%
+  short = {OR},
+  long = {Onion Routing},
+}
+\DeclareAcronym{POR}{%
+  short = {POR},
+  long = {Probabilistic Onion Routing},
+}
+\DeclareAcronym{SPOR}{%
+  short = {SPOR},
+  short-format = \scshape,
+  long = {Stateless Probabilistic Onion Routing},
+}
+\DeclareAcronym{SPORES}{%
+  short = {SPORES},
+  short-format = \scshape,
+  long = {Stateless Probabilistic Onion Routing for E-Squads},
+  long-format = \it,
+  long-possessive-plural = {'},
+}
+\DeclareAcronym{RPS}{%
+  short = {RPS},
+  long = {random-peer sampling},
+}
+
+\newcommand{\name}{\ac{SPORES}\xspace}
+\newcommand{\sphinxes}{\textsc{SphinxES}\xspace}
+\newcommand{\Sphinxes}{\textsc{SphinxES}\xspace}
+\newcommand{\squad}{e-squad\xspace}
+\newcommand{\squads}{e-squads\xspace}
+\newcommand{\Squad}{E-squad\xspace}
+\newcommand{\Squads}{E-squads\xspace}
+
+% sphinxes.tex
+\NewScheme{\SPORES}{SPORES}
+\NewVariable{\sk}{x}
+\NewVariable{\pk}{X}
+\NewAlgorithm{\Enc}{Enc}
+\NewScheme{\Sphnxs}{SphinxES}
+\NewAlgorithm{\CreateHeader}{\Sphnxs[CreateHeader]}
+\NewAlgorithm{\CreateFwd}{\Sphnxs[CreateForward]}
+\NewAlgorithm{\CreateReply}{\Sphnxs[CreateReply]}
+\NewAlgorithm{\UseReply}{\Sphnxs[UseReply]}
+\NewAlgorithm{\ProcessHeader}{\Sphnxs[ProcessHeader]}
+\NewVariable{\G}{\mathcal{G}}
+\NewVariable*{\mac}{\mu}
+\NewVariable*{\prg}{\rho}
+\NewVariable*{\prp}{\pi}
+\NewVariable{\hash}{h}
+%\NewVariable{\tag}{\tau}
+\NewVariable{\secret}{s}
+\NewVariable{\blind}{b}
+\NewVariable*{\N}{\mathcal{N}}
+\NewVariable*{\D}{\mathcal{D}}
+\NewVariable*{\nullnode}{\varepsilon}
+\NewVariable{\rdvnode}{*}
+\NewAlgorithm{\ComputeKeys}{ComputeKeys}
+\NewAlgorithm{\ComputePadding}{ComputePadding}
+\NewVariable{\ProcessMessage}{ProcessMessage}
+
+%spor.tex
+\NewScheme{\RPS}{RPS}
+\NewAlgorithm{\GetRandomNode}{\RPS[GetRandomNode]}
+\NewScheme{\SPOR}{SPOR}
+% used by Adrien
+\NewAlgorithm{\CreateLayer}{\SPOR[CreateLayer]}
+\NewFunction{\avail}{\Pon}
+
+%security-discussion.tex
+\NewFunction{\A}{\mathcal{A}}
+
+
+% Adrien's
+
+\newcommand\fileid{\ensuremath{ID_{\text{f}}}\xspace}
+\newcommand\sendingdevice{\ensuremath{d^{(s)}_f}\xspace}
+\newcommand\recdevice{\ensuremath{d^{(r)}_f}\xspace}
+\newcommand\trps{\ensuremath{t_{\text{RPS}}}}
+\newcommand\rpsview{\ensuremath{\mathcal{V}}\xspace}
+\newcommand\desc{\ensuremath{{\mathtt{desc}}}\xspace}
+%\newcommand\layer{\ensuremath{{\mathcal{L}}}\xspace}
+\newcommand\layer{L\xspace}
+\newcommand\Pon{\ensuremath{P}\xspace}
+\newcommand\Poff{\ensuremath{P_{\text{off}}}\xspace}
+\newcommand\finfo{\ensuremath{\mathcal{I}_f}}
+\newcommand\filesize{\ensuremath{s_f}\xspace}
+%\newcommand\chunk{\ensuremath{\mathit{ch}}}
+\newcommand\chunk{\ensuremath{ch}}
+\newcommand\chunksize{\ensuremath{s_{\chunk}}\xspace}
+\newcommand\nchunks{\ensuremath{n_{\chunk}}\xspace}
+\newcommand\hashchunk{\ensuremath{h_{\chunk}}\xspace}
+\newcommand\hashfile{h\xspace}
+
+\newcommand\bitfield{\ensuremath{bf_f}\xspace}
+\newcommand\tupload{\ensuremath{t_{up}}\xspace}
+
+
+\newcommand\tuser{\ensuremath{t_{\text{user}}}\xspace}
+\newcommand\ndevices{\ensuremath{n_{\text{devices}}}\xspace}
+
+\newcommand\texp{\ensuremath{t_{exp}}\xspace}
+
+
+
+\usepackage{graphicx}
+\usepackage{import} % for pdf+latex
+%\graphicspath{{figures/}}
+
+\input{revision_macros.tex}
+
+\usepackage[noend]{algpseudocode}
+\usepackage{pifont}
+%\errorcontextlines\maxdimen
+\usepackage{breqn}
+
+

@@ -9,7 +9,7 @@ The \ac{SPORES} system is composed of several parts, each of which requires its
 own security analysis.
 We thus primarily need to ensure that
 \begin{enumerate*}
-\item \Sphinxes (\cref{Sphinxes}) preserves the properties of 
+\item SphinxES (\cref{SphinxES}) preserves the properties of 
   \textcite{CLOnionRouting} and \textcite{Sphinx} yielding \ac{UC}-secure 
   \ac{OR};
 \item the node selection (\ac{SPOR}, \cref{SPOR}) does not introduce any 
@@ -21,43 +21,6 @@ We thus primarily need to ensure that
   security properties defined in \cref{system-model}, \ie
   privacy and robustness (packet re-ordering and drops).
 \end{enumerate*}
-
-\paragraph*{Security of \Sphinxes}
-
-There are two changes that we have made that must be analysed.
-We changed the key agreement from a pure \ac{DHKE}, \ie based on the \ac{DH} 
-assumption, to one containing an indirection.
-We also changed from the classical \ac{OR} of a fixed path with one node per 
-layer to a set of alternative nodes per layer.
-
-The first change:
-The confidentiality of the key previously rested entirely on the \ac{DH} 
-assumption (\(\alpha\) in the header).
-Now it also rests on the security of the \ac{PRP} \(\prp'\) (\(C\) in the 
-header).
-The integrity is still reduced to the security of the \ac{MAC} \(\mac\) 
-(\(\gamma\) in the header).
-We still achieve the bitwise unlinkability since \(C\) is replaced at each 
-layer and the next \(C\) is hidden inside the header --- which otherwise 
-remains identical to that of \ac{Sphinx}.
-
-The second change is that we use several nodes per layer as opposed to only 
-one.
-The proofs of \ac{Sphinx} rest on the results of \textcite{CLOnionRouting}, which 
-are results for classical \ac{OR} with only one node per layer.
-
-Analogously to classical \ac{OR}, we also reveal the previous and next sets of 
-nodes to the adversary. We note that this is actually quite natural as a 
-malicious adversary can drop any incoming traffic to a router and wait for the 
-timeout and
-retransmission, \ie when the 
-node has selected a new node from the next layer and retried sending.
-As such, the adversary can learn all nodes in the layer --- just as for 
-classical \ac{OR}, regardless of whether the set making up a layer contains a
-single or several nodes.
-
-With these arguments, we believe that \Sphinxes inherits the \ac{UC} security 
-properties of \ac{Sphinx}. %, however, this should be formally analysed.
 
 \paragraph*{Security of \acs*{SPOR}, node selection}
 
@@ -100,7 +63,7 @@ However, Eve can only be certain that she has relayed the message from Alice to
 Bob if \(\nu = r\), \ie she receives the message from Alice, relays it \(r-1\) 
 times and lastly sends it to Bob.
 If \(\nu < r\) though, then, due to the indistinguishability and unlinkability 
-properties of Sphinxes (inherited from \ac{Sphinx}), Eve cannot know for certain if 
+properties of SphinxES (inherited from \ac{Sphinx}), Eve cannot know for certain if 
 Alice is the first node and Bob is the last node. \sonja{but what can
   she learn/guess?}
 \commentDaniel{For all she knows there might be another node at either the 
@@ -118,7 +81,7 @@ This means that, if Alice sampled \(d_i\), she knows the public key
 \(\pk_i^{(j)}\), and if \(d_i\) knows it is included in Alice's sample, then it 
 will also know a route belongs to Alice whenever \(\pk_i^{(j)}\) is used to 
 encrypt the header.
-(This follows from the fact that Sphinxes is source-routed.)
+(This follows from the fact that SphinxES is source-routed.)
 \Ie every node on Alice's route would know that Alice is either the source or 
 the destination.
 
@@ -215,12 +178,12 @@ destination can be several different devices --- \ie from the \squads.
 
 We would also like to point out that the
 vulnerability to a global passive attacker is not inherent in Sphinx
-or \Sphinxes, but can be caused by the way they are applied, \ie the
+or SphinxES, but can be caused by the way they are applied, \ie the
 traffic sent. If performance and resource consumption were not an
 issue, batched and well-timed message or file transfer by all nodes
 would render traffic analysis less efficient. Concretely, \Ac{SPORES} inherits 
-the security properties from \Sphinxes and \ac{SPOR}.
-However, both \Sphinxes and \ac{SPOR} can be used with any mixing strategy, and 
+the security properties from SphinxES and \ac{SPOR}.
+However, both SphinxES and \ac{SPOR} can be used with any mixing strategy, and 
 the security they provide is as secure as the mixing strategy (or flushing 
 algorithm) allows.
 Since \ac{SPORES} is a fully-fledged system, it must make a concrete choice for 

@@ -2,7 +2,7 @@
 
 \usepackage[binary-units]{siunitx}
 \usepackage[british]{babel}
-\usepackage[hidelinks]{hyperref}
+\usepackage{hyperref}
 \usepackage{algorithm}
 \usepackage[noend]{algpseudocode}
 \usepackage[single]{acro}
@@ -24,6 +24,9 @@
 \usepackage{xparse}
 \usepackage{xspace}
 \usepackage[inline]{enumitem}
+\usepackage{import}
+\usepackage{capt-of}
+\usepackage{pifont}
 
 \usepackage[all]{foreign}
 \renewcommand{\foreignfullfont}{}
@@ -69,29 +72,7 @@
 
 \usepackage[natbib,style=ieee]{biblatex}
 \usepackage[capitalize]{cleveref}
-\usepackage{acro}
-\ExplSyntaxOn
-\ProvideAcroEnding{possessive-singular}{'s}{'s}
-\ProvideAcroEnding{possessive-plural}{s'}{s'}
-\ProvideAcroCommand{\acg}{%
-  \acro_possessive_singular:
-  \acro_use:n {#1}
-}
-\ProvideAcroCommand{\acgp}{%
-  \acro_possessive_plural:
-  \acro_use:n {#1}
-}
-\ProvideAcroCommand{\Acg}{%
-  \acro_possessive_singular:
-  \acro_first_upper:
-  \acro_use:n {#1}
-}
-\ProvideAcroCommand{\Acgp}{%
-  \acro_possessive_plural:
-  \acro_first_upper:
-  \acro_use:n {#1}
-}
-\ExplSyntaxOff
+\usepackage{acrox}
 \usepackage{bibsp}
 \addbibresource{meta.bib}
 \addbibresource{osn.bib}
@@ -107,22 +88,19 @@
 
 \DeclareAcronym{OR}{%
   short = {OR},
-  long = {Onion Routing},
+  long = {onion routing},
 }
 \DeclareAcronym{POR}{%
   short = {POR},
-  long = {Probabilistic Onion Routing},
+  long = {probabilistic \acifused{OR}{\acs*{OR}}{\acl*{OR}}},
 }
 \DeclareAcronym{SPOR}{%
-  short = {SP$^2$OR},
-  short-format = \scshape,
-  long = {Stateless Predictive Probabilistic Onion Routing},
+  short = {SPOR},
+  long = {Stateless Probabilistic Onion Routing},
 }
 \DeclareAcronym{SPORES}{%
-  short = {SP$^2$ORES},
-  short-format = \scshape,
-  long = {Stateless Predictive Probabilistic Onion Routing for E-Squads},
-  long-format = \it,
+  short = {SPORES},
+  long = {Stateless Probabilistic Onion Routing for E-Squads},
   long-possessive-plural = {'},
 }
 \DeclareAcronym{RPS}{%
@@ -131,8 +109,6 @@
 }
 
 \newcommand{\name}{\ac{SPORES}\xspace}
-\newcommand{\sphinxes}{\textsc{SphinxES}\xspace}
-\newcommand{\Sphinxes}{\textsc{SphinxES}\xspace}
 \newcommand{\squad}{e-squad\xspace}
 \newcommand{\squads}{e-squads\xspace}
 \newcommand{\Squad}{E-squad\xspace}
