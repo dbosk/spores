@@ -167,7 +167,8 @@ Sphinx, hence we will use the following notation:
    over to another, and that the payload is \iac{SPOR} route 
     for forwarding.
 
-  \item \(0_x\) denotes \(x\) zeroes.
+  \item \(0_x\) denotes a string of \(x\) zeroes, \(\U_x\) denotes a string of 
+    \(x\) uniformly randomly chosen bits.
     \(s_{[a..b]}\) denotes all bits from the \(a\)th bit to the \(b\)th of the 
     bit string \(s\).
 \end{itemize}
@@ -259,7 +260,7 @@ Next we will use the above computations to arrive at the mix headers \(M_i =
 \(\alpha_i\) was computed above, so we will compute \(\beta_i\) and 
 \(\gamma_i\).
 We must compute \(\beta_i\) in reverse order. \sonja{why? layering?}
-We let \(\beta_{\nu} = I\concat 0_{(w_H r-1)\kappa}\), then, for \(\nu < i\leq 
+We let \(\beta_{\nu} = I\concat \U_{(w_H r-1)\kappa}\), then, for \(\nu < i\leq 
   0\), we let
 \begin{align*}
   \beta_i &\gets \left\{L_{i+1}\concat C_{i+1}\concat \gamma_{i+1}\concat 
