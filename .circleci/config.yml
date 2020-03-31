@@ -5,6 +5,6 @@ jobs:
       - image: dbosk/makefiles
     steps:
       - checkout
-      - run: git submodule update --init
+      - run: git submodule update --init --recursive
       - run: LATEXFLAGS="-halt-on-error -use-make" make all
-      - run: git submodule deinit --all
+      - run: git submodule deinit --all --recursive
