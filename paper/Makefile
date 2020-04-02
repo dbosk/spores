@@ -31,18 +31,22 @@ figures/%::
 	${MAKE} -C $(dir $@) $(notdir $@)
 
 acrox.sty: ../acrox/acrox.sty
+	${LN} $^ $@
 
-../%:
+../acrox/acrox.sty:
 	${MAKE} -C $(dir $@) $(notdir $@)
 
 .PHONY: clean
 clean:
 	${RM} spores.pdf
 	${MAKE} -C figures clean
+	${RM} acrox.sty
+	${MAKE} -C ../acrox clean
 
 .PHONY: distclean
 distclean:
 	${MAKE} -C figures distclean
+	${MAKE} -C ../acrox distclean
 
 
 .PHONY: print todo
