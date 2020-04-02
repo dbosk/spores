@@ -6,22 +6,22 @@ two ideas, first, that there exists a stringent and well defined idea
 about what a protocol needs to do, its functionality. Secondly, that
 any two protocols that fulfill this idea should be {\it
   indistinguishable\/} in the sense that they should perform the exact
-same service. If the protocol is regarded as a black box, this means
+same service\cite{UC-framework}. If the protocol is regarded as a black box, this means
 that any input into to the two different boxes should result in the
 exact same output.
 
 The second idea also means that any two protocols, with well defined
 functionalities, should not interefere with one another if they are
 are used in parallel or one after the other, as long as their inputs
-are correct. That is, they are composable.
+are correct. That is, they are composable\cite{UC-framework}.
 
 The underlying framework is quite technical and requires one to handle
 a computational model with what the original author %TODO: Insert reference
 called Interactive Turing Machines and on top of this designed the
-Universal Composability theorem. However, the most important part of
+Universal Composability theorem \cite{UC-framework}. However, the most important part of
 this framework is what is known as an {\bf Ideal Functionality}, which
 can be thought of as a black box that fulfills some well-defined
-functionality. The idea behind the UC-framework is then that we ought
+functionality\cite{UC-framework}. The idea behind the UC-framework is then that we ought
 to define a protocol which we must then prove simulates the ideal
 functionality, so that distinghuising between the ideal functionality
 and the real protocol becomes infeasible.
@@ -36,12 +36,12 @@ created by Jan Camenish and Anna Lysyanskaya (a mode we will call the
 CL-model). This model was an attempt at formalising the concept of
 onion routing using the UC-framework. It relied on an ideal
 functionality, and 5 properties that ensured a protocol would properly
-simulate the ideal functionality.
+simulate the ideal functionality\cite{CL-model}.
 
 The ideal functionality itself works through messages, and is
 designed around 4 different functions, each activated by a specific
-message.
-\begin{Itemize}
+message\cite{CL-model}.
+\begin{itemize}
   \item{{\tt Process_New_Onion} When an onion is received, either
     reject if faulty or proceed with}
   \item{{\tt Process_Next_step} Creates a temporary id for the onion
@@ -55,10 +55,10 @@ message.
   \item{{\tt Forward_Onion} Tells the ideal functionality to send the
     message to the next router and the step {\tt Process_Next_Step} is
     once again taken.}
-\end{Itemize}
+\end{itemize}
 
 To prove that a protocol properly simulates this ideal functionality,
-the CL-model, as mentioned above, defined five sufficient properties.
+the CL-model, as mentioned above, defined five sufficient properties\cite{CL-model}.
 
 \begin{enumerate}
   \item{{\bf Onion routing scheme I/O.} The protocol should have a key
@@ -76,7 +76,7 @@ the CL-model, as mentioned above, defined five sufficient properties.
   correctly formed onion is processed correctly and by the correct
   routers, then the correct message is received by the last router.}
 
-  \item{{\bf Onion-integrity} This is the requirement that the path of
+  \item{{\bf Onion-integrity.} This is the requirement that the path of
   an onion is limited by some integer N, that is, no matter how an
   onion is manipulated, the path may never have a length that is
   larger than N.}
@@ -84,17 +84,16 @@ the CL-model, as mentioned above, defined five sufficient properties.
   \item{{\bf Onion-security.} A protocol has the property of
     onion-security if an adversary can not guess the message nor add
     an extra onion-layer to any onion.}
-  
 \end{enumerate}
 
 
 However, while these definitions are useful, newer work have found
 that they were not sufficient and added two new properties, which has
 since been proven to fulfill the security properties of the ideal
-functionality. The properties were:
+functionality\cite{kuhn}. The properties were:
 
 \begin{enumerate}
-  \setcounter{enumi}{6}
+  \setcounter{enumi}{5}
   \item{{\bf Tail indistinguishability against a corrupted receiver.}
     An adversary that reads after the last honest relay should not be
     able to distinguish between two onions who follow the same path
