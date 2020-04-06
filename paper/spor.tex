@@ -50,8 +50,9 @@ It chooses nodes to optimize for availability of each layer.
 It also chooses them uniformly randomly from the entire set of 
 devices~\(\devices\).
 
-\((d, \pk_d, a_d)\gets \GetNode\): The algorithm~\(\GetNode\) returns a tuple 
-\((d, \pk_d, a_d)\) of one selected node, where
+\((d, \pk_d, a_d)\gets \GetNode\): We assume that there exists an 
+algorithm~\(\GetNode\) which returns a tuple \((d, \pk_d, a_d)\) of one 
+selected node, where
 \begin{itemize}
   \item \(d\) is the node's identifier (address);
   \item \(\pk_d\) is the node's public key;
@@ -71,16 +72,18 @@ Another instantiation would be Tor's authoritative directory servers.
 However, exactly how the \(\GetNode\) algorithm is implemented is not our 
 concern at the moment.
 
-When Bob runs \(\CreateReply\) he must supply a set of nodes for each layer of 
-the route, \(L = \{L_0, \dotsc, L_\nu\}\), where \(|L_i| \leq w_L\) for \(0\leq 
-i\leq \nu\).
-The set \(L_\nu\) contains only one or more of Bob's devices.
-For the other layers, \(L_i\) for \(i < \nu\), Bob will do the following:
-Bob makes \((\nu-1)\cdot w_L\) queries to \(\GetNode\) to get enough nodes to 
-fill all remaining layers.
-Bob will distribute these nodes across all layers~\(L_i\) to maximize the 
-availability~\[
+Now we can construct the layers of Bob's reply block that Alice can use to send 
+him a message.
+We provide the algorithm \(\CreateLayers\), which populates the layers~\(L_0, 
+\dotsc, L_{\nu-1}\) that Bob must provide to \(\CreateReply\).
+(Bob will create \(L_\nu\) himself by filling it with his devices.)
+
+\((L_0, \dotsc, L_{\nu-1}) \gets \CreateLayers\):
+The algorithm first makes \(\nu\cdot w_L\) queries to \(\GetNode\) to get 
+enough nodes to fill all layers.
+These nodes are distributed across all layers~\(L_i\), for \(0\leq i < \nu\), 
+to maximize the availability~\[
   a_{L_i} = 1 - \prod_{d\in L_i} (1-a_d)
 \] of every layer (or equivalently, minimizing the risk that every node in a 
-layer is offline at the same time).
+layer is offline at the same time) while keeping \(|L_i| = w_L\).
 
