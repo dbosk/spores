@@ -1,27 +1,26 @@
 \section{\Acladj*{UC} \acl*{OR}}%
 \label{UCOR}
-The Universal Composability framework (which we will call UC or
-UC-framework) is a mathematical framework that can be summarized in
+The \ac{UC} framework is a mathematical framework that can be summarized in
 two ideas, first, that there exists a stringent and well defined idea
 about what a protocol needs to do, its functionality. Secondly, that
 any two protocols that fulfill this idea should be {\it
   indistinguishable\/} in the sense that they should perform the exact
-same service\cite{UC-framework}. If the protocol is regarded as a black box, this means
-that any input into to the two different boxes should result in the
+same service~\cite{UniversalComposability}. If the protocol is regarded as a black box, this means
+that any input into the two different boxes should result in the
 exact same output.
 
 The second idea also means that any two protocols, with well defined
 functionalities, should not interefere with one another if they are
 are used in parallel or one after the other, as long as their inputs
-are correct. That is, they are composable\cite{UC-framework}.
+are correct. That is, they are composable~\cite{UniversalComposability}.
 
 The underlying framework is quite technical and requires one to handle
 a computational model with what the original author %TODO: Insert reference
 called Interactive Turing Machines and on top of this designed the
-Universal Composability theorem \cite{UC-framework}. However, the most important part of
+Universal Composability theorem \cite{UniversalComposability}. However, the most important part of
 this framework is what is known as an {\bf Ideal Functionality}, which
 can be thought of as a black box that fulfills some well-defined
-functionality\cite{UC-framework}. The idea behind the UC-framework is then that we ought
+functionality\cite{UniversalComposability}. The idea behind the \ac{UC} framework is then that we ought
 to define a protocol which we must then prove simulates the ideal
 functionality, so that distinghuising between the ideal functionality
 and the real protocol becomes infeasible.
@@ -31,20 +30,20 @@ the framework. We will, for example, instead utilise the fact that one
 may prove some sufficient conditions that if fulfilled means that the
 protocol must simulate the ideal functionality.
 
-One of the first succesful uses of the UC-framework was a model
+One of the first successful uses of the \ac{UC} framework was a model
 created by Jan Camenish and Anna Lysyanskaya (a mode we will call the
 CL-model). This model was an attempt at formalising the concept of
 onion routing using the UC-framework. It relied on an ideal
 functionality, and 5 properties that ensured a protocol would properly
-simulate the ideal functionality\cite{CL-model}.
+simulate the ideal functionality~\cite{CL-model}.
 
 The ideal functionality itself works through messages, and is
 designed around 4 different functions, each activated by a specific
-message\cite{CL-model}.
+message~\cite{CL-model}.
 \begin{itemize}
   \item{{\tt Process_New_Onion} When an onion is received, either
     reject if faulty or proceed with}
-  \item{{\tt Process_Next_step} Creates a temporary id for the onion
+  \item{{\tt Process_Next_Step} Creates a temporary id for the onion
     and informs the adversary of onion (this emulates the fact that
     the adversary controls the network). If the router itself is
     adversial, it also tells the adversary which route it was part
@@ -58,14 +57,14 @@ message\cite{CL-model}.
 \end{itemize}
 
 To prove that a protocol properly simulates this ideal functionality,
-the CL-model, as mentioned above, defined five sufficient properties\cite{CL-model}.
+the CL-model, as mentioned above, defined five sufficient properties~\cite{CL-model}.
 
 \begin{enumerate}
   \item{{\bf Onion routing scheme I/O.} The protocol should have a key
-  generation algorithm for assymetric encryption, be able to form an
+  generation algorithm for asymetric encryption, be able to form an
   onion from a message and a list of routers and their public
   keys. Lastly, the protocol should also be able to process the onion,
-  that is, peel a lay off of it and deliver it to the next router.}
+  that is, peel a layer off of it and deliver it to the next router.}
 
   \item{{\bf Onion evolution, path and layering.} Each onion should
     have a pair of idenifiers, that is the onion itself and its
@@ -90,7 +89,7 @@ the CL-model, as mentioned above, defined five sufficient properties\cite{CL-mod
 However, while these definitions are useful, newer work have found
 that they were not sufficient and added two new properties, which has
 since been proven to fulfill the security properties of the ideal
-functionality\cite{kuhn}. The properties were:
+functionality~\cite{kuhn}. The properties were:
 
 \begin{enumerate}
   \setcounter{enumi}{5}
@@ -105,6 +104,6 @@ functionality\cite{kuhn}. The properties were:
     an onion which contains this path as a subpath.}
 \end{enumerate}
 
-With these properties and the Spores protocol, we wish to prove that
-spores does indeed have these properties, and thus fulfills the
+With these properties and the SphinxES protocol, we wish to prove that
+SphinxES does indeed have these properties, and thus fulfills the
 security properties of the ideal functionality. 
