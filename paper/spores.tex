@@ -1,44 +1,19 @@
-\documentclass{article}
-\input{preamble.tex}
-\usepackage{authblk}
+%!TEX root = spores.tex
 
-\begin{document}
-\title{%
-  SphinxES and \acs*{SPORES}:
-  \acs*{P2P} mixing with various optimizations
-  %\acs*{SPORES}: \acl*{SPORES}%
-  %\name: Stateless Predictive Onion Routing for E-Squads%
-  %% From the IEEE template
-  % \thanks{Identify applicable funding agency here. If none, delete this.}
-  % \thanks{%
-  %   Daniel Bosk and Sonja Buchegger were funded by
-  %   the Swedish Foundation for Strategic Research grant SSF FFL09-0086.
-  %   Research done while Daniel Bosk visited the WIDE team at INRIA/IRISA Rennes, 
-  %   France.
-  % }
-}
+\section{Design of the \name file transfer system}%
+\label{design}
 
-\author[1]{Daniel Bosk\thanks{%
-  Research done while the author visited the WIDE team at INRIA/IRISA Rennes, 
-  France.
-}}
-\affil[1]{KTH Royal Institute of Technology\\\email{daniel@bosk.se}}
-\author[1]{Sonja Buchegger}
-\author[2]{Adrien Luxey}
-\affil[2]{Univ.\ de Rennes, INRIA, CNRS, IRISA\\\email{Adrien.Luxey@irisa.fr}}
-\author[2]{Yérom-David Bromberg}
-\author[2]{François Taïani}
+% \sonja{will frame and structure (A) squad overlay (prediction) (B)
+%   global overlay (RPS) (C) sphinxes (incl.\ sphinx, onion routing in
+%   general) (D) SPOR and SPORES (E) encryption (hybrid, payload, header)
+%   if not included earlier (F) out-of-band}
+% \commentDaniel{I suggest the following structure:
+%   (A) SphinxES
+%   (B) SPOR (global overlay)
+%   (C) SPORES (local overlay).
+%   My original idea was to make SphinxES its own section before the design 
+%   section instead of a subsection in the design section.}
 
-\mode<article>{\maketitle}
-\mode<presentation>{%
-  \begin{frame}
-    \maketitle
-  \end{frame}
-}
-
-\begin{abstract}
-  \input{abstract.tex}
-\end{abstract}
-
-\input{contents.tex}
-\end{document}
+%\include*{spor}
+%\include*{squad-overlay-design}
+\include*{file-transfer-design}
