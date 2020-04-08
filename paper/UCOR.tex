@@ -1,16 +1,16 @@
 \section{\Acladj*{UC} \acl*{OR}}%
 \label{UCOR}
-The \ac{UC} framework is a mathematical framework that can be summarized in
+The \ac{UC} framework is a mathematical framework that can be summarised in
 two ideas, first, that there exists a stringent and well defined idea
 about what a protocol needs to do, its functionality. Secondly, that
-any two protocols that fulfill this idea should be {\it
+any two protocols that fulfil this idea should be {\it
   indistinguishable\/} in the sense that they should perform the exact
 same service~\cite{UniversalComposability}. If the protocol is regarded as a black box, this means
 that any input into the two different boxes should result in the
 exact same output.
 
 The second idea also means that any two protocols, with well defined
-functionalities, should not interefere with one another if they are
+functionalities, should not interfere with one another if they are
 are used in parallel or one after the other, as long as their inputs
 are correct. That is, they are composable~\cite{UniversalComposability}.
 
@@ -19,10 +19,10 @@ a computational model with what the original author %TODO: Insert reference
 called Interactive Turing Machines and on top of this designed the
 Universal Composability theorem \cite{UniversalComposability}. However, the most important part of
 this framework is what is known as an {\bf Ideal Functionality}, which
-can be thought of as a black box that fulfills some well-defined
+can be thought of as a black box that fulfils some well-defined
 functionality\cite{UniversalComposability}. The idea behind the \ac{UC} framework is then that we ought
 to define a protocol which we must then prove simulates the ideal
-functionality, so that distinghuising between the ideal functionality
+functionality, so that distinguishing between the ideal functionality
 and the real protocol becomes infeasible.
 
 However, this is not necessarily the way one must go about working in
@@ -31,79 +31,271 @@ may prove some sufficient conditions that if fulfilled means that the
 protocol must simulate the ideal functionality.
 
 One of the first successful uses of the \ac{UC} framework was a model
-created by Jan Camenish and Anna Lysyanskaya (a mode we will call the
+created by Jan Camenish and Anna Lysyanskaya (a model we will call the
 CL-model). This model was an attempt at formalising the concept of
 onion routing using the UC-framework. It relied on an ideal
-functionality, and 5 properties that ensured a protocol would properly
-simulate the ideal functionality~\cite{CL-model}.
+functionality, and five properties that ensured a protocol would properly
+simulate the ideal functionality~\cite{CL-model}. We will however not
+use these five original properties, rather opting to use three newer
+properties~\cite{kuhn}.
 
-The ideal functionality itself works through messages, and is
-designed around 4 different functions, each activated by a specific
-message~\cite{CL-model}.
+We begin by describing the ideal functionality, and it can be
+described as consisting of two parts, the internal data structure and
+the set of instructions in the form of messages. We begin with the
+data structure, describing what parties and information we have.
+
+\subsubsection*{Ideal Onion Routing Functionality: Internal Data Structure.}
 \begin{itemize}
-  \item{{\tt Process_New_Onion} When an onion is received, either
-    reject if faulty or proceed with}
-  \item{{\tt Process_Next_Step} Creates a temporary id for the onion
-    and informs the adversary of onion (this emulates the fact that
-    the adversary controls the network). If the router itself is
-    adversial, it also tells the adversary which route it was part
-    of. }
-  \item{{\tt Deliver_Message} Is actually sent by the adversary, but
-    simply informs the router to send the onion to the next step in
-    its path.}
-  \item{{\tt Forward_Onion} Tells the ideal functionality to send the
-    message to the next router and the step {\tt Process_Next_Step} is
-    once again taken.}
+\item{The set {\it Bad\/} of  parties controlled by the adversary \(S\).}
+  
+\item{An onion \(O\) is stored in the a tuple on the form \((sid, P_s,
+  P_r, m, n, \mathcal{P}, i)\) where: \(sid\) is the
+  identifier,\(P_s\)is the sender, \(P_r\) is the recipient, \(m\) is
+  the message sent through the onion routers, \(n < N\) is the length
+  of the onion path, \(\mathcal{P} (P_{o_1},\ldots, P_{o_n})\) is the
+  path over which the message is sent (by convention,\(P_{o_0}=P_s\),
+  and \(P_{o_{n+1}}=P_r\)),\(i\) indicates how much of the path the
+  message has already traversed (\(i= 0\) when the onion is at
+  \(P_s\)). We know that the onion has reached its destination when
+  \(i=n+ 1\).
+}
+    
+\item{ A list \(L\) of onions that the adversarial routers are
+  currently processing. Each entry of the list is in the form of a
+  tuple \((temp, O, j)\), where \(temp\) is the temporary id provided
+  by the ideal functionality, while \(O= (sid, P_s, P_r, m, n,
+  \mathcal{P}, i) \) is the onion itself, and \(j\) is the entry in
+  \(\mathcal{P}\) that indicates where the onion should go next (the
+  adversary does not get to see \(O\)and \(j\)). Remark: Entries will
+  never be removed from \(L\). This allows us to model the replay
+  attack for the ideal adversary.
+}
+      
+\item{ For each honest party \(P_i\), there is a buffer \(B_i\) of
+  onions that are currently being held by \(P_i\). Each entry consists
+  of \((temp', O)\), where \(temp'\) is the temporary id that the
+  ideal functionality provides, so that the router may process the
+  onion and \(O = (sid, P_s, P_r, m, n, P, i)\) is the onion itself
+  (\(O\) is hidden from the honest party). Entries are removed from
+  this buffer if an honest party informs the ideal functionality that
+  it wishes to send the corresponding onion to the next party.
+}
+
 \end{itemize}
+
+Every party gets its instructions by way of messages sent between
+them, and for this we define 4 messages.
+
+The parties involved receives their instructions from messages that
+they send between them, and the ideal functionality have four
+messages. 
+
+\subsubsection*{Ideal Onion Routing Functionality: Instructions.}
+
+\begin{itemize}
+
+\item{({\texttt Process_New_Onion}, \(P_r, m, n, \mathcal{P}\)). When
+  receiving a message of this form from \(P_s\), where \(m\in
+  \{0,1\}^{l_m}\cup\{\bot\}\), do.}
+  \begin{enumerate}
+  \item{If \(|\mathcal{P}| \geq N\), reject.}
+  \item{Otherwise, create a new session id \(sid\), and let \(O =
+    (sid, P, P_r, m, n, \mathcal{P}, 0)\). Send the message
+    ({\texttt Process_Next_Step}, \(O\)) to itself.}
+  \end{enumerate}
+
+\item{({\texttt Process_Next_Step}, \(O\)). Suppose \(O = (sid, P_s,
+  P_r, m, n, \mathcal{P}, i)\). The ideal functionality now looks at
+  the next part of the path. The router \(P_{o_i}\) is passing the
+  onion to the router \(P_{o_{i+1}}\). Depending on which routers are
+  honest and which ones are adversarial, two different steps may be
+  taken, an honest and an adversarial one:
+
+  \begin{enumerate}
+    
+  \item{{\bf Honest next}.if the next node, \(P_{o_{i+1}}\), is
+    honest.Here, the ideal functionality creates a new random temporary id
+    \(temp\) for this onion and sends it to \(S\) (since \(S\) controls
+    the network, it decides which messages get delivered): ``Onion
+    \(temp\) from \(P_{o_i}\) to \(P_{o_{i+1}}\)''. It adds the entry
+    \((temp, O, i+1)\) to the list \(L\). (See ({\texttt Deliver_Message},
+    \(temp\)) for the next step.)}
+
+  \item{{\bf Adversary next}.Suppose that \(P_{o_{i+1}}\)is
+    adversarial. Then there are two cases:
+    \begin{itemize}
+    \item{There is an honest router remaining on the path to the
+      recipient. Let \(P_{o_j}\)be the next honest router. In this
+      case, the ideal functionality creates a random temporary id
+      \(temp\) for this onion, and sends the message ``Onion \(temp\)
+      from \(P_{o_i}\), routed through \((P_{o_{i+1}}, \ldots,
+      P_{o_{j-1}})\) to \(P_{o_j}\)'' to the ideal adversary \(S\),
+      and stores \((temp, O, j) \) in the list \(L\).}
+      
+    \item{ \(P_{o_i}\)is the last honest router on the path; in
+      particular, this means that \(P_r\) is adversarial as well. In
+      this case, the ideal functionality sends the message``Onion from
+      \(P_{o_i}\) with message \(m\) for \(P_r\) routed through
+      \((P_{o_{i+1}}, \ldots,P_{o_n})\)'' to the adversary \(S\).}
+    \end{itemize}
+  }    
+  \end{enumerate}
+}
+
+\item{({\texttt Deliver_Message}, \(temp\)). This is a message of
+  confirmation from
+  \(S\) that it sends to the ideal process to notify it that it agrees that
+  the onion with temporary id \(temp\) should be delivered to its
+  intended destination. To process this message, the functionality
+  checks if the temporary identifier \(temp\) corresponds to any onion
+  \(O\) on the list \(L\). If it does, it retrieves the corresponding
+  record\((temp, O, j)\) and update the onion: if \(O= (sid, P_s, P_r,
+  m, n, \mathcal{P}, i)\), it replaces \(i\) with \(j\) to indicate
+  that we have reached the \(j\)'th router on the path of this
+  onion. If \(j < n+ 1\), it generates a temporary identifier
+  \(temp'\), sends ``Onion \(temp'\) received'' to party \(P_{o_j}\),
+  and stores the resulting pair(\(temp', O= (sid, P_s, P_r, m, n,
+  \mathcal{P}, j)\)) in the buffer \(B_{o_j}\) of party
+  \(P_{o_j}\). Otherwise, \(j=n+ 1\), so the onion has reached its
+  destination: if \(m \neq \bot\)it sends ``Message \(m\) received''
+  to router \(P_r\): otherwise no message is delivered.
+}
+
+\item{({\texttt Forward_Onion}, \(temp'\)). This is a message from an
+  honest ideal router \(P_i\) notifying the ideal process that it is
+  ready to send the onion with id \(temp'\) to the next hop. In
+  response, the ideal functionality
+  
+  \begin{itemize}
+    
+  \item{Checks if the temporary identifier \(temp'\) corresponds to
+    any entry in \(B_i\). If it does, it retrieves the corresponding
+    record \((temp', O)\).
+  }
+
+  \item{ Sends itself the message ({\texttt Process_Next_Step},
+    \(O\)).
+  }
+
+  \item{ Removes \((temp', O)\) from \(B_i\).
+  }
+  \end{itemize}
+}
+\end{itemize}
+
 
 To prove that a protocol properly simulates this ideal functionality,
 the CL-model, as mentioned above, defined five sufficient properties~\cite{CL-model}.
+However, later research has found that there exists three properties
+that provide the same thing, making the model slightly easier to
+describe~\cite{kuhn}.
 
-\begin{enumerate}
-  \item{{\bf Onion routing scheme I/O.} The protocol should have a key
-  generation algorithm for asymetric encryption, be able to form an
-  onion from a message and a list of routers and their public
-  keys. Lastly, the protocol should also be able to process the onion,
-  that is, peel a layer off of it and deliver it to the next router.}
+\begin{definition}{Onion-Correctness.}
+  Let \((G, \text{FormOnion}, \text{ProcOnion})\) be an Onion Routing
+  scheme with maximal path length \(N\). Then for all polynomial
+  numbers of routers \(P_i\), for all settings of the public
+  parameters \(p\), for all \((PK(P), SK(P))\) generated by
+  \(G(1^\lambda, p, P)\) for all \(n < N\), for all messages \(m \in
+  \mathcal{M}\) and for all onions \(O_1\) formed as \((O_1, \ldots,
+  O_{n+1}) \leftarrow
+  \text{FormOnion}(m,(P_1,\ldots,P_{n+1}),(PK(P_1),\ldots,PK(P_{n+1})))\)
+  the following is true:
 
-  \item{{\bf Onion evolution, path and layering.} Each onion should
-    have a pair of idenifiers, that is the onion itself and its
-    router. Then the evolution is the ordered set of such pairs, the path is
-    the set of routers and the layering is the set of onions.}
+  \begin{enumerate}
+    \item{Correct path: \(\Pr[\mathcal{P}(O_1, P_1) = (P_1, \ldots,
+      P_{n+1})] \geq 1 - negl(\lambda).\)}
+    \item{Correct layering: \(\Pr[\mathcal{L}(O_1, P_1) = (O_1, \ldots,
+        O_{n+1})] \geq 1 - negl(\lambda).\)}
+    \item{Correct decryption: \(\Pr[(m,\bot) =
+        \text{ProcOnion}(SK(P_{n+1}), O_{n+1}, P_{n+1}) \geq 1 -
+        negl(\lambda). ]\)}
+  \end{enumerate}
+\end{definition}
 
-  \item{{\bf Onion-correctness.} This is the simple condition that if a
-  correctly formed onion is processed correctly and by the correct
-  routers, then the correct message is received by the last router.}
+\begin{definition}{Tail-Indistinguishability TI.}
+  \begin{enumerate}
+    \item{The adversary receives as input the challenge public key
+      \(PK\), chosen by the challenger by letting \((PK,SK) \leftarrow
+      G(1^\lambda, p, P_j)\) and the router name \(P_j\).}
+    \item{The adversary may submit any number of onions \(O_i\) of her
+      choice to the challenger. The challenger sends the output of
+      \(\text{ProcOnion}(SK, O_i, P_j)\) to the adversary.}
+    \item{The adversary submits a message \(m\), a path \(\mathcal{P}
+      = (P_1, \ldots, P_j, \ldots, P_{n+1})\) with the honest node at
+      position \(j, 1\leq j \leq n+1\) of her choice and key pairs for
+      all nodes \((PK_i,SK_i)\) (\(1\leq i \leq n+1\) for the nodes on
+      the path and \(n+1\) for the other relays).}
+    \item{The challenger checks that the router names are valid, that
+      the public keys correspond to the secret keys and that the same
+      key pair is chose if the router names are equal, and if so, sets
+      \(PK_j = PK\) and sets bit \(b\) at random.}
+    \item{The challenger create the onion with the adversary's input
+      choice:
+      \[ (O_1, \ldots, O_{n+1}) \leftarrow \text{FormOnion}(m,
+      \mathcal{P}, (PK)_{\mathcal{P}})
+      \]
+      and a random onion with a randomly chosen path
+      \(\bar{\mathcal{P}} = (\bar{P}_1, \ldots, \bar{P}_k = P_j,
+      \ldots, \bar{P}_{n+1} = P_{n+1})\), that includes the subpath
+      from the honest relay to the corrupted receiver starting at
+      position \(k\) ending at \(\bar{n} +1 \):
+      \[ (\bar{O}_1, \ldots, \bar{O}_{n+1} \leftarrow
+      \text{FormOnion}(m, \bar{\mathcal{P}}, (PK)_{\mathcal{P}})).
+      \]}
+    \item{
+      \begin{itemize}
+        \item{If \(b = 0\), the challenger gives \((O_{j+1},
+          P_{j+1})\) to the adversary.}
+        \item{Otherwise, the challenger gives, \((\bar{O}_{k+1},
+          \bar{P}_{j+1})\) to the adversary.}
+      \end{itemize}
+    }
+    \item{ The adversary may submit any number of onions \(O_i\) of
+      her choice to the challenger. The challenger sends the output of
+      \(\text{ProcOnion}(SK,O_i, P_j)\) to the adversary.}
+    \item{The adversary produces guess \(b'\).}
+  \end{enumerate}
+  TI is achieved if any PPT adversary \(\mathcal{A}\) cannot guess
+  \(b' = b\) with a probability non-neglibly better than \(\frac{1}{2}\).
+\end{definition}
 
-  \item{{\bf Onion-integrity.} This is the requirement that the path of
-  an onion is limited by some integer N, that is, no matter how an
-  onion is manipulated, the path may never have a length that is
-  larger than N.}
-
-  \item{{\bf Onion-security.} A protocol has the property of
-    onion-security if an adversary can not guess the message nor add
-    an extra onion-layer to any onion.}
-\end{enumerate}
-
-
-However, while these definitions are useful, newer work have found
-that they were not sufficient and added two new properties, which has
-since been proven to fulfill the security properties of the ideal
-functionality~\cite{kuhn}. The properties were:
-
-\begin{enumerate}
-  \setcounter{enumi}{5}
-  \item{{\bf Tail indistinguishability against a corrupted receiver.}
-    An adversary that reads after the last honest relay should not be
-    able to distinguish between two onions who follow the same path
-    after the last honest router, but differ before it.}
-
-  \item{{\bf Layer-Unlinkability against bypassing honest nodes.} An
-    adversary should not be able to distinguish between an onion for
-    which the adversary chooses the path up to an honest router, and
-    an onion which contains this path as a subpath.}
-\end{enumerate}
+\begin{definition}{Layer-Unlinkability LU}
+  \begin{enumerate}
+  \item - 4 are the same as in the definition of TI.
+    \setcounter{enumi}{4}
+  \item{The challenger creates the onion with the adversary's input
+    choice:
+    \[(O_1, \ldots, O_{n+1} \leftarrow \text{FormOnion}(m,
+    \mathcal{P}, (PK)_{\mathcal{P}}))    
+    \]
+    and a random onion with a randomly chosen path \(\bar{\mathcal{P}}
+    = (\bar{P}_1, \ldots, \bar{P}_k = P_1, \ldots, \bar{P}_{k+j} =
+    P_j, \bar{P}_{k+j+1}, \ldots, \bar{P}_{n+1})\), that includes the
+    subpath from the honest node of \(\mathcal{P}\) starting at
+    position \(k\) ending at \(k+j\) (with \(1 \leq j+k \leq \bar{n}
+    +1 \leq N\)), and a random message \(m' \in \mathcal{M}\):
+    \[ (\bar{O}_1, \ldots, \bar{O}_{\bar{n} + 1}) \leftarrow
+    \text{FormOnion}(m', \bar{\mathcal{P}}, (PK)_{\bar{\mathcal{P}}}).
+    \]
+  }
+  \item{
+    \begin{itemize}
+      \item{If \(b = 0\), the challenger gives \((O_1,
+        \text{ProcOnion(O_j)})\) to the adversary.}
+      \item{Otherwise, the challenger gives \((\bar{O}_k,
+        \text{ProcOnion(O_j)})\) to the adversary.}
+    \end{itemize}
+  }
+  \item{The adversary may submit any number of onions \(O_i,\, O_i
+    \neq O_j,\, O_i \neq \bar{O}_{k+j}\) of her choice to the
+    challenger. The challenger sends the output of
+    \(\text{ProcOnion}(SK, O_i, P_j)\) to the adversary.}
+  \item{The adversary produces guess \(b'\).}
+  \end{enumerate}
+  LU is achieved if any PPT adversary \(\mathcal{A}\) cannot guess
+  \(b' = b\) with a probability non-negligibly better than \(\frac{1}{2}\).
+\end{definition}
 
 With these properties and the SphinxES protocol, we wish to prove that
-SphinxES does indeed have these properties, and thus fulfills the
+SphinxES does indeed have these properties, and thus fulfils the
 security properties of the ideal functionality. 
