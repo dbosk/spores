@@ -1,19 +1,76 @@
-%!TEX root = spores.tex
+\section{\Acf*{SPORES}}%
+\label{SPORES}%
 
-\section{Design of the \name file transfer system}%
-\label{design}
+We will now extend \ac{SPOR} into \ac{SPORES}.
+It is becoming more and more common that people own more than one online device 
+(\eg a laptop and a smartphone).
+We will utilize this in the construction of \ac{SPORES}.
+Thus \ac{SPORES} is different in two aspects:
+First, the recipient layer consists of several devices instead of only one.
+These devices, the e-squad of Bob, will then coordinate to ensure the relevant 
+device gets the message.
+We assume there is a protocol which solves this problem.
+For instance, \textcite{luxey:cascade} introduce a protocol that allows the 
+devices of an e-squad to coordinate user sessions in the face of churn.
 
-% \sonja{will frame and structure (A) squad overlay (prediction) (B)
-%   global overlay (RPS) (C) sphinxes (incl.\ sphinx, onion routing in
-%   general) (D) SPOR and SPORES (E) encryption (hybrid, payload, header)
-%   if not included earlier (F) out-of-band}
-% \commentDaniel{I suggest the following structure:
-%   (A) SphinxES
-%   (B) SPOR (global overlay)
-%   (C) SPORES (local overlay).
-%   My original idea was to make SphinxES its own section before the design 
-%   section instead of a subsection in the design section.}
+Second, we will introduce how to do fragmentation and reassembly for large 
+messages.
+Consider that the message \(m\) that Alice wants to send to Bob is too large to 
+successfully pass every layer of the route.
+\Eg each device goes offline and back online every \(t\) seconds, the bandwidth 
+is \(w\) bits per second and the message is \(|m|\) bits; if \(|m| > t w\), 
+then the message \(m\) can never be delivered as any device will go offline 
+before relaying it to the next node.
+The natural solution is to split \(m\) into \(n\) parts, \(m_0, \dotsc, 
+  m_{n-1}\), where \(|m|/n\leq t w\).
+The problem now is that \(m_i\) and \(m_j\) (\(i\neq j\)) might end up on 
+different devices.
+But that problem is solved by the protocol mentioned above.
+This allows us to send large messages, such as videos, more efficiently.
 
-%\include*{spor}
-%\include*{squad-overlay-design}
-\include*{file-transfer-design}
+The parameters \(t\) and \(w\) must be empirically approximated and used as 
+global configuration parameters for the system.
+We run simulations for various values of \(t\) and \(w\) in \cref{Performance}.
+In this section we describe a file-transfer protocol for splitting a large 
+message, sending the fragments using \ac{SPOR} and reassemble them --- even if 
+the fragments are received by different devices of the squad.
+
+\subsection{Fragmentation and reassembly}%
+\label{sec:file_transfer}
+
+Alice wants to send the message \(m\) to Bob, \(m\) is \(|m|\) bits long.
+Bob creates a reply header and gives it to Alice.
+Alice splits \(m\) into \(n\) parts \(m_0, \dotsc, m_{n-1}\).
+Alice sends \(|m|\), \(n\), \(\hash(m)\), \(\hash(m_0), \dotsc, 
+\hash(m_{n-1})\) to Bob using \ac{SPOR} and Bob's reply header.
+(Remember, this means that Bob receives a reply header with the data, so that 
+he can later reply to Alice.)
+
+Bob runs \(\CreateReply\) \(n\) times, the node sets passed to \(\CreateReply\) 
+are created as in \cref{SPOR}, but all of Bob's devices populate the recipient 
+set.
+Bob notes the order of the identifiers, \(I\), of each header and sends the 
+headers in that order to Alice (using Alice's reply header).
+
+Alice receives the headers and keeps the order of the headers.
+For each \(0\leq i < n\), she uses \(\UseReply\) with \(m_i\) as payload to get 
+a header \(\hat M_i\).
+Then she constructs the final header \(M_i\) by running \(\CreateFwd\) with 
+\(\hat M_i\) as payload and the final layer set to \(\{\rdvnode\}\) (to 
+indicate to the last node that it is a rendezvous node).
+She then sends \(M_i\) along the route.
+We note that Alice can process all pieces in parallel as long as she uses the 
+headers she got from Bob in the correct order --- \ie \(M_i\) contains \(m_i\) 
+as payload.
+
+When the headers are used in the correct order Bob can use the identifiers from 
+the headers (\(I\)) to correctly reassemble the fragments despite out-of-order 
+delivery.
+
+As above, each payload also contains a reply header for Bob, these can be used 
+by Bob to inform Alice at regular time intervals about which chunks have been 
+received and which are missing.
+
+%\commentDaniel{I leave the remaining details for someone else to write up.
+ % What we need is the details of how Bob's devices syncs and reassembles files.
+ % Maybe this is reduced to Sprinkler or something.}
