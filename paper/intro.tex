@@ -18,9 +18,14 @@ Another example is that the sender distribute nodes over the layers to maximize
 the sum of bandwidth over the nodes of each layer.
 This would optimize for throughput.
 
-Second, we provide a way for messaging services, like Signal, to use SphinxES 
-to relay messages over the devices in \iac{P2P} network with high churn.
-We call this the \ac{SPOR} protocol and describe it in detail in \cref{SPOR}.
+Second, we provide a protocol, \ac{SPOR}, which optimizes the layers for 
+availability.
+See \cref{SPOR} for details.
+We use a wide definition of churn, a node that is available is online and not 
+congested.
+This allows systems to relay messages in a \ac{P2P} network with high churn.
+For instance, one could convert Signal to use \ac{SPOR} for message delivery.
+We use this as the scenario for our performance evaluation.
 
 Third, we provide a higher-level protocol\footnote{%
   If SphinxES is IP, this protocol would be TCP.

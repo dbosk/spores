@@ -1,0 +1,44 @@
+\documentclass{article}
+\input{preamble.tex}
+\usepackage{authblk}
+
+\begin{document}
+\title{%
+  SphinxES and \acs*{SPORES}:
+  \acs*{P2P} mixing with various optimizations
+  %\acs*{SPORES}: \acl*{SPORES}%
+  %\name: Stateless Predictive Onion Routing for E-Squads%
+  %% From the IEEE template
+  % \thanks{Identify applicable funding agency here. If none, delete this.}
+  % \thanks{%
+  %   Daniel Bosk and Sonja Buchegger were funded by
+  %   the Swedish Foundation for Strategic Research grant SSF FFL09-0086.
+  %   Research done while Daniel Bosk visited the WIDE team at INRIA/IRISA Rennes, 
+  %   France.
+  % }
+}
+
+\author[1]{Daniel Bosk\thanks{%
+  Research done while the author visited the WIDE team at INRIA/IRISA Rennes, 
+  France.
+}}
+\affil[1]{KTH Royal Institute of Technology\\\email{daniel@bosk.se}}
+\author[1]{Sonja Buchegger}
+\author[2]{Adrien Luxey}
+\affil[2]{Univ.\ de Rennes, INRIA, CNRS, IRISA\\\email{Adrien.Luxey@irisa.fr}}
+\author[2]{Yérom-David Bromberg}
+\author[2]{François Taïani}
+
+\mode<article>{\maketitle}
+\mode<presentation>{%
+  \begin{frame}
+    \maketitle
+  \end{frame}
+}
+
+\begin{abstract}
+  \input{abstract.tex}
+\end{abstract}
+
+\input{contents.tex}
+\end{document}
