@@ -1,19 +1,18 @@
 .PHONY: all
-all: spores.pdf
+all: paper.pdf
 
 SRC+=		contents.tex abstract.tex
 SRC+= 		intro.tex
 SRC+=		UCOR.tex
 SRC+= 		sphinxes.tex sphinxes-security.tex
 SRC+=		spor.tex spor-security.tex
+SRC+=		spores.tex spores-security.tex
 
-SRC+= 		system-model.tex
+#SRC+= 		system-model.tex
 
-SRC+=		design.tex
-SRC+= 		squad-overlay-design.tex 
-SRC+=		file-transfer-design.tex
+#SRC+= 		squad-overlay-design.tex 
+#SRC+=		file-transfer-design.tex
 
-SRC+= 		security-discussion.tex
 SRC+= 		evaluation.tex
 SRC+= 		related.tex
 SRC+=		conclusion.tex
@@ -24,8 +23,8 @@ DEPENDS+= 	adrien.bib spores.bib
 DEPENDS+=	figures/*.pdf
 DEPENDS+= 	acrox.sty
 
-spores.pdf: spores.tex preamble.tex revision_macros.tex
-spores.pdf: ${SRC} ${DEPENDS}
+paper.pdf: paper.tex preamble.tex revision_macros.tex
+paper.pdf: ${SRC} ${DEPENDS}
 
 figures/%::
 	${MAKE} -C $(dir $@) $(notdir $@)
@@ -38,7 +37,7 @@ acrox.sty: ../acrox/acrox.sty
 
 .PHONY: clean
 clean:
-	${RM} spores.pdf
+	${RM} paper.pdf
 	${MAKE} -C figures clean
 	${RM} acrox.sty
 	${MAKE} -C ../acrox clean
@@ -50,7 +49,7 @@ distclean:
 
 
 .PHONY: print todo
-print: spores.pdf
+print: paper.pdf
 todo: ${SRC}
 
 
