@@ -1,7 +1,5 @@
 %!TEX root = spores.tex
 
-\NewScheme{\SPOR}{SPOR}
-
 \section{\Acf*{SPOR}}%
 \label{SPOR}%
 \label{sec:SPOR}%
@@ -19,8 +17,7 @@ over an out-of-band channel\footnote{%
 }.
 At a later point, Alice attaches a message \(m\) to the reply header using 
 \(\UseReply\), creates a forward header using \(\CreateFwd\) with the prepared 
-reply header as parameter. \sonja{what about the crossover node and
-  Alice's leg of the route?} 
+reply header as parameter.
 Then she sends this packet to the first node, which processes it using 
 \(\ProcessHeader\).
 The node will then process the header and in turn forward the packet to the 
@@ -28,8 +25,10 @@ next node.
 At some point the message will reach Bob who identifies the message as the 
 one expected to come from Alice.
 %(This process is illustrated in \cref{fig:file-transfer}.)
-Now we will focus on how Alice and Bob choose the nodes that they provide to 
-\(\CreateReply\) and \(\CreateFwd\).
+Now we will focus on two problems that Alice and Bob have:
+first, how Alice and Bob choose the nodes that they provide to \(\CreateReply\) 
+and \(\CreateFwd\);
+second, how Alice and Bob can reduce the use of the out-of-band channel.
 
 %\begin{figure}
 %  \includegraphics[width=\linewidth]{figures/file_transfer_v2.pdf}
@@ -41,6 +40,8 @@ Now we will focus on how Alice and Bob choose the nodes that they provide to
 %    one for acknowledgements.
 %  }
 %\end{figure}
+
+\subsection{Selecting nodes}
 
 There are many uses of SphinxES, many criteria that can be used to select the 
 nodes in each layer.
@@ -87,3 +88,9 @@ to maximize the availability~\[
 \] of every layer (or equivalently, minimizing the risk that every node in a 
 layer is offline at the same time) while keeping \(|L_i| = w_L\).
 
+\subsection{Reducing the use of the out-of-band channel}
+
+It is desirable for Alice and Bob to use out-of-band communication as little as 
+possible.
+To do this, we define \ac{SPOR} to let the first part of the payload to be a 
+reply header that the recipient can use to reply.
