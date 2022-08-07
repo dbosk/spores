@@ -71,8 +71,8 @@
 \usepackage[capitalize]{cleveref}
 \usepackage{acro}
 \ExplSyntaxOn
-\ProvideAcroEnding{possessive-singular}{'s}{'s}
-\ProvideAcroEnding{possessive-plural}{s'}{s'}
+\DeclareAcroEnding{possessive-singular}{'s}{'s}
+\DeclareAcroEnding{possessive-plural}{s'}{s'}
 \ProvideAcroCommand{\acg}{%
   \acro_possessive_singular:
   \acro_use:n {#1}
